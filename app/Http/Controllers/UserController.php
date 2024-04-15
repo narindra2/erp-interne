@@ -295,13 +295,11 @@ class UserController extends Controller
     public function check(Request $request)
     {
         $auth =  Auth::user();
-        if ($request->check_event == "fin" || $request->check_event == "out") {
-            $folder_in_progress = SuiviItem::where("user_id", $auth->id)->where("status_id",SuiviItem::$IN_PROGRESS)->whereDeleted(0)->count();
-            if ($folder_in_progress) {
+        /* if ($folder_in_progress) {
                 $message  = 'Vous avez un dossier «En cours» de statut. <br> Mettez le en « Pause » ou « Terminer »  avant de deconnecte. <br> Réf : Dans tableau de dossier';
                 return ["success" => false, "message" =>  $message];
             }
-         }
+         }*/
         Check::create([
             "user_id" => Auth::id(),
             "registration_number" => Auth::user()->registration_number,

@@ -1,9 +1,10 @@
 {{--begin::Aside Menu--}}
 @php
     $menu = bootstrap()->getAsideMenu();
-    $menu->items = get_menus_list("main",auth()->user());
+    $menu->items = get_menus_list(Auth::user(),"main");
     \App\Core\Adapters\Menu::filterMenuPermissions($menu->items)
 @endphp
+
 
 <div
     class="hover-scroll-overlay-y my-5 my-lg-5"

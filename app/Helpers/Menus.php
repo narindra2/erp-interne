@@ -2,15 +2,11 @@
 
 
 /** Make menu user's localisation in views\layout\demo1\aside\_menu.blade.php */
-
-use App\Models\Menu;
-
 if (!function_exists('get_menus_list')) {
-    function get_menus_list($key = "", $auth_user)
+    function get_menus_list( $auth_user, $key = "")
     {
         /** Verical menu */
         $menu_vertical = $menu_horizontal = [];
-
         if ($auth_user->isAdmin() || $auth_user->isHR()) {
             $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Utilisateurs</span>',];
             $menu_vertical[] = ["title" => __("lang.collaborator"), 'path'  => 'users',  'icon'  => '<i class="fas fa-users fs-3"></i>'];
@@ -24,12 +20,12 @@ if (!function_exists('get_menus_list')) {
                 $menu_vertical[] = ["title" => "Déclarants", 'path'  => '/cerfa/customer',   'icon' => '<i class="far fa-user fs-3"></i>'];
             **/
             $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Congé et permission</span>'];
-            $menu_vertical[] = ["title" => __("lang.list"), 'path'  => '/days-off',  'icon'  => '<i class="far fa-list-alt fs-3"></i>'];
+            $menu_vertical[] = ["title" => "Ajouter un rapport d'état", 'path'  => '/days-off',  'icon'  => '<i class="far fa-list-alt fs-3"></i>'];
             $menu_vertical[] = ["title" => __("lang.days_of_types"), 'path'  => '/days-off/type',  "icon" => '<i class="fas fa-users-cog fs-3"></i>'];
             $menu_vertical[] = ["title" => __("lang.upgrade_days_off"), 'path'  => '/days-off/upgrade',  "icon" => '<i class="fas fa-chart-line fs-3"></i>'];
             $menu_vertical[] = ["title" => __("lang.public-holiday"), 'path'  => '/public-holidays',  "icon" => '<i class="fas fa-gift fs-3"></i>'];
             $menu_vertical[] = ["title" => "Récupération Heure", 'path'  => '/hour-recoveries',  "icon" => '<i class="fas fa-clock fs-3"></i>'];
-
+            
             $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Pointage</span>'];
             $menu_vertical[] = ["title" => __("lang.web_pointing"), 'path'  => '/users-pointing',  'icon'  => '<i class="fas fa-id-card-alt fs-3"></i>'];
             $menu_vertical[] = ["title" => __("lang.import_excel"), 'path'  => '/users-pointing-excel',  "icon" => '<i class="fas fa-fingerprint fs-3"></i>'];
@@ -54,10 +50,10 @@ if (!function_exists('get_menus_list')) {
         } elseif (!$auth_user->isAdmin() || !$auth_user->isHR()) {
             /**Profil */
             $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Utilisateurs & Compte</span>',];
-            $menu_vertical[] = ["title" => _("lang.my_profile"), 'path'  => '/account/settings',   'icon' => '<i class="fas fa-user fs-3"></i>'];
+            $menu_vertical[] = ["title" => __("lang.my_profile"), 'path'  => '/account/settings',   'icon' => '<i class="fas fa-user fs-3"></i>'];
             /** Congé */
             $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Congé & demande</span>',];
-            $menu_vertical[] = ["title" => _("lang.my_dayoff"), 'path'  => '/my-days-off',   'icon' => '<i class="fas fa-walking fs-3"></i>'];
+            $menu_vertical[] = ["title" => "Demande des jours de congé", 'path'  => '/my-days-off',   'icon' => '<i class="fas fa-walking fs-3"></i>'];
             $menu_vertical[] = ["title" => "Récupération Heure", 'path'  => '/hour-recoveries',   'icon' => '<i class="fas fa-clock fs-3"></i>'];
             /** Outils erp */
             $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Outils</span>',];
@@ -65,9 +61,32 @@ if (!function_exists('get_menus_list')) {
             $menu_vertical[] = ["title" => "Tâches", 'path'  => '/tache/list',   'icon' => '<i class="far fa-calendar-check fs-3"></i>'];
             $menu_vertical[] = ["title" => "SDF", 'path'  => '/salle-de-reunion',  'icon'  => '<i class="fas fa-user-clock"></i>'];
             /*** Menu provisiore pour specifique dessi et mdp */
-            if (in_array($auth_user->registration_number, Menu::$USER_ALLOWED_PART_ACCESS["suivi_testeur"])) {
+            $allowed_matricule = [
+                100121, 
+                100043,
+                100036,
+                100082,
+                100155,
+                100139,
+                100167,
+                100109,
+                100042,
+                100047,
+                100053,
+                100057,
+                100090,
+                100055,
+                100110,
+                100080,
+                100134,
+                100116,
+                100130,
+
+            ];
+            if (in_array($auth_user->registration_number, $allowed_matricule)) {
                 $menu_vertical[] = ["title" => "Suivis", 'path'  => '/suivi/v2/projet',   'icon' => '<i class="fas fa-tasks fs-3"></i>'];
             }
+
             if ($auth_user->isTech()) {
                 $menu_vertical[] = ["title" => "Besoin ticket", 'path'  => '/needToBuy',   'icon' => '<i class="fas fa-clipboard-list fs-3"></i>'];
                 $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Gestion de stock</span>'];
@@ -75,12 +94,10 @@ if (!function_exists('get_menus_list')) {
                 $menu_vertical[] = ["title" => "Achats", 'path'  => 'purchases',  'icon'  => ' <i class="fas fa-clipboard-list fs-3"></i> '];
                 $menu_vertical[] = ["title" => "Article", 'path'  => 'items',  'icon'  => ' <i class="fas fa-clipboard-list fs-3"></i> '];
             }
-            if (in_array($auth_user->registration_number, Menu::$USER_ALLOWED_PART_ACCESS["debug_tools"])) {
+            $allowed_matricule_debug = [100043];
+            if (in_array($auth_user->registration_number,  $allowed_matricule_debug)) {
                 $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Debugage</span>'];
                 $menu_vertical[] = ["title" => "Debug/Outils", 'path'  => '/outils-debug',  'icon'  => '<i class="fas fa-wrench"></i>'];
-            }
-            if (in_array($auth_user->registration_number, Menu::$USER_ALLOWED_PART_ACCESS["complement_hours"])) {
-                $menu_vertical[] = ["title" => "Complément Heure", 'path'  => '/complement-hours',  "icon" => '<i class="fas fa-fingerprint fs-3"></i>'];
             }
         }
 
@@ -88,7 +105,7 @@ if (!function_exists('get_menus_list')) {
 
         $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Informations</span>'];
         $menu_vertical[] = ["title" => "Règlement Intérieur", 'path'  => '/informations',  'icon'  => '<i class="fas fa-ruler-vertical fs-3"></i>'];
-
+        $menu_vertical[] = ["title" => "Fonctionnement en Interne", 'path' => '/Guides', 'icon' => '<i class="fas fa-ruler-vertical fs-3"></i>'];
 
         $menu = ["main" => $menu_vertical, "horizontal" => $menu_horizontal];
         if ($key) {

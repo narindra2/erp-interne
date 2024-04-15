@@ -553,8 +553,6 @@ class SuiviItem extends Model
                     $suivi_itmes->whereDeleted(0);
                 },
                 'suiviItems' => function ($suivi_itmes) use ($year,  $month) {
-                    $suivi_itmes->whereYear('finished_at', '=', $year);
-                    $suivi_itmes->whereMonth('finished_at', '=', $month);
                     $suivi_itmes->finished();
                 },
             ]);
@@ -596,7 +594,7 @@ class SuiviItem extends Model
                     $suivi_itmes->withSum("level","point");
                     $suivi_itmes->whereYear('finished_at', '=', $year);
                     $suivi_itmes->whereMonth('finished_at', '=', $month);
-                    $suivi_itmes->where("status_id", "=" ,self::$FINISH);
+                     $suivi_itmes->where("status_id", "=" ,self::$FINISH);
                 },
                 'suiviPramsSession' => function ($parms) use ($year,  $month) {
                     $parms->where('month', '=', $month);

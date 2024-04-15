@@ -88,9 +88,9 @@
                         <label class=" col-form-label">Nature de l' absence</label>
                         <select name="nature_id" class="form-select form-select-sm form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Choisissez la nature de congé" data-rule-required="true" data-msg-required="@lang('lang.required_input')">
                             <option  value="0" @if ( !$dayOff ) selected   @endif  >- Nature de la demande - </option>
-                            @foreach ($natures as $nature)
-                             <option value="{{  $nature->id }}" @if ( $nature->id == $dayOff->nature_id  ) selected   @endif>{{  $nature->nature}}</option>
-                            @endforeach
+                                @foreach ($natures as $nature)
+                                    <option value="{{  $nature->id}}" @if ( $nature->id == $dayOff->nature_id  ) selected   @endif>{{  $nature->nature}}</option>
+                                @endforeach
                         </select>
                     </div>
                 </div>

@@ -73,7 +73,7 @@
                         <div class="symbol symbol-35px me-2">
                             @if($reply['avatar'])
                                 <img src="{{ asset(theme()->getMediaUrlPath() . $reply['avatar']) }}" alt="user"/>
-                            <?php else:?>
+                            @else
                                 <div class="symbol-label bg-light-success fs-3 fw-bold text-success text-uppercase">
                                     {{ $reply['author'][0] }}
                                 </div>

@@ -145,7 +145,7 @@ class DayOffController extends Controller
         $query = DayOff::with(['applicant',"nature"])->whereDeleted(0);
         /** User dayoff validate and not yet finish  */
         $query->whereDate('return_date', '>', Carbon::now()->format("Y-m-d"))->where('is_canceled', 0);
-        if ($user->isCp() ) {
+        if ($user->isCp()) {
             $user->load('userJob');
             $users_ID = UserJobView::where("department_id", $user->userJob->department_id)->get()->pluck("users_id");
             $query->whereIn("applicant_id", $users_ID);
@@ -274,7 +274,11 @@ class DayOffController extends Controller
             }
         }
         $natures = DayoffNatureColor::whereDeleted(0)->whereStatus(1)->latest()->get();
-        return view("days_off.modal.requestDayOffModal", ["dayOff" => $dayOff,  "natures" => $natures, "auth"  =>  $auth, "can_create_other_request" =>  $can, "can_make_request" => $can_make_request,  'users' => User::where('user_type_id', '<>', UserType::$_ADMIN)->whereDeleted(0)->get()]);
+        if ($auth->isAdmin() ||  $auth->isHR()){
+            return view("days_off.modal.requestDayOffModal", ["dayOff" => $dayOff,  "natures" => $natures, "auth"  =>  $auth, "can_create_other_request" =>  $can, "can_make_request" => $can_make_request,  'users' => User::where('user_type_id', '<>', UserType::$_ADMIN)->whereDeleted(0)->get()]);
+        }else {
+            return view("days_off.modal.requestDayOffContributorModal", ["dayOff" => $dayOff,  "natures" => $natures, "auth"  =>  $auth, "can_create_other_request" =>  $can, "can_make_request" => $can_make_request,  'users' => User::where('user_type_id', '<>', UserType::$_CONTRIBUTOR)->whereDeleted(0)->get()]);
+        }
     }
 
     public function loadSelect(Request $request)
@@ -290,6 +294,7 @@ class DayOffController extends Controller
 
     public function store(DayOffRequest $request)
     {
+        // dd($request->all());
         $input = $request->input();
         $files = $request->hasFile('files') ? $request->file("files") : null;
         if (!$request->applicant_id) {
@@ -498,5 +503,35 @@ class DayOffController extends Controller
         } else {
             return $pdf->download("$file.pdf");
         }
+    }
+    public function update(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            'id' => 'required|exists:days_off,id',
+            'start_date' => 'required|date_format:d/m/Y',
+            'return_date' => 'required|date_format:d/m/Y|after:start_date',
+            'nature_id' => 'required|exists:dayoff_nature_color,id',
+            'reason' => 'required|string',
+        ]);
+        if($validator->fails()){
+
+            // return ["success" => false, "message" => 'validation error'];
+            die(json_encode(["success" => false,  "message" => $validator->errors()->first()]));
+        //    return ["success" => false, "message" => $validator->errors()->first()];
+        }
+
+
+        $dayOff = DayOff::find($request->id);
+        $dayOff->start_date = convert_date_to_database_date($request->start_date);
+        $dayOff->return_date = convert_date_to_database_date($request->return_date);
+        $dayOff->nature_id =$request->nature_id ;
+        $dayOff->reason =$request->reason ;
+        $dayOff->save();
+
+        // DayOff::where('id',$request->id)->update($validator->validated());
+
+
+        return ["success" => true, "row_id" => row_id("dayoff", $request->id),  "data" => $this->make_row($dayOff), "message" => "La demande de congé modifiée avec succès!"];
+        // return ["success" => true, "message"  => 'Demande de congé modifiée avec succès!'];
     }
 }

@@ -38,7 +38,7 @@
                         {data :"hour_absence" , title: "Heure d'absence"},
                         {data: "description", title: 'Nature'},
                         {data: "is_validated", title: 'Etat'},
-                        @if (auth()->user()->isAdmin() || auth()->user()->isHR() || $can_do_action )
+                        @if (auth()->user()->isAdmin() || auth()->user()->isHR())
                             {data: "action", orderable: false, searchable: false}
                         @endif
                     ],

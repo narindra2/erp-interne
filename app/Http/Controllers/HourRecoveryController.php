@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
-use App\Models\Menu;
-use App\Models\User;
+use App\Http\Requests\HourRecoveryRequest;
 use App\Models\HourRecovery;
+use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\HourRecoveryRequest;
 
 class HourRecoveryController extends Controller
 {
@@ -19,8 +18,7 @@ class HourRecoveryController extends Controller
      */
     public function index()
     {
-        $can_do_action = in_array(Auth::user()->registration_number, Menu::$USER_ALLOWED_PART_ACCESS["complement_hours"]);
-        return view('hour-recoveries.index', ["can_do_action" => $can_do_action]);
+        return view('hour-recoveries.index');
     }
 
     /**

@@ -87,7 +87,7 @@
                             <div class="row mb-2 ">
                                 <div class="col-lg-4">
                                     <a href="javascript:;" id="add" onClick="add()"
-                                        class="btn btn-sm btn-light-primary">
+                                        >
                                         <i class="la la-plus"></i>
                                     </a>
                                 </div>
@@ -125,7 +125,7 @@
                             <label for="check_lists" class="form-label">@lang('lang.add_check_lists') : </label>
                             <div class="row mb-2 ">
                                 <div class="col-lg-4">
-                                    <a href="javascript:;" onClick="addCheclist()" class="btn btn-sm btn-light-primary">
+                                    <a href="javascript:;" onClick="addCheclist()" >
                                         <i class="la la-plus"></i>
                                     </a>
                                 </div>

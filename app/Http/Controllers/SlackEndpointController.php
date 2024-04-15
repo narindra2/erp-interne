@@ -12,6 +12,8 @@ class SlackEndpointController extends Controller
 {
     private $slack;
     private $event_types_allowed = ["message"];
+    private static $token = 'xoxp-3794547389856-3770793402994-3783818223793-fe0fa7120d157a7c916d5d66dbde2647';
+    
     /**
      * Les documentations consulté (By developeur Narindra)
      * https://api.slack.com/apps/A03NNRK3W90/oauth?  => Mettre les autorisations
@@ -23,13 +25,13 @@ class SlackEndpointController extends Controller
 
     public function __construct()
     {
-        $this->slack = new \wrapi\slack\slack(env("SLACK_TOKEN"));
+        $this->slack = new \wrapi\slack\slack(self::$token);
     }
     public function capture_get(Request $request)
     {
         $this->caputre_request($request->all());
         return response()->json([
-            'token' => env("SLACK_TOKEN"),
+            'token' => self::$token,
             'challenge' => $request->json()->get('challenge'),
             "type"=> "url_verification"
         ]);
@@ -38,7 +40,7 @@ class SlackEndpointController extends Controller
     {
         $this->caputre_request($request->all());
         return response()->json([
-            'token' => env("SLACK_TOKEN"),
+            'token' => self::$token,
             'challenge' => $request->json()->get('challenge'),
             "type"=> "url_verification"
         ]);

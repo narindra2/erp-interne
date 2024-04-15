@@ -42,6 +42,7 @@ class TicketController extends Controller
     }
     public function store(Request $request)
     {
+     
         $auth =  Auth::user();
         $data["status_id"]  =  1;
         $data["urgence_id"] = $auth->isAdmin() ? 3 : $request->urgence_id; 
@@ -159,7 +160,6 @@ class TicketController extends Controller
         if ($ticket->is_resolved()) {
             return view("tickets.ticket-resolved-error");
         }
-        
         $exulde_id_status_edit = [];
         $user = Auth::user()->load('userJob');
         if (!$user->isAdmin() && !$user->isIT()) {

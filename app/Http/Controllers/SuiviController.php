@@ -85,7 +85,6 @@ class SuiviController extends Controller
             $user->traitement_grouped =  $user->suiviItems->groupBy(function ($traitement, $key) {
                 return $traitement->finished_at->format('m');
             });
-            
             $months_has = collect($user->traitement_grouped)->keys()->all();
             foreach ($months as $key => $month_name) {
                 $traitement_grouped = $user->traitement_grouped->all();

@@ -1,5 +1,5 @@
 @php
-    $auth = auth()->user();;
+    $auth = auth()->user();
 @endphp
 @if (auth()->check())
     <button id="in" href="#" @if ($auth->last_check == 'in') style ="display: none" @endif
@@ -47,7 +47,7 @@
                 $("#minutes").text(("0" + minutes).slice(-2));
             }
 
-            $.ajax({
+            let test = $.ajax({
                 type: "get",
                 url: url('/user_chrono'),
                 data: {
@@ -60,9 +60,10 @@
                     chrono();
                 },
                 error: function(jqXhr, textStatus, errorMessage) {
-                    console.log(errorMessage);
+                    console.log('errorMessage',errorMessage);
                 }
             });
+
             intervalID = setInterval(chrono, 1000 *60);
 
             var content = document.querySelector("#kt_content");

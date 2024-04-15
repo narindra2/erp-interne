@@ -1,7 +1,7 @@
 <x-base-layout>
     <div class="card card-flush pb-0 bgi-position-y-center bgi-no-repeat mb-5 " style="height: 62px !important;background-size: auto calc(100% + 10rem); background-position-x: 100%">
         <!--begin::Card header-->
-        <div class="card-header ">
+        <div class="card-header">
             <div class="d-flex align-items-center">
                 <!--begin::Icon-->
                 <div class="symbol symbol-circle me-5">
@@ -16,7 +16,7 @@
                         <!--end::Svg Icon-->
                     </div>
                 </div>
-                
+          
                 <!--end::Icon-->
                 <!--begin::Title-->
                 <div class="d-flex flex-column">
@@ -27,15 +27,15 @@
                         @endphp
                     </span> --}}
                 </div>
-                
+              
                 <!--end::Title-->
             </div>
-          
+         
         </div>
-
+     
     </div>
     <div class="card shadow-sm  mb-3 ">
-        <div class="w100p pt10">
+        <div class="w100p pt10 d-flex justify-content-between">
             <div id="gantt-chart" style="width: 100%;"></div>
         </div>
     </div>
@@ -62,9 +62,9 @@
                             placeholder="{{ trans('lang.search') }}">
                     </div>
                 </div>
-                <div class="me-4 my-2">
-                    <a id="do-search-dayOffRequested" title = "Actualiser la tiste" class="btn btn-sm btn-outline btn-outline-dashed btn-outline-default">
-                        <i class="fas fa-sync-alt" style="width: 10px;"></i>
+                <div class="me-4 my-2 ml-3">
+                    <a id="do-search-dayOffRequested" title = "Actualiser la liste" class="btn btn-sm btn-outline btn-outline-dashed btn-outline-default">
+                        <i class="fas fa-sync-alt" style="width: 12px;"></i>
                     </a>
                 </div>
             </div>
@@ -87,57 +87,7 @@
             daysText: "jours",
             cellHeight: 50,
             dataUrl : url("/days-off/dataListGantt"),
-            // data : [
-            //     {
-            //         id: 1, name: "Feature 1", series: [
-            //             { name: "Planned", start: new Date(2010,00,01), end: new Date(2010,00,03) },
-            //             { name: "Actual", start: new Date(2010,00,02), end: new Date(2010,00,05), color: "#f0f0f0" }
-            //         ]
-            //     }, 
-            //     {
-            //         id: 2, name: "Feature 2", series: [
-            //             { name: "Planned", start: new Date(2010,00,05), end: new Date(2010,00,20) },
-            //             { name: "Actual", start: new Date(2010,00,06), end: new Date(2010,00,17), color: "#f0f0f0" },
-            //             { name: "Projected", start: new Date(2010,00,06), end: new Date(2010,00,17), color: "#e0e0e0" }
-            //         ]
-            //     }, 
-            //     {
-            //         id: 3, name: "Feature 3", series: [
-            //             { name: "Planned", start: new Date(2010,00,11), end: new Date(2010,01,03) },
-            //             { name: "Actual", start: new Date(2010,00,15), end: new Date(2010,01,03), color: "#f0f0f0" }
-            //         ]
-            //     }, 
-            //     {
-            //         id: 4, name: "Feature 4", series: [
-            //             { name: "Planned", start: new Date(2010,01,01), end: new Date(2010,01,03) },
-            //             { name: "Actual", start: new Date(2010,01,01), end: new Date(2010,01,05), color: "#f0f0f0" }
-            //         ]
-            //     },
-            //     {
-            //         id: 5, name: "Feature 5", series: [
-            //             { name: "Planned", start: new Date(2010,02,01), end: new Date(2010,03,20) },
-            //             { name: "Actual", start: new Date(2010,02,01), end: new Date(2010,03,26), color: "#f0f0f0" }
-            //         ]
-            //     }, 
-            //     {
-            //         id: 6, name: "Feature 6", series: [
-            //             { name: "Planned", start: new Date(2010,00,05), end: new Date(2010,00,20) },
-            //             { name: "Actual", start: new Date(2010,00,06), end: new Date(2010,00,17), color: "#f0f0f0" },
-            //             { name: "Projected", start: new Date(2010,00,06), end: new Date(2010,00,20), color: "#e0e0e0" }
-            //         ]
-            //     }, 
-            //     {
-            //         id: 7, name: "Feature 7", series: [
-            //             { name: "Planned", start: new Date(2010,00,11), end: new Date(2010,01,03) }
-            //         ]
-            //     }, 
-            //     {
-            //         id: 8, name: "Feature 8", series: [
-            //             { name: "Planned", start: new Date(2010,01,01), end: new Date(2010,01,03) },
-            //             { name: "Actual", start: new Date(2010,01,01), end: new Date(2010,01,05), color: "#f0f0f0" }
-            //         ]
-            //     }
-            // ]
+            
         });
     }
     loadGantt();

@@ -1,7 +1,7 @@
 <x-base-layout>
 
     <!--begin:Form-->
-    <form id="kt_devs_ask_form" class="form" action="javascript:void(0)">
+    <form id="kt_devs_ask_form" class="form" action="">
         <!--begin::Input group-->
         <div class="d-flex flex-column mb-8 fv-row">
             <!--begin::Label-->

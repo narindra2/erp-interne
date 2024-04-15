@@ -418,7 +418,7 @@ class User extends Authenticatable
 
     public function getLogoAttribute()
     {
-        $file = 'logos/logo1.png';
+        $file = 'logos/logo2.png';
         if ($this->userJob) {
             $file = $file = 'logos/logo' . $this->userJob->local . '.png';
         }

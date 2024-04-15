@@ -3,7 +3,7 @@
 @endphp
 <div class="notification-item" data-notification-id="{{$notification->id}}" data-notification-is-unread ="{{ $notification->read_at ? 1 : 0 }}" >
 <div class="separator my-2" ></div>
-<a href="javascript:void(0)">
+<a href="">
 <div class="notice d-flex mb-1">
     <div class="d-flex flex-stack flex-grow-1 text-right" >
         <div class="fw-bold">

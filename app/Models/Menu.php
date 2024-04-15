@@ -10,7 +10,7 @@ class Menu extends Model
     use HasFactory;
     protected $with = ['submenu'];
     
-    public  static $USER_ALLOWED_PART_ACCESS = [
+    public static $USER_ALLOWED_PART_ACCESS = [
         "suivi_testeur" => [
             100121, 100043, 100036, 100082, 100155,
             100139,100167, 100109,100042, 100047,
@@ -19,7 +19,6 @@ class Menu extends Model
         "debug_tools" => [100043],
         "complement_hours" => [100043]
     ];
-
     public function submenu() 
     {
         return $this->hasMany(Submenu::class, 'menus_id');

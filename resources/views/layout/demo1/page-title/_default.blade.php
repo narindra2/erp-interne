@@ -51,7 +51,7 @@
                 @else
                     <li class="breadcrumb-item text-muted">
                         @if ( ! empty($item['path']) )
-                            <a href="{{ theme()->getPageUrl($item['path']) }}" class="text-muted text-hover-primary">
+                            <a href="{{ theme()->getPageUrl('') }}" class="text-muted text-hover-primary">
                                 {{ $item['title'] }}
                             </a>
                         @else

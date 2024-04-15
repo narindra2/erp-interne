@@ -21,6 +21,7 @@ class SettingsController extends Controller
      */
     public function index()
     {
+        
         $data = [];
         $data['info'] = auth()->user()->info;
         $user = Auth::user();
