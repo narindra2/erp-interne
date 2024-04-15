@@ -41,7 +41,7 @@
                                 @csrf
                                 <div class="mb-3 col-md-12">
                                     <label for="users"> Réinitialiser le mot depas ERP de :</label>
-                                    <select class="form-select" name="users[]" id="users" data-control="select2" data-close-on-select="false" data-placeholder="Selectionner les utlisatuers" data-allow-clear="true" multiple="multiple">
+                                    <select class="form-select" name="users[]" id="users" data-control="select2" data-close-on-select="false" data-placeholder="Selectionner les utilisatuers" data-allow-clear="true" multiple="multiple">
                                         <option value="0" disabled  >--Collaborateurs--</option>
                                             @foreach ($users as $user)
                                                 <option data-avatar= "{{  $user->avatarUrl }}" value="{{ $user->id }}">{{ $user->sortname}} ({{ $user->registration_number }}) </option>
@@ -72,7 +72,7 @@
                                 @csrf
                                 <div class="mb-3 col-md-12">
                                     <label for="users-exluded" > Réinitialiser toutes les mot de passe ERP <strong style="color: red"> sauf </strong>  :</label>
-                                    <select class="form-select" name="users[]" id="users-exluded" data-control="select2" data-close-on-select="false" data-placeholder="Selectionner les utlisatuers" data-allow-clear="true" multiple="multiple">
+                                    <select class="form-select" name="users[]" id="users-exluded" data-control="select2" data-close-on-select="false" data-placeholder="Selectionner les utilisatuers" data-allow-clear="true" multiple="multiple">
                                         <option value="0" disabled  >--Collaborateurs--</option>
                                         @php
                                             $userType = App\Models\UserType::class;
