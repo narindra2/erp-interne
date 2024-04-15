@@ -1,0 +1,1 @@
+<a href="{{ url("/need-to-buy/download-invoice/$needFile->id")}}">{{ $needFile->name }}</a>

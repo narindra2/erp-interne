@@ -1,0 +1,3600 @@
+
+.bg-hover-primary {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-primary:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #3699FF !important;
+  }
+  
+  .hoverable:hover .bg-hover-primary {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #3699FF !important;
+  }
+  
+  .bg-hover-state-primary {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-state-primary:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #187DE4 !important;
+  }
+  
+  .bg-diagonal-primary:before {
+    background-color: #3699FF !important;
+  }
+  
+  .bg-diagonal-r-primary:after {
+    background-color: #3699FF !important;
+  }
+  
+  .bg-radial-gradient-primary {
+    background-color: #3699FF;
+    background-image: radial-gradient(circle, rgba(225, 240, 255, 0.4), #3699FF 70%);
+  }
+  
+  .bg-primary-o-5 {
+    background-color: rgba(54, 153, 255, 0.02) !important;
+  }
+  
+  .bg-hover-primary-o-1 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-primary-o-1:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(54, 153, 255, 0.2) !important;
+  }
+  
+  .bg-primary-o-10 {
+    background-color: rgba(54, 153, 255, 0.04) !important;
+  }
+  
+  .bg-hover-primary-o-2 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-primary-o-2:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(54, 153, 255, 0.4) !important;
+  }
+  
+  .bg-primary-o-15 {
+    background-color: rgba(54, 153, 255, 0.06) !important;
+  }
+  
+  .bg-hover-primary-o-3 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-primary-o-3:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(54, 153, 255, 0.6) !important;
+  }
+  
+  .bg-primary-o-20 {
+    background-color: rgba(54, 153, 255, 0.08) !important;
+  }
+  
+  .bg-hover-primary-o-4 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-primary-o-4:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(54, 153, 255, 0.8) !important;
+  }
+  
+  .bg-primary-o-25 {
+    background-color: rgba(54, 153, 255, 0.1) !important;
+  }
+  
+  .bg-hover-primary-o-5 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-primary-o-5:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #3699ff !important;
+  }
+  
+  .bg-primary-o-30 {
+    background-color: rgba(54, 153, 255, 0.12) !important;
+  }
+  
+  .bg-hover-primary-o-6 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-primary-o-6:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #3699ff !important;
+  }
+  
+  .bg-primary-o-35 {
+    background-color: rgba(54, 153, 255, 0.14) !important;
+  }
+  
+  .bg-hover-primary-o-7 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-primary-o-7:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #3699ff !important;
+  }
+  
+  .bg-primary-o-40 {
+    background-color: rgba(54, 153, 255, 0.16) !important;
+  }
+  
+  .bg-hover-primary-o-8 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-primary-o-8:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #3699ff !important;
+  }
+  
+  .bg-primary-o-45 {
+    background-color: rgba(54, 153, 255, 0.18) !important;
+  }
+  
+  .bg-hover-primary-o-9 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-primary-o-9:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #3699ff !important;
+  }
+  
+  .bg-primary-o-50 {
+    background-color: rgba(54, 153, 255, 0.2) !important;
+  }
+  
+  .bg-hover-primary-o-10 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-primary-o-10:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #3699ff !important;
+  }
+  
+  .bg-primary-o-55 {
+    background-color: rgba(54, 153, 255, 0.22) !important;
+  }
+  
+  .bg-hover-primary-o-11 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-primary-o-11:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #3699ff !important;
+  }
+  
+  .bg-primary-o-60 {
+    background-color: rgba(54, 153, 255, 0.24) !important;
+  }
+  
+  .bg-hover-primary-o-12 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-primary-o-12:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #3699ff !important;
+  }
+  
+  .bg-primary-o-65 {
+    background-color: rgba(54, 153, 255, 0.26) !important;
+  }
+  
+  .bg-hover-primary-o-13 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-primary-o-13:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #3699ff !important;
+  }
+  
+  .bg-primary-o-70 {
+    background-color: rgba(54, 153, 255, 0.28) !important;
+  }
+  
+  .bg-hover-primary-o-14 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-primary-o-14:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #3699ff !important;
+  }
+  
+  .bg-primary-o-75 {
+    background-color: rgba(54, 153, 255, 0.3) !important;
+  }
+  
+  .bg-hover-primary-o-15 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-primary-o-15:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #3699ff !important;
+  }
+  
+  .bg-primary-o-80 {
+    background-color: rgba(54, 153, 255, 0.32) !important;
+  }
+  
+  .bg-hover-primary-o-16 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-primary-o-16:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #3699ff !important;
+  }
+  
+  .bg-primary-o-85 {
+    background-color: rgba(54, 153, 255, 0.34) !important;
+  }
+  
+  .bg-hover-primary-o-17 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-primary-o-17:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #3699ff !important;
+  }
+  
+  .bg-primary-o-90 {
+    background-color: rgba(54, 153, 255, 0.36) !important;
+  }
+  
+  .bg-hover-primary-o-18 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-primary-o-18:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #3699ff !important;
+  }
+  
+  .bg-primary-o-95 {
+    background-color: rgba(54, 153, 255, 0.38) !important;
+  }
+  
+  .bg-hover-primary-o-19 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-primary-o-19:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #3699ff !important;
+  }
+  
+  .bg-primary-o-100 {
+    background-color: rgba(54, 153, 255, 0.4) !important;
+  }
+  
+  .bg-hover-primary-o-20 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-primary-o-20:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #3699ff !important;
+  }
+  
+  .bg-hover-secondary {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-secondary:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #E4E6EF !important;
+  }
+  
+  .hoverable:hover .bg-hover-secondary {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #E4E6EF !important;
+  }
+  
+  .bg-hover-state-secondary {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-state-secondary:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #d7dae7 !important;
+  }
+  
+  .bg-diagonal-secondary:before {
+    background-color: #E4E6EF !important;
+  }
+  
+  .bg-diagonal-r-secondary:after {
+    background-color: #E4E6EF !important;
+  }
+  
+  .bg-radial-gradient-secondary {
+    background-color: #E4E6EF;
+    background-image: radial-gradient(circle, rgba(235, 237, 243, 0.4), #E4E6EF 70%);
+  }
+  
+  .bg-secondary-o-5 {
+    background-color: rgba(228, 230, 239, 0.02) !important;
+  }
+  
+  .bg-hover-secondary-o-1 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-secondary-o-1:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(228, 230, 239, 0.2) !important;
+  }
+  
+  .bg-secondary-o-10 {
+    background-color: rgba(228, 230, 239, 0.04) !important;
+  }
+  
+  .bg-hover-secondary-o-2 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-secondary-o-2:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(228, 230, 239, 0.4) !important;
+  }
+  
+  .bg-secondary-o-15 {
+    background-color: rgba(228, 230, 239, 0.06) !important;
+  }
+  
+  .bg-hover-secondary-o-3 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-secondary-o-3:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(228, 230, 239, 0.6) !important;
+  }
+  
+  .bg-secondary-o-20 {
+    background-color: rgba(228, 230, 239, 0.08) !important;
+  }
+  
+  .bg-hover-secondary-o-4 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-secondary-o-4:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(228, 230, 239, 0.8) !important;
+  }
+  
+  .bg-secondary-o-25 {
+    background-color: rgba(228, 230, 239, 0.1) !important;
+  }
+  
+  .bg-hover-secondary-o-5 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-secondary-o-5:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #e4e6ef !important;
+  }
+  
+  .bg-secondary-o-30 {
+    background-color: rgba(228, 230, 239, 0.12) !important;
+  }
+  
+  .bg-hover-secondary-o-6 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-secondary-o-6:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #e4e6ef !important;
+  }
+  
+  .bg-secondary-o-35 {
+    background-color: rgba(228, 230, 239, 0.14) !important;
+  }
+  
+  .bg-hover-secondary-o-7 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-secondary-o-7:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #e4e6ef !important;
+  }
+  
+  .bg-secondary-o-40 {
+    background-color: rgba(228, 230, 239, 0.16) !important;
+  }
+  
+  .bg-hover-secondary-o-8 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-secondary-o-8:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #e4e6ef !important;
+  }
+  
+  .bg-secondary-o-45 {
+    background-color: rgba(228, 230, 239, 0.18) !important;
+  }
+  
+  .bg-hover-secondary-o-9 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-secondary-o-9:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #e4e6ef !important;
+  }
+  
+  .bg-secondary-o-50 {
+    background-color: rgba(228, 230, 239, 0.2) !important;
+  }
+  
+  .bg-hover-secondary-o-10 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-secondary-o-10:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #e4e6ef !important;
+  }
+  
+  .bg-secondary-o-55 {
+    background-color: rgba(228, 230, 239, 0.22) !important;
+  }
+  
+  .bg-hover-secondary-o-11 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-secondary-o-11:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #e4e6ef !important;
+  }
+  
+  .bg-secondary-o-60 {
+    background-color: rgba(228, 230, 239, 0.24) !important;
+  }
+  
+  .bg-hover-secondary-o-12 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-secondary-o-12:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #e4e6ef !important;
+  }
+  
+  .bg-secondary-o-65 {
+    background-color: rgba(228, 230, 239, 0.26) !important;
+  }
+  
+  .bg-hover-secondary-o-13 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-secondary-o-13:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #e4e6ef !important;
+  }
+  
+  .bg-secondary-o-70 {
+    background-color: rgba(228, 230, 239, 0.28) !important;
+  }
+  
+  .bg-hover-secondary-o-14 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-secondary-o-14:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #e4e6ef !important;
+  }
+  
+  .bg-secondary-o-75 {
+    background-color: rgba(228, 230, 239, 0.3) !important;
+  }
+  
+  .bg-hover-secondary-o-15 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-secondary-o-15:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #e4e6ef !important;
+  }
+  
+  .bg-secondary-o-80 {
+    background-color: rgba(228, 230, 239, 0.32) !important;
+  }
+  
+  .bg-hover-secondary-o-16 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-secondary-o-16:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #e4e6ef !important;
+  }
+  
+  .bg-secondary-o-85 {
+    background-color: rgba(228, 230, 239, 0.34) !important;
+  }
+  
+  .bg-hover-secondary-o-17 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-secondary-o-17:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #e4e6ef !important;
+  }
+  
+  .bg-secondary-o-90 {
+    background-color: rgba(228, 230, 239, 0.36) !important;
+  }
+  
+  .bg-hover-secondary-o-18 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-secondary-o-18:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #e4e6ef !important;
+  }
+  
+  .bg-secondary-o-95 {
+    background-color: rgba(228, 230, 239, 0.38) !important;
+  }
+  
+  .bg-hover-secondary-o-19 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-secondary-o-19:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #e4e6ef !important;
+  }
+  
+  .bg-secondary-o-100 {
+    background-color: rgba(228, 230, 239, 0.4) !important;
+  }
+  
+  .bg-hover-secondary-o-20 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-secondary-o-20:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #e4e6ef !important;
+  }
+  
+  .bg-hover-success {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-success:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #1BC5BD !important;
+  }
+  
+  .hoverable:hover .bg-hover-success {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #1BC5BD !important;
+  }
+  
+  .bg-hover-state-success {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-state-success:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #0BB7AF !important;
+  }
+  
+  .bg-diagonal-success:before {
+    background-color: #1BC5BD !important;
+  }
+  
+  .bg-diagonal-r-success:after {
+    background-color: #1BC5BD !important;
+  }
+  
+  .bg-radial-gradient-success {
+    background-color: #1BC5BD;
+    background-image: radial-gradient(circle, rgba(201, 247, 245, 0.4), #1BC5BD 70%);
+  }
+  
+  .bg-success-o-5 {
+    background-color: rgba(27, 197, 189, 0.02) !important;
+  }
+  
+  .bg-hover-success-o-1 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-success-o-1:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(27, 197, 189, 0.2) !important;
+  }
+  
+  .bg-success-o-10 {
+    background-color: rgba(27, 197, 189, 0.04) !important;
+  }
+  
+  .bg-hover-success-o-2 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-success-o-2:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(27, 197, 189, 0.4) !important;
+  }
+  
+  .bg-success-o-15 {
+    background-color: rgba(27, 197, 189, 0.06) !important;
+  }
+  
+  .bg-hover-success-o-3 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-success-o-3:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(27, 197, 189, 0.6) !important;
+  }
+  
+  .bg-success-o-20 {
+    background-color: rgba(27, 197, 189, 0.08) !important;
+  }
+  
+  .bg-hover-success-o-4 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-success-o-4:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(27, 197, 189, 0.8) !important;
+  }
+  
+  .bg-success-o-25 {
+    background-color: rgba(27, 197, 189, 0.1) !important;
+  }
+  
+  .bg-hover-success-o-5 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-success-o-5:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #1bc5bd !important;
+  }
+  
+  .bg-success-o-30 {
+    background-color: rgba(27, 197, 189, 0.12) !important;
+  }
+  
+  .bg-hover-success-o-6 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-success-o-6:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #1bc5bd !important;
+  }
+  
+  .bg-success-o-35 {
+    background-color: rgba(27, 197, 189, 0.14) !important;
+  }
+  
+  .bg-hover-success-o-7 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-success-o-7:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #1bc5bd !important;
+  }
+  
+  .bg-success-o-40 {
+    background-color: rgba(27, 197, 189, 0.16) !important;
+  }
+  
+  .bg-hover-success-o-8 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-success-o-8:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #1bc5bd !important;
+  }
+  
+  .bg-success-o-45 {
+    background-color: rgba(27, 197, 189, 0.18) !important;
+  }
+  
+  .bg-hover-success-o-9 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-success-o-9:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #1bc5bd !important;
+  }
+  
+  .bg-success-o-50 {
+    background-color: rgba(27, 197, 189, 0.2) !important;
+  }
+  
+  .bg-hover-success-o-10 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-success-o-10:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #1bc5bd !important;
+  }
+  
+  .bg-success-o-55 {
+    background-color: rgba(27, 197, 189, 0.22) !important;
+  }
+  
+  .bg-hover-success-o-11 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-success-o-11:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #1bc5bd !important;
+  }
+  
+  .bg-success-o-60 {
+    background-color: rgba(27, 197, 189, 0.24) !important;
+  }
+  
+  .bg-hover-success-o-12 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-success-o-12:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #1bc5bd !important;
+  }
+  
+  .bg-success-o-65 {
+    background-color: rgba(27, 197, 189, 0.26) !important;
+  }
+  
+  .bg-hover-success-o-13 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-success-o-13:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #1bc5bd !important;
+  }
+  
+  .bg-success-o-70 {
+    background-color: rgba(27, 197, 189, 0.28) !important;
+  }
+  
+  .bg-hover-success-o-14 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-success-o-14:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #1bc5bd !important;
+  }
+  
+  .bg-success-o-75 {
+    background-color: rgba(27, 197, 189, 0.3) !important;
+  }
+  
+  .bg-hover-success-o-15 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-success-o-15:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #1bc5bd !important;
+  }
+  
+  .bg-success-o-80 {
+    background-color: rgba(27, 197, 189, 0.32) !important;
+  }
+  
+  .bg-hover-success-o-16 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-success-o-16:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #1bc5bd !important;
+  }
+  
+  .bg-success-o-85 {
+    background-color: rgba(27, 197, 189, 0.34) !important;
+  }
+  
+  .bg-hover-success-o-17 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-success-o-17:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #1bc5bd !important;
+  }
+  
+  .bg-success-o-90 {
+    background-color: rgba(27, 197, 189, 0.36) !important;
+  }
+  
+  .bg-hover-success-o-18 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-success-o-18:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #1bc5bd !important;
+  }
+  
+  .bg-success-o-95 {
+    background-color: rgba(27, 197, 189, 0.38) !important;
+  }
+  
+  .bg-hover-success-o-19 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-success-o-19:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #1bc5bd !important;
+  }
+  
+  .bg-success-o-100 {
+    background-color: rgba(27, 197, 189, 0.4) !important;
+  }
+  
+  .bg-hover-success-o-20 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-success-o-20:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #1bc5bd !important;
+  }
+  
+  .bg-hover-info {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-info:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #8950FC !important;
+  }
+  
+  .hoverable:hover .bg-hover-info {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #8950FC !important;
+  }
+  
+  .bg-hover-state-info {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-state-info:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #7337EE !important;
+  }
+  
+  .bg-diagonal-info:before {
+    background-color: #8950FC !important;
+  }
+  
+  .bg-diagonal-r-info:after {
+    background-color: #8950FC !important;
+  }
+  
+  .bg-radial-gradient-info {
+    background-color: #8950FC;
+    background-image: radial-gradient(circle, rgba(238, 229, 255, 0.4), #8950FC 70%);
+  }
+  
+  .bg-info-o-5 {
+    background-color: rgba(137, 80, 252, 0.02) !important;
+  }
+  
+  .bg-hover-info-o-1 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-info-o-1:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(137, 80, 252, 0.2) !important;
+  }
+  
+  .bg-info-o-10 {
+    background-color: rgba(137, 80, 252, 0.04) !important;
+  }
+  
+  .bg-hover-info-o-2 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-info-o-2:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(137, 80, 252, 0.4) !important;
+  }
+  
+  .bg-info-o-15 {
+    background-color: rgba(137, 80, 252, 0.06) !important;
+  }
+  
+  .bg-hover-info-o-3 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-info-o-3:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(137, 80, 252, 0.6) !important;
+  }
+  
+  .bg-info-o-20 {
+    background-color: rgba(137, 80, 252, 0.08) !important;
+  }
+  
+  .bg-hover-info-o-4 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-info-o-4:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(137, 80, 252, 0.8) !important;
+  }
+  
+  .bg-info-o-25 {
+    background-color: rgba(137, 80, 252, 0.1) !important;
+  }
+  
+  .bg-hover-info-o-5 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-info-o-5:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #8950fc !important;
+  }
+  
+  .bg-info-o-30 {
+    background-color: rgba(137, 80, 252, 0.12) !important;
+  }
+  
+  .bg-hover-info-o-6 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-info-o-6:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #8950fc !important;
+  }
+  
+  .bg-info-o-35 {
+    background-color: rgba(137, 80, 252, 0.14) !important;
+  }
+  
+  .bg-hover-info-o-7 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-info-o-7:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #8950fc !important;
+  }
+  
+  .bg-info-o-40 {
+    background-color: rgba(137, 80, 252, 0.16) !important;
+  }
+  
+  .bg-hover-info-o-8 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-info-o-8:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #8950fc !important;
+  }
+  
+  .bg-info-o-45 {
+    background-color: rgba(137, 80, 252, 0.18) !important;
+  }
+  
+  .bg-hover-info-o-9 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-info-o-9:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #8950fc !important;
+  }
+  
+  .bg-info-o-50 {
+    background-color: rgba(137, 80, 252, 0.2) !important;
+  }
+  
+  .bg-hover-info-o-10 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-info-o-10:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #8950fc !important;
+  }
+  
+  .bg-info-o-55 {
+    background-color: rgba(137, 80, 252, 0.22) !important;
+  }
+  
+  .bg-hover-info-o-11 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-info-o-11:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #8950fc !important;
+  }
+  
+  .bg-info-o-60 {
+    background-color: rgba(137, 80, 252, 0.24) !important;
+  }
+  
+  .bg-hover-info-o-12 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-info-o-12:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #8950fc !important;
+  }
+  
+  .bg-info-o-65 {
+    background-color: rgba(137, 80, 252, 0.26) !important;
+  }
+  
+  .bg-hover-info-o-13 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-info-o-13:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #8950fc !important;
+  }
+  
+  .bg-info-o-70 {
+    background-color: rgba(137, 80, 252, 0.28) !important;
+  }
+  
+  .bg-hover-info-o-14 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-info-o-14:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #8950fc !important;
+  }
+  
+  .bg-info-o-75 {
+    background-color: rgba(137, 80, 252, 0.3) !important;
+  }
+  
+  .bg-hover-info-o-15 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-info-o-15:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #8950fc !important;
+  }
+  
+  .bg-info-o-80 {
+    background-color: rgba(137, 80, 252, 0.32) !important;
+  }
+  
+  .bg-hover-info-o-16 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-info-o-16:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #8950fc !important;
+  }
+  
+  .bg-info-o-85 {
+    background-color: rgba(137, 80, 252, 0.34) !important;
+  }
+  
+  .bg-hover-info-o-17 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-info-o-17:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #8950fc !important;
+  }
+  
+  .bg-info-o-90 {
+    background-color: rgba(137, 80, 252, 0.36) !important;
+  }
+  
+  .bg-hover-info-o-18 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-info-o-18:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #8950fc !important;
+  }
+  
+  .bg-info-o-95 {
+    background-color: rgba(137, 80, 252, 0.38) !important;
+  }
+  
+  .bg-hover-info-o-19 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-info-o-19:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #8950fc !important;
+  }
+  
+  .bg-info-o-100 {
+    background-color: rgba(137, 80, 252, 0.4) !important;
+  }
+  
+  .bg-hover-info-o-20 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-info-o-20:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #8950fc !important;
+  }
+  
+  .bg-hover-warning {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-warning:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #FFA800 !important;
+  }
+  
+  .hoverable:hover .bg-hover-warning {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #FFA800 !important;
+  }
+  
+  .bg-hover-state-warning {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-state-warning:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #EE9D01 !important;
+  }
+  
+  .bg-diagonal-warning:before {
+    background-color: #FFA800 !important;
+  }
+  
+  .bg-diagonal-r-warning:after {
+    background-color: #FFA800 !important;
+  }
+  
+  .bg-radial-gradient-warning {
+    background-color: #FFA800;
+    background-image: radial-gradient(circle, rgba(255, 244, 222, 0.4), #FFA800 70%);
+  }
+  
+  .bg-warning-o-5 {
+    background-color: rgba(255, 168, 0, 0.02) !important;
+  }
+  
+  .bg-hover-warning-o-1 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-warning-o-1:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(255, 168, 0, 0.2) !important;
+  }
+  
+  .bg-warning-o-10 {
+    background-color: rgba(255, 168, 0, 0.04) !important;
+  }
+  
+  .bg-hover-warning-o-2 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-warning-o-2:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(255, 168, 0, 0.4) !important;
+  }
+  
+  .bg-warning-o-15 {
+    background-color: rgba(255, 168, 0, 0.06) !important;
+  }
+  
+  .bg-hover-warning-o-3 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-warning-o-3:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(255, 168, 0, 0.6) !important;
+  }
+  
+  .bg-warning-o-20 {
+    background-color: rgba(255, 168, 0, 0.08) !important;
+  }
+  
+  .bg-hover-warning-o-4 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-warning-o-4:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(255, 168, 0, 0.8) !important;
+  }
+  
+  .bg-warning-o-25 {
+    background-color: rgba(255, 168, 0, 0.1) !important;
+  }
+  
+  .bg-hover-warning-o-5 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-warning-o-5:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #ffa800 !important;
+  }
+  
+  .bg-warning-o-30 {
+    background-color: rgba(255, 168, 0, 0.12) !important;
+  }
+  
+  .bg-hover-warning-o-6 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-warning-o-6:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #ffa800 !important;
+  }
+  
+  .bg-warning-o-35 {
+    background-color: rgba(255, 168, 0, 0.14) !important;
+  }
+  
+  .bg-hover-warning-o-7 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-warning-o-7:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #ffa800 !important;
+  }
+  
+  .bg-warning-o-40 {
+    background-color: rgba(255, 168, 0, 0.16) !important;
+  }
+  
+  .bg-hover-warning-o-8 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-warning-o-8:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #ffa800 !important;
+  }
+  
+  .bg-warning-o-45 {
+    background-color: rgba(255, 168, 0, 0.18) !important;
+  }
+  
+  .bg-hover-warning-o-9 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-warning-o-9:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #ffa800 !important;
+  }
+  
+  .bg-warning-o-50 {
+    background-color: rgba(255, 168, 0, 0.2) !important;
+  }
+  
+  .bg-hover-warning-o-10 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-warning-o-10:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #ffa800 !important;
+  }
+  
+  .bg-warning-o-55 {
+    background-color: rgba(255, 168, 0, 0.22) !important;
+  }
+  
+  .bg-hover-warning-o-11 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-warning-o-11:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #ffa800 !important;
+  }
+  
+  .bg-warning-o-60 {
+    background-color: rgba(255, 168, 0, 0.24) !important;
+  }
+  
+  .bg-hover-warning-o-12 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-warning-o-12:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #ffa800 !important;
+  }
+  
+  .bg-warning-o-65 {
+    background-color: rgba(255, 168, 0, 0.26) !important;
+  }
+  
+  .bg-hover-warning-o-13 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-warning-o-13:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #ffa800 !important;
+  }
+  
+  .bg-warning-o-70 {
+    background-color: rgba(255, 168, 0, 0.28) !important;
+  }
+  
+  .bg-hover-warning-o-14 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-warning-o-14:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #ffa800 !important;
+  }
+  
+  .bg-warning-o-75 {
+    background-color: rgba(255, 168, 0, 0.3) !important;
+  }
+  
+  .bg-hover-warning-o-15 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-warning-o-15:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #ffa800 !important;
+  }
+  
+  .bg-warning-o-80 {
+    background-color: rgba(255, 168, 0, 0.32) !important;
+  }
+  
+  .bg-hover-warning-o-16 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-warning-o-16:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #ffa800 !important;
+  }
+  
+  .bg-warning-o-85 {
+    background-color: rgba(255, 168, 0, 0.34) !important;
+  }
+  
+  .bg-hover-warning-o-17 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-warning-o-17:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #ffa800 !important;
+  }
+  
+  .bg-warning-o-90 {
+    background-color: rgba(255, 168, 0, 0.36) !important;
+  }
+  
+  .bg-hover-warning-o-18 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-warning-o-18:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #ffa800 !important;
+  }
+  
+  .bg-warning-o-95 {
+    background-color: rgba(255, 168, 0, 0.38) !important;
+  }
+  
+  .bg-hover-warning-o-19 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-warning-o-19:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #ffa800 !important;
+  }
+  
+  .bg-warning-o-100 {
+    background-color: rgba(255, 168, 0, 0.4) !important;
+  }
+  
+  .bg-hover-warning-o-20 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-warning-o-20:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #ffa800 !important;
+  }
+  
+  .bg-hover-danger {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-danger:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #F64E60 !important;
+  }
+  
+  .hoverable:hover .bg-hover-danger {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #F64E60 !important;
+  }
+  
+  .bg-hover-state-danger {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-state-danger:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #EE2D41 !important;
+  }
+  
+  .bg-diagonal-danger:before {
+    background-color: #F64E60 !important;
+  }
+  
+  .bg-diagonal-r-danger:after {
+    background-color: #F64E60 !important;
+  }
+  
+  .bg-radial-gradient-danger {
+    background-color: #F64E60;
+    background-image: radial-gradient(circle, rgba(255, 226, 229, 0.4), #F64E60 70%);
+  }
+  
+  .bg-danger-o-5 {
+    background-color: rgba(246, 78, 96, 0.02) !important;
+  }
+  
+  .bg-hover-danger-o-1 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-danger-o-1:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(246, 78, 96, 0.2) !important;
+  }
+  
+  .bg-danger-o-10 {
+    background-color: rgba(246, 78, 96, 0.04) !important;
+  }
+  
+  .bg-hover-danger-o-2 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-danger-o-2:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(246, 78, 96, 0.4) !important;
+  }
+  
+  .bg-danger-o-15 {
+    background-color: rgba(246, 78, 96, 0.06) !important;
+  }
+  
+  .bg-hover-danger-o-3 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-danger-o-3:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(246, 78, 96, 0.6) !important;
+  }
+  
+  .bg-danger-o-20 {
+    background-color: rgba(246, 78, 96, 0.08) !important;
+  }
+  
+  .bg-hover-danger-o-4 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-danger-o-4:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(246, 78, 96, 0.8) !important;
+  }
+  
+  .bg-danger-o-25 {
+    background-color: rgba(246, 78, 96, 0.1) !important;
+  }
+  
+  .bg-hover-danger-o-5 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-danger-o-5:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f64e60 !important;
+  }
+  
+  .bg-danger-o-30 {
+    background-color: rgba(246, 78, 96, 0.12) !important;
+  }
+  
+  .bg-hover-danger-o-6 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-danger-o-6:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f64e60 !important;
+  }
+  
+  .bg-danger-o-35 {
+    background-color: rgba(246, 78, 96, 0.14) !important;
+  }
+  
+  .bg-hover-danger-o-7 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-danger-o-7:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f64e60 !important;
+  }
+  
+  .bg-danger-o-40 {
+    background-color: rgba(246, 78, 96, 0.16) !important;
+  }
+  
+  .bg-hover-danger-o-8 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-danger-o-8:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f64e60 !important;
+  }
+  
+  .bg-danger-o-45 {
+    background-color: rgba(246, 78, 96, 0.18) !important;
+  }
+  
+  .bg-hover-danger-o-9 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-danger-o-9:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f64e60 !important;
+  }
+  
+  .bg-danger-o-50 {
+    background-color: rgba(246, 78, 96, 0.2) !important;
+  }
+  
+  .bg-hover-danger-o-10 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-danger-o-10:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f64e60 !important;
+  }
+  
+  .bg-danger-o-55 {
+    background-color: rgba(246, 78, 96, 0.22) !important;
+  }
+  
+  .bg-hover-danger-o-11 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-danger-o-11:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f64e60 !important;
+  }
+  
+  .bg-danger-o-60 {
+    background-color: rgba(246, 78, 96, 0.24) !important;
+  }
+  
+  .bg-hover-danger-o-12 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-danger-o-12:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f64e60 !important;
+  }
+  
+  .bg-danger-o-65 {
+    background-color: rgba(246, 78, 96, 0.26) !important;
+  }
+  
+  .bg-hover-danger-o-13 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-danger-o-13:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f64e60 !important;
+  }
+  
+  .bg-danger-o-70 {
+    background-color: rgba(246, 78, 96, 0.28) !important;
+  }
+  
+  .bg-hover-danger-o-14 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-danger-o-14:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f64e60 !important;
+  }
+  
+  .bg-danger-o-75 {
+    background-color: rgba(246, 78, 96, 0.3) !important;
+  }
+  
+  .bg-hover-danger-o-15 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-danger-o-15:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f64e60 !important;
+  }
+  
+  .bg-danger-o-80 {
+    background-color: rgba(246, 78, 96, 0.32) !important;
+  }
+  
+  .bg-hover-danger-o-16 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-danger-o-16:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f64e60 !important;
+  }
+  
+  .bg-danger-o-85 {
+    background-color: rgba(246, 78, 96, 0.34) !important;
+  }
+  
+  .bg-hover-danger-o-17 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-danger-o-17:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f64e60 !important;
+  }
+  
+  .bg-danger-o-90 {
+    background-color: rgba(246, 78, 96, 0.36) !important;
+  }
+  
+  .bg-hover-danger-o-18 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-danger-o-18:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f64e60 !important;
+  }
+  
+  .bg-danger-o-95 {
+    background-color: rgba(246, 78, 96, 0.38) !important;
+  }
+  
+  .bg-hover-danger-o-19 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-danger-o-19:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f64e60 !important;
+  }
+  
+  .bg-danger-o-100 {
+    background-color: rgba(246, 78, 96, 0.4) !important;
+  }
+  
+  .bg-hover-danger-o-20 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-danger-o-20:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f64e60 !important;
+  }
+  
+  .bg-hover-light {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #F3F6F9 !important;
+  }
+  
+  .hoverable:hover .bg-hover-light {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #F3F6F9 !important;
+  }
+  
+  .bg-hover-state-light {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-state-light:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #E4E6EF !important;
+  }
+  
+  .bg-diagonal-light:before {
+    background-color: #F3F6F9 !important;
+  }
+  
+  .bg-diagonal-r-light:after {
+    background-color: #F3F6F9 !important;
+  }
+  
+  .bg-radial-gradient-light {
+    background-color: #F3F6F9;
+    background-image: radial-gradient(circle, rgba(243, 246, 249, 0.4), #F3F6F9 70%);
+  }
+  
+  .bg-light-o-5 {
+    background-color: rgba(243, 246, 249, 0.02) !important;
+  }
+  
+  .bg-hover-light-o-1 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light-o-1:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(243, 246, 249, 0.2) !important;
+  }
+  
+  .bg-light-o-10 {
+    background-color: rgba(243, 246, 249, 0.04) !important;
+  }
+  
+  .bg-hover-light-o-2 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light-o-2:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(243, 246, 249, 0.4) !important;
+  }
+  
+  .bg-light-o-15 {
+    background-color: rgba(243, 246, 249, 0.06) !important;
+  }
+  
+  .bg-hover-light-o-3 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light-o-3:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(243, 246, 249, 0.6) !important;
+  }
+  
+  .bg-light-o-20 {
+    background-color: rgba(243, 246, 249, 0.08) !important;
+  }
+  
+  .bg-hover-light-o-4 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light-o-4:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(243, 246, 249, 0.8) !important;
+  }
+  
+  .bg-light-o-25 {
+    background-color: rgba(243, 246, 249, 0.1) !important;
+  }
+  
+  .bg-hover-light-o-5 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light-o-5:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f3f6f9 !important;
+  }
+  
+  .bg-light-o-30 {
+    background-color: rgba(243, 246, 249, 0.12) !important;
+  }
+  
+  .bg-hover-light-o-6 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light-o-6:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f3f6f9 !important;
+  }
+  
+  .bg-light-o-35 {
+    background-color: rgba(243, 246, 249, 0.14) !important;
+  }
+  
+  .bg-hover-light-o-7 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light-o-7:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f3f6f9 !important;
+  }
+  
+  .bg-light-o-40 {
+    background-color: rgba(243, 246, 249, 0.16) !important;
+  }
+  
+  .bg-hover-light-o-8 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light-o-8:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f3f6f9 !important;
+  }
+  
+  .bg-light-o-45 {
+    background-color: rgba(243, 246, 249, 0.18) !important;
+  }
+  
+  .bg-hover-light-o-9 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light-o-9:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f3f6f9 !important;
+  }
+  
+  .bg-light-o-50 {
+    background-color: rgba(243, 246, 249, 0.2) !important;
+  }
+  
+  .bg-hover-light-o-10 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light-o-10:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f3f6f9 !important;
+  }
+  
+  .bg-light-o-55 {
+    background-color: rgba(243, 246, 249, 0.22) !important;
+  }
+  
+  .bg-hover-light-o-11 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light-o-11:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f3f6f9 !important;
+  }
+  
+  .bg-light-o-60 {
+    background-color: rgba(243, 246, 249, 0.24) !important;
+  }
+  
+  .bg-hover-light-o-12 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light-o-12:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f3f6f9 !important;
+  }
+  
+  .bg-light-o-65 {
+    background-color: rgba(243, 246, 249, 0.26) !important;
+  }
+  
+  .bg-hover-light-o-13 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light-o-13:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f3f6f9 !important;
+  }
+  
+  .bg-light-o-70 {
+    background-color: rgba(243, 246, 249, 0.28) !important;
+  }
+  
+  .bg-hover-light-o-14 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light-o-14:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f3f6f9 !important;
+  }
+  
+  .bg-light-o-75 {
+    background-color: rgba(243, 246, 249, 0.3) !important;
+  }
+  
+  .bg-hover-light-o-15 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light-o-15:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f3f6f9 !important;
+  }
+  
+  .bg-light-o-80 {
+    background-color: rgba(243, 246, 249, 0.32) !important;
+  }
+  
+  .bg-hover-light-o-16 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light-o-16:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f3f6f9 !important;
+  }
+  
+  .bg-light-o-85 {
+    background-color: rgba(243, 246, 249, 0.34) !important;
+  }
+  
+  .bg-hover-light-o-17 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light-o-17:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f3f6f9 !important;
+  }
+  
+  .bg-light-o-90 {
+    background-color: rgba(243, 246, 249, 0.36) !important;
+  }
+  
+  .bg-hover-light-o-18 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light-o-18:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f3f6f9 !important;
+  }
+  
+  .bg-light-o-95 {
+    background-color: rgba(243, 246, 249, 0.38) !important;
+  }
+  
+  .bg-hover-light-o-19 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light-o-19:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f3f6f9 !important;
+  }
+  
+  .bg-light-o-100 {
+    background-color: rgba(243, 246, 249, 0.4) !important;
+  }
+  
+  .bg-hover-light-o-20 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light-o-20:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #f3f6f9 !important;
+  }
+  
+  .bg-hover-dark {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-dark:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #181C32 !important;
+  }
+  
+  .hoverable:hover .bg-hover-dark {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #181C32 !important;
+  }
+  
+  .bg-hover-state-dark {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-state-dark:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #131628 !important;
+  }
+  
+  .bg-diagonal-dark:before {
+    background-color: #181C32 !important;
+  }
+  
+  .bg-diagonal-r-dark:after {
+    background-color: #181C32 !important;
+  }
+  
+  .bg-radial-gradient-dark {
+    background-color: #181C32;
+    background-image: radial-gradient(circle, rgba(209, 211, 224, 0.4), #181C32 70%);
+  }
+  
+  .bg-dark-o-5 {
+    background-color: rgba(24, 28, 50, 0.02) !important;
+  }
+  
+  .bg-hover-dark-o-1 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-dark-o-1:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(24, 28, 50, 0.2) !important;
+  }
+  
+  .bg-dark-o-10 {
+    background-color: rgba(24, 28, 50, 0.04) !important;
+  }
+  
+  .bg-hover-dark-o-2 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-dark-o-2:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(24, 28, 50, 0.4) !important;
+  }
+  
+  .bg-dark-o-15 {
+    background-color: rgba(24, 28, 50, 0.06) !important;
+  }
+  
+  .bg-hover-dark-o-3 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-dark-o-3:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(24, 28, 50, 0.6) !important;
+  }
+  
+  .bg-dark-o-20 {
+    background-color: rgba(24, 28, 50, 0.08) !important;
+  }
+  
+  .bg-hover-dark-o-4 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-dark-o-4:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(24, 28, 50, 0.8) !important;
+  }
+  
+  .bg-dark-o-25 {
+    background-color: rgba(24, 28, 50, 0.1) !important;
+  }
+  
+  .bg-hover-dark-o-5 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-dark-o-5:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #181c32 !important;
+  }
+  
+  .bg-dark-o-30 {
+    background-color: rgba(24, 28, 50, 0.12) !important;
+  }
+  
+  .bg-hover-dark-o-6 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-dark-o-6:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #181c32 !important;
+  }
+  
+  .bg-dark-o-35 {
+    background-color: rgba(24, 28, 50, 0.14) !important;
+  }
+  
+  .bg-hover-dark-o-7 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-dark-o-7:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #181c32 !important;
+  }
+  
+  .bg-dark-o-40 {
+    background-color: rgba(24, 28, 50, 0.16) !important;
+  }
+  
+  .bg-hover-dark-o-8 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-dark-o-8:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #181c32 !important;
+  }
+  
+  .bg-dark-o-45 {
+    background-color: rgba(24, 28, 50, 0.18) !important;
+  }
+  
+  .bg-hover-dark-o-9 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-dark-o-9:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #181c32 !important;
+  }
+  
+  .bg-dark-o-50 {
+    background-color: rgba(24, 28, 50, 0.2) !important;
+  }
+  
+  .bg-hover-dark-o-10 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-dark-o-10:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #181c32 !important;
+  }
+  
+  .bg-dark-o-55 {
+    background-color: rgba(24, 28, 50, 0.22) !important;
+  }
+  
+  .bg-hover-dark-o-11 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-dark-o-11:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #181c32 !important;
+  }
+  
+  .bg-dark-o-60 {
+    background-color: rgba(24, 28, 50, 0.24) !important;
+  }
+  
+  .bg-hover-dark-o-12 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-dark-o-12:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #181c32 !important;
+  }
+  
+  .bg-dark-o-65 {
+    background-color: rgba(24, 28, 50, 0.26) !important;
+  }
+  
+  .bg-hover-dark-o-13 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-dark-o-13:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #181c32 !important;
+  }
+  
+  .bg-dark-o-70 {
+    background-color: rgba(24, 28, 50, 0.28) !important;
+  }
+  
+  .bg-hover-dark-o-14 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-dark-o-14:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #181c32 !important;
+  }
+  
+  .bg-dark-o-75 {
+    background-color: rgba(24, 28, 50, 0.3) !important;
+  }
+  
+  .bg-hover-dark-o-15 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-dark-o-15:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #181c32 !important;
+  }
+  
+  .bg-dark-o-80 {
+    background-color: rgba(24, 28, 50, 0.32) !important;
+  }
+  
+  .bg-hover-dark-o-16 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-dark-o-16:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #181c32 !important;
+  }
+  
+  .bg-dark-o-85 {
+    background-color: rgba(24, 28, 50, 0.34) !important;
+  }
+  
+  .bg-hover-dark-o-17 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-dark-o-17:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #181c32 !important;
+  }
+  
+  .bg-dark-o-90 {
+    background-color: rgba(24, 28, 50, 0.36) !important;
+  }
+  
+  .bg-hover-dark-o-18 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-dark-o-18:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #181c32 !important;
+  }
+  
+  .bg-dark-o-95 {
+    background-color: rgba(24, 28, 50, 0.38) !important;
+  }
+  
+  .bg-hover-dark-o-19 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-dark-o-19:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #181c32 !important;
+  }
+  
+  .bg-dark-o-100 {
+    background-color: rgba(24, 28, 50, 0.4) !important;
+  }
+  
+  .bg-hover-dark-o-20 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-dark-o-20:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #181c32 !important;
+  }
+  
+  .bg-hover-white {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-white:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #ffffff !important;
+  }
+  
+  .hoverable:hover .bg-hover-white {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #ffffff !important;
+  }
+  
+  .bg-hover-state-white {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-state-white:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #F3F6F9 !important;
+  }
+  
+  .bg-diagonal-white:before {
+    background-color: #ffffff !important;
+  }
+  
+  .bg-diagonal-r-white:after {
+    background-color: #ffffff !important;
+  }
+  
+  .bg-radial-gradient-white {
+    background-color: #ffffff;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.4), #ffffff 70%);
+  }
+  
+  .bg-white-o-5 {
+    background-color: rgba(255, 255, 255, 0.02) !important;
+  }
+  
+  .bg-hover-white-o-1 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-white-o-1:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(255, 255, 255, 0.2) !important;
+  }
+  
+  .bg-white-o-10 {
+    background-color: rgba(255, 255, 255, 0.04) !important;
+  }
+  
+  .bg-hover-white-o-2 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-white-o-2:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(255, 255, 255, 0.4) !important;
+  }
+  
+  .bg-white-o-15 {
+    background-color: rgba(255, 255, 255, 0.06) !important;
+  }
+  
+  .bg-hover-white-o-3 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-white-o-3:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(255, 255, 255, 0.6) !important;
+  }
+  
+  .bg-white-o-20 {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+  }
+  
+  .bg-hover-white-o-4 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-white-o-4:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: rgba(255, 255, 255, 0.8) !important;
+  }
+  
+  .bg-white-o-25 {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+  }
+  
+  .bg-hover-white-o-5 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-white-o-5:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: white !important;
+  }
+  
+  .bg-white-o-30 {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+  }
+  
+  .bg-hover-white-o-6 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-white-o-6:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: white !important;
+  }
+  
+  .bg-white-o-35 {
+    background-color: rgba(255, 255, 255, 0.14) !important;
+  }
+  
+  .bg-hover-white-o-7 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-white-o-7:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: white !important;
+  }
+  
+  .bg-white-o-40 {
+    background-color: rgba(255, 255, 255, 0.16) !important;
+  }
+  
+  .bg-hover-white-o-8 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-white-o-8:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: white !important;
+  }
+  
+  .bg-white-o-45 {
+    background-color: rgba(255, 255, 255, 0.18) !important;
+  }
+  
+  .bg-hover-white-o-9 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-white-o-9:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: white !important;
+  }
+  
+  .bg-white-o-50 {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+  }
+  
+  .bg-hover-white-o-10 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-white-o-10:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: white !important;
+  }
+  
+  .bg-white-o-55 {
+    background-color: rgba(255, 255, 255, 0.22) !important;
+  }
+  
+  .bg-hover-white-o-11 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-white-o-11:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: white !important;
+  }
+  
+  .bg-white-o-60 {
+    background-color: rgba(255, 255, 255, 0.24) !important;
+  }
+  
+  .bg-hover-white-o-12 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-white-o-12:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: white !important;
+  }
+  
+  .bg-white-o-65 {
+    background-color: rgba(255, 255, 255, 0.26) !important;
+  }
+  
+  .bg-hover-white-o-13 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-white-o-13:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: white !important;
+  }
+  
+  .bg-white-o-70 {
+    background-color: rgba(255, 255, 255, 0.28) !important;
+  }
+  
+  .bg-hover-white-o-14 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-white-o-14:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: white !important;
+  }
+  
+  .bg-white-o-75 {
+    background-color: rgba(255, 255, 255, 0.3) !important;
+  }
+  
+  .bg-hover-white-o-15 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-white-o-15:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: white !important;
+  }
+  
+  .bg-white-o-80 {
+    background-color: rgba(255, 255, 255, 0.32) !important;
+  }
+  
+  .bg-hover-white-o-16 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-white-o-16:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: white !important;
+  }
+  
+  .bg-white-o-85 {
+    background-color: rgba(255, 255, 255, 0.34) !important;
+  }
+  
+  .bg-hover-white-o-17 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-white-o-17:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: white !important;
+  }
+  
+  .bg-white-o-90 {
+    background-color: rgba(255, 255, 255, 0.36) !important;
+  }
+  
+  .bg-hover-white-o-18 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-white-o-18:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: white !important;
+  }
+  
+  .bg-white-o-95 {
+    background-color: rgba(255, 255, 255, 0.38) !important;
+  }
+  
+  .bg-hover-white-o-19 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-white-o-19:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: white !important;
+  }
+  
+  .bg-white-o-100 {
+    background-color: rgba(255, 255, 255, 0.4) !important;
+  }
+  
+  .bg-hover-white-o-20 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-white-o-20:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: white !important;
+  }
+  
+  .bg-light-white {
+    background-color: #ffffff !important;
+  }
+  
+  .bg-hover-light-white {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light-white:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #ffffff !important;
+  }
+  
+  .bg-diagonal-light-white:before {
+    background-color: #ffffff !important;
+  }
+  
+  .bg-light-primary {
+    background-color: #E1F0FF !important;
+  }
+  
+  .bg-hover-light-primary {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light-primary:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #E1F0FF !important;
+  }
+  
+  .bg-diagonal-light-primary:before {
+    background-color: #E1F0FF !important;
+  }
+  
+  .bg-light-secondary {
+    background-color: #EBEDF3 !important;
+  }
+  
+  .bg-hover-light-secondary {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light-secondary:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #EBEDF3 !important;
+  }
+  
+  .bg-diagonal-light-secondary:before {
+    background-color: #EBEDF3 !important;
+  }
+  
+  .bg-light-success {
+    background-color: #C9F7F5 !important;
+  }
+  
+  .bg-hover-light-success {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light-success:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #C9F7F5 !important;
+  }
+  
+  .bg-diagonal-light-success:before {
+    background-color: #C9F7F5 !important;
+  }
+  
+  .bg-light-info {
+    background-color: #EEE5FF !important;
+  }
+  
+  .bg-hover-light-info {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light-info:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #EEE5FF !important;
+  }
+  
+  .bg-diagonal-light-info:before {
+    background-color: #EEE5FF !important;
+  }
+  
+  .bg-light-warning {
+    background-color: #FFF4DE !important;
+  }
+  
+  .bg-hover-light-warning {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light-warning:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #FFF4DE !important;
+  }
+  
+  .bg-diagonal-light-warning:before {
+    background-color: #FFF4DE !important;
+  }
+  
+  .bg-light-danger {
+    background-color: #FFE2E5 !important;
+  }
+  
+  .bg-hover-light-danger {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light-danger:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #FFE2E5 !important;
+  }
+  
+  .bg-diagonal-light-danger:before {
+    background-color: #FFE2E5 !important;
+  }
+  
+  .bg-light-light {
+    background-color: #F3F6F9 !important;
+  }
+  
+  .bg-hover-light-light {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light-light:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #F3F6F9 !important;
+  }
+  
+  .bg-diagonal-light-light:before {
+    background-color: #F3F6F9 !important;
+  }
+  
+  .bg-light-dark {
+    background-color: #D1D3E0 !important;
+  }
+  
+  .bg-hover-light-dark {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-light-dark:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #D1D3E0 !important;
+  }
+  
+  .bg-diagonal-light-dark:before {
+    background-color: #D1D3E0 !important;
+  }
+  
+  .bg-gray-100 {
+    background-color: #F3F6F9 !important;
+  }
+  
+  .bg-hover-gray-100 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-gray-100:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #F3F6F9 !important;
+  }
+  
+  .bg-gray-200 {
+    background-color: #EBEDF3 !important;
+  }
+  
+  .bg-hover-gray-200 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-gray-200:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #EBEDF3 !important;
+  }
+  
+  .bg-gray-300 {
+    background-color: #E4E6EF !important;
+  }
+  
+  .bg-hover-gray-300 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-gray-300:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #E4E6EF !important;
+  }
+  
+  .bg-gray-400 {
+    background-color: #D1D3E0 !important;
+  }
+  
+  .bg-hover-gray-400 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-gray-400:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #D1D3E0 !important;
+  }
+  
+  .bg-gray-500 {
+    background-color: #B5B5C3 !important;
+  }
+  
+  .bg-hover-gray-500 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-gray-500:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #B5B5C3 !important;
+  }
+  
+  .bg-gray-600 {
+    background-color: #7E8299 !important;
+  }
+  
+  .bg-hover-gray-600 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-gray-600:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #7E8299 !important;
+  }
+  
+  .bg-gray-700 {
+    background-color: #5E6278 !important;
+  }
+  
+  .bg-hover-gray-700 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-gray-700:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #5E6278 !important;
+  }
+  
+  .bg-gray-800 {
+    background-color: #3F4254 !important;
+  }
+  
+  .bg-hover-gray-800 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-gray-800:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #3F4254 !important;
+  }
+  
+  .bg-gray-900 {
+    background-color: #181C32 !important;
+  }
+  
+  .bg-hover-gray-900 {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .bg-hover-gray-900:hover {
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    background-color: #181C32 !important;
+  }
+  
+  .bg-transparent {
+    background-color: transparent;
+  }
+  
+  .bg-transparent-i {
+    background-color: transparent !important;
+  }
+  
+  .bgi-size-length {
+    background-size: length;
+  }
+  
+  .bgi-size-cover {
+    background-size: cover;
+  }
+  
+  .bgi-size-contain {
+    background-size: contain;
+  }
+  
+  .bgi-no-repeat {
+    background-repeat: no-repeat;
+  }
+  
+  .bgi-position-y-top {
+    background-position-y: top;
+  }
+  
+  .bgi-position-y-bottom {
+    background-position-y: bottom;
+  }
+  
+  .bgi-position-y-center {
+    background-position-y: center;
+  }
+  
+  .bgi-position-x-left {
+    background-position-x: left;
+  }
+  
+  .bgi-position-x-right {
+    background-position-x: right;
+  }
+  
+  .bgi-position-x-center {
+    background-position-x: center;
+  }
+  
+  .bgi-position-top {
+    background-position: 0 top;
+  }
+  
+  .bgi-position-bottom {
+    background-position: 0 bottom;
+  }
+  
+  .bgi-position-center {
+    background-position: center;
+  }
+  
+  .bg-transparent {
+    background-color: transparent;
+  }
+  
+  .bg-diagonal {
+    position: relative;
+    background-color: #ffffff;
+    overflow: hidden;
+  }
+  .bg-diagonal .card-body {
+    position: relative;
+    z-index: 2;
+  }
+  .bg-diagonal:before {
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #F3F6F9;
+  }
+  .bg-diagonal:after {
+    content: " ";
+    width: 200%;
+    height: 1000px;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 45%;
+    -webkit-transform: rotate(20deg);
+    transform: rotate(20deg);
+    background-color: #ffffff;
+  }
+  
+  .wave {
+    background-color: #F3F6F9;
+    overflow: hidden;
+    position: relative;
+  }
+  .wave > div {
+    z-index: 1;
+  }
+  .wave:before {
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ffffff;
+    z-index: -1;
+  }
+  .wave:after {
+    content: " ";
+    width: 1000px;
+    height: 1025px;
+    position: absolute;
+    bottom: 65%;
+    left: -250px;
+    border-radius: 35%;
+    background: white;
+    z-index: 0;
+  }
+  .wave:after {
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+  .wave-animate:after {
+    -webkit-animation: animate-wave 15s infinite linear;
+    animation: animate-wave 15s infinite linear;
+  }
+  .wave-animate-slower:after {
+    -webkit-animation: animate-wave 30s infinite linear;
+    animation: animate-wave 30s infinite linear;
+  }
+  .wave-animate-slow:after {
+    -webkit-animation: animate-wave 25s infinite linear;
+    animation: animate-wave 25s infinite linear;
+  }
+  .wave-animate-fast:after {
+    -webkit-animation: animate-wave 10s infinite linear;
+    animation: animate-wave 10s infinite linear;
+  }
+  .wave-animate-faster:after {
+    -webkit-animation: animate-wave 5s infinite linear;
+    animation: animate-wave 5s infinite linear;
+  }
+  .wave.wave-primary {
+    background-color: rgba(54, 153, 255, 0.1) !important;
+  }
+  .wave.wave-primary .svg-icon svg g [fill] {
+    fill: #3699FF;
+  }
+  .wave.wave-secondary {
+    background-color: rgba(228, 230, 239, 0.1) !important;
+  }
+  .wave.wave-secondary .svg-icon svg g [fill] {
+    fill: #E4E6EF;
+  }
+  .wave.wave-success {
+    background-color: rgba(27, 197, 189, 0.1) !important;
+  }
+  .wave.wave-success .svg-icon svg g [fill] {
+    fill: #1BC5BD;
+  }
+  .wave.wave-info {
+    background-color: rgba(137, 80, 252, 0.1) !important;
+  }
+  .wave.wave-info .svg-icon svg g [fill] {
+    fill: #8950FC;
+  }
+  .wave.wave-warning {
+    background-color: rgba(255, 168, 0, 0.1) !important;
+  }
+  .wave.wave-warning .svg-icon svg g [fill] {
+    fill: #FFA800;
+  }
+  .wave.wave-danger {
+    background-color: rgba(246, 78, 96, 0.1) !important;
+  }
+  .wave.wave-danger .svg-icon svg g [fill] {
+    fill: #F64E60;
+  }
+  .wave.wave-light {
+    background-color: rgba(243, 246, 249, 0.1) !important;
+  }
+  .wave.wave-light .svg-icon svg g [fill] {
+    fill: #F3F6F9;
+  }
+  .wave.wave-dark {
+    background-color: rgba(24, 28, 50, 0.1) !important;
+  }
+  .wave.wave-dark .svg-icon svg g [fill] {
+    fill: #181C32;
+  }
+  .wave.wave-white {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+  }
+  .wave.wave-white .svg-icon svg g [fill] {
+    fill: #ffffff;
+  }
+  
+  @-webkit-keyframes animate-wave {
+    from {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    to {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+  
+  @keyframes animate-wave {
+    from {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    to {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }

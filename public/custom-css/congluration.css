@@ -1,0 +1,54 @@
+/* Styles go here */
+
+canvas {
+  height: 50%;
+  width: 100%;
+  margin: 0;
+}
+
+.scene {
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: 50%;
+  align-items: center;
+  justify-content: center;
+}
+
+.scene > canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+}
+
+.background {
+  filter: blur(1.5px);
+}
+
+.scene-content {
+  position: relative;
+  width: auto;
+  height: auto;
+  padding: 30px;
+  font-size: 2rem;
+  font-family: Helvetica;
+  color: hsla(255, 80%, 80%, 1);
+  animation: hue-shift 60s infinite linear;
+}
+
+@keyframes hue-shift {
+  0% {
+    color: hsla(0, 80%, 80%, 1);
+  }
+  25% {
+    color: hsla(120, 80%, 80%, 1);
+  }
+  75% {
+    color: hsla(240, 80%, 80%, 1);
+  }
+  100% {
+    color: hsla(360, 80%, 80%, 1);
+  }
+}

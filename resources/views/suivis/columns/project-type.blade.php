@@ -1,0 +1,1 @@
+<input type="text"   name="project_type"  id="input-project_type" class=" form-control form-control-sm form-control-transparent" disabled = true data-can-edit="{{ isset($item->suivi->id) ? "false" : "true"  }}"   autocomplete="off" value="{{ $item->suivi->project_type ?? "" }}" placeholder="Type du projet"/>

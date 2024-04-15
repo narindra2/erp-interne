@@ -1,0 +1,1 @@
+<input  title="Date" type="text" class="w-300px form-control form-control-sm form-control-transparent"  disabled = true   autocomplete="off" value="{{ ($item->created_at ?? "... ") ." -> ".( $item->finished_at ?? "...")  }}" placeholder=""/>
