@@ -32,7 +32,6 @@ use App\Http\Controllers\Logs\AuditLogsController;
 use App\Http\Controllers\Logs\SystemLogsController;
 use App\Http\Controllers\Account\SettingsController;
 use App\Http\Controllers\ErpDocumentationController;
-use App\Http\Controllers\ErpInstructionController;
 use App\Http\Controllers\Auth\SocialiteLoginController;
 use App\Http\Controllers\Documentation\ReferencesController;
 
@@ -122,7 +121,6 @@ Route::middleware(['auth', 'checkinweb'])->group(function () {
     Route::get("/my-days-off", [DayOffController::class, "seeMyRequestDaysOff"])->name("my_days_off");
     Route::get("/my_days_off/dataList", [DayOffController::class, "data_list_my_request_days_off"]);
     Route::post("/request_days_off/modal/{dayOff?}", [DayOffController::class, "loadModalToRequestDayOff"]);
-    Route::post("/days-off/update", [DayOffController::class, "update"]);
     Route::get("/days-off/update-select-form", [DayOffController::class, "loadSelect"]);
     Route::post("/days-off/store-request", [DayOffController::class, 'store']);
     Route::post("/dayOff/delete/{dayOff?}", [DayOffController::class, "destroy"]);
@@ -171,7 +169,6 @@ Route::middleware(['auth', 'checkinweb'])->group(function () {
     Route::get("/hour-recoveries-dataList", [HourRecoveryController::class, "data_list"]);
 
     Route::get("/informations", [ErpDocumentationController::class, "index"]);
-    Route::get("/Guides", [ErpInstructionController::class, "index"]);
 
     Route::post("/desktop/notification", [TicketController::class, "desktop_notification"]);
 
