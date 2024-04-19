@@ -74,6 +74,7 @@ class User extends Authenticatable
         'avatarUrl',
         'fullName',
         'sortName',
+        'logo'
     ];
 
     /**

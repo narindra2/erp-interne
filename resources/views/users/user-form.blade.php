@@ -363,7 +363,7 @@
                 $("#user_form").appForm({
                     isModal:false,
                     onSuccess:function(response){
-                        window.location.replace("{{ url("/users") }}");
+                       // window.location.replace("{{ url("/users") }}");
                     }
                 });
 

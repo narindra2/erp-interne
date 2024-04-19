@@ -41,7 +41,7 @@ class TaskController extends Controller
         $section_id = $request->section_id;
         return view("tasks.crud.modal-form", ["task" => new Task, "users" => $this->get_user_tag_list($section_id), "section_id" => $section_id, "recurring_type" => Task::$recurring_type, "default" =>  null]);
     }
-    /** Update or create  a task */
+    /** Update or create  a task  from modal*/
     public function save(AddTaskResquest $request)
     {
         $auth = Auth::user();

@@ -2,45 +2,48 @@
 @php
     $placeholder =  $placeholder ?? "Internes/Collaborateurs/Utilisateurs";
 @endphp
-<input type="text" class="form-control form-control-solid" style="font-family: Arial,FontAwesome;" autocomplete="off" name="users" value="{{ isset($default) ? $default : "" }}" id="users-tagify" placeholder="{{ $placeholder}}"/>
+<input type="text" class="form-control form-control-solid"  autocomplete="off" name="users" value="{{ isset($default) ? $default : "" }}" id="users-tagify" placeholder="{{ $placeholder}}"/>
 <input type="hidden" id="users-tagify-values" value=""/>
 <script>
     $(document).ready(function() {
         var input = document.querySelector("#users-tagify");
-        function tagTemplate(tagData) {
+        function tagTemplate(tagData){
             return `
-                    <tag title="${(tagData.title || tagData.email)}"
-                            contenteditable='false'
-                            spellcheck='false'
-                            tabIndex="-1"
-                            class="${this.settings.classNames.tag} ${tagData.class ? tagData.class : ""}"
-                            ${this.getAttributes(tagData)}>
-                        <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
-                        <div class="d-flex align-items-center">
-                            <div class='tagify__tag__avatar-wrap ps-0'>
-                                <img onerror="this.style.visibility='hidden'" class="rounded-circle w-25px me-2" src="${tagData.avatar}">
-                            </div>
-                            <span class='tagify__tag-text'>${tagData.name}</span>
+                <tag title="${tagData.name}"
+                        contenteditable='false'
+                        spellcheck='false'
+                        tabIndex="-1"
+                        class="tagify__tag ${tagData.class ? tagData.class : ""}" ${this.getAttributes(tagData)}>
+                    <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
+                    <div>
+                        <div class='tagify__tag__avatar-wrap'>
+                            <img onerror="this.style.visibility='hidden'"  class="rounded-circle w-25px me-2" src="${tagData.avatar}">
                         </div>
-                    </tag>
-                `
-        }
-        function suggestionItemTemplate(tagData) {
-            return `
-                    <div class='tagify__dropdown__item' tabindex="0" role="option">
-                        ${tagData.avatar ? `
-                            <b class='tagify__dropdown__item__avatar-wrap me-2'>
-                                <img onerror="this.style.visibility='hidden'"class="rounded-circle w-25px me-2" src="${tagData.avatar}">
-                            </b>` : ''
-                        }
-                        <strong>${tagData.name}</strong>
-                        <span class="badge badge-exclusive badge-light-primary fw-bold fs-8"> ${tagData.job} </span>
+                        <span class='tagify__tag-text'>${tagData.name}</span>
                     </div>
-                `
+                </tag>
+            `
+        }
+
+        function suggestionItemTemplate(tagData){
+            return `
+                <div ${this.getAttributes(tagData)}
+                    class='tagify__dropdown__item ${tagData.class ? tagData.class : ""}'
+                    tabindex="0"
+                    role="option">
+                    ${ tagData.avatar ? `
+                        <b class='tagify__dropdown__item__avatar-wrap me-2'>
+                            <img onerror="this.style.visibility='hidden'" class="rounded-circle w-25px me-2"  src="${tagData.avatar}">
+                        </b>` : ''
+                    }
+                    <strong>${tagData.name}</strong>
+                    <span class="badge badge-exlusive badge-light-primary fw-bold fs-8"> ${tagData.job}</span>
+                </div>
+            `
         }
         var tagify = new Tagify(input, {
             tagTextProp: 'name',
-            enforceWhitelist: true,
+            // enforceWhitelist: true,
             keepInvalidTags: false,
             skipInvalid: true,
             whitelist: @json($users),
@@ -52,8 +55,8 @@
                 searchKeys: ['name', 'email']
             },
             templates: {
-                tag: tagTemplate,
-                dropdownItem: suggestionItemTemplate
+                dropdownItem: suggestionItemTemplate,
+                tag: tagTemplate
             },
         });
         // tagify.on('add', onAddTag)
