@@ -50,7 +50,32 @@
                     <div class="d-flex flex-column">
                         <!--begin::Name-->
                         <div class="d-flex align-items-center mb-2">
-                            <a href="#" class="text-gray-800 text-hover-primary fs-2 fw-bolder me-1">{{ $user->fullname }}</a>
+                            <a href="#" id="typedjs_user" class="text-gray-800 text-hover-primary fs-2 fw-bolder me-1"></a>
+                            <script src=" {{ asset('demo1/plugins/custom/typedjs/typedjs.bundle.js') }}"></script>
+                            @php
+                                $motivations = [
+                                    "Tu est top . 🎉😎",
+                                    "Tu est  génial , Force à toi  🥳.",
+                                    "Le succès n'est pas final, l'échec n'est pas fatal.",
+                                    "Croyez en vos rêves et ils se réaliseront peut-être.",
+                                    " Tu ne perds jamais. Soit  tu gagnes, soit tu t'apprends.",
+                                    " La chance : plus vous la travaillez, plus elle vous sourit.",
+                                    " Le meilleur moyen de prévoir le futur, c’est de le créer.",
+                                    "Le futur appartient à ceux qui croient à la beauté de leurs rêves.",
+                                    "L’action est la clé fondamentale de tout succès.",
+                                    "Les gagnants trouvent des moyens, les perdants des excuse...",
+                                    "Soyez le changement que vous voulez voir dans le monde.",
+                                    "Votre avenir est créé par ce que vous faites aujourd’hui, pas demain.",
+                                    "Les erreurs sont les portes de la découverte.",
+                                    "Le plus grand de tous les risques est de ne pas en prendre.",
+                            ];
+                            @endphp
+                            <script>
+                                var typed = new Typed("#typedjs_user", {
+                                    strings: ["Bonjour  {{ $user->sortname }} 👋!"  ,"... ...","«{{ $motivations[rand(0,count( $motivations) - 1 )] }}»"  ,"😊🥳","{{ $user->fullname }}"],
+                                    typeSpeed: 30
+                                })
+                            </script>
                             <a href="#">
                                 {!! theme()->getSvgIcon("icons/duotune/general/gen026.svg", "svg-icon-1 svg-icon-primary") !!}
                             </a>
@@ -114,6 +139,7 @@
                                 <div class="d-flex align-items-center">
                                     {{-- {!! theme()->getSvgIcon("icons/duotune/arrows/arr065.svg", "svg-icon-3 svg-icon-danger me-2") !!} --}}
                                     <div class="fs-2 fw-bolder">{{ $user->nb_days_off_remaining }}</div>
+                                    
                                 </div>
                                 <!--end::Number-->
 

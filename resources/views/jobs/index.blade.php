@@ -8,7 +8,7 @@
                         <div class="text-muted fs-7 fw-bold"></div>
                     </div>
                     <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
-                        data-bs-original-title="{{ trans('lang.type_of') }}">
+                        data-bs-original-title="{{ trans('lang.new_job') }}">
                         @php
                             echo modal_anchor(url("/jobs/modal"), '<i class="fas fa-plus"></i>' . trans('lang.new_job'), ['title' => trans('lang.new_job'), 'class' => 'btn btn-sm btn-light-primary']);
                         @endphp

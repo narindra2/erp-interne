@@ -2,6 +2,9 @@
     @foreach ($project->members as $user)
         <div class="symbol symbol-35px symbol-circle" title="{{ $user->sortname }}" data-bs-toggle="tooltip" aria-label="{{ $user->sortname }}" data-bs-original-title="{{ $user->sortname }}" data-kt-initialized="1">
             <img alt="Pic" src="{{ $user->avatarUrl }}">
+            @if ($user->deleted)
+                <span class="symbol-badge badge badge-circle bg-danger start-100">!</span>
+            @endif
         </div>
     @endforeach
     @php
