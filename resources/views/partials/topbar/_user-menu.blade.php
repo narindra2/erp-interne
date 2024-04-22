@@ -1,5 +1,5 @@
 <!--begin::Menu-->
-<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-primary fw-bold py-4 fs-6 w-275px" data-kt-menu="true">
+<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-primary fw-bold py-4 fs-6 " style="width: max-content !important" data-kt-menu="true">
     <!--begin::Menu item-->
     <div class="menu-item px-3">
         <div class="menu-content d-flex align-items-center px-3">

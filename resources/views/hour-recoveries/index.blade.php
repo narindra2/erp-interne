@@ -38,7 +38,7 @@
                         {data :"hour_absence" , title: "Heure d'absence"},
                         {data: "description", title: 'Nature'},
                         {data: "is_validated", title: 'Etat'},
-                        @if (auth()->user()->isAdmin() || auth()->user()->isHR())
+                        @if (auth()->user()->isAdmin() || auth()->user()->isHR() || auth()->user()->isCp() || in_array( auth()->user()->id, \App\Models\Menu::$USER_ALLOWED_PART_ACCESS["complement_hours"]) )
                             {data: "action", orderable: false, searchable: false}
                         @endif
                     ],

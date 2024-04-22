@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Exception;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
+use App\Models\UserJobView;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class HourRecovery extends Model
 {
@@ -96,16 +97,21 @@ class HourRecovery extends Model
         return HourRecovery::create($input);
     }
 
-    public function scopeDetail($query, $input) {
+    public function scopeDetail($query, $input)
+    {
         $query->with(['job', 'user']);
         $user = Auth::user();
-        //Select only the hour recovery for himself if the user is not a admin nor a hr
-        if (!$user->isAdmin() && !$user->isHR()) {
-            $query->where('user_id', $user->id);
+         //Select only the hour recovery for himself and in his department
+        if ($user->isCp() || in_array( $user->id , Menu::$USER_ALLOWED_PART_ACCESS["complement_hours"]) ) {
+            $users_ID = UserJobView::where("department_id", $user->userJob->department_id)->get()->pluck("users_id");
+            $query->whereIn("user_id", $users_ID);
+        } else {
+            //Select only the hour recovery for himself if the user is not a admin nor a hr
+            if (!$user->isAdmin() && !$user->isHR()) {
+                $query->where('user_id', $user->id);
+            }
         }
-
         //Filter the result by the input given
-        //code
         return $query->whereDeleted(0)->get();
     }
 }
