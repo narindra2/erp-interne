@@ -53,7 +53,6 @@ class TaskStatus extends Model
                         });
                     }
                 }
-
                 $search = get_array_value($options, "search_task");
                 if ($search) {
                     $query->where(function ($q) use ($search) {
