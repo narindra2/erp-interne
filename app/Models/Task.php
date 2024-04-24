@@ -209,6 +209,7 @@ class Task extends Model
         $filters = $members =  [];
         $section = get_array_value($options,"section");
         if ($section->members_can("can_access_members_task")) {
+            $members[] = ["value" => "all" , "text" => "Toute les tâches"];
             foreach($section->members as $user){
                 $members[] = ["value" => $user->id , "text" => $user->sortname];
             }
@@ -217,6 +218,10 @@ class Task extends Model
                 "name" =>"user_id", 
                 "type" => "select",
                 "width"  =>"w-250px",
+                'attributes' => [
+                    "data-hide-search" => "false",
+                    "data-allow-clear" => "true",
+                ],
                 'options' => $members 
             ];
         }

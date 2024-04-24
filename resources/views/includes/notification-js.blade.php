@@ -69,6 +69,7 @@
             return;
         }
         var board = kanbanInstance.findBoard(item.board_id);
+        /**The current board in no visible in view */
         if (!board && !item.archived && !item.deleted ) {
             if($("#alert-section-"+item.section_id).hasClass("d-none")) {
                 $("#alert-section-"+item.section_id).removeClass("d-none")

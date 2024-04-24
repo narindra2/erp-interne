@@ -40,7 +40,7 @@
                             <div class="row">
                                 @csrf
                                 <div class="mb-3 col-md-12">
-                                    <label for="users"> Réinitialiser le mot depas ERP de :</label>
+                                    <label for="users"> Réinitialiser le mot de passe ERP de :</label>
                                     <select class="form-select" name="users[]" id="users" data-control="select2" data-close-on-select="false" data-placeholder="Selectionner les utilisatuers" data-allow-clear="true" multiple="multiple">
                                         <option value="0" disabled  >--Collaborateurs--</option>
                                             @foreach ($users as $user)
@@ -64,7 +64,7 @@
                     </div>
                     <div class="card shadow-lg card-docs flex-row-fluid col-md-12">
                         <div class="card-header">
-                            <h3 class="card-title">Réinitialisation de &nbsp;<u> Toutes </u>   &nbsp;les << mot de passe >> </h3>
+                            <h3 class="card-title">Réinitialisation de &nbsp;<u> Toutes </u>   &nbsp;les << mots de passes >> </h3>
                         </div>
                         <form class="form" id="reset-pwd-all" method="POST" action="{{ url('/outils-debug/reset-pwd-all') }}">
                         <div class="card-body">

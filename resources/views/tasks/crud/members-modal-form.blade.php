@@ -26,8 +26,8 @@
         </button>
     </div>
 </form>
-<div class="card shadow-sm ">
-    <label for="">List des membres</label>
+<div class="card  ">
+    <label for="">List des membres : </label>
     <table id="taskSectionMembersTable"class="table table-row-dashed  table-hover "></table>
 </div>
 <script>
