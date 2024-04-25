@@ -24,6 +24,27 @@ class Sanction extends Model
         'date' => 'datetime'
     ];
 
+   
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+    public function scopeGetDetails($query , $options = []) {
+        $query->with(["user.userJob.job"]);
+
+        $year = get_array_value($options, "year");
+        if ( $year) {
+            $query->whereYear('date', '=', $year);
+        } 
+        $user_id = get_array_value($options, "user_id");
+        if ( $user_id) {
+            $query->where('user_id', '=', $user_id);
+        } 
+        $type = get_array_value($options, "type");
+        if ($type) {
+            $query->where('type', '=', $type);
+        } 
+        return $query->whereDeleted(0)->latest("date");
+    }
     public function getType(&$class="") {
         if ($this->type == 1) {
             $class = "badge badge-light-primary fw-bolder fs-8 px-2 py-1 ms-2";
@@ -50,10 +71,6 @@ class Sanction extends Model
     public function getDuration() {
         if ($this->type != 3)   return "";
         return $this->duration;
-    }
-
-    public function user() {
-        return $this->belongsTo(User::class);
     }
 
     public static function storeSanction($input) {
@@ -107,5 +124,58 @@ class Sanction extends Model
         catch (Error $e) {
             DB::rollBack();
         }
+    }
+    public static function createFilter($options = [])
+    {
+        $filters = $users = [];
+        $usersJob = Department::with(["user" => function($user) {
+            $user->select("user_type_id","firstname","name","id","avatar")->whereDeleted(0);
+        }])->getAllEmployee()->get();
+        foreach ($usersJob as $userJob) {
+            try {
+                if (!$userJob->user->deleted) { // remove all user deleted
+                    $users[] = ["value" => $userJob->user->id, "text" => $userJob->user->sortname];
+                }
+            } catch (Exception $e) {
+            }
+        }
+        $filters[] = [
+            "label" => " Employés ",
+            "name" => "user_id",
+            "type" => "select",
+            'attributes' => [
+                "data-hide-search" => "false",
+                "data-allow-clear" => "true",
+            ],
+            'options' => $users,
+        ];
+        
+        $filters[] = [
+            "label" => " Types de saction ", 
+            "name" =>"type",
+            "type" => "select",
+            'attributes' => [
+                "data-allow-clear" => "true",
+            ],
+            "options" =>[
+                ["text" => "Verbal" , "value" => 1 ],
+                ["text" => "Ecrit" , "value" => 2 ],
+                ["text" => "Mis à pied" , "value" => 3]
+            ],
+        ];
+        $filters[] = [
+            "label" => " Filter par années ", 
+            "name" =>"year",
+            "type" => "select",
+            "width"  =>"w-200px",
+            'attributes' => [
+                "data-allow-clear" => "true",
+            ],
+            "options" => yearList(3 , false),
+        ];
+       
+       
+
+        return $filters;
     }
 }

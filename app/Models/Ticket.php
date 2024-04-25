@@ -130,6 +130,7 @@ class Ticket extends Model
                     }
                 }
             } catch (Exception $e) {
+                
             }
         }
         if ($user->isAdmin() || $user->userJob->department_id == Department::$_IT) {

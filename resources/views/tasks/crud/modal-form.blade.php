@@ -431,6 +431,11 @@
         opacity: 100;
     }
 </style>
+<style>
+    .form-check.form-check-solid .form-check-input:checked {
+    background-color: #50cd89;
+}
+</style>
 {{-- @section('dynamic_script')
     <script src="https://cdn.ckeditor.com/ckeditor5/34.1.0/classic/ckeditor.js"></script>
 @endsection --}}

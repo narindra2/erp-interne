@@ -839,10 +839,10 @@ if (!function_exists('monthList')) {
     }
 }
 if (!function_exists('yearList')) {
-    function yearList($get_last_year = 4) {
+    function yearList($get_last_year = 4 , $selectCurentYear = true) {
         $years = [];
         $current  = Carbon::now()->year;
-        $years[]=  ["text" => $current, "value" => $current , "selected" => true];
+        $years[]=  ["text" => $current, "value" => $current , "selected" => $selectCurentYear];
         for ($i = 1 ; $i < $get_last_year  ; $i++ ) {
             $years[]=  ["text" => $current - $i, "value" => $current - $i];
         }

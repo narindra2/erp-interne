@@ -280,4 +280,5 @@ return [
     "clientType_projectType_level_point_pointSupp" => "Les points",
     "point" => "Point",
     "point_sup" => "Point supplementaire",
+    "sanctions" => "Sanctions",
 ];

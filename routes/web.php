@@ -469,6 +469,8 @@ Route::middleware(['auth', 'checkinweb'])->group(function() {
 });
 
 Route::middleware(['auth', 'checkinweb', 'role:2'])->group(function () {
+    Route::get("/users/sanctions/index", [SanctionController::class, 'index']);
+    Route::get("/users/sanctions/data_list", [SanctionController::class, 'data_list']);
     Route::post("/users/sanctions/form/{sanction?}", [SanctionController::class, 'formModal']);
     Route::post("/users/sanctions/form-save", [SanctionController::class, "store"]);
     Route::post("/users/sanctions/delete/{sanction}", [SanctionController::class, 'destroy']);
