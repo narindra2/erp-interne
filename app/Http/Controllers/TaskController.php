@@ -77,7 +77,7 @@ class TaskController extends Controller
             if ($section->members_can_not("can_add_task")) {
                 return ["success" => false, "message" => "Vous ne pouvez pas effectuer ajouter des tâches (permission non aloué)"];
             }
-                if ($request->archived) {
+            if ($request->archived) {
                 if ($section->members_can_not("can_archive_task")) {
                     return ["success" => false, "message" => "Vous ne pouvez pas effectuer archive (permission non aloué) "];
                 }
@@ -317,7 +317,7 @@ class TaskController extends Controller
         })->afterResponse();
         return ["success" => true];
     }
-    //** Search a task */
+    //** Search a task and rend the result */
     public function search_task(Request $request)
     {
         $data = [];
@@ -380,6 +380,7 @@ class TaskController extends Controller
         }
         $section = TaskSection::updateOrCreate(["id" => $request->section_id], ["title" => $request->title, "creator_id" => $auth->id,"permissions" => $permissions]);
         $message = "Modification bien effectué";
+        // Save for new section
         if (!$request->section_id) {
             $members = [];
             $members[] = $auth->id;

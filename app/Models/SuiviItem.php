@@ -553,6 +553,8 @@ class SuiviItem extends Model
                     $suivi_itmes->whereDeleted(0);
                 },
                 'suiviItems' => function ($suivi_itmes) use ($year,  $month) {
+                    // $suivi_itmes->whereMonth('finished_at', '=', $month);
+                    $suivi_itmes->whereYear('finished_at', '=', $year);
                     $suivi_itmes->finished();
                 },
             ]);
