@@ -89,7 +89,7 @@ class SuiviController extends Controller
             foreach ($months as $key => $month_name) {
                 $traitement_grouped = $user->traitement_grouped->all();
                 $key_month = $key + 1;
-                $key_month = $key_month <= 9 ? "0" . $key_month : $key_month;
+                $key_month = $key_month <= 9 ? "0" . $key_month : $key_month; // make all month to two digit
                 $no_traitements = ["total_point_traitement" =>  0, "traitements" => []];
                 if (in_array($key_month, $months_has)) {
                     $total_point = get_array_value($traitement_grouped, $key_month)->sum("realPointItem");

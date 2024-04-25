@@ -293,7 +293,7 @@ class SuiviItem extends Model
     }
     public  function scopeFinished($query)
     {
-        return  $query->where("status_id",Self::$FINISH);
+        return  $query->where("status_id",Self::$FINISH)->whereNotNull("finished_at");
     }
     public  function scopeGetDetails($query, $options = [])
     {

@@ -3,7 +3,7 @@
         <div class="symbol symbol-35px symbol-circle" title="{{ $user->sortname }}" data-bs-toggle="tooltip" aria-label="{{ $user->sortname }}" data-bs-original-title="{{ $user->sortname }}" data-kt-initialized="1">
             <img alt="Pic" src="{{ $user->avatarUrl }}">
             @if ($user->deleted)
-                <span title="{{ $user->sortname }} ne travaille plus dans notre société." class="symbol-badge badge badge-circle bg-danger start-100">x</span>
+                <span title="{{ $user->sortname }} ne travaille plus dans notre société." style="cursor: pointer" class="symbol-badge badge badge-circle bg-danger start-100">x</span>
             @endif
         </div>
     @endforeach

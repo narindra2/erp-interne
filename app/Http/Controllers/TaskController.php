@@ -77,7 +77,7 @@ class TaskController extends Controller
             if ($section->members_can_not("can_add_task")) {
                 return ["success" => false, "message" => "Vous ne pouvez pas effectuer ajouter des tâches (permission non aloué)"];
             }
-            if ($request->archived) {
+                if ($request->archived) {
                 if ($section->members_can_not("can_archive_task")) {
                     return ["success" => false, "message" => "Vous ne pouvez pas effectuer archive (permission non aloué) "];
                 }
