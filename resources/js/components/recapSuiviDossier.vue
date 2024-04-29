@@ -3,9 +3,14 @@
         <div class="card-header">
             <h5 class="card-title"></h5>
             <div class="card-toolbar">
-                <button type="button" title="Recharger" @click="reloadData"  class="btn btn-sm btn-light">
-                    <i class="fas fa-sync-alt fs-6"></i> Réactualiser
-                </button>
+                <div class="d-flex flex-stack flex-wrap gap-4">
+                    <div class="d-flex align-items-center fw-bold">
+                        <input id="year" :value="yearFilter" title= 'Année' placeholder="Année ..."  @change="onChangeYear($event.target.value)" class="text-dark  py-0 ps-3 w-auto ">
+                    </div>
+                    <button type="button" title="Recharger" @click="reloadData"  class="btn btn-sm btn-light">
+                        <i class="fas fa-sync-alt fs-6"></i> Réactualiser
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -134,8 +139,34 @@
 }
 </style>
 <script>
+function tagTemplate(tagData){
+    return `
+        <tag title="${tagData.text}"
+                contenteditable='false'
+                spellcheck='false'
+                tabIndex="-1"
+                class="tagify__tag ${tagData.class ? tagData.class : ""}"  >
+            <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
+            <div>
+                <span class='tagify__tag-text'>${tagData.text}</span>
+            </div>
+        </tag>
+    `
+}
+
+function suggestionItemTemplate(tagData){
+    return `
+        <div ${this.getAttributes(tagData)}
+            class='tagify__dropdown__item ${tagData.class ? tagData.class : ""}'
+            tabindex="0"
+            role="option">
+            <strong>${tagData.text}</strong>
+        </div>
+    `
+}
 import axios from 'axios';
 export default {
+    props : ["years"],
     data() {
         return {
             app : app,
@@ -144,6 +175,17 @@ export default {
             loading : false,
             loadingList : false,
             messageInfo: "",
+            postData : {},
+            yearFilter :JSON.parse(this.years).find((year) => year.selected == true).value,
+            yearInput : null,
+            settings :  {
+                maxItems: 999,// list of item listing in dropdown
+                classname: 'users-list',
+                enabled       : 0,             
+                position      : "text",         
+                closeOnSelect : true,        
+                highlightFirst: true
+            },
             headers: [
                 { text: "N°", value: "mac" , fixed: true, width: 50 },
                 { text: "Nom & prénom", value: "user" , fixed: true, width: 200 },
@@ -164,6 +206,19 @@ export default {
         }
     },
     mounted() {
+        this.yearInput = new Tagify(document.querySelector('#year'),{
+            enforceWhitelist : true,
+            delimiters : null,
+            whitelist :  JSON.parse(this.years),
+            tagTextProp: 'text',
+            mode : "select",
+            placeholder : "Année ...",
+            keepInvalidTags: false,
+            skipInvalid: true,
+            dropdown : this.settings,
+            originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(', ')
+        });
+
         this.loadData()
     },
     methods: {
@@ -183,7 +238,7 @@ export default {
         },
         loadData(){
             this.loading = true;
-            axios.post(this.app.baseUrl + "/suivi/data/recap", {"test" : "all"}).then(response => {
+            axios.post(this.app.baseUrl + "/suivi/data/recap",this.postData ).then(response => {
                 if (response.data.success) {
                     let result = response.data.result
                     this.months = response.data.months
@@ -259,7 +314,23 @@ export default {
         },
         secondsToDhms(seconds) {
             return secondsToDhms(seconds);// view/includes/helper-js
-       }
+       },
+       onChangeYear (value){
+            if (value) {
+                this.yearFilter = value;
+                this.postData.year = this.yearFilter;
+            }else{
+                this.yearFilter = JSON.parse(this.years).find((year) => year.selected == true).value
+            }
+        },
     },
+    watch: {
+        postData: {
+            handler(newValue, oldValue) {
+                this.loadData();
+            },
+            deep: true
+        }
+    }
 }
 </script>

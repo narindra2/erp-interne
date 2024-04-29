@@ -529,14 +529,12 @@ class SuiviItem extends Model
         return compact("headers","hidden_headers","row_group","count_header","total_duration","duration_footer");
     }
 
-    public static  function scopeRecapPoint($options = [])
+    public static  function scopeRecapPoint($query,$options = [])
     {
         $auth = Auth::user();
         $carbon = Carbon::now();
-        $options = [];
         $year = get_array_value($options, "year", $carbon->year);
         $month = get_array_value($options, "month", $carbon->month);
-
         return User::select("id", "name", "avatar", "firstname", "registration_number")
             ->has("suiviItems")
             ->orderBy("firstname", "ASC")

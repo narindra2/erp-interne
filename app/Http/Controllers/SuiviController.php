@@ -64,9 +64,10 @@ class SuiviController extends Controller
     }
     public function tab_recapitulatif()
     {
+        $years =  yearList(4,true);
         $useVuejs = true;
         $view = "recapitulatif";
-        return compact("view", "useVuejs");
+        return compact("view", "useVuejs" ,"years");
     }
     public function tab_userparams()
     {
@@ -80,7 +81,7 @@ class SuiviController extends Controller
     public function get_total_point_prod(Request $request)
     {
         $months = ["jan", "fev", "mars", "avr", "mai", "juin", "juil", "aout", "sept", "oct", "nov", "dec"];
-        $users_suivi_items =  SuiviItem::recapPoint()->get();
+        $users_suivi_items =  SuiviItem::recapPoint($request->all())->get();
         foreach ($users_suivi_items  as  $user) {
             $user->traitement_grouped =  $user->suiviItems->groupBy(function ($traitement, $key) {
                 return $traitement->finished_at->format('m');

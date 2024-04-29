@@ -115,11 +115,11 @@ function suggestionItemTemplate(tagData){
 // import Tagify from '@yaireo/tagify'
 // import '@yaireo/tagify/dist/tagify.css'
 export default {
-    props : ["versions" , "montages","months" , "years"],
+    props: ["versions", "montages", "months", "years"],
     data() {
         return {
-            app : app,
-            dataList  : [],
+            app: app,
+            dataList: [],
             headers: [],
             items: [],
             loading: true,
@@ -127,91 +127,91 @@ export default {
             versionsFilter: null,
             montagesFilter: null,
             monthFilter: JSON.parse(this.months).find((month) => month.selected == true).value,
-            yearFilter  : JSON.parse(this.years)[0].value,
+            yearFilter: JSON.parse(this.years)[0].value,
 
-            versionInput : null,
-            montageInput : null,
-            monthInput : null,
-            yearInput : null,
+            versionInput: null,
+            montageInput: null,
+            monthInput: null,
+            yearInput: null,
 
-            postData : {},
-            settings :  {
+            postData: {},
+            settings: {
                 maxItems: 999,// list of item listing in dropdown
                 classname: 'users-list',
-                enabled       : 0,             
-                position      : "text",         
-                closeOnSelect : true,        
+                enabled: 0,
+                position: "text",
+                closeOnSelect: true,
                 highlightFirst: true
             },
         }
     },
 
     mounted() {
-        this.versionInput = new Tagify(document.querySelector('#versions'),{
-            whitelist :  JSON.parse(this.versions),
+        this.versionInput = new Tagify(document.querySelector('#versions'), {
+            whitelist: JSON.parse(this.versions),
             tagTextProp: 'text',
-            placeholder : "Version ...",
-            enforceWhitelist : true,
+            placeholder: "Version ...",
+            enforceWhitelist: true,
             keepInvalidTags: false,
             skipInvalid: true,
             templates: {
                 tag: tagTemplate,
                 dropdownItem: suggestionItemTemplate,
             },
-            dropdown : this.settings,
+            dropdown: this.settings,
             originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(', ')
         });
-        this.montageInput = new Tagify(document.querySelector('#montages'),{
-            whitelist :   JSON.parse(this.montages),
+        this.montageInput = new Tagify(document.querySelector('#montages'), {
+            whitelist: JSON.parse(this.montages),
             tagTextProp: 'text',
-            placeholder : "Montage ...",
-            enforceWhitelist : true,
+            placeholder: "Montage ...",
+            enforceWhitelist: true,
             keepInvalidTags: false,
             skipInvalid: true,
             templates: {
                 tag: tagTemplate,
                 dropdownItem: suggestionItemTemplate,
             },
-            dropdown : this.settings,
+            dropdown: this.settings,
             originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(', ')
         });
-        
-        this.monthInput = new Tagify(document.querySelector('#month'),{
-            enforceWhitelist : true,
-            whitelist :  JSON.parse(this.months),
+
+        this.monthInput = new Tagify(document.querySelector('#month'), {
+            enforceWhitelist: true,
+            whitelist: JSON.parse(this.months),
             tagTextProp: 'text',
-            placeholder : "Mois ...",
-            mode : "select",
+            placeholder: "Mois ...",
+            mode: "select",
             keepInvalidTags: false,
             skipInvalid: true,
             templates: {
                 tag: tagTemplate,
                 dropdownItem: suggestionItemTemplate,
             },
-            dropdown : this.settings,
+            dropdown: this.settings,
             originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(', ')
         });
-        this.yearInput = new Tagify(document.querySelector('#year'),{
-            enforceWhitelist : true,
-            delimiters : null,
-            whitelist :  JSON.parse(this.years),
+        this.yearInput = new Tagify(document.querySelector('#year'), {
+            enforceWhitelist: true,
+            delimiters: null,
+            whitelist: JSON.parse(this.years),
             tagTextProp: 'text',
-            mode : "select",
-            placeholder : "Année ...",
+            mode: "select",
+            placeholder: "Année ...",
             keepInvalidTags: false,
             skipInvalid: true,
-            dropdown : this.settings,
+            dropdown: this.settings,
             originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(', ')
         });
-        this.postData.month =  this.monthFilter ;
-        this.postData.year = this.yearFilter ;
+        this.postData.month = this.monthFilter;
+        this.postData.year = this.yearFilter;
         this.loadData();
     },
-    
+
     methods: {
-        loadData(){
+        loadData() {
             this.loading = true;
-            axios.post(this.app.baseUrl + "/load/prod" , this.postData).then(response => {
+            axios.post(this.app.baseUrl + "/load/prod", this.postData).then(response => {
                 if (response.data.success) {
                     this.loading = false;
                     this.headers = response.data.headers
@@ -219,40 +219,40 @@ export default {
                 }
             })
         },
-        reloadData(){
+        reloadData() {
             this.items = [];
             this.loadData();
         },
-      
-        updateHourWork(user_id , hours ){
-            axios.post(this.app.baseUrl + "/suivi/save/hours_days_work",{ "user_id" : user_id, "month" : this.monthFilter , "year" : this.yearFilter , "hours_works" : hours }).then(response => {
+
+        updateHourWork(user_id, hours) {
+            axios.post(this.app.baseUrl + "/suivi/save/hours_days_work", { "user_id": user_id, "month": this.monthFilter, "year": this.yearFilter, "hours_works": hours }).then(response => {
                 if (response.data.success) {
-                  
+
                 }
             })
         },
-        updateSeuil(user_id , point ){
-            axios.post(this.app.baseUrl + "/suivi/save/hours_days_work",{"user_id" : user_id, "month" : this.monthFilter , "year" : this.yearFilter , "seuil_point" : point }).then(response => {
+        updateSeuil(user_id, point) {
+            axios.post(this.app.baseUrl + "/suivi/save/hours_days_work", { "user_id": user_id, "month": this.monthFilter, "year": this.yearFilter, "seuil_point": point }).then(response => {
                 if (response.data.success) {
-                    
+
                 }
             })
         },
-        updateDayworkDessi(user_id , days_work ){
-            axios.post(this.app.baseUrl + "/suivi/save/hours_days_work",{"user_id" : user_id, "month" : this.monthFilter , "year" : this.yearFilter , "days_work" : days_work }).then(response => {
+        updateDayworkDessi(user_id, days_work) {
+            axios.post(this.app.baseUrl + "/suivi/save/hours_days_work", { "user_id": user_id, "month": this.monthFilter, "year": this.yearFilter, "days_work": days_work }).then(response => {
                 if (response.data.success) {
-                    
+
                 }
             })
         },
-        onChangeVersion (value){
+        onChangeVersion(value) {
             if (value) {
                 this.versionsFilter = value;
                 let array = value.split(",")
                 this.postData.version_ids = array;
             }
         },
-        onChangeMontage (value){
+        onChangeMontage(value) {
             if (value) {
                 this.montagesFilter = value;
                 console.log(array);
@@ -260,33 +260,33 @@ export default {
                 this.postData.montage_ids = array;
             }
         },
-        onChangeMonth (value){
+        onChangeMonth(value) {
             if (value) {
                 this.monthFilter = value;
-                this.postData.month =  this.monthFilter ;
-            }else{
-                this.monthFilter =JSON.parse(this.months).find((month) => month.selected == true).value
+                this.postData.month = this.monthFilter;
+            } else {
+                this.monthFilter = JSON.parse(this.months).find((month) => month.selected == true).value
             }
         },
-        onChangeYear (value){
+        onChangeYear(value) {
             if (value) {
                 this.yearFilter = value;
                 this.postData.year = this.yearFilter;
-            }else{
+            } else {
                 this.yearFilter = JSON.parse(this.years)[0].value;
             }
         },
         secondsToDhms(seconds) {
             return secondsToDhms(seconds); // view/includes/helper-js
-       }
+        }
     },
-    watch : {
+    watch: {
         postData: {
             handler(newValue, oldValue) {
                 this.loadData();
             },
             deep: true
-    }
+        }
     }
 }
 </script>

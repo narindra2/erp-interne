@@ -79,7 +79,6 @@ export default {
             return item[0].user.avatarUrl;
         },
         gooo(item ){
-            console.log( item);
             return "5445 "
         }  
     }
