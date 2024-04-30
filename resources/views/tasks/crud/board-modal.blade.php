@@ -87,7 +87,7 @@
         <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-light-dark btn-sm mr-2 ">
             @lang('lang.cancel')
         </button>
-        @if (!$status->id || auth()->user()->isAdmin())
+        @if (!$status->id || auth()->user()->isAdmin() || $status->section->creator_id == auth()->id() ||  $status->section->members_can("can_update_column") )
             <button type="submit" id="submit"class=" btn btn-sm btn-light-primary mr-2">
                 @include('partials.general._button-indicator', [
                     'label' =>  trans('lang.save') ,
