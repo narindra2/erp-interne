@@ -15,7 +15,7 @@
                     <div class="mb-5">
                         <label for="type" class="form-label">Selectionner le type de client  : </label>
                         <select name="client_type_id" id="client_type_id" class="form-select form-select-solid rounded-start-0 border-start"
-                            data-control="select2"  data-placeholder="Type de client  ... "
+                            data-control="select2"  data-placeholder="Type de client  ... " data-dropdown-parent="#ajax-modal"
                             data-allow-clear="true" data-hide-search="true">
                             <option value="">-- @lang('lang.client_types') --</option>
                             @foreach ($client_types as $type)
@@ -33,7 +33,7 @@
                         <div class="mb-5">
                             <label for="type" class="form-label">Choississez le type de projet  : </label>
                             <select name="project_type_id" id="project_type_id" class="form-select form-select-solid rounded-start-0 border-start"
-                                data-control="select2" data-placeholder="Type de projet  ... "
+                                data-control="select2" data-placeholder="Type de projet  ... " data-dropdown-parent="#ajax-modal"
                                 data-allow-clear="true" >
                                 <option value="">-- @lang('lang.client_types') --</option>
                                 @foreach ($project_types as $t)
@@ -48,7 +48,7 @@
                             <div class="mb-5">
                                 <label for="type" class="form-label">Versions  : </label>
                                 <select name="version_id" id="version_id_associed" class="form-select form-select-solid rounded-start-0 border-start"
-                                    data-control="select2"  data-placeholder="Versions ... "
+                                    data-control="select2"  data-placeholder="Versions ... " data-dropdown-parent="#ajax-modal"
                                     data-allow-clear="true" data-hide-search="true">
                                     <option value="">-- @lang('lang.version') --</option>
                                     @foreach ($versions as $version)

@@ -343,6 +343,16 @@ class SuiviItem extends Model
                 $folder->orWhere("ref", 'like', '%' . $folder_name . '%');
             });
         }
+        /**Advanced filter */
+        $status  = get_array_value($options, "status");
+        if ($status) {
+            $suivi_item->whereIn("status_id", $status);
+        }
+        $type_project  = get_array_value($options, "type_project");
+        if ($status) {
+            $suivi_item->whereIn("status_id", $type_project);
+        }
+
         $interval = get_array_value($options, "interval");
         if ($interval) {
             $dates = explode("-", $interval);

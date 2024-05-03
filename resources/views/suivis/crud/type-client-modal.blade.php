@@ -11,7 +11,7 @@
         <div class="form-group">
             <div class="mb-5">
                 <label for="type" class="form-label">Status : </label>
-                <select name="status" id="status" class="form-select form-select-solid rounded-start-0 border-start" data-control="select2" >
+                <select name="status" id="status" class="form-select form-select-solid rounded-start-0 border-start" data-control="select2" data-dropdown-parent="#ajax-modal" >
                     <option value="0" disabled>-- Status du client --</option>
                     <option value="on">Actif</option>
                     <option value="off">Non actif</option>

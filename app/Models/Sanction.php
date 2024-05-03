@@ -164,14 +164,14 @@ class Sanction extends Model
             ],
         ];
         $filters[] = [
-            "label" => " Filter par années ", 
+            "label" => " Toutes ", 
             "name" =>"year",
             "type" => "select",
             "width"  =>"w-200px",
             'attributes' => [
                 "data-allow-clear" => "true",
             ],
-            "options" => yearList(3 , false),
+            "options" => yearList(3 , true),
         ];
        
        

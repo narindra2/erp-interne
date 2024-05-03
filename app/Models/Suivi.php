@@ -73,6 +73,7 @@ class Suivi extends Model
         return $this->belongsToMany(SuiviPoint::class , "suivi_and_points","suivi_id","point_id");
     }
     // End old concept
+    
     public static function search_folder( $term)
     {
         $data = [];
