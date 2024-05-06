@@ -62,10 +62,11 @@ class SuiviItem extends Model
         ["value" => 4, "text" =>  "Terminé", "group" =>  "Terminés","verbe" =>  "Terminer", "class" => "success", "color" => "#50CD89"],
     ];
     public  static $POLES = [
-        ["value" => "urba", "text" =>  "Urbaniste", "color" => "#009EF7"],
-        ["value" => "cq", "text" => "CQ", "color" => "#FFC700"],
         ["value" => "dessi", "text" => "Dessinateur", "color" => "#50CD89"],
+        ["value" => "urba", "text" =>  "Urbaniste", "color" => "#009EF7"],
+        ["value" => "logistique", "text" => "Logistique", "color" => "#dsff5"],
         ["value" => "m2p", "text" => "M2P", "color" => "#7239EA"],
+        // ["value" => "cq", "text" => "CQ", "color" => "#FFC700"],
     ];
     public  static $TYPES_FOLDER = [
         ["value" => "B2B", "text" =>  "B2B"],
@@ -118,7 +119,7 @@ class SuiviItem extends Model
     // }
     public static function getPole()
     {
-        return self::$POLES;
+        return collect(self::$POLES);
     }
     public static function getStatus()
     {
@@ -192,26 +193,41 @@ class SuiviItem extends Model
         }
         
         if ($this->montage == 1 && isset($this->version->montage_1_point ) ) {
-            if ($this->version->montage_1_point->point) {
-               return $this->version->montage_1_point->point;
+            $monatge_1_point_on_pole = $this->version->montage_1_point->firstWhere("pole",$this->pole);
+            if ( !$monatge_1_point_on_pole ) {
+                return "null";
+            }
+            if ( $monatge_1_point_on_pole->point) {
+               return  $monatge_1_point_on_pole->point;
             }else{
-                return  ($suivi_totalPointBase * $this->version->montage_1_point->percentage) / 100;
+                return  ($suivi_totalPointBase *  $monatge_1_point_on_pole->percentage) / 100;
             }
         }
         if ($this->montage == 2 && isset($this->version->montage_2_point ) ) {
-            if ($this->version->montage_2_point->point) {
-               return $this->version->montage_2_point->point;
+            $monatge_2_point_on_pole = $this->version->montage_2_point->firstWhere("pole",$this->pole);
+            if ( !$monatge_2_point_on_pole ) {
+                return "null";
+            }
+            if ( $monatge_2_point_on_pole->point) {
+               return  $monatge_2_point_on_pole->point;
             }else{
-                return  ($suivi_totalPointBase * $this->version->montage_2_point->percentage) / 100;
+                return  ($suivi_totalPointBase *  $monatge_2_point_on_pole->percentage) / 100;
             }
         }
-        if ($this->montage == 3 && isset($this->version->montage_2_point)) {
-            if ($this->version->montage_3_point->point) {
-               return $this->version->montage_3_point->point;
+        if ($this->montage == 3 && isset($this->version->montage_3_point)) {
+            
+            $monatge_3_point_on_pole = $this->version->montage_3_point->firstWhere("pole",$this->pole);
+            if ( !$monatge_3_point_on_pole ) {
+                return "null";
+            }
+            if ($monatge_3_point_on_pole->point) {
+               return $monatge_3_point_on_pole->point;
             }else{
-                return  ($suivi_totalPointBase * $this->version->montage_3_point->percentage) / 100;
+                return  ($suivi_totalPointBase * $monatge_3_point_on_pole->percentage) / 100;
             }
         }
+
+
         if (isset($this->version->point)) {
             if ($this->version->point) {
                 return $this->version->point;

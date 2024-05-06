@@ -42,15 +42,18 @@ class SuiviVersion extends Model
     }
     public function montage_1_point()
     {
-        return $this->hasOne(SuiviVersionPointMontage::class , "version_id")->whereDeleted(0)->where("montage", 1);
+        // return $this->hasOne(SuiviVersionPointMontage::class , "version_id")->whereDeleted(0)->where("montage", 1);
+        return $this->hasMany(SuiviVersionPointMontage::class , "version_id")->whereDeleted(0)->where("montage", 1);
     }
     public function montage_2_point()
     {
-        return $this->hasOne(SuiviVersionPointMontage::class , "version_id")->whereDeleted(0)->where("montage", 2);
+        // return $this->hasOne(SuiviVersionPointMontage::class , "version_id")->whereDeleted(0)->where("montage", 2);
+        return $this->hasMany(SuiviVersionPointMontage::class , "version_id")->whereDeleted(0)->where("montage", 2);
     }
     public function montage_3_point()
     {
-        return $this->hasOne(SuiviVersionPointMontage::class , "version_id")->whereDeleted(0)->where("montage", 3);
+        // return $this->hasOne(SuiviVersionPointMontage::class , "version_id")->whereDeleted(0)->where("montage", 3);
+        return $this->hasMany(SuiviVersionPointMontage::class , "version_id")->whereDeleted(0)->where("montage", 3);
     }
 
     public static function drop($departement = ["departement" => "m2p"])

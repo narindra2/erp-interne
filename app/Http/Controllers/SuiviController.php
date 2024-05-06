@@ -751,10 +751,11 @@ class SuiviController extends Controller
         $client_types = SuiviTypeClient::dropdown();
         $project_types = SuiviType::dropdown();
         $levels = SuiviItem::getLevels();
+        $poles = SuiviItem::getPole();
         $montages = SuiviItem::getMontage();
         $versions = SuiviVersion::whereDeleted(0)->get();
         $versions_base = SuiviTypeClient::with(["project_types"])->get();
-        return view("suivis.crud.point-modal", ["client_types" => $client_types, "project_types" => $project_types, "levels" => $levels, "versions" => $versions , "versions_base" => $versions_base , "montages" => $montages]);
+        return view("suivis.crud.point-modal", ["client_types" => $client_types, "project_types" => $project_types, "levels" => $levels, "versions" => $versions , "versions_base" => $versions_base , "montages" => $montages ,"poles"  => $poles]);
     }
 
     // Save point and niveau by type client and type project 
@@ -779,6 +780,7 @@ class SuiviController extends Controller
                 "point" => $type->pivot->point,
                 "point_sup" =>  $type->pivot->point_sup,
                 "created_at" =>  Carbon::parse($type->pivot->created_at)->format("d-m-Y"),
+                "pole" =>  $type->pivot->pole,
                 "action" =>  js_anchor('<i class="fas fa-trash " style="font-size:12px" ></i>', ["data-action-url" => url("/suivi/delete/point"), "data-post-point_id" => $type->pivot->id ,"class" => "btn btn-sm btn-clean ", "title" => "Supprimé", "data-action" => "delete"]),
             ];
         }
@@ -791,6 +793,7 @@ class SuiviController extends Controller
     }
     public function save_other_version_point(Request $request)
     {
+        dd($request->all());
         $data = [];
         $rules = ['version_id_of_calcul' => "required" , "montage" => "nullable"];
         if ($request->version_id_base || $request->percentage) {
@@ -802,11 +805,11 @@ class SuiviController extends Controller
         if ($validator->fails()) {
             return ["success" => false, "validation" => true,  "message" => $validator->errors()->all()];
         }
-        $data = $request->only("percentage", "version_id_base", "point","version_id_of_calcul","montage");
-        if ($request->montage) {
+        $data = $request->only("percentage", "version_id_base", "point","version_id_of_calcul","montage",'pole');
+        if ($request->montage  ) {
             $data["version_id"] = $request->version_id_of_calcul;
             unset($data["version_id_of_calcul"]);
-            SuiviVersionPointMontage::updateOrCreate(["version_id" => $request->version_id_of_calcul ,"version_id_base" =>$request->version_id_base, "montage" =>  $request->montage], $data);
+            SuiviVersionPointMontage::updateOrCreate(["version_id" => $request->version_id_of_calcul ,"version_id_base" =>$request->version_id_base, "montage" =>  $request->montage,"pole" =>$request->pole], $data);
         }else{
             SuiviVersion::where("id", $request->version_id_of_calcul)->update($data);
         }

@@ -28,6 +28,6 @@ class SuiviTypeClient extends Model
             ->orderBy('pivot_created_at', 'desc')
             ->wherePivot ('deleted', 0)
             ->orderByPivot("niveau","desc")
-            ->withPivot("id","niveau", "point", "point_sup","version_id","created_at");
+            ->withPivot("id","niveau", "point","pole", "point_sup","version_id","created_at");
     }
 }

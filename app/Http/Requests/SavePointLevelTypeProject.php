@@ -27,6 +27,7 @@ class SavePointLevelTypeProject extends FormRequest
             'client_type_id' => 'required|min:1',
             'project_type_id' => 'required|min:1',
             'version_id' => 'required|min:1',
+            'pole' => 'required',
             'niveau' => 'required|min:1',
             'point' => 'required',
             'point_sup' => 'required',
