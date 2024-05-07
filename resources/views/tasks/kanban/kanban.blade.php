@@ -37,6 +37,13 @@
         </div>
     </div>
     <link href="{{ url('library/jkanban/jkanban.min.css') }}" rel="stylesheet" type="text/css" />
+    <style>
+        .kanban-container {
+            width: max-content !important;
+            display: flex;
+            flex-wrap: nowrap;
+        }
+    </style>
     <script src="{{ url('library/jkanban/jkanban.min.js') }}"></script>
     <script>
         $(document).ready(function() {
