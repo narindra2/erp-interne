@@ -287,9 +287,12 @@ class SuiviController extends Controller
             $points = [];
             $request_types =  is_array($request->types) ? $request->types : [$request->types];
             foreach ($request_types as $project_type_id) {
-                $point  = SuiviPoint::select("id", "client_type_id", "project_type_id")->where("client_type_id", $request->type_client)->where("project_type_id", $project_type_id)->whereDeleted(0)->latest()->first();
-                if ($point) {
-                    $points[] = $point->id;
+                $point_per_type  = SuiviPoint::where("client_type_id", $request->type_client)
+                                            ->where("pole", $request->poles)
+                                            ->where("project_type_id", $project_type_id)
+                                            ->whereDeleted(0)->latest()->first();
+                if ($point_per_type) {
+                    $points[] = $point_per_type->id;
                 }
             }
             if (isset($item->id)) {
@@ -793,7 +796,7 @@ class SuiviController extends Controller
     }
     public function save_other_version_point(Request $request)
     {
-        dd($request->all());
+  
         $data = [];
         $rules = ['version_id_of_calcul' => "required" , "montage" => "nullable"];
         if ($request->version_id_base || $request->percentage) {
