@@ -157,6 +157,7 @@ class SuiviItem extends Model
     {
         return $this->status_id == self::$FINISH;
     }
+    /** get the nb days in one month */
     public static function getNumberDayInMonth($month, $year)
     {
         return (Carbon::make("01-$month-$year")->daysInMonth);
@@ -191,13 +192,33 @@ class SuiviItem extends Model
             $point = 2.00; 
            return round($point +  Suivi::$POINT_ADDITIONAL_URBA, 3) ;
         }
-        
+
+        if (isset($this->version->point)) {
+            if ($this->version->point) {
+                return $this->version->point;
+            }
+            if ($this->version->base_calcul) {
+                $pointForThisVersion =  ($suivi_totalPointBase * $this->version->percentage) / 100;
+                return  round($pointForThisVersion, 3) ;
+            }
+        }
+        $point_per_montage = SuiviVersionPointMontage::where("version_id",$this->version_id)->where("montage",$this->montage)->where("pole",$this->poles)->where("deleted",0)->latest()->first();
+        if ($point_per_montage) {
+            if ($point_per_montage->point) {
+                return  $point_per_montage->point;
+            }else{
+                return ($suivi_totalPointBase *  $point_per_montage->percentage) / 100;
+            }
+        }else{
+            return null;
+        }
+        /*
         if ($this->montage == 1 && isset($this->version->montage_1_point ) ) {
             $monatge_1_point_on_pole = $this->version->montage_1_point->firstWhere("pole",$this->pole);
-            if ( !$monatge_1_point_on_pole ) {
-                return "null";
+            if (!$monatge_1_point_on_pole ) {
+                return null;
             }
-            if ( $monatge_1_point_on_pole->point) {
+            if ($monatge_1_point_on_pole->point) {
                return  $monatge_1_point_on_pole->point;
             }else{
                 return  ($suivi_totalPointBase *  $monatge_1_point_on_pole->percentage) / 100;
@@ -206,7 +227,7 @@ class SuiviItem extends Model
         if ($this->montage == 2 && isset($this->version->montage_2_point ) ) {
             $monatge_2_point_on_pole = $this->version->montage_2_point->firstWhere("pole",$this->pole);
             if ( !$monatge_2_point_on_pole ) {
-                return "null";
+                return null;
             }
             if ( $monatge_2_point_on_pole->point) {
                return  $monatge_2_point_on_pole->point;
@@ -218,7 +239,7 @@ class SuiviItem extends Model
             
             $monatge_3_point_on_pole = $this->version->montage_3_point->firstWhere("pole",$this->pole);
             if ( !$monatge_3_point_on_pole ) {
-                return "null";
+                return null;
             }
             if ($monatge_3_point_on_pole->point) {
                return $monatge_3_point_on_pole->point;
@@ -226,19 +247,9 @@ class SuiviItem extends Model
                 return  ($suivi_totalPointBase * $monatge_3_point_on_pole->percentage) / 100;
             }
         }
-
-
-        if (isset($this->version->point)) {
-            if ($this->version->point) {
-                return $this->version->point;
-            }
-            if ($this->version->base_calcul) {
-                $pointForThisVersion =  ($suivi_totalPointBase * $this->version->percentage) / 100;
-                return  round($pointForThisVersion, 3) ;
-            }
-        }
         
         return $suivi_totalPointBase;
+        */
     }
     // V1 point
     public function getRealPointItemAttribute()
@@ -315,10 +326,10 @@ class SuiviItem extends Model
     {
         $auth = Auth::user();
         $suivi_item = SuiviItem::whereDeleted(0);
-        /*** Basic filters */
         // $suivi_item->with(["version.levelsPoint","level" ,"suivi.points.project_type" ]);
-
         // $suivi_item->with(["version" ,"version.base_calcul", "version.montage_2_point", "version.montage_3_point"]);
+        
+        /*** Basic filters */
         $suivi_item->with(["version" => function ($q_version) {$q_version->with(["montage_2_point" , "montage_3_point" ,"montage_1_point"]); },"version.base_calcul" ]);
         $version_id  = get_array_value($options, "version_id");
         if ($version_id) {
@@ -365,10 +376,30 @@ class SuiviItem extends Model
             $suivi_item->whereIn("status_id", $status);
         }
         $type_project  = get_array_value($options, "type_project");
-        if ($status) {
+        if ($type_project) {
             $suivi_item->whereIn("status_id", $type_project);
         }
-
+        $montages  = get_array_value($options, "montages");
+        if ($montages) {
+            $suivi_item->whereIn("motange", $montages);
+        }
+        $poles  = get_array_value($options, "poles");
+        if ($poles) {
+            $suivi_item->whereIn("poles", $poles);
+        }
+        $versions  = get_array_value($options, "versions");
+        if ($versions) {
+            $suivi_item->whereIn("version_id", $versions);
+        }
+        $users  = get_array_value($options, "users");
+        if ($users) {
+            $suivi_item->whereIn("user_id", $users);
+        }
+        $suivis  = get_array_value($options, "suivis"); // folder ids
+        if ($suivis) {
+            $suivi_item->whereIn("suivi_id", Suivi::findMany($suivis)->pluck("id")->toArray());
+        }
+        /**End advanced filter */
         $interval = get_array_value($options, "interval");
         if ($interval) {
             $dates = explode("-", $interval);

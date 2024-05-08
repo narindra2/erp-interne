@@ -32,11 +32,11 @@ class Sanction extends Model
         $query->with(["user.userJob.job"]);
 
         $year = get_array_value($options, "year");
-        if ( $year) {
+        if ($year) {
             $query->whereYear('date', '=', $year);
         } 
         $user_id = get_array_value($options, "user_id");
-        if ( $user_id) {
+        if ($user_id) {
             $query->where('user_id', '=', $user_id);
         } 
         $type = get_array_value($options, "type");

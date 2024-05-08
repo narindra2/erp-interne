@@ -288,8 +288,8 @@ class SuiviController extends Controller
             $request_types =  is_array($request->types) ? $request->types : [$request->types];
             foreach ($request_types as $project_type_id) {
                 $point_per_type  = SuiviPoint::where("client_type_id", $request->type_client)
-                                            ->where("pole", $request->poles)
                                             ->where("project_type_id", $project_type_id)
+                                            ->where("pole", $request->poles)
                                             ->whereDeleted(0)->latest()->first();
                 if ($point_per_type) {
                     $points[] = $point_per_type->id;
