@@ -18,7 +18,8 @@ class HourRecoveryController extends Controller
      */
     public function index()
     {
-        return view('hour-recoveries.index');
+
+        return view('hour-recoveries.index',["basic_filter" => HourRecovery::createFilter()]);
     }
 
     /**
@@ -26,7 +27,7 @@ class HourRecoveryController extends Controller
      */
     public function data_list(Request $request)
     {
-        $hourRecoveries = HourRecovery::detail($request->input());
+        $hourRecoveries = HourRecovery::getDetail($request->all())->get();
         $data = [];
         foreach ($hourRecoveries as $hourRecovery) {
             $data[] = $this->make_row($hourRecovery);

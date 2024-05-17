@@ -33,7 +33,7 @@
     </div>
     <div class="card shadow-sm">
         <div class="card-body card-scroll h-500px" id="board-task" data-section-id="{{ $section->id }}">
-            <div id="jkanban-task"></div>
+            <div id="jkanban-task" data-jkanban-height="300"></div>
         </div>
     </div>
     <link href="{{ url('library/jkanban/jkanban.min.css') }}" rel="stylesheet" type="text/css" />
@@ -168,7 +168,7 @@
             function reInitialiseKanban(data = {}) {
                 block()
                 <?php foreach(inputs_filter_datatable($basic_filter) as $input ) { ?>
-                data.{{ $input }} = $("#{{ $input }}").val();
+                    data.{{ $input }} = $("#{{ $input }}").val();
                 <?php } ?>
                 if (loadDataAjax &&  loadDataAjax.readyState != 4) {
                     loadDataAjax.abort();
@@ -223,3 +223,9 @@
             })
         })
     </script>
+<style>
+    
+    .kanban-board{
+        
+    }
+</style>

@@ -19,15 +19,17 @@
             </div>  
     </div>
     <div class="card-footer d-flex justify-content-end">
-        <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-light-success btn-sm mr-2 ">
-            @lang('lang.no')</button>
-            &nbsp;
         <button type="submit" id="submit" class=" btn btn-sm btn-light-danger  mr-2">
             @include('partials.general._button-indicator', [
-                'label' => trans('lang.yes') . ", je confirme",
+                'label' => trans('lang.yes') . ", je le confirme ",
                 'message' => trans('lang.sending'),
             ])
         </button>
+        &nbsp;
+        <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-light-success btn-sm mr-2 ">
+            @lang('lang.no')</button>
+       
+       
     </div>
 </form>
 <script>

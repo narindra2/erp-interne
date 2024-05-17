@@ -188,11 +188,12 @@ class SuiviItem extends Model
     public function getPointOtherVersionAttribute()
     {   
         $suivi_totalPointBase  = $this->suivi->totalPointBase;
+        /*
         if ($this->poles == "urba") {
             $point = 2.00; 
            return round($point +  Suivi::$POINT_ADDITIONAL_URBA, 3) ;
         }
-
+        */
         if (isset($this->version->point)) {
             if ($this->version->point) {
                 return $this->version->point;

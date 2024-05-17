@@ -389,6 +389,7 @@ var KTApp = function () {
                 isLargeModal = $(this).attr('data-modal-lg'),
                 isXlModal = $(this).attr('data-modal-xl'),
                 modalDialogWidth  = $(this).attr('modal-width'),
+                modalDialogWidthPx  = $(this).attr('data-width-px'),
                 title = $(this).attr('data-title'),
                 $this = $("#ajax-modal");
             if (!url) {
@@ -426,12 +427,15 @@ var KTApp = function () {
                     }else if (isXlModal) {
                         $this.find('.modal-dialog').addClass("modal-xl")
                     }else {
-                    }
-                    if (modalDialogWidth) {
-                        $("#modal-dialog").addClass(modalDialogWidth)
+                        if (modalDialogWidthPx) {
+                            console.log(modalDialogWidthPx);
+                            $("#modal-dialog").css("width" , modalDialogWidthPx)
+                        }
+                        if (modalDialogWidth) {
+                            $("#modal-dialog").addClass(modalDialogWidth)
+                        }
                     }
                     $("#ajax-modal-content").html(response);
-
                     // $("#ajax-modal-content").addClass("scroll h-"+600+"px px-5")
                 },
                 statusCode: {

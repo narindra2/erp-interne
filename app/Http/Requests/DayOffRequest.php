@@ -33,6 +33,12 @@ class DayOffRequest extends FormRequest
         }else{
             $rules['start_date'] =  'required|date_format:d/m/Y|after_or_equal:'. Carbon::parse(Carbon::now()->addDay(7))->format("d/m/Y") ;
         }
+        // if (request('start_date') == request('return_date')) {
+        //     /** This not logic  */
+        //     if (request('start_date_is_morning') == request('return_date_is_morning') ) {
+        //         $rules['start_date_is_morning'] = "not_in:" .request('return_date_is_morning');
+        //     }
+        // }
         $rules['return_date'] = 'required|date_format:d/m/Y|after_or_equal:'. request('start_date');
         $rules['nature_id'] = 'required|integer|min:1';
         $rules['reason'] = 'required';

@@ -49,16 +49,16 @@ if (!function_exists('delete_users_cache')) {
 
 if (!function_exists('get_cache_total_permission')) {
     function get_cache_total_permission($user_id = 0) {
-        return Cache::rememberForever("get_cache_total_permission_$user_id", function () use ($user_id) {
+        // return Cache::rememberForever("get_cache_total_permission_$user_id", function () use ($user_id) {
             return DB::table("days_off")
                     ->selectRaw('SUM(DATEDIFF(return_date , start_date)) AS total')
                     ->where("applicant_id", $user_id)
                     ->where("type_id", 2)
                     ->where("result", "validated")
-                    ->where("is_canceled", false)
+                    ->where("is_canceled", 0)
                     ->whereYear('created_at', date('Y'))
                     ->get();
-        });
+        // });
     }
 }
 

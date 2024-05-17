@@ -28,6 +28,7 @@ class DayOffController extends Controller
     //List of the request of dayOff by employee
     public function index()
     {
+        
         $data = [];
         $data['basic_filter'] = DayOff::createFilter();
         return view('days_off.index', $data);
@@ -65,7 +66,8 @@ class DayOffController extends Controller
 
     public function loadModalInfo(DayOff $dayOff)
     {
-        return view("days_off.modal.more-information", ["dayOff" => $dayOff]);
+        $natures = DayoffNatureColor::whereDeleted(0)->whereStatus(1)->latest()->get();
+        return view("days_off.modal.more-information", ["dayOff" => $dayOff , "natures" => $natures]);
     }
 
     
@@ -123,12 +125,12 @@ class DayOffController extends Controller
     {
         $row = [
             'DT_RowId' => row_id("dayoff", $dayOff->id),
-            "created_at" => $dayOff->created_at->format('Y-m-d'),
+            "created_at" => $dayOff->created_at->translatedFormat('d-M-Y'),
             "registration_number" => $dayOff->applicant->registration_number,
             "name" => $dayOff->applicant->sortname,
             "job" => $dayOff->getApplicantJob(),
-            "start_date" => $dayOff->start_date->format("Y-m-d"),
-            "return_date" => $dayOff->return_date->format("Y-m-d"),
+            "start_date" => $dayOff->start_date->translatedFormat("d-M-Y"),
+            "return_date" => $dayOff->return_date->translatedFormat("d-M-Y"),
             "duration" => $dayOff->duration . "jrs",
             "status" => $dayOff->getResult(),
             'nature'=> $dayOff->nature ? '<span class="badge  " style="min-width: 90%;color:white;background-color:'.$dayOff->nature->color.'">'.$dayOff->nature->nature.'</span>'  : "" ,
@@ -145,11 +147,16 @@ class DayOffController extends Controller
         $query = DayOff::with(['applicant',"nature"])->whereDeleted(0);
         /** User dayoff validate and not yet finish  */
         $query->whereDate('return_date', '>', Carbon::now()->format("Y-m-d"))->where('is_canceled', 0);
-        if ($user->isCp()) {
-            $user->load('userJob');
-            $users_ID = UserJobView::where("department_id", $user->userJob->department_id)->get()->pluck("users_id");
-            $query->whereIn("applicant_id", $users_ID);
+        if ($user->isRhOrAdmin()) {
+         /** Dont filter dayoff  */   
+        }else{
+            if ($user->isCp()) {
+                $user->load('userJob');
+                $users_ID = UserJobView::where("department_id", $user->userJob->department_id)->get()->pluck("users_id");
+                $query->whereIn("applicant_id", $users_ID);
+            }
         }
+        
         /** End  user not yet return work by return_date asc */
         $daysOff =  $query->where('result', 'validated')->oldest("return_date")->get();
         foreach ($daysOff as $dayOff) {
@@ -228,12 +235,12 @@ class DayOffController extends Controller
     {
         $row = [];
         $row['DT_RowId'] = row_id("dayoff", $dayOff->id);
-        $row["created_at"] = $dayOff->created_at->format("Y-m-d");
+        $row["created_at"] = $dayOff->created_at->translatedFormat("d-M-Y");
         $row["matricule"] =  $dayOff->applicant->registration_number;
         $row["applicant"] = auth()->id() == $dayOff->applicant_id ? 'Moi' : $dayOff->applicant->sortname;
         $row["author"] = auth()->id() == $dayOff->author_id ? 'Moi-même' : $dayOff->author->sortname;
-        $row['start_date'] = $dayOff->start_date->format("Y-m-d");
-        $row['return_date'] = $dayOff->return_date->format("Y-m-d");
+        $row['start_date'] = $dayOff->start_date->translatedFormat("d-M-Y");
+        $row['return_date'] = $dayOff->return_date->translatedFormat("d-M-Y");
         $row['duration'] = $dayOff->duration . "jrs";
         $row['type'] = trans("lang.{$dayOff->type->type}");
         $row['status'] = $dayOff->getResult();
@@ -294,7 +301,6 @@ class DayOffController extends Controller
 
     public function store(DayOffRequest $request)
     {
-        // dd($request->all());
         $input = $request->input();
         $files = $request->hasFile('files') ? $request->file("files") : null;
         if (!$request->applicant_id) {
@@ -355,17 +361,31 @@ class DayOffController extends Controller
         if ($request->ajax()) {
             $validator = Validator::make($request->all(), [
                 'id' => ['required'],
-                'result' => ['required']
+                'result' => ['required'],
+                "return_date" =>  'required|date_format:d/m/Y|after_or_equal:'. request('start_date')
             ]);
             if ($validator->fails()) {
                 die(json_encode(["success" => false,  "message" => $validator->errors()->all()]));
             }
-
             if ($request->is_canceled) {
                 $dayOff = DayOff::cancelDayOff($request->id);
                 return ["success" => true, "row_id" => row_id("dayoff", $request->id),  "data" => $this->make_row($dayOff), "message" => "La demande a été annulé"];
             } else {
+                if ($request->hasFile('files')) {
+                    foreach ($request->file("files") as $file) {
+                        //Save the file to the server
+                        $fileName = time() . '_' . $file->getClientOriginalName();
+                        $filePath = $file->storeAs('uploads', $fileName, 'public');
+                        //write the filepath to the database
+                        DaysOffAttachment::create([
+                            'days_off_id' => $request->id,
+                            'url' => 'app/public/' . $filePath,
+                            'filename' => $file->getClientOriginalName()
+                        ]);
+                    }
+                }
                 $dayoff = DayOff::responseRequest($request->id, $request->except(["id", "_token"]));
+                
                 $dayoff->load("applicant");
                 $dayoff->load("applicant.userjob");
                 die(json_encode(["success" => true, "row_id" => row_id("dayoff", $request->id),  "data" => $this->make_row($dayoff), "message" => "La demande a été bien sauvegardé"]));

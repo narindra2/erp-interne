@@ -184,7 +184,7 @@
                             if (last !== group ) {
                                 $(rows)
                                     .eq(i)
-                                    .before('<tr class="group  h-20px"><td colspan="'+(columnCount + 2) +'">' + group + '</td></tr>');
+                                    .before('<tr class="group  h-20px"><td colspan="'+(columnCount + 2) +'"> ' + group + '</td></tr>');
                                 last = group;
                             }
                         });
@@ -199,9 +199,9 @@
                         table.columns(json.hidden_columns).visible(false);
                     }
                     $("#suiviTable_processing").css("z-index", "10").addClass("bg-dark")
-                }
-            });
-            dataTableShowRowDetails("#suiviTable", dataTableInstance.suiviTable,"details-row"); /** includes/helpers-js*/
+
+
+                    dataTableShowRowDetails("#suiviTable", dataTableInstance.suiviTable,"details-row"); /** includes/helpers-js*/
             
             $('a.columns-visibility').on('click', function (e) {
                     e.preventDefault();
@@ -626,6 +626,10 @@
                 span.innerHTML = template;
                 return $(span);
             }
+
+                }
+            });
+            
            // Bug : empêcher la fermeture du dropdown pour chaque select2 dans dropdown menu  filtre avancé
             $(document).on('select2:unselect', '.select2-dropdown', function(e) {
                 e.params.originalEvent.stopPropagation();

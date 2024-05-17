@@ -75,12 +75,12 @@ class HourRecovery extends Model
     public function createForm(User $user) {
         if ($this->id == null) {
             $this->user_id = $user->id;
-            $this->job_id = $user->userJob->jobs_id;
+            $this->job_id = $user->userJob->jobs_id ?? 0;
         }
     }   
 
     public function getJobName() {
-        if ($this->job_id == null) {
+        if ($this->job_id !== null) {
             return $this->user->userJob->job->name;
         }
         return $this->job_id;
@@ -97,21 +97,45 @@ class HourRecovery extends Model
         return HourRecovery::create($input);
     }
 
-    public function scopeDetail($query, $input)
+    public function scopeGetDetail($query, $options)
     {
         $query->with(['job', 'user']);
         $user = Auth::user();
-         //Select only the hour recovery for himself and in his department
-        if ($user->isCp() || in_array( $user->id , Menu::$USER_ALLOWED_PART_ACCESS["complement_hours"]) ) {
-            $users_ID = UserJobView::where("department_id", $user->userJob->department_id)->get()->pluck("users_id");
-            $query->whereIn("user_id", $users_ID);
-        } else {
-            //Select only the hour recovery for himself if the user is not a admin nor a hr
-            if (!$user->isAdmin() && !$user->isHR()) {
-                $query->where('user_id', $user->id);
+        if ($user->isRhOrAdmin()) {
+           /** Not filter it */
+        }else{
+            //Select only the hour recovery for himself and in his department
+            if ($user->isCp() || in_array( $user->id , Menu::$USER_ALLOWED_PART_ACCESS["complement_hours"]) ) {
+                $users_ID = UserJobView::where("department_id", $user->userJob->department_id)->get()->pluck("users_id");
+                $query->whereIn("user_id", $users_ID);
+            } else {
+                //Select only the hour recovery for himself if the user is not a admin nor a hr
+                if (!$user->isRhOrAdmin()) {
+                    $query->where('user_id', $user->id);
+                }
             }
         }
+        $year = get_array_value($options, "year");
+        if ($year) {
+            $query->whereYear('created_at', '=', $year);
+        } 
         //Filter the result by the input given
-        return $query->whereDeleted(0)->get();
+        return $query->whereDeleted(0)->latest();
+    }
+
+    public static function createFilter($options = [])
+    {
+        $filters =  [];
+        $filters[] = [
+            "label" => " Toutes ", 
+            "name" =>"year",
+            "type" => "select",
+            "width"  =>"w-200px",
+            'attributes' => [
+                "data-allow-clear" => "true",
+            ],
+            "options" => yearList(3 , true),
+        ];
+        return $filters;
     }
 }

@@ -203,9 +203,6 @@ class User extends Authenticatable
     {
         return $this->hasOne(SuiviUserParams::class, "user_id");
     }
-    
-
-
     public function sectionsTask()
     {
         return $this->belongsToMany(TaskSection::class,"task_sections_members","user_id","section_id");

@@ -33,8 +33,8 @@ class DayOff extends Model
     ];
 
     protected $casts = [
-        'start_date' => 'date:d-m-Y',
-        'return_date' => 'datetime:d-m-Y',
+        'start_date' => 'date:d-M-Y',
+        'return_date' => 'datetime:d-M-Y',
     ];
 
     public $status = ["in_progress", "validated", "refused"];
@@ -99,8 +99,11 @@ class DayOff extends Model
         $interval = date_diff($start, $end);
         $duration = $interval->format("%a");
         if ($this->start_date_is_morning != $this->return_date_is_morning) {
-            if ($this->start_date_is_morning == "0") $duration -= 0.5;
-            else                                     $duration += 0.5;
+            if ($this->start_date_is_morning == "0"){
+                $duration -= 0.5;
+            }else{
+                $duration += 0.5;
+            }                                     
         }
         return $duration;
     }

@@ -47,7 +47,7 @@
             <div class="form-group row mb-4">
                 <label class="col-3 col-form-label">Date de début</label>
                 <div class="col-4">
-                    <input class="form-control form-control-sm form-control-solid datepicker" @if ($dayOff->start_date)
+                    <input id="" class="form-control form-control-sm form-control-solid datepicker" @if ($dayOff->start_date)
                         value="{{ $dayOff->start_date->format("d/m/Y") }}"
                     @endif autocomplete="off" name="start_date" placeholder="DD/MM/YYYY" data-rule-required="true" data-msg-required="@lang('lang.required_input')"/>
                     {{-- <input type="date" class="form-control form-control-sm form-control-solid" id="start_date"> --}}

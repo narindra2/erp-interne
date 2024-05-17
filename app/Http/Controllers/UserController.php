@@ -9,6 +9,7 @@ use App\Models\Job;
 use App\Models\Kid;
 use App\Models\User;
 use App\Models\Check;
+use App\Models\DayOff;
 use App\Models\UserJob;
 use App\Models\Sanction;
 use App\Models\UserType;
@@ -76,7 +77,10 @@ class UserController extends Controller
         $row['registration_number'] = $userJob->user->registration_number;
         $row['name'] = anchor(url("/user/form/$id"), $userJob->user->fullname .( $userJob->user->deleted ? '<span class="badge badge-light-danger">Supprimé</span>' : "")   , ["class" => "text-primary"]);
         $row['avatar'] =  "<div class='symbol symbol-30px symbol-circle'><img alt='avatar' src=".  $userJob->user->avatarUrl ."></div>";
-        $row['job'] = $userJob->job->name;
+        $row['job'] =  "<span class='fs-6 badge badge-light-success'>{$userJob->job->name}</span>";  ;
+        $row['nb_days_off_remaining'] = "<span class='fs-6 badge badge-light-info'>{$userJob->user->nb_days_off_remaining}jrs</span>";
+        $nb_permission = (DayOff::$_max_permission_on_year - User::get_cache_total_permission($userJob->user->id) )."/". DayOff::$_max_permission_on_year ;
+        $row['nb_permission'] = "<span class='fs-6 badge badge-light-primary'>{$nb_permission}jrs</span>";
         $contractType = $userJob->contractType; 
         $row['contract_type'] =  $contractType ->acronym ;
         if ($userJob->contractType->id == ContractType::$_PE_CONTRAT || $userJob->contractType->id == ContractType::$_PE_CONTRAT_RENEW) {
