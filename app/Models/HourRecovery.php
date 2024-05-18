@@ -120,7 +120,7 @@ class HourRecovery extends Model
             $query->whereYear('created_at', '=', $year);
         } 
         //Filter the result by the input given
-        return $query->whereDeleted(0)->latest();
+        return $query->whereDeleted(0)->orderBy("is_validated","DESC")->oldest("date_of_absence");
     }
 
     public static function createFilter($options = [])

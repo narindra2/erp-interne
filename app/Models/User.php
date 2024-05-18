@@ -236,7 +236,8 @@ class User extends Authenticatable
 
     public function getAvatarUrlAttribute()
     {
-        return $this->getAvatarFormat(100);        
+        // return $this->getAvatarFormat(100);        
+        return $this->getAvatarFormat();        
     }
 
     public function getAvatarFormat($format = "") {
