@@ -268,7 +268,8 @@ class DayOff extends Model
         $dayOff->update($data);
 
         $dayOffType = $dayOff->type;
-        if ($dayOffType->impact_in_dayoff_balance && $dayOff->result == "validated") {
+        /** DayOffType is a  daysoff  */
+        if ($dayOffType->impact_in_dayoff_balance && $dayOff->result == "validated" && $dayOff->type->type == "daysoff") {
             $applicant = $dayOff->applicant;
             $applicant->nb_days_off_remaining -= $dayOff->duration;
             $applicant->save();
@@ -320,7 +321,7 @@ class DayOff extends Model
         }
         unset($input['files']);
         $dayOff = DayOff::updateOrCreate(["id" => $input['id']], $input);
-        if ($validate_immediately && $dayOff->type->impact_in_dayoff_balance) {
+        if ($validate_immediately && $dayOff->type->impact_in_dayoff_balance && $dayOff->type->type == "daysoff" ) {
             $applicant = $dayOff->applicant;
             $applicant->nb_days_off_remaining -= $dayOff->duration;
             $applicant->save();

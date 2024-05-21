@@ -1,12 +1,13 @@
 <?php
 
-use App\Models\Message;
-use App\Models\MessageReaction;
-use App\Models\MessageView;
 use App\Models\User;
+use App\Models\Message;
+use App\Models\DaysOffType;
+use App\Models\MessageView;
 use App\Models\UserJobView;
-use Illuminate\Database\Eloquent\Builder;
+use App\Models\MessageReaction;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Database\Eloquent\Builder;
 
 if (!function_exists('get_cache_rh_admin')) {
      function get_cache_rh_admin(){
@@ -49,16 +50,17 @@ if (!function_exists('delete_users_cache')) {
 
 if (!function_exists('get_cache_total_permission')) {
     function get_cache_total_permission($user_id = 0) {
-        // return Cache::rememberForever("get_cache_total_permission_$user_id", function () use ($user_id) {
+        return Cache::rememberForever("get_cache_total_permission_$user_id", function () use ($user_id) {
+            $permissions = DaysOffType::select(["deleted","type","id"])->whereDeleted(0)->where("type","permission")->get()->pluck("id")->toArray();
             return DB::table("days_off")
                     ->selectRaw('SUM(DATEDIFF(return_date , start_date)) AS total')
                     ->where("applicant_id", $user_id)
-                    ->where("type_id", 2)
+                    ->whereIn("type_id", $permissions)
                     ->where("result", "validated")
                     ->where("is_canceled", 0)
                     ->whereYear('created_at', date('Y'))
                     ->get();
-        // });
+        });
     }
 }
 

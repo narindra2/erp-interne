@@ -309,7 +309,6 @@ class DayOffController extends Controller
         if ((!User::isRhOrAdmin(Auth::user()))) { // the creator in not RH or Admin
             if ($request->request_type == "permission") {
                 $this->_can_make_request_permission($input['applicant_id'], $request);
-                delete_cache("get_cache_total_permission_{$input['applicant_id']}");
             }
             if ($request->request_type == "daysoff") {
                 $this->_can_make_request_dayoff($input['applicant_id'], $request);
@@ -338,6 +337,7 @@ class DayOffController extends Controller
         if ($sum_total > (DayOff::$_max_permission_on_year + 1)) {
             die(json_encode(["success" => false, "message" => trans("lang.max_perssion_on_year_executed") . ". Déjà demandé :  $sum_created jr(s)" . " , Demandé : $sum_request jr(s) "]));
         }
+        delete_cache("get_cache_total_permission_{$applicant_id}");
     }
     private function _can_make_request_dayoff($applicant_id, DayOffRequest $request)
     {

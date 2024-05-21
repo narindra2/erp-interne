@@ -233,7 +233,6 @@ class User extends Authenticatable
     public function pointingTemp() {
         return $this->hasOne(PointingTemp::class, "user_id");
     }
-
     public function getAvatarUrlAttribute()
     {
         // return $this->getAvatarFormat(100);        
