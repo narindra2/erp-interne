@@ -178,7 +178,7 @@ class DayOff extends Model
         if ($absence_date) {
             $daysOff->whereDate('start_date', '<=', to_date($absence_date))
                     ->whereDate('return_date', '>=', to_date($absence_date))
-                    ->where('result', 'validated')
+                    // ->where('result', 'validated')
                     ->where("is_canceled", 0);
         }
         $status_dayoff = get_array_value($options, 'status_dayoff'); //finish,in_progress
