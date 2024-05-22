@@ -107,52 +107,56 @@
                         <input id="return_date" name="return_date" data-rule-required="true" data-msg-required="@lang('lang.required_input')" class="form-control form-control-sm form-control-solid datepicker" autocomplete="off" name="start_date" placeholder="DD/MM/YYYY" data-rule-required="true" data-msg-required="@lang('lang.required_input')" value="{{ $dayOff->getReturnDate()->format('d/m/Y') }}"/>
                     </div>
                 </div>
-                
+                @php
+                    $absence = $dayOff->type->type == "daysoff" ? " du congé"  :" de la permission";
+                @endphp
                 <div class="separator border-info mt-3 mb-3"></div>
-                
-                <div class="form-group row">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="card-title d-flex flex-column">   
-                                <span class="text-gray-700 pt-1 fw-semibold fs-6">Nature du congé : </span>
-                                <select id="nature_id" name="nature_id" class="form-select form-select-lg form-select-solid" value="{{ $dayOff->nature->nature }}" data-control="select2" data-hide-search="true" data-dropdown-parent="#ajax-modal">
-                                    @foreach ($natures as $item)
-                                        <option value="{{ $item->id }}" @if ($dayOff && $dayOff->nature_id == $item->id) selected @endif>{{ $item->nature }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                       
-                        <div class="col-md-6">
-                            <div class="card-title d-flex flex-column">   
-                                <span class="text-gray-700 pt-1 fw-semibold fs-6">Description : </span>
-                                <textarea id="reason" class="form-control form-control form-control-solid" rows="1" data-kt-autosize="true" data-rule-required="true" data-msg-required="@lang('lang.required_input')">{{ $dayOff->reason }}</textarea>
-                            </div>
-                        </div>
-                      
+                <div class="row">
+                    <div class="col-md-6">
+                        <span class="text-gray-700 pt-1 fw-semibold fs-6">Type {{  $absence }} : </span>
+                        <select id="type_id" name="type_id" class="form-select form-select-lg form-select-solid"  data-control="select2" data-hide-search="false" data-dropdown-parent="#ajax-modal">
+                            @foreach ($types as $type)
+                                <option value="{{ $type->id }}" @if ($dayOff && $dayOff->type_id == $type->type) selected @endif>{{ $type->name . ($type->nb_days ?   " - $type->nb_days"  . " jrs" : "") }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="text-gray-700 pt-1 fw-semibold fs-6">Nature {{  $absence }} : </span>
+                            <select id="nature_id" name="nature_id" class="form-select form-select-lg form-select-solid" value="{{ $dayOff->nature->nature }}" data-control="select2" data-hide-search="true" data-dropdown-parent="#ajax-modal">
+                                @foreach ($natures as $item)
+                                    <option value="{{ $item->id }}" @if ($dayOff && $dayOff->nature_id == $item->id) selected @endif>{{ $item->nature }}</option>
+                                @endforeach
+                            </select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="card-title d-flex flex-column">   
+                        <span class="text-gray-700 pt-1 fw-semibold fs-6">Description : </span>
+                        <textarea id="reason" class="form-control form-control form-control-solid" rows="2" data-kt-autosize="true" data-rule-required="true" data-msg-required="@lang('lang.required_input')">{{ $dayOff->reason }}</textarea>
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="card-title d-flex flex-column">   
-                                <span class="text-gray-700 pt-1 fw-semibold fs-6  mb-1">Piece(s) justificatif :</span>
+                                <span class="text-gray-700 pt-1 fw-semibold fs-6  mb-1">Piéce(s) justificatif :</span>
                                 @if ($dayOff->attachments->count())
                                     <div class="row">
                                         @foreach ($dayOff->attachments as $attachment) 
                                             <span class="me-3 col-md-1"><a href="{{ url('days-off/download-attachment') . "/" . $attachment->id }}" target="_blank" rel="noopener noreferrer"><img src="{{ asset(theme()->getMediaUrlPath() . 'svg/files/upload.svg') }}" alt="" data-toggle="tooltip" data-placement="bottom" title="{{ $attachment->filename }}" height="40px" width="40px"></a></span>
                                         @endforeach 
                                     </div>
+                                @else 
+                                    <i class="mt-2" >Pas de piéce justificatif ajouté.</i>
                                 @endif
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="card-title d-flex flex-column">   
-                                <span class="text-gray-700 pt-1 fw-semibold fs-6 mb-1">Ajouté autre piece joint : </span>
+                                <span class="text-gray-700 pt-1 fw-semibold fs-6 mb-1">Ajouté autre Piéce joint : </span>
                                <input class="form-control form-control-sm" id="formFileSm" name="files[]" type="file" multiple>
                             </div>
                         </div>
-                      
                     </div>
                 </div>
                 <div class="separator border-info mt-3 mb-3"></div>
@@ -227,19 +231,24 @@
             <div class="d-flex justify-content-end my-5">
                 <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn  btn-sm btn-secondary  font-weight-bold mx-2 ">Quitter ...</button>
                 @php
-                    // dd($dayOff->getReturnDate());
-                    $can_save_it = false;
+                    /* Old concept */
+                    $can_update_it = false;
                     if (!$dayOff->getStartDate()->isPast()) {
-                        $can_save_it = true;
-                    }
-                    if (!$dayOff->is_canceled) {
-                        $can_save_it = true;
+                        $can_update_it = true;
                     }
                     if ($dayOff->getReturnDate()->isPast() && !$dayOff->getReturnDate()->isToday() ) {
-                        $can_save_it = false;
+                        $can_update_it = false;
+                    }
+                    /* End old concept */
+
+                    /* new demande RH  */
+                    if ($dayOff->is_canceled) {
+                        $can_update_it = false;
+                    }else {
+                        $can_update_it = true; 
                     }
                 @endphp
-                @if ($can_save_it)
+                @if ($can_update_it)
                     <button type="submit" class="btn btn-sm btn-light-primary font-weight-bold mx-2">
                         @include('partials.general._button-indicator', ['label' =>"Enregistrer" ,"message" => trans('lang.sending')])
                     </button>

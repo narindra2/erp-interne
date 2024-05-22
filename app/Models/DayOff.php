@@ -107,6 +107,21 @@ class DayOff extends Model
         }
         return $duration;
     }
+    public function getNewCalculDuration($start_date, $return_date ,$start_date_is_morning ,$return_date_is_morning )
+    {
+        $start = date_create($start_date);
+        $end = date_create($return_date );
+        $interval = date_diff($start, $end);
+        $duration = $interval->format("%a");
+        if ($start_date_is_morning != $return_date_is_morning) {
+            if ($start_date_is_morning == "0"){
+                $duration -= 0.5;
+            }else{
+                $duration += 0.5;
+            }                                     
+        }
+        return $duration;
+    }
 
     //This function is used to display the result of the days off request
     public function getResult()
@@ -156,7 +171,15 @@ class DayOff extends Model
         if ($created_at) {
             $is_empty_filter = false;
             $date = explode("-", $created_at);
-            $daysOff->whereBetween('created_at', [to_date($date[0]), to_date($date[1])]);
+           $daysOff->whereBetween('created_at', [to_date($date[0]), to_date($date[1])]);
+            
+        }
+        $absence_date = get_array_value($options, 'absence_date');
+        if ($absence_date) {
+            $daysOff->whereDate('start_date', '<=', to_date($absence_date))
+                    ->whereDate('return_date', '>=', to_date($absence_date))
+                    ->where('result', 'validated')
+                    ->where("is_canceled", 0);
         }
         $status_dayoff = get_array_value($options, 'status_dayoff'); //finish,in_progress
         if ($status_dayoff) {
@@ -232,12 +255,11 @@ class DayOff extends Model
 
     public static function cancelDayOff($id)
     {
-        $dayOff = DayOff::find($id);
+        $dayOff = DayOff::with(["applicant","applicant.userjob"])->find($id);
         $dayOff->is_canceled = true;
         $dayOff->save();
-
-        $dayOff->load("applicant");
-        $dayOff->load("applicant.userjob");
+        // $dayOff->load("applicant");
+        // $dayOff->load("applicant.userjob");
         
         $dayOff->returnDuration();
         $dayOff->sendNotificationOnUpdate();
@@ -255,23 +277,39 @@ class DayOff extends Model
 
     public static function responseRequest($id, $data)
     {
+       
+        /** Old dayoff info */
+        $dayOff = DayOff::with(["type","applicant"])->find($id);
+        $old_duration = $dayOff->duration;
+        $old_result = $dayOff->result;
 
-        $dayOff = DayOff::find($id);
-        //Check if the request is already accepted or declined, if yes we get out of the function
-        if ($dayOff->result != "in_progress") {
-            return $dayOff;
-        }
+        /** New  dayoff info */
         $data['start_date'] = to_date($data['start_date']);
         $data['return_date'] = to_date($data['return_date']);
-        if ($data['result'] != 'in_progress')
+        if ($data['result'] = 'validated'){
             $data['result_date'] = Carbon::now();
-        $dayOff->update($data);
+        }
+       
 
-        $dayOffType = $dayOff->type;
-        /** DayOffType is a  daysoff  */
-        if ($dayOffType->impact_in_dayoff_balance && $dayOff->result == "validated" && $dayOff->type->type == "daysoff") {
-            $applicant = $dayOff->applicant;
-            $applicant->nb_days_off_remaining -= $dayOff->duration;
+        $dayOff->update($data);
+        $new_duration =  $dayOff->duration;
+        $new_result =  $data["result"];
+        $applicant = $dayOff->applicant;
+     
+        /** Check if  dayOff  type is impact in dayoff user balance */
+        $is_impacted_in_dayoff_balance = $dayOff->type->impact_in_dayoff_balance  &&  $dayOff->type->type == "daysoff";
+       
+        $already_validated = $old_result == "validated";
+        if ($is_impacted_in_dayoff_balance &&  $already_validated && ($new_duration != $old_duration)) {
+            /** Returned old deduce duration user dayoff balance and retrivew the new  */
+            $applicant->nb_days_off_remaining = ($applicant->nb_days_off_remaining +  $old_duration) - $new_duration;
+            $applicant->save();
+            
+        }
+        
+        if( $is_impacted_in_dayoff_balance &&  $already_validated &&  $new_result == "refused" ){
+            /** Returned old deduce duration  */
+            $applicant->nb_days_off_remaining = $applicant->nb_days_off_remaining +  $old_duration;
             $applicant->save();
         }
 
@@ -460,13 +498,13 @@ class DayOff extends Model
             ],
         ];
 
-        $jobs = Job::whereDeleted(0)->get();
-        $filters[] = [
-            "label" => "Poste",
-            "name" => "job_id",
-            "type" => "select",
-            "options" => to_dropdown($jobs, "id", "name")
-        ];
+        // $jobs = Job::whereDeleted(0)->get();
+        // $filters[] = [
+        //     "label" => "Poste",
+        //     "name" => "job_id",
+        //     "type" => "select",
+        //     "options" => to_dropdown($jobs, "id", "name")
+        // ];
         $projects = ProjectGroup::whereDeleted(0)->get();
 
         $filters[] = [
@@ -476,9 +514,11 @@ class DayOff extends Model
             "options" => to_dropdown($projects, "id", "name")
         ];
         $filters[] = [
-            "label" => "Statut",
+            // "label" => "Statut",
+            "label" => "Validat*",
             "name" => "result",
             "type" => "select",
+            'width' => 'w-150px',
             "options" => [
                 [
                     "text" => 'Validée',
@@ -494,7 +534,25 @@ class DayOff extends Model
                 ]
             ]
         ];
-
+        $filters[] = [
+            "label" => "Etat",
+            "name" => "status_dayoff",
+            "type" => "select",
+            'width' => 'w-150px',
+            "options" => [
+                ["text" => 'En congé', "value" => 'in_progress'],
+                ["text" => 'Terminé', "value" => 'finish'],
+                ["text" => "Annulé", "value" => "is_canceled"]
+            ]
+        ];
+        $filters[] = [
+            "label" => "Absent au date ...",
+            "name" => "absence_date",
+            "type" => "date",
+            'attributes' => [
+                'placeholder' => 'Absent au date ...',
+            ]
+        ];
         $filters[] = [
             "label" => "Date demande",
             "name" => "created_at",
@@ -504,17 +562,6 @@ class DayOff extends Model
                 'width' => 'w-200px'
             ]
         ];
-        $filters[] = [
-            "label" => "Etat",
-            "name" => "status_dayoff",
-            "type" => "select",
-            "options" => [
-                ["text" => 'En congé', "value" => 'in_progress'],
-                ["text" => 'Terminé', "value" => 'finish'],
-                ["text" => "Annulé", "value" => "is_canceled"]
-            ]
-        ];
-
         return $filters;
     }
 }

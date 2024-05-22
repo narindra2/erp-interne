@@ -56,19 +56,21 @@
                 </div>
                 &nbsp; &nbsp;
                 <div class="me-4 my-2 ml-3">
-                    <div class="d-flex align-items-center position-relative my-1">
-                        <input type="text" id="search_day_off" autocomplete="off"
-                            class="form-control form-control-solid form-select-sm w-200px ps-9 "
-                            placeholder="{{ trans('lang.search') }}">
-                    </div>
-                </div>
-                <div class="me-4 my-2 ml-3">
                     <a id="do-search-dayOffRequested" title = "Actualiser la liste" class="btn btn-sm btn-outline btn-outline-dashed btn-outline-default">
                         <i class="fas fa-sync-alt" style="width: 12px;"></i>
                     </a>
-                </div>
+                </div> 
             </div>
             <div class="table-responsive">
+                <div class="d-flex flex-row-reverse">
+                    <div class="me-4 my-2 ml-3">
+                        <div class="d-flex align-items-center position-relative my-1">
+                            <input type="search" id="search_day_off" autocomplete="off"
+                                class="form-control form-control-solid form-select-sm w-200px ps-9 "
+                                placeholder="{{ trans('lang.search') }}">
+                        </div>
+                    </div>
+                </div>
                 <table class="table table-row-dashed table-row-gray-300 gy-4  wrap align-middle" id="dayOffRequested"></table>
             </div>
         </div>
@@ -87,11 +89,9 @@
             daysText: "jours",
             cellHeight: 50,
             dataUrl : url("/days-off/dataListGantt"),
-            
         });
     }
     loadGantt();
-
    </script>
 @endsection
 
@@ -155,7 +155,6 @@
                     inputs[i].val("");
                 }
             });
-            
             setTimeout(() => {
                     KTApp.initBootstrapTooltips();
             }, 300);

@@ -47,7 +47,6 @@ class DayOffController extends Controller
         }
         return response()->json(['success' => true, "message" => "OK"]);
     }
-
     public function loadModal(Request $request)
     {
         $can =  $can_make_request = false;
@@ -66,12 +65,11 @@ class DayOffController extends Controller
 
     public function loadModalInfo(DayOff $dayOff)
     {
+        $dayOff->load("type");
         $natures = DayoffNatureColor::whereDeleted(0)->whereStatus(1)->latest()->get();
-        return view("days_off.modal.more-information", ["dayOff" => $dayOff , "natures" => $natures]);
+        $types = DaysOffType::whereDeleted(0)->where("type", $dayOff->type->type)->get();
+        return view("days_off.modal.more-information", ["dayOff" => $dayOff , "natures" => $natures ,"types" => $types]);
     }
-
-    
-
     private function row_status_dayoff($daysOff)
     {
         $status_dayoff = "-";
@@ -261,7 +259,7 @@ class DayOffController extends Controller
 
     public function destroy(DayOff $dayOff)
     {
-        $id = $dayOff->id;
+        delete_users_cache();
         $dayOff->deleted = 1;
         $dayOff->save();
         return ["success" => true, "message" => "Operation faite avec succès"];
@@ -317,7 +315,7 @@ class DayOffController extends Controller
         $input['author_id'] = Auth::id();
         
         $dayOff = DayOff::requestDaysOff($input, $files);
-
+        delete_users_cache();
         die(json_encode(["success" => true, "data" => $dayOff, "message" => "La demande a été bien sauvegardée"]));
     }
 
@@ -367,6 +365,7 @@ class DayOffController extends Controller
             if ($validator->fails()) {
                 die(json_encode(["success" => false,  "message" => $validator->errors()->all()]));
             }
+            delete_users_cache();
             if ($request->is_canceled) {
                 $dayOff = DayOff::cancelDayOff($request->id);
                 return ["success" => true, "row_id" => row_id("dayoff", $request->id),  "data" => $this->make_row($dayOff), "message" => "La demande a été annulé"];
