@@ -277,7 +277,7 @@ class DayOff extends Model
 
     public static function responseRequest($id, $data)
     {
-       
+      
         /** Old dayoff info */
         $dayOff = DayOff::with(["type","applicant"])->find($id);
         $old_duration = $dayOff->duration;
@@ -286,11 +286,10 @@ class DayOff extends Model
         /** New  dayoff info */
         $data['start_date'] = to_date($data['start_date']);
         $data['return_date'] = to_date($data['return_date']);
-        if ($data['result'] = 'validated'){
+        $data['result_date'] = null;
+        if ($data['result'] == 'validated'){
             $data['result_date'] = Carbon::now();
         }
-       
-
         $dayOff->update($data);
         $new_duration =  $dayOff->duration;
         $new_result =  $data["result"];
@@ -299,12 +298,11 @@ class DayOff extends Model
         /** Check if  dayOff  type is impact in dayoff user balance */
         $is_impacted_in_dayoff_balance = $dayOff->type->impact_in_dayoff_balance  &&  $dayOff->type->type == "daysoff";
        
-        $already_validated = $old_result == "validated";
+        $already_validated = ($old_result == "validated");
         if ($is_impacted_in_dayoff_balance &&  $already_validated && ($new_duration != $old_duration)) {
             /** Returned old deduce duration user dayoff balance and retrivew the new  */
             $applicant->nb_days_off_remaining = ($applicant->nb_days_off_remaining +  $old_duration) - $new_duration;
             $applicant->save();
-            
         }
         
         if( $is_impacted_in_dayoff_balance &&  $already_validated &&  $new_result == "refused" ){
@@ -312,7 +310,6 @@ class DayOff extends Model
             $applicant->nb_days_off_remaining = $applicant->nb_days_off_remaining +  $old_duration;
             $applicant->save();
         }
-
         $dayOff->sendNotificationOnUpdate();
         return $dayOff;
     }
