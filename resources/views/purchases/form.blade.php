@@ -217,7 +217,6 @@
     @section('scripts')
         <script>
             let min = 1;
-
             function deleteLine(content) {
                 if (min > 1) {
                     min--;
@@ -239,8 +238,7 @@
                     min++;
                     $(".add_tr").eq(0).clone().insertAfter(".add_tr:last");
                 });
-
-                $(document).on("keyup change", ".calcul", () => {
+                function caclucTotal (){
                     let totalPrice = 0;
                     $(".add_tr").each((i) => {
                         let quantity = $(".add_tr").eq(i).find(".quantity").val();
@@ -250,6 +248,9 @@
                         totalPrice += totalOneLine;
                     });
                     $("#totalPrice").text(totalPrice);
+                }
+                $(document).on("keyup change", ".calcul", () => {
+                    caclucTotal();
                 });
             });
         </script>

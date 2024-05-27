@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PurchaseRequest;
-use App\Http\Resources\PurchaseDetailResource;
-use App\Http\Resources\PurchaseListResource;
-use App\Models\DetailNeed;
+use Exception;
+use App\Models\User;
 use App\Models\ItemType;
 use App\Models\Purchase;
-use App\Models\PurchaseFile;
 use App\Models\UnitItem;
-use Exception;
+use App\Models\DetailNeed;
+use App\Models\PurchaseFile;
 use Illuminate\Http\Request;
+use App\Http\Requests\PurchaseRequest;
+use App\Http\Resources\PurchaseListResource;
+use App\Http\Resources\PurchaseDetailResource;
+use Auth;
 
 class PurchaseController extends Controller
 {
@@ -25,6 +27,14 @@ class PurchaseController extends Controller
         return PurchaseListResource::collection($purchases);
     }
 
+    public function modal_form() {
+        $data = [];
+        $data['units'] = UnitItem::whereDeleted(false)->get();
+        $data['itemTypes'] = ItemType::whereDeleted(0)->orderBy('name', 'desc')->get();
+        $data['auth'] = Auth::user();;
+        $data['users'] = User::select("id","deleted","name", "firstname")->where("id" , "<>" ,$data['auth']->id)->whereDeleted(0)->get();
+        return view('purchases.modal-form', $data);
+    }
     public function form() {
         $data = [];
         $data['needs'] = DetailNeed::countItemPurchaseConfirmed();

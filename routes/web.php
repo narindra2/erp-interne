@@ -387,6 +387,7 @@ Route::middleware(['auth', 'checkinweb', 'not_contributor'])->group(function () 
 
     Route::get("/purchases", [PurchaseController::class, 'index']);
     Route::get('/purchases/new', [PurchaseController::class, "form"]);
+    Route::post('/purchases/demande-form', [PurchaseController::class, "modal_form"]);
     Route::post('/purchases/save', [PurchaseController::class, "save"]);
     Route::get("/purchases/page_list", [PurchaseController::class, "getViewList"]);
     Route::get("/purchases/data_list", [PurchaseController::class, "getPurchaseList"]);
