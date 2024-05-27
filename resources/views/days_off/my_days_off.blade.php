@@ -10,7 +10,7 @@
             </div>
         </div>
     </div>
-    @if ($user->isCp())
+    @if ($user->isCp() || $user->isM2p() )
         <div class="card shadow-sm  mb-3 ">
             <div class="w100p pt10">
                 <div id="gantt-chart" style="width: 100%;"></div>
@@ -40,7 +40,7 @@
             </div>
         </div>
     </div>
-@if ($user->isCp())
+@if ($user->isCp() || $user->isM2p())
     @section('dynamic_link')
     <link rel="stylesheet" href="{{ asset('library/gantt-chart/gantt.css') }}" />
     @endsection

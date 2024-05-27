@@ -148,8 +148,8 @@ class DayOffController extends Controller
         if ($user->isRhOrAdmin()) {
          /** Dont filter dayoff  */   
         }else{
-            if ($user->isCp()) {
-                $user->load('userJob');
+            $user->load('userJob');
+            if ($user->isCp() || $user->isM2p() ) {
                 $users_ID = UserJobView::where("department_id", $user->userJob->department_id)->get()->pluck("users_id");
                 $query->whereIn("applicant_id", $users_ID);
             }

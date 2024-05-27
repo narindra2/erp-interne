@@ -142,8 +142,8 @@ class DayOff extends Model
         $user = Auth::user();
         if ($myDaysOff) {
             $user->load('userJob');
-            if ($user->userJob) {
-                if ($user->userJob->is_cp) {
+            if ($user->userJob  ) {
+                if ($user->userJob->is_cp || $user->isM2p()) {
                     $users_ID = UserJobView::where("department_id", $user->userJob->department_id)->get()->pluck("users_id");
                     $daysOff->whereIn("applicant_id", $users_ID);
                 } else {
@@ -177,7 +177,7 @@ class DayOff extends Model
         $absence_date = get_array_value($options, 'absence_date');
         if ($absence_date) {
             $daysOff->whereDate('start_date', '<=', to_date($absence_date))
-                    ->whereDate('return_date', '>=', to_date($absence_date))
+                    ->whereDate('return_date', '>', to_date($absence_date))
                     // ->where('result', 'validated')
                     ->where("is_canceled", 0);
         }

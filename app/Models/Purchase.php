@@ -66,7 +66,7 @@ class Purchase extends Model
                 'unit_item_id' => $unitItemID,
                 'unit_price' => $unitPrice
             ];
-            for ($i=0; $i<$quantity; $i++) {
+            for ($i = 0; $i < $quantity; $i++) {
                 $item = Item::create([
                     'item_type_id' => $itemTypeID,
                     'code' => "achat-" . $purchase->created_at->format('Y-m-d')
