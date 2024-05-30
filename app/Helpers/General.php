@@ -731,6 +731,9 @@ if (!function_exists('invoice_item_num')) {
 if (!function_exists('convert_date')) {
     function convert_date($date = "")
     {
+        if (!$date) {
+            return null;
+        }
         return DateTime::createFromFormat('Y-m-d', $date)->format('d/m/Y');
     }
 }

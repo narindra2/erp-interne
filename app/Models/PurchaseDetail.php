@@ -14,7 +14,7 @@ class PurchaseDetail extends Model
         'purchase_id',
         'quantity',
         'unit_price',
-        'unit_item_id'
+        'unit_item_id',
     ];
 
     public function unit() {

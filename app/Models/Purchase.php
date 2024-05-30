@@ -20,8 +20,14 @@ class Purchase extends Model
         'purchase_date',
         'total_price',
         'author_id',
+        'note',
         'method'
     ];
+    const NEW_PURCHASE = "new";
+    const REFUSED_PURCHASE = "refused";
+    const VALIDATED_PURCHASE = "valided";
+    const PURCHASED_PURCHASE = "purchased";
+    const INPROGRESS_PURCHASE = "in_progress";
 
     public function author() {
         return $this->belongsTo(User::class, 'author_id');
@@ -48,14 +54,24 @@ class Purchase extends Model
     }
 
     public static function savePurchase($input, $files) {
+       
+        
         $unitPrice = $input['unit_price'];
         $quantity = $input['quantity'];
         $itemTypeID = $input['item_type_id'];
         $unitItemID = $input['unit_item_id'];
+
+        array_shift($unitPrice );
+        array_shift( $quantity ) ;
+        array_shift($itemTypeID);
+        array_shift( $unitItemID );
+       
         $input['total_price'] = self::getTotalPrice($unitPrice, $quantity);
         $input['author_id'] = Auth::id();
-        $purchase = Purchase::create($input);
+        $input['purchase_date'] = convert_date_to_database_date( $input['purchase_date']);
+        $purchase = Purchase::updateOrCreate(["id" => ($input['purchase_id'] ?? -1) ],$input);
         $purchase->saveFiles($files);
+
         $dataPurchaseDetail = [];
         $dataItemMovement = [];
         array_map(function($unitPrice, $quantity, $itemTypeID, $unitItemID) use ($purchase, &$dataPurchaseDetail, &$dataItemMovement) {
@@ -66,6 +82,7 @@ class Purchase extends Model
                 'unit_item_id' => $unitItemID,
                 'unit_price' => $unitPrice
             ];
+            /*
             for ($i = 0; $i < $quantity; $i++) {
                 $item = Item::create([
                     'item_type_id' => $itemTypeID,
@@ -77,9 +94,10 @@ class Purchase extends Model
                     'item_id' => $item->id
                 ];
             }
+            */
         }, $unitPrice, $quantity, $itemTypeID, $unitItemID);
         PurchaseDetail::upsert($dataPurchaseDetail, ['unit_price'], ['unit_price']);
-        ItemMovement::upsert($dataItemMovement, ['item_id'], ['item_id']);
+        // ItemMovement::upsert($dataItemMovement, ['item_id'], ['item_id']);
         return $purchase;
     }
 
