@@ -18,7 +18,6 @@ use App\Http\Resources\PurchaseDetailResource;
 
 class PurchaseController extends Controller
 {
-    //
     public function index() {
         return view('purchases.index');
     }
@@ -59,7 +58,7 @@ class PurchaseController extends Controller
             }  
         } catch (\Throwable $th) {
         } 
-
+        
         try {
             Purchase::savePurchase($request->all(), $request->file("files"));
             return ['success' => true, 'message' =>"Demande d'achat bien " . ($request->purchase_id ? 'sauvegardée' :  'ajoutée') ];

@@ -15,7 +15,7 @@
             @if ($purchase_model->id)
                 <div class="col-md-4">
                     <div class="card-title d-flex flex-column">   
-                        <span class="text-gray-700 pt-1 fw-semibold fs-6">Le :  <span class="fs-5 fw-bold text-info me-2 lh-1 ls-n2">{{ convert_to_real_time_humains($purchase_model->created_at)}}</span></span>  
+                        <span class="text-gray-700 pt-1 fw-semibold fs-6">Demandé :  <span class="fs-5 fw-bold text-info me-2 lh-1 ls-n2">{{ convert_to_real_time_humains($purchase_model->created_at)}}</span></span>  
                     </div>
                 </div>
             @endif
@@ -238,7 +238,75 @@
                 </div>
             </div>
        </div>
-    </div>
+
+
+       <div data-kt-buttons="true">
+        <div class="row">
+            <div class="col-md-3">
+                <label class="btn btn-sm btn-outline  btn-active-light-primary d-flex flex-stack text-start">
+                    <div class="d-flex align-items-center me-2">
+                        <div class="form-check form-check-custom form-check-solid form-check-primary me-6">
+                            <input class="form-check-input" @if ($purchase_model->status == "in_progress" || !$purchase_model->id) checked  @endif type="radio" name="status" value="in_progress"/>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h4 class="d-flex align-items-center fs-4 fw-bold flex-wrap">
+                                En attente 
+                            </h4>
+                        </div>
+                    </div>
+                </label>
+            </div>
+            <div class="col-md-3">
+                <label class="btn btn-sm btn-outline  btn-active-light-success d-flex flex-stack text-start">
+                    <!--end::Description-->
+                    <div class="d-flex align-items-center me-2">
+                        <!--begin::Radio-->
+                        <div class="form-check form-check-custom form-check-solid form-check-success me-6">
+                            <input class="form-check-input" @if ($purchase_model->status == "validated") checked  @endif type="radio" name="status" value="validated"/>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h4 class="d-flex align-items-center fs-4 fw-bold flex-wrap">
+                                Validé
+                            </h4>
+                        </div>
+                    </div>
+                </label>
+            </div>
+            <div class="col-md-3">
+                <label class="btn btn-sm btn-outline  btn-active-light-info d-flex flex-stack text-start">
+                    <!--end::Description-->
+                    <div class="d-flex align-items-center me-2">
+                        <!--begin::Radio-->
+                        <div class="form-check form-check-custom form-check-solid form-check-info me-6">
+                            <input class="form-check-input" @if ($purchase_model->status == "purchased") checked  @endif type="radio" name="status" value="purchased"/>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h4 class="d-flex align-items-center fs-4 fw-bold flex-wrap">
+                                Acheté
+                            </h4>
+                        </div>
+                    </div>
+                </label>
+            </div>
+            @if ($purchase_model->id)
+                <div class="col-md-3">
+                    <label class="btn btn-sm btn-outline  btn-active-light-danger d-flex flex-stack text-start">
+                        <div class="d-flex align-items-center me-2">
+                            <div class="form-check form-check-custom form-check-solid form-check-danger me-6">
+                                <input class="form-check-input" @if ($purchase_model->status == "refused") checked @endif type="radio" name="status" value="refused"/>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h4 class="d-flex align-items-center fs-4 fw-bold flex-wrap">
+                                    Refusé
+                                </h4>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            @endif
+        </div>
+        </div>
+        </div>
      
     <div class="d-flex justify-content-end mt-5">
         @if ($purchase_model->id)
@@ -257,7 +325,7 @@
         var minItem = {{ $purchase_model->details->count() }};
     @else 
         var minItem = 0;
-    @endif
+    @endif      
    
     var deleteLine;
     $(document).ready(function() {

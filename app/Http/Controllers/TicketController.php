@@ -139,7 +139,7 @@ class TicketController extends Controller
     {
         $ticket = Ticket::find($request->ticket_id);
         $ticket->update(["assign_to" => ($request->user_ids ?  implode(",", $request->user_ids) : null)]);
-        dispatch(new TicketJobNotification(  User::findMany($request->user_ids), new AssignedTicketNotification( $ticket ,Auth::user())));
+        dispatch(new TicketJobNotification(  User::findMany($request->user_ids), new AssignedTicketNotification( $ticket ,Auth::user())))->afterResponse();
         return ["success" =>  true, "row_id" => row_id("tickets", $ticket->id), "data" => $this->_make_row($ticket, Auth::user()), "message" => "Le ticket a été bien jour"];
     }
     public function set_resolve(Request $request)

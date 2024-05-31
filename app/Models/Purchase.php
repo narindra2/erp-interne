@@ -21,13 +21,13 @@ class Purchase extends Model
         'total_price',
         'author_id',
         'note',
+        'status',
         'method'
     ];
-    const NEW_PURCHASE = "new";
-    const REFUSED_PURCHASE = "refused";
+    const INPROGRESS_PURCHASE = "in_progress";
     const VALIDATED_PURCHASE = "valided";
     const PURCHASED_PURCHASE = "purchased";
-    const INPROGRESS_PURCHASE = "in_progress";
+    const REFUSED_PURCHASE = "refused";
 
     public function author() {
         return $this->belongsTo(User::class, 'author_id');
@@ -52,10 +52,19 @@ class Purchase extends Model
     public function dateHTML() {
         return $this->purchase_date->translatedFormat('d M Y');
     }
+    public static function purchaseStatusList() {
+       return [
+        ["value" => self::INPROGRESS_PURCHASE , "text" => "En attente" ,  "color" => "primary"],
+        ["value" => self::VALIDATED_PURCHASE , "text" => "Validé" ,  "color" => "success"],
+        ["value" => self::PURCHASED_PURCHASE , "text" => "Achat fait" ,  "color" => "info"],
+        ["value" => self::REFUSED_PURCHASE , "text" => "Refusé" ,  "color" => "danger"],
+       ];
+    }
+    public static  function getPurchaseStatusInfo($purchase_status = "") {
+        return collect(self::purchaseStatusList())->firstWhere("value","=" , $purchase_status);
+    }
 
     public static function savePurchase($input, $files) {
-       
-        
         $unitPrice = $input['unit_price'];
         $quantity = $input['quantity'];
         $itemTypeID = $input['item_type_id'];
@@ -68,8 +77,12 @@ class Purchase extends Model
        
         $input['total_price'] = self::getTotalPrice($unitPrice, $quantity);
         $input['author_id'] = Auth::id();
+        
+        if (!isset($input['purchase_id'])) {
+            $input['status'] = self::INPROGRESS_PURCHASE;
+        }
         $input['purchase_date'] = convert_date_to_database_date( $input['purchase_date']);
-        $purchase = Purchase::updateOrCreate(["id" => ($input['purchase_id'] ?? -1) ],$input);
+        $purchase = Purchase::updateOrCreate(["id" => ($input['purchase_id'] ?? null) ],$input);
         $purchase->saveFiles($files);
 
         $dataPurchaseDetail = [];
