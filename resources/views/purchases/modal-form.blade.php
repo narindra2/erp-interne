@@ -100,7 +100,7 @@
                                 @include('purchases.columns.files', ['files' => $purchase_model->files])
                                 </div>
                             @else 
-                                <i class="mt-2" >Pas de piéce justificatif ajouté.</i>
+                                <i class="mt-2" >Pas de piéce joint ajouté.</i>
                             @endif
                         </div>
                     </div>   
@@ -239,7 +239,7 @@
             </div>
        </div>
 
-
+       <span class="text-gray-700 pt-1 fw-semibold fs-6 mb-3">Status  : </span>
        <div data-kt-buttons="true">
         <div class="row">
             <div class="col-md-3">
@@ -251,6 +251,20 @@
                         <div class="flex-grow-1">
                             <h4 class="d-flex align-items-center fs-4 fw-bold flex-wrap">
                                 En attente 
+                            </h4>
+                        </div>
+                    </div>
+                </label>
+            </div>
+            <div class="col-md-3 "  @if (!$purchase_model->id)   style ="opacity: 0.3; "  title= "Non utlisable pour une nouvelle demande" @endif >
+                <label class="btn btn-sm btn-outline  btn-active-light-danger d-flex flex-stack text-start">
+                    <div class="d-flex align-items-center me-2">
+                        <div class="form-check form-check-custom form-check-solid form-check-danger me-6">
+                            <input   @if (!$purchase_model->id) disabled  style ="opacity: 0.3;"  @endif class="form-check-input" @if ($purchase_model->status == "refused") checked @endif type="radio" name="status" value="refused"/>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h4 class="d-flex align-items-center fs-4 fw-bold flex-wrap">
+                                Refusé
                             </h4>
                         </div>
                     </div>
@@ -272,6 +286,7 @@
                     </div>
                 </label>
             </div>
+            
             <div class="col-md-3">
                 <label class="btn btn-sm btn-outline  btn-active-light-info d-flex flex-stack text-start">
                     <!--end::Description-->
@@ -282,28 +297,13 @@
                         </div>
                         <div class="flex-grow-1">
                             <h4 class="d-flex align-items-center fs-4 fw-bold flex-wrap">
-                                Acheté
+                                Achat fait
                             </h4>
                         </div>
                     </div>
                 </label>
             </div>
-            @if ($purchase_model->id)
-                <div class="col-md-3">
-                    <label class="btn btn-sm btn-outline  btn-active-light-danger d-flex flex-stack text-start">
-                        <div class="d-flex align-items-center me-2">
-                            <div class="form-check form-check-custom form-check-solid form-check-danger me-6">
-                                <input class="form-check-input" @if ($purchase_model->status == "refused") checked @endif type="radio" name="status" value="refused"/>
-                            </div>
-                            <div class="flex-grow-1">
-                                <h4 class="d-flex align-items-center fs-4 fw-bold flex-wrap">
-                                    Refusé
-                                </h4>
-                            </div>
-                        </div>
-                    </label>
-                </div>
-            @endif
+          
         </div>
         </div>
         </div>

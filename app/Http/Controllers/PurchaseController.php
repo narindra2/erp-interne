@@ -13,8 +13,7 @@ use App\Models\PurchaseFile;
 use Illuminate\Http\Request;
 use App\Models\PurchaseDetail;
 use App\Http\Requests\PurchaseRequest;
-use App\Http\Resources\PurchaseListResource;
-use App\Http\Resources\PurchaseDetailResource;
+
 
 class PurchaseController extends Controller
 {
@@ -23,10 +22,49 @@ class PurchaseController extends Controller
     }
 
     public function getPurchaseList() {
+        $data = [];
         $purchases = Purchase::with(['author', 'files',"details.itemType"])->whereDeleted(0)->latest()->get();
-        return PurchaseListResource::collection($purchases);
+        foreach ($purchases as  $purchase) {
+            $data[] =  $this->_make_row( $purchase);
+        }
+        return ["data" =>  $data];
     }
 
+    public function _make_row( Purchase $purchase)
+    {
+        $detail = modal_anchor(url('/purchases/demande-form'), '<i class="fas fa-external-link-alt"></i> Detail', ['title' => "Detail demande d'achat", 'class' => 'btn btn-link btn-color-info' , "data-modal-lg" => true , "data-post-purchase_id" =>$purchase->id]);
+        $itemsName = $purchase->details->pluck("itemType")->implode("name",", ");
+        $sortItemsName=str_limite($itemsName ,15);
+        $items = modal_anchor(url('/purchases/demande-form'), $sortItemsName, ['title' => "Detail demande d'achat", 'class' => 'btn btn-link btn-color-dark' , "data-modal-lg" => true , "data-post-purchase_id" =>$purchase->id]);
+        $statusInfo = Purchase::getPurchaseStatusInfo($purchase->status);
+        $statusText = get_array_value($statusInfo,"text");
+        $statusColor = get_array_value($statusInfo,"color");
+        $statusColor = get_array_value($statusInfo,"color");
+        if ($purchase->status == Purchase::PURCHASED_PURCHASE) {
+          
+        }
+        
+        return [
+            'info' => '<span data-kt-element="bullet" class="bullet bullet-vertical d-flex align-items-center min-h-30px  bg-info"></span>',
+            'date' => $purchase->purchase_date->format("d-M-Y"),
+            'author' => $purchase->author->sortname,
+            // 'method' => "<span class='badge badge-sm badge-info'></span>" ,
+            'method' => "<span class='badge badge-sm badge-light-info'>$purchase->method</span>" ,
+            'items' => $items ,
+            'total_price' => "<h5>$purchase->total_price</h5>" . env("CURRENCY"),
+            'files' => $this->createColumnFiles($purchase),
+            'status' =>"<span class='badge badge-sm badge-$statusColor'>$statusText</span>" ,
+            'created_at' => convert_to_real_time_humains($purchase->created_at),
+            'actions' => $detail
+        ];
+    }
+
+    public function createColumnFiles($purchase) {
+        if ($purchase->files->count()) {
+            return view('purchases.columns.files', ['files' => $purchase->files])->render();
+        }
+        return "";
+    }
     public function modal_form(Request $request) {
         $data = [];
         $data['purchase_model'] = Purchase::with(["files" , "details","author"])->find($request->purchase_id) ?? new Purchase();

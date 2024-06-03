@@ -9,7 +9,7 @@
                     </div>
                     <div class="card-toolbar">
                         @php
-                            echo modal_anchor(url('/purchases/demande-form'), '<i class="fas fa-plus"></i> Creer une demande', ['title' => "Creer une demande d'achat", 'class' => 'btn btn-sm btn-light-info' , "data-modal-lg" => true]);
+                            echo modal_anchor(url('/purchases/demande-form'), '<i class="fas fa-plus"></i> Créer une demande d\'achat', ['title' => "Créer une demande d'achat", 'class' => 'btn btn-sm btn-light-info' , "data-modal-lg" => true]);
                         @endphp
                         {{-- <a href="{{ url('/purchases/new') }}" class="btn btn-sm btn-light-info"><i class="fas fa-plus-circle"></i> Nouvel Achat</a> --}}
                     </div>

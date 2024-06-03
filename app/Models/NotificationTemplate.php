@@ -274,4 +274,28 @@ class NotificationTemplate
         $template["sentence"]  = $notification->data["message"] ;
         return  $template;
     }
+    public static function purchase_created($notification= null, $send_to) {
+        $template = [];
+        $subject_info = self::get_subject_info($notification);
+        $subject_name = $subject_info['name'];
+        $template["title"]= "Demande d'achat";
+        $template["action"]= "Ajout";
+        $template["profile"] = $subject_info["profile"]; 
+        $template["sentence"] = "Un nouveau  demande  d' achat est ajouté  par   {$subject_name} " ;
+        return  $template;
+    }
+    public static function purchase_statut_update($notification= null, $send_to) {
+        
+        $template = [];
+        $subject_info = self::get_subject_info($notification);
+        $subject_name = $subject_info['name'];
+        $template["title"]= "Demande d'achat";
+        $template["action"]= "Ajout";
+        $template["profile"] = $subject_info["profile"];
+        $purchase = $notification->data["object"] ?? Purchase::with(['author', ])->find($notification->data['purhcase_id']);
+        $status_info = Purchase::getPurchaseStatusInfo($purchase->status );
+        $status_text = get_array_value( $status_info , "text");
+        $template["sentence"] = "{$subject_name} a mis en statut : ' {$status_text}' la demande d' achat de «{$purchase->author->sortname}»" ;
+        return  $template;
+    }
 }

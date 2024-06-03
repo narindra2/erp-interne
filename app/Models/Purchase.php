@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Auth;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use App\Jobs\TicketJobNotification;
+use Illuminate\Database\Eloquent\Model;
+use App\Notifications\NewPurcahseNotification;
+use App\Notifications\UpdateStatusPurchseNotification;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Purchase extends Model
 {
@@ -25,7 +28,7 @@ class Purchase extends Model
         'method'
     ];
     const INPROGRESS_PURCHASE = "in_progress";
-    const VALIDATED_PURCHASE = "valided";
+    const VALIDATED_PURCHASE = "validated";
     const PURCHASED_PURCHASE = "purchased";
     const REFUSED_PURCHASE = "refused";
 
@@ -63,8 +66,18 @@ class Purchase extends Model
     public static  function getPurchaseStatusInfo($purchase_status = "") {
         return collect(self::purchaseStatusList())->firstWhere("value","=" , $purchase_status);
     }
+    public   function getUserNotification() {
+        /**RH user + Admin user  */
+        if ($this->author->isRhOrAdmin()) {
+            return get_cache_rh_admin();
+        }else{
+             /**RH user + Admin user + user not adminitratif  */
+            return get_cache_rh_admin()->push($this->author);
+        }
+    }
 
     public static function savePurchase($input, $files) {
+        $auth = Auth::user();
         $unitPrice = $input['unit_price'];
         $quantity = $input['quantity'];
         $itemTypeID = $input['item_type_id'];
@@ -76,10 +89,12 @@ class Purchase extends Model
         array_shift( $unitItemID );
        
         $input['total_price'] = self::getTotalPrice($unitPrice, $quantity);
-        $input['author_id'] = Auth::id();
-        
+        /** Create  options */
         if (!isset($input['purchase_id'])) {
+            $input['author_id'] = $auth->id;
             $input['status'] = self::INPROGRESS_PURCHASE;
+        }else{
+            $old_purchase = Purchase::with(['author', 'files',"details.itemType"])->find($input['purchase_id']);
         }
         $input['purchase_date'] = convert_date_to_database_date( $input['purchase_date']);
         $purchase = Purchase::updateOrCreate(["id" => ($input['purchase_id'] ?? null) ],$input);
@@ -111,6 +126,14 @@ class Purchase extends Model
         }, $unitPrice, $quantity, $itemTypeID, $unitItemID);
         PurchaseDetail::upsert($dataPurchaseDetail, ['unit_price'], ['unit_price']);
         // ItemMovement::upsert($dataItemMovement, ['item_id'], ['item_id']);
+        if (!isset($input['purchase_id'])) {
+            dispatch(new TicketJobNotification(  $purchase->getUserNotification(), new NewPurcahseNotification( $purchase ,  $auth)));
+        }else{
+            if ($old_purchase->status != $purchase->status) {
+                /** Send the new status of new purchase */
+                dispatch(new TicketJobNotification(  $purchase->getUserNotification(), new UpdateStatusPurchseNotification( $purchase  ,  $auth)));
+            }
+        }
         return $purchase;
     }
 

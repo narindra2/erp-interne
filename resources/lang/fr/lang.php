@@ -281,4 +281,6 @@ return [
     "point" => "Point",
     "point_sup" => "Point supplementaire",
     "sanctions" => "Sanctions",
+    "sanctions" => "Sanctions",
+    "purchase_order" => "Demande d'achat",
 ];
