@@ -106,7 +106,7 @@ class NewPurcahseNotification extends Notification
     }
     private function toast_notification($notifiable)
     {
-        $content = "Un nouveau  demande  d' achat est ajouté par {$this->purchase->author->sortname}";
+        $content = "Une nouvelle demande  d' achat est ajouté par {$this->purchase->author->sortname}";
         $redirect = url("/purchases");
         return ["content" => $content, "title" => trans("lang.purchases") , "position" => "right" ,"duration" => "forever","redirect" => $redirect];
     }

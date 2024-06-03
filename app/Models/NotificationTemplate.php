@@ -281,7 +281,7 @@ class NotificationTemplate
         $template["title"]= "Demande d'achat";
         $template["action"]= "Ajout";
         $template["profile"] = $subject_info["profile"]; 
-        $template["sentence"] = "Un nouveau  demande  d' achat est ajouté  par   {$subject_name} " ;
+        $template["sentence"] = "Une nouvelle demande  d' achat est ajouté  par   {$subject_name} " ;
         return  $template;
     }
     public static function purchase_statut_update($notification= null, $send_to) {
