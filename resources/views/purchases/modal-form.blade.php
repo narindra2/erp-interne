@@ -311,11 +311,11 @@
     <div class="d-flex justify-content-end mt-5">
         @if ($purchase_model->id)
         <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-light-dark btn-sm mr-2 ">
-            Annuler        </button> &nbsp;
+            Quitter          </button> &nbsp;
             <button type="submit" class="btn btn-dark font-weight-bold mr-2 btn-sm">Sauvegarder</button>
         @else 
         <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-light-dark btn-sm mr-2 ">
-            Quitter       </button> &nbsp;
+            Annuler       </button> &nbsp;
             <button type="submit" class="btn btn-light-info font-weight-bold mr-2 btn-sm">Créer la demande</button>
         @endif
     </div>

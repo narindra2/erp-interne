@@ -32,7 +32,7 @@ class PurchaseController extends Controller
 
     public function _make_row( Purchase $purchase)
     {
-        $detail = modal_anchor(url('/purchases/demande-form'), '<i class="fas fa-external-link-alt"></i> Detail', ['title' => "Detail demande d'achat", 'class' => 'btn btn-link btn-color-info' , "data-modal-lg" => true , "data-post-purchase_id" =>$purchase->id]);
+        $detail = modal_anchor(url('/purchases/demande-form'), 'Détail <i class="fas fa-external-link-alt mb-1"></i> ', ['title' => "Détail demande d'achat", 'class' => 'btn btn-link btn-color-info' , "data-modal-lg" => true , "data-post-purchase_id" =>$purchase->id]);
         $itemsName = $purchase->details->pluck("itemType")->implode("name",", ");
         $sortItemsName=str_limite($itemsName ,15);
         $items = modal_anchor(url('/purchases/demande-form'), $sortItemsName, ['title' => "Detail demande d'achat", 'class' => 'btn btn-link btn-color-dark' , "data-modal-lg" => true , "data-post-purchase_id" =>$purchase->id]);
@@ -45,7 +45,7 @@ class PurchaseController extends Controller
         }
         
         return [
-            'info' => '<span data-kt-element="bullet" class="bullet bullet-vertical d-flex align-items-center min-h-30px  bg-info"></span>',
+            'info' => "<span data-kt-element='bullet' class='bullet bullet-vertical d-flex align-items-center min-h-30px  bg-$statusColor'></span>",
             'date' => $purchase->purchase_date->format("d-M-Y"),
             'author' => $purchase->author->sortname,
             // 'method' => "<span class='badge badge-sm badge-info'></span>" ,
