@@ -53,12 +53,12 @@
        <div class="row">
         <div class="col-md-12">
             <div class="card-title d-flex flex-column">   
-                <span class="text-gray-700 pt-1 fw-semibold fs-6">Taguer  les personnes qui seront informées de cette demande (facultatif) : </span>
+                <span class="text-gray-700 pt-1 fw-semibold fs-6">{{ $purchase_model->id ?  "Les personnes" :  "Taguer  les personnes"  }}  uniques qui seront informées  de cette demande  : </span>
                 <div class="d-flex align-items-center form-group">
                     @include('tasks.kanban.users-tag', [
                             'users' => $users,
                             'default' => $defaut_tagged,
-                            'placeholder' => 'List des internes',
+                            'placeholder' => 'Personnes  ...',
                         ])
                 </div>
             </div>
@@ -111,11 +111,12 @@
                                 <thead>
                                     <tr class="fw-semibold fs-6 text-gray-800 border-bottom-2 border-gray-200">
                                         <th class="min-w-150px text-center"> <span title="Ajouter une ligne"  id="addLine"><i class="fs-3 fas fa-plus-circle text-info to-link "></i></span></th>
-                                        <th class="min-w-100px">Quantité</th>
-                                        <th class="min-w-100px">Unité</th>
-                                        <th class="min-w-100px">Prix unitaire</th>
-                                        <th class="min-w-100px">Sous-total</th>
-                                        <th class="min-w-100px"></th>
+                                        <th class="min-w-150px text-center">Propriété</th>
+                                        <th >Quantité </th>
+                                        <th >Unité</th>
+                                        <th >Prix unitaire</th>
+                                        <th >Total</th>
+                                        <th class=""></th>
                                     </tr>
                                 </thead>
                              
@@ -133,13 +134,17 @@
                                         </td>
                                         <!--end::Product-->
                                         <!--begin::Quantity-->
-                                        <td class="text-end">
-                                            <input type="number" class="form-control  form-control-sm  w-100px calcul quantity" name="quantity[]" min="1" value="1">
+                                        <td class="text-end w-200px">
+                                            <input type="text " autocomplete="off" class="form-control  form-control-sm  w-200px " placeholder="Son marque ,taille , poids , ..." name="proprieties[]"  value="">
                                         </td>
+                                        <td class="text-end ">
+                                            <input type="number"  autocomplete="off" class="form-control  form-control-sm  w-75px calcul quantity" name="quantity[]" min="1" value="1">
+                                        </td>
+                                       
                                         <!--end::Quantity-->
                                         <!--begin::Quantity-->
                                         <td>
-                                            <select class="form-control form-control-sm "  name="unit_item_id[]" data-hide-search="true" data-control="select2" data-placeholder="Paiement par ">
+                                            <select class="form-control form-control-sm   w-75px "  name="unit_item_id[]" data-hide-search="true" data-control="select2" data-placeholder="Paiement par ">
                                                 @foreach ($units as $unit)
                                                     <option value="{{ $unit->id }}">{{ $unit->name }}</option>
                                                 @endforeach
@@ -148,15 +153,13 @@
                                         <!--end::Quantity-->
                                         <!--begin::Price-->
                                         <td class="text-end">
-                                            <input type="number"
-                                                class="form-control   form-control-sm w-100px calcul unitPrice"
-                                                name="unit_price[]" min="0" value="0">
+                                            <input type="number" autocomplete="off" class="form-control   form-control-sm w-150px calcul unitPrice"  name="unit_price[]" min="0" value="0">
                                         </td>
                                         <!--end::Price-->
                                         <!--begin::Total-->
-                                        <td class="mt-2"><input type="text" class="form-control form-control-sm form-control-transparent total" value="0"/></td>
+                                        <td class="mt-2"><input type="text"  autocomplete="off" class="form-control form-control-sm form-control-transparent total" value="0"/></td>
                                         <td class="text-center">
-                                            <span class="to-link " title="Supprimer cette ligne" onclick="deleteLine(this)"><i  class="far fa-trash-alt text-danger  "></i></span>
+                                            <span class="to-link " title="Supprimer cette ligne" onclick="deleteLine(this)"><i  class="far fa-trash-alt mt-3 text-danger  "></i></span>
                                         </td>
                                         <!--end::Total-->
                                     </tr>
@@ -173,14 +176,18 @@
                                                 </select>
                                             </td>
                                             <!--end::Product-->
+                                            <td class="text-end w-200px">
+                                                <input type="text " class="form-control  form-control-sm w-200px "placeholder="Ex:Son marque ,taille , poids" name="proprieties[]"  value="">
+                                            </td>
                                             <!--begin::Quantity-->
                                             <td class="text-end">
-                                                <input type="number" class="form-control  form-control-sm  w-100px calcul quantity" name="quantity[]" min="1" value="{{ $item->quantity }}">
+                                                <input type="number" class="form-control  form-control-sm  w-75px calcul quantity" name="quantity[]" min="1" value="{{ $item->quantity }}">
                                             </td>
+                                           
                                             <!--end::Quantity-->
                                             <!--begin::Quantity-->
                                             <td>
-                                                <select class="form-control form-control-sm "  name="unit_item_id[]" data-hide-search="true" data-control="select2" >
+                                                <select class="form-control form-control-sm  w-75px"  name="unit_item_id[]" data-hide-search="true" data-control="select2" >
                                                     @foreach ($units as $unit)
                                                         <option value="{{ $unit->id }}" @if ($item->unit_item_id == $unit->id)  selected @endif>{{ $unit->name }}</option>
                                                     @endforeach
@@ -189,13 +196,13 @@
                                             <!--end::Quantity-->
                                             <!--begin::Price-->
                                             <td class="text-end">
-                                                <input type="number" class="form-control   form-control-sm w-100px calcul unitPrice" name="unit_price[]" min="0" value="{{ $item->unit_price }}">
+                                                <input type="number" class="form-control   form-control-sm w-150px calcul unitPrice" name="unit_price[]" min="0" value="{{ $item->unit_price }}">
                                             </td>
                                             <!--end::Price-->
                                             <!--begin::Total-->
-                                            <td class="mt-2"><input type="text" class="form-control  form-control-sm form-control-transparent total" value="{{ $item->unit_price * $item->quantity }}"/></td>
+                                            <td class="mt-2"><input type="text" autocomplete="off" class="form-control  form-control-sm form-control-transparent total" value="{{ $item->unit_price * $item->quantity }}"/></td>
                                             <td class="text-center">
-                                                <span class="to-link " title="Supprimer cette ligne" onclick="deleteLine(this)"><i  class="far fa-trash-alt text-danger  "></i></span>
+                                                <span class="to-link " title="Supprimer cette ligne" onclick="deleteLine(this)"><i  class="far fa-trash-alt mt-3 text-danger  "></i></span>
                                             </td>
                                             <!--end::Total-->
                                         </tr>
@@ -312,6 +319,11 @@
         @endif
     </div>
 </form>
+<style>
+    #modal-dialog{
+        min-width: 980px;
+    }
+</style>
 <script>
     @if ($purchase_model->id && $purchase_model->details->count() )
         var minItem = {{ $purchase_model->details->count() }};

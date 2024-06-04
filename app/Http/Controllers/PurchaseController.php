@@ -18,14 +18,20 @@ use App\Http\Requests\PurchaseRequest;
 class PurchaseController extends Controller
 {
     public function index() {
-
         return view('purchases.index',[ "basic_filter" => Purchase::createFilter() ,"can_create_new_purchase" => Auth::user()->isRhOrAdmin()]);
     }
 
     public function getPurchaseList(Request $request) {
         $data = [];
+        $auth= Auth::user();
         $purchases = Purchase::with(['author', 'files',"details.itemType"])->getDetails($request->all())->get();
         foreach ($purchases as  $purchase) {
+            if ($purchase->tagged_users) {
+                /** If auth is not admin and not the specifique tagged don't add it */
+                if (!$auth->isRhOrAdmin() && !in_array($auth->id ,explode(",",$purchase->tagged_users))) {
+                   continue;
+                }
+            }
             $data[] =  $this->_make_row( $purchase);
         }
         return ["data" =>  $data];
@@ -46,6 +52,7 @@ class PurchaseController extends Controller
         }
         
         return [
+            "DT_RowId" => row_id("tickets", $purchase->id),
             'info' => "<span data-kt-element='bullet' class='bullet bullet-vertical d-flex align-items-center min-h-30px  bg-$statusColor'></span>",
             'date' => $purchase->purchase_date->format("d-M-Y"),
             'author' => $purchase->author->sortname,
@@ -87,7 +94,7 @@ class PurchaseController extends Controller
         $data['itemTypes'] = ItemType::whereDeleted(0)->orderBy('name', 'desc')->get();
         $data['auth'] = Auth::user();
         /** Tag user */
-        $users = User::with(["userJob.job"])->whereDeleted(0)->where("users.id", "<>", Auth::id())->get();
+        $users = User::with(["userJob.job"])->whereDeleted(0)->where("users.id", "<>", (Auth::id() == $purchase_model->author_id )   ? Auth::id()  : 0 )->get();
         foreach ($users as $user) {
             $data['users'][] = $this->_make_user_tag($user);
         }

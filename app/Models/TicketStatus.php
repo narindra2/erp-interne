@@ -10,7 +10,7 @@ class TicketStatus extends Model
     use HasFactory;
     protected $table = "tickets_status";
     protected $guarded = [];
-    public static $_RESOLVED = [4,5];
+    public static $_RESOLVED = [4, 5 ,6];
     public static $_WAINTING_TO_BUY = 6;
 
     public static function drop($exlude_id = [], $all = false)

@@ -78,7 +78,7 @@ class TicketController extends Controller
         }
         return
             [
-                "DT_RowId" => row_id("tickets", $ticket->id),
+                "DT_RowId" => row_id("purchase", $ticket->id),
                 "resolue" => view("tickets.column.resolve", ["ticket" => $ticket, 'for_user' => $for_user])->render(),
                 "id" => $edit,
                 "owner" =>  view("tickets.column.owner", ["owner" => $ticket->owner])->render(), //($ticket->owner->firstname ?? $ticket->owner->name),

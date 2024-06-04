@@ -289,7 +289,7 @@ class NotificationTemplate
         $template = [];
         $subject_info = self::get_subject_info($notification);
         $subject_name = $subject_info['name'];
-        $template["title"]= "Demande d'achat";
+        $template["title"]= "Achat";
         $template["action"]= "Mise à jour";
         $template["profile"] = $subject_info["profile"];
         $purchase = $notification->data["object"] ?? Purchase::with(['author'])->find($notification->data['purhcase_id']);
