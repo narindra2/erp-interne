@@ -22,28 +22,12 @@
        </div>
        <div class="separator border-info mt-3 mb-3"></div>
        <div class="row">
-            {{-- <div class="col-md-6">
-                <div class="card-title d-flex flex-column">   
-                    <span class="text-gray-700 pt-1 fw-semibold fs-6">Ajouter autre demandeur : </span>
-                    <div class="d-flex align-items-center form-group">
-                        <select name="applicant[]" class="form-select form-select-solid form-control-lg"
-                         data-msg-required="@lang('lang.required_input')"
-                    data-dropdown-parent="#ajax-modal" data-control="select2" multiple
-                    data-placeholder="Ajouter autre demandeur" data-allow-clear="true" data-hide-search= "false">
-                    <option disabled  value="0"> -- Demandeur --</option>
-                    @foreach ($users as $user)
-                        <option value="{{ $user->id }}"  @if ($user->id  == $auth->id) selected   @endif   >{{ $user->sortname }} </option>
-                    @endforeach
-                </select>
-
-                    </div>
-                </div>
-            </div> --}}
+            
             <div class="col-md-6">
                 <div class="card-title d-flex flex-column">   
                     <span class="text-gray-700 pt-1 fw-semibold fs-6">Paiement par : </span>
                     <div class="d-flex align-items-center">
-                        <select class="form-select form-select-solid"
+                        <select class="form-select form-select-sm form-select-solid"
                         name="method" data-hide-search="true" data-control="select2" data-placeholder="Paiement par "  tabindex="-1">
                         <option @if ($purchase_model->method == "Carte (VISA)") selected  @endif value="Carte (VISA)">Carte (VISA)</option>
                         <option @if ($purchase_model->method == "Carte (MASTERCARD)") selected  @endif value="Carte (MASTERCARD)">Carte (MASTERCARD)</option>
@@ -64,29 +48,28 @@
                 </div>
             </div>
        </div>
-       {{-- <div class="separator border-info mt-3 mb-3"></div>
+
+       <div class="separator border-info mt-3 mb-3"></div>
        <div class="row">
-            <div class="col-md-6">
-                <div class="card-title d-flex flex-column">   
-                    <span class="text-gray-700 pt-1 fw-semibold fs-6">Paiement par : </span>
-                    <div class="d-flex align-items-center">
-                        <select class="form-select form-select-solid"
-                        name="method" data-hide-search="true" data-control="select2" data-placeholder="Paiement par "  tabindex="-1">
-                        <option @if ($purchase_model->method == "Carte (VISA)") selected  @endif value="Carte (VISA)">Carte (VISA)</option>
-                        <option @if ($purchase_model->method == "Carte (MASTERCARD)") selected  @endif value="Carte (MASTERCARD)">Carte (MASTERCARD)</option>
-                        <option @if ($purchase_model->method == "Chèque") selected  @endif value="Chèque">Chèque</option>
-                        <option @if ($purchase_model->method == "Espèce") selected  @endif value="Espèce">Espèce</option>
-                    </select>
-                    </div>
+        <div class="col-md-12">
+            <div class="card-title d-flex flex-column">   
+                <span class="text-gray-700 pt-1 fw-semibold fs-6">Taguer  les personnes qui seront informées de cette demande (facultatif) : </span>
+                <div class="d-flex align-items-center form-group">
+                    @include('tasks.kanban.users-tag', [
+                            'users' => $users,
+                            'default' => $defaut_tagged,
+                            'placeholder' => 'List des internes',
+                        ])
                 </div>
             </div>
-       </div> --}}
+        </div>
+       </div>
        <div class="separator border-info mt-3 mb-3"></div>
        
        <div class="col-md-12">
             <div class="card-title d-flex flex-column">   
                 <span class="text-gray-700 pt-1 fw-semibold fs-6">Note : </span>
-                <textarea id="note"  name="note" class="form-control form-control form-control-solid" rows="1" data-kt-autosize="true" data-rule-required="fales" >{{ $purchase_model->note }}</textarea>
+                <textarea id="note"  name="note" placeholder="Note concernant de la demande d 'achat ..." class="form-control form-control form-control-solid" rows="1" data-kt-autosize="true" data-rule-required="fales" >{{ $purchase_model->note }}</textarea>
             </div>
         </div>
         <div class="form-group row">
@@ -108,7 +91,7 @@
                
                 <div class="col-md-{{  $purchase_model->id ? "6" : "12" }}">
                     <div class="card-title d-flex flex-column">   
-                        <span class="text-gray-700 pt-1 fw-semibold fs-6 mb-1">Ajouté {{ $purchase_model->id ? "autre" : "" }} fichiers joints : </span>
+                        <span class="text-gray-700 pt-1 fw-semibold fs-6 mb-1">Ajouter {{ $purchase_model->id ? "autre" : "" }} des fichiers joints : </span>
                         <input class="form-control form-control-sm" name="files[]" type="file" multiple>
                     </div>
                 </div>
@@ -119,7 +102,7 @@
        <div class="row">
             <div class="col-md-12">
                 <div class="card-title d-flex flex-column">   
-                    <span class="text-gray-700 pt-1 fw-semibold fs-6"> Articles : </span>
+                    <span class="text-gray-700 pt-1 fw-semibold fs-6"> Articles à acheté : </span>
                     <div class="d-flex align-items-center">
                         <div class="table-responsive">
                             <!--begin::Table-->
@@ -307,16 +290,25 @@
         </div>
         </div>
         </div>
-     
+     @php
+        $isRhOrAdmin = $auth->isRhOrAdmin();
+     @endphp
     <div class="d-flex justify-content-end mt-5">
         @if ($purchase_model->id)
-        <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-light-dark btn-sm mr-2 ">
-            Quitter          </button> &nbsp;
-            <button type="submit" class="btn btn-dark font-weight-bold mr-2 btn-sm">Sauvegarder</button>
+            <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-light-dark btn-sm mr-2 ">
+                Quitter          
+            </button> &nbsp;
+            @if ($isRhOrAdmin)
+                <button type="submit" class="btn btn-dark font-weight-bold mr-2 btn-sm">Sauvegarder</button>
+            @endif
         @else 
-        <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-light-dark btn-sm mr-2 ">
-            Annuler       </button> &nbsp;
-            <button type="submit" class="btn btn-light-info font-weight-bold mr-2 btn-sm">Créer la demande</button>
+            <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-light-dark btn-sm mr-2 ">
+                Annuler 
+            </button> &nbsp;
+            @if ($isRhOrAdmin)
+                <button type="submit" class="btn btn-light-info font-weight-bold mr-2 btn-sm">Créer la demande</button>
+            @endif
+
         @endif
     </div>
 </form>
@@ -332,7 +324,7 @@
         KTApp.initSelect2();
         $("#purchases-modal-form").appForm({
             onSuccess: function(response) {
-                dataTableInstance.purchasesList.ajax.reload();
+                dataTableInstance.purchasesTable.ajax.reload();
             },
         });
         $("#addLine").on("click", function() {

@@ -87,7 +87,7 @@ class NewPurcahseNotification extends Notification
             "toast" => $this->toast_notification($notifiable),
             "extra_data" => [
                 "type" => "dataTable",
-                "table" => "purchasesList",
+                "table" => "purchasesTable",
                 "row" => $controller->_make_row($this->purchase, $notifiable)
             ]
         ]);

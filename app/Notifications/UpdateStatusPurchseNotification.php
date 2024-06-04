@@ -20,16 +20,18 @@ class UpdateStatusPurchseNotification extends Notification
     private $classification = "bell";
     private $event = "purchase_statut_update";
     private $fake_id;
+    private $updated;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($purchase , $creator)
+    public function __construct($purchase , $creator , $changed = [])
     {
        $this->purchase = $purchase;
         $this->creator = $creator;
         $this->fake_id = Str::uuid();
+        $this->updated = $changed;
     }
 
     /**
@@ -73,6 +75,7 @@ class UpdateStatusPurchseNotification extends Notification
             "purhcase_id" => $this->purchase->id,
             "event" => $this->event,
             "created_by" => $this->creator->id,
+            "updated" => $this->updated,
         ];
     }
     public function toBroadcast($notifiable)
@@ -85,7 +88,7 @@ class UpdateStatusPurchseNotification extends Notification
             "toast" => $this->toast_notification($notifiable),
             "extra_data" => [
                 "type" => "dataTable",
-                "table" => "purchasesList",
+                "table" => "purchasesTable",
                 "row" => $controller->_make_row($this->purchase, $notifiable)
             ]
         ]);
@@ -98,6 +101,7 @@ class UpdateStatusPurchseNotification extends Notification
         $notification->data["event"] = $this->event;
         $notification->data["object"] = $this->purchase;
         $notification->created_at =  Carbon::now();
+        $notification->data["updated"] = $this->updated;
         $notification->id = $this->fake_id;
         $notification->read_at =  null;
         return view('notifications.template', ['notification' => $notification , "send_to" => $notifiable])->render();
@@ -110,13 +114,13 @@ class UpdateStatusPurchseNotification extends Notification
         $status_text = get_array_value( $status_info , "text") ;
         /** Notifiable is the user to receive the notification */
         if ($notifiable->id == $this->purchase->author_id) {
-            $content = "{$this->creator->sortname} a mis en statut : ' {$status_text}' votre demande d' achat";
+            $content = "{$this->creator->sortname} a mis en statut  «{$status_text}» votre demande d' achat";
         }else{
-            $content = "{$this->creator->sortname} a mis en statut : ' {$status_text}' la demande d' achat  ajouté par {$this->purchase->author->sortname} ";
+            $content = "{$this->creator->sortname} a mis en statut  «{$status_text}» la demande d' achat  ajouté par {$this->purchase->author->sortname} ";
         }
         /** Self action  */
         if ($this->creator->id == $this->purchase->author_id) {
-            $content = "{$this->creator->sortname} a mis en statut : ' {$status_text}' la demande d' achat  ajouté par lui même.";
+            $content = "{$this->creator->sortname} a mis en statut «{$status_text}» la demande d' achat  ajouté par lui même.";
         }
         $redirect = url("/purchases");
         return ["content" => $content, "title" => trans("lang.purchase_order") , "position" => "right" ,"duration" => "forever","redirect" => $redirect];

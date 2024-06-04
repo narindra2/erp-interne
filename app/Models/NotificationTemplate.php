@@ -290,12 +290,15 @@ class NotificationTemplate
         $subject_info = self::get_subject_info($notification);
         $subject_name = $subject_info['name'];
         $template["title"]= "Demande d'achat";
-        $template["action"]= "Ajout";
+        $template["action"]= "Mise à jour";
         $template["profile"] = $subject_info["profile"];
-        $purchase = $notification->data["object"] ?? Purchase::with(['author', ])->find($notification->data['purhcase_id']);
-        $status_info = Purchase::getPurchaseStatusInfo($purchase->status );
-        $status_text = get_array_value( $status_info , "text");
-        $template["sentence"] = "{$subject_name} a mis en statut : ' {$status_text}' la demande d' achat de «{$purchase->author->sortname}»" ;
+        $purchase = $notification->data["object"] ?? Purchase::with(['author'])->find($notification->data['purhcase_id']);
+       
+        $updated = $notification->data["updated"] ?? [];
+        $old_status  = get_array_value($updated, "old_status");
+        $new_status  = get_array_value($updated, "new_status");
+
+        $template["sentence"] = "{$subject_name} a mis  « <strike>$old_status</strike> ->{$new_status} » la demande d' achat de «{$purchase->author->sortname}»" ;
         return  $template;
     }
 }

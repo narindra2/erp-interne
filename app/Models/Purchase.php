@@ -25,7 +25,9 @@ class Purchase extends Model
         'author_id',
         'note',
         'status',
-        'method'
+        'method',
+        'deleted',
+        'tagged_users'
     ];
     const INPROGRESS_PURCHASE = "in_progress";
     const VALIDATED_PURCHASE = "validated";
@@ -44,19 +46,12 @@ class Purchase extends Model
         return $this->hasMany(PurchaseFile::class, "purchase_id");
     }
 
-    public function getDetails(Request $request) {
-        if (!$this->id) {
-            return $request->session()->get("purchaseDetail");
-        }
-        $this->load('details.itemType');
-        return $this->details; 
-    }
-
     public function dateHTML() {
         return $this->purchase_date->translatedFormat('d M Y');
     }
     public static function purchaseStatusList() {
        return [
+        ["value" => null,"text" => "Statut" ],
         ["value" => self::INPROGRESS_PURCHASE , "text" => "En attente" ,  "color" => "primary"],
         ["value" => self::VALIDATED_PURCHASE , "text" => "Validé" ,  "color" => "success"],
         ["value" => self::PURCHASED_PURCHASE , "text" => "Achat fait" ,  "color" => "info"],
@@ -67,11 +62,17 @@ class Purchase extends Model
         return collect(self::purchaseStatusList())->firstWhere("value","=" , $purchase_status);
     }
     public   function getUserNotification() {
+        if ($this->tagged_users) {
+            $tagged_users = User::select(["id" ,"name","firstname","deleted"])
+                                  ->whereDeleted(0)
+                                  ->whereIn("id", explode("," ,$this->tagged_users))->get();
+            return $tagged_users->push($this->author);
+        }
         /**RH user + Admin user  */
         if ($this->author->isRhOrAdmin()) {
             return get_cache_rh_admin();
         }else{
-             /**RH user + Admin user + user not adminitratif  */
+            /**RH user + Admin user + user not adminitratif  */
             return get_cache_rh_admin()->push($this->author);
         }
     }
@@ -87,8 +88,12 @@ class Purchase extends Model
         array_shift( $quantity ) ;
         array_shift($itemTypeID);
         array_shift( $unitItemID );
-       
+
+        $tagged_users = $input['users'] ? collect(json_decode($input['users'], true))->implode("value",",") : null;
+        $input['tagged_users'] =   $tagged_users ;
+
         $input['total_price'] = self::getTotalPrice($unitPrice, $quantity);
+        
         /** Create  options */
         if (!isset($input['purchase_id'])) {
             $input['author_id'] = $auth->id;
@@ -99,7 +104,7 @@ class Purchase extends Model
         $input['purchase_date'] = convert_date_to_database_date( $input['purchase_date']);
         $purchase = Purchase::updateOrCreate(["id" => ($input['purchase_id'] ?? null) ],$input);
         $purchase->saveFiles($files);
-
+      
         $dataPurchaseDetail = [];
         $dataItemMovement = [];
         array_map(function($unitPrice, $quantity, $itemTypeID, $unitItemID) use ($purchase, &$dataPurchaseDetail, &$dataItemMovement) {
@@ -127,14 +132,16 @@ class Purchase extends Model
         PurchaseDetail::upsert($dataPurchaseDetail, ['unit_price'], ['unit_price']);
         // ItemMovement::upsert($dataItemMovement, ['item_id'], ['item_id']);
         if (!isset($input['purchase_id'])) {
-            dispatch(new TicketJobNotification(  $purchase->getUserNotification(), new NewPurcahseNotification( $purchase ,  $auth)));
+            dispatch(new TicketJobNotification(  $purchase->getUserNotification(), new NewPurcahseNotification( $purchase ,  $auth)))->afterResponse();
         }else{
             if ($old_purchase->status != $purchase->status) {
+                $changed["old_status"] = Purchase::getPurchaseStatusInfo($old_purchase->status)["text"] ;
+                $changed["new_status"] =  Purchase::getPurchaseStatusInfo($purchase->status)["text"];
                 /** Send the new status of new purchase */
-                dispatch(new TicketJobNotification(  $purchase->getUserNotification(), new UpdateStatusPurchseNotification( $purchase  ,  $auth)));
+                dispatch(new TicketJobNotification(  $purchase->getUserNotification(), new UpdateStatusPurchseNotification( $purchase  ,  $auth , $changed)))->afterResponse();
             }
         }
-        return $purchase;
+        // return $purchase;
     }
 
     public static function getTotalPrice($unitPrice, $quantity) {
@@ -159,5 +166,58 @@ class Purchase extends Model
                 ]);
             }
         }
+    }
+    public function scopeGetDetails($query , $options = []) {
+        $auth = Auth::user();
+        $status  = get_array_value($options, "status");
+        if ($status) {
+            $query->where("status", $status);
+        }
+        $method  = get_array_value($options, "method");
+        if ($method) {
+            $query->where("method", $method);
+        }
+        if ($method) {
+            $query->where("method", $method);
+        }
+        if (!$auth->isRhOrAdmin()) {
+            $query->whereRaw('FIND_IN_SET("' . $auth->id . '", tagged_users)');
+        }
+        return $query->whereDeleted(0)->latest();
+    }
+    public static function createFilter($options = [])
+    {
+        $filters = []  ;
+        $filters[] = [
+            "label" => "Statut", 
+            "name" =>"status",
+            "type" => "select",
+            "width"  =>"w-200px",
+            "disabled_first" => true,
+            'attributes' => [
+                "data-hide-search" => "true",
+                "data-allow-clear" => "true",
+            ],
+            "options" =>  self::purchaseStatusList(),
+        ];
+        $filters[] = [
+            "label" => "Méthode", 
+            "name" =>"method",
+            "type" => "select",
+            "width"  =>"w-200px",
+            "disabled_first" => true,
+            'attributes' => [
+                "data-hide-search" => "true",
+                "data-allow-clear" => "true",
+            ],
+            "options" => [
+                ["value" => null, "text" => "Méthode"],
+                ["value" => "Espèce", "text" => "Espèce"],
+                ["value" => "Chèque", "text" => "Chèque"],
+                ["value" => "Carte (VISA)" , "text" => "Carte (VISA)" ],
+                ["value" => "Carte (MASTERCARD)", "text" => "Carte (MASTERCARD)"],
+            ],
+        ];
+        return $filters;
     }
 }

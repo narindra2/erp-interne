@@ -385,12 +385,12 @@ Route::middleware(['auth', 'checkinweb', 'not_contributor'])->group(function () 
     Route::post("/item-movements/items/edit-code-form/{item}", [ItemMovementController::class, "getEditCodeForm"]);
     Route::post("/item-movements/items/save-code-form", [ItemMovementController::class, "saveNewItemCode"]);
 
-    Route::get("/purchases", [PurchaseController::class, 'index']);
+   
     Route::get('/purchases/new', [PurchaseController::class, "form"]);
-    Route::post('/purchases/demande-form', [PurchaseController::class, "modal_form"]);
     Route::post('/purchases/save', [PurchaseController::class, "save"]);
+    Route::post('/purchases/delete', [PurchaseController::class, "delete"]);
     Route::get("/purchases/page_list", [PurchaseController::class, "getViewList"]);
-    Route::get("/purchases/data_list", [PurchaseController::class, "getPurchaseList"]);
+
     Route::get("/purchases/details/{purchase}", [PurchaseController::class, "pageDetail"]);
     Route::get("/purchases/details-data/{purchase}", [PurchaseController::class, "getDetail"]);
     Route::get("/purchases/download-file/{purchaseFile}", [PurchaseController::class, 'downloadFile']);
@@ -414,6 +414,10 @@ Route::middleware(['auth', 'checkinweb', 'not_contributor'])->group(function () 
     Route::post("/items/save-unit", [ItemController::class, "saveItemUnit"]);
     Route::post("/items/itemUnit/delete/{unitItem}", [ItemController::class, "deleteItemUnit"]);
 });
+
+Route::get("/purchases", [PurchaseController::class, 'index']);
+Route::get("/purchases/data_list", [PurchaseController::class, "getPurchaseList"]);
+Route::post('/purchases/demande-form', [PurchaseController::class, "modal_form"]);
 
 Route::middleware(['auth', 'checkinweb', 'not_contributor'])->group(function () {
     Route::get("/needToBuy", [NeedToBuyController::class, "index"]);
