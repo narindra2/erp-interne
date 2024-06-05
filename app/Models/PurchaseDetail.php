@@ -15,6 +15,8 @@ class PurchaseDetail extends Model
         'quantity',
         'unit_price',
         'unit_item_id',
+        'propriety',
+        'deleted'
     ];
 
     public function unit() {

@@ -27,7 +27,7 @@ class Purchase extends Model
         'status',
         'method',
         'deleted',
-        'tagged_users'
+        'tagged_users',
     ];
     const INPROGRESS_PURCHASE = "in_progress";
     const VALIDATED_PURCHASE = "validated";
@@ -83,11 +83,13 @@ class Purchase extends Model
         $quantity = $input['quantity'];
         $itemTypeID = $input['item_type_id'];
         $unitItemID = $input['unit_item_id'];
-
+        $propriety = $input['proprieties'];
+        /** Remove the first becuase it ith a fake data from front */
         array_shift($unitPrice );
         array_shift( $quantity ) ;
         array_shift($itemTypeID);
         array_shift( $unitItemID );
+        array_shift( $propriety );
 
         $tagged_users = $input['users'] ? collect(json_decode($input['users'], true))->implode("value",",") : null;
         $input['tagged_users'] =   $tagged_users ;
@@ -107,13 +109,14 @@ class Purchase extends Model
       
         $dataPurchaseDetail = [];
         $dataItemMovement = [];
-        array_map(function($unitPrice, $quantity, $itemTypeID, $unitItemID) use ($purchase, &$dataPurchaseDetail, &$dataItemMovement) {
+        array_map(function($unitPrice, $quantity, $itemTypeID, $unitItemID,$propriety) use ($purchase, &$dataPurchaseDetail, &$dataItemMovement) {
             $dataPurchaseDetail[] = [
                 'item_type_id' => $itemTypeID,
                 'purchase_id' => $purchase->id,
                 'quantity' => $quantity,
                 'unit_item_id' => $unitItemID,
-                'unit_price' => $unitPrice
+                'unit_price' => $unitPrice,
+                'propriety' => $propriety
             ];
             /*
             for ($i = 0; $i < $quantity; $i++) {
@@ -128,7 +131,7 @@ class Purchase extends Model
                 ];
             }
             */
-        }, $unitPrice, $quantity, $itemTypeID, $unitItemID);
+        }, $unitPrice, $quantity, $itemTypeID, $unitItemID,$propriety);
         PurchaseDetail::upsert($dataPurchaseDetail, ['unit_price'], ['unit_price']);
         // ItemMovement::upsert($dataItemMovement, ['item_id'], ['item_id']);
         if (!isset($input['purchase_id'])) {

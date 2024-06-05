@@ -168,7 +168,7 @@
                                         <tr class="add_tr">
                                             <!--begin::Product-->
                                             <td class="text-start w-200px">
-                                                <select class="form-control form-control-sm "  name="item_type_id[]" data-hide-search="false" data-control="select2" data-placeholder="Materiel ..."  data-dropdown-parent="#ajax-modal">
+                                                <select class="form-control form-control-sm "  name="item_type_id[]" data-hide-search="false" data-control="select2" data-placeholder="Materiel ..."  data-dropdown-parent="#ajax-modal" data-direction = "">
                                                     <option  value="0" > Liste des arcticles..</option>
                                                     @foreach ($itemTypes as $type)
                                                         <option value="{{ $type->id  }}" @if ($item->item_type_id == $type->id)  selected @endif >{{ $type->name }}</option>
@@ -177,7 +177,7 @@
                                             </td>
                                             <!--end::Product-->
                                             <td class="text-end w-200px">
-                                                <input type="text " class="form-control  form-control-sm w-200px "placeholder="Ex:Son marque ,taille , poids" name="proprieties[]"  value="">
+                                                <input type="text " class="form-control  form-control-sm w-200px "placeholder="Ex:Son marque ,taille , poids" name="proprieties[]"  value="{{ $item->propriety }}">
                                             </td>
                                             <!--begin::Quantity-->
                                             <td class="text-end">

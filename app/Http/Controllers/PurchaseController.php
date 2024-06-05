@@ -62,23 +62,13 @@ class PurchaseController extends Controller
             'total_price' => "<h5>$purchase->total_price</h5>" . env("CURRENCY"),
             'files' => $this->createColumnFiles($purchase),
             'status' =>"<span class='badge badge-sm badge-$statusColor'>$statusText</span>" ,
-            'created_at' => convert_to_real_time_humains($purchase->created_at),
+            'created_at' => convert_to_real_time_humains($purchase->created_at,'d-M-Y'),
             'delete' =>  js_anchor('<i class="fas fa-trash " style="font-size:12px" ></i>', ["data-action-url" => url("/purchases/delete"),"data-post-purchase_id" =>$purchase->id ,"class" => "btn btn-sm btn-clean ", "title" => "Supprimé", "data-action" => "delete"]),
             'actions' => $detail
         ];
     }
 
-    public function delete(Request $request)
-    {
-        $purchase = Purchase::find($request->purchase_id);
-        if ($request->input("cancel")) {
-            $purchase->update(["deleted" => 0]);
-            return ["success" => true, "message" => trans("lang.success_canceled"), "data" => $this->_make_row($purchase)];
-        } else {
-            $purchase->update(["deleted" => 1]);
-            return ["success" => true, "message" => trans("lang.success_deleted")];
-        }
-    }
+    
 
     public function createColumnFiles($purchase) {
         if ($purchase->files->count()) {
@@ -158,5 +148,19 @@ class PurchaseController extends Controller
     public function downloadFile(PurchaseFile $purchaseFile) {
         $url = storage_path($purchaseFile->src);
         return response()->download($url);
+    }
+
+    public function delete(Request $request)
+    {
+        $purchase = Purchase::find($request->purchase_id);
+        if ($request->input("cancel")) {
+            $purchase->update(["deleted" => 0]);
+            PurchaseDetail::where("purchase_id", $purchase->id)->update(["deleted" => 0]);
+            return ["success" => true, "message" => trans("lang.success_canceled"), "data" => $this->_make_row($purchase)];
+        } else {
+            $purchase->update(["deleted" => 1]);
+            PurchaseDetail::where("purchase_id", $purchase->id)->update(["deleted" => 1]);
+            return ["success" => true, "message" => trans("lang.success_deleted")];
+        }
     }
 }
