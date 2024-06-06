@@ -53,20 +53,24 @@ class HourRecoveryController extends Controller
         $row['response'] = "";
         $row['action'] = "";
         $row['delete']  = "";
-        if ($hourRecovery->is_validated !== null) {
-            $row['action'] = "";
-        }
+        
         if ($is_can_access_to_valid) {
             $row['response'] .= modal_anchor(url("/modal-hour-recoveries-response/$hourRecovery->id"), "<button class='btn btn-success btn-sm'> <i class='fas fa-reply'></i></button>", ["title" => "Donner un résultat à la demande"]);
         }
         /** Can update it */
         if ($is_can_access_to_valid || (Auth::id() == $hourRecovery->user_id && !$hourRecovery->is_validated)) {
-            $row['delete'] = js_anchor('<i class="fas fa-trash " style="font-size:12px" ></i>', ["data-action-url" => url("/hour-recoveries/delete"),"data-post-hour_recovery_id" =>$hourRecovery->id ,"class" => "btn btn-sm btn-clean ", "title" => "Supprimé", "data-action" => "delete"]);
+            $row['delete'] = js_anchor('<i class="fas fa-trash  text-danger" style="font-size:12px" ></i>', ["data-action-url" => url("/hour-recoveries/delete"),"data-post-hour_recovery_id" =>$hourRecovery->id ,"class" => "btn btn-sm btn-clean ", "title" => "Supprimé", "data-action" => "delete"]);
             $row['action'] = modal_anchor(url("/hour-recoveries/form/$hourRecovery->id"), '<i class="fas fa-pen"></i>', ['title' => "Modifier", 'class' => '' , "data-modal-lg" => true,  "data-post-hour_recovery_id" =>$hourRecovery->id]);;
+        }
+        if ($hourRecovery->is_validated  == "0") {
+            $row['delete']  = '<i class="mx-4 fas fa-lock text-dark" style="font-size:12px"></i>';
+            $row['action'] = "";
+        }
+        if ($hourRecovery->is_validated  == "1") {
+            $row['delete']  = '<i class="mx-4 fas fa-lock text-dark" style="font-size:12px"></i>';
         }
         return $row;
     }
-
     public function show_modal_form(HourRecovery $hourRecovery)
     {
         if ($hourRecovery){
