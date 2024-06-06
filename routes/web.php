@@ -168,6 +168,7 @@ Route::middleware(['auth', 'checkinweb'])->group(function () {
     Route::get("/hour-recoveries", [HourRecoveryController::class, "index"]);
     Route::post("/hour-recoveries/form/{hourRecovery?}", [HourRecoveryController::class, "show_modal_form"]);
     Route::post("/hour-recoveries", [HourRecoveryController::class, "store"]);
+    Route::post("/hour-recoveries/delete", [HourRecoveryController::class, "delete"]);
     Route::get("/hour-recoveries-dataList", [HourRecoveryController::class, "data_list"]);
 
     Route::get("/informations", [ErpDocumentationController::class, "index"]);

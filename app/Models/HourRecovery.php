@@ -27,7 +27,8 @@ class HourRecovery extends Model
         'recovery_end_date',
         'description',
         'is_validated',
-        'hour_absence'
+        'hour_absence',
+        'deleted'
     ];
 
     /**
@@ -88,13 +89,14 @@ class HourRecovery extends Model
 
     public static function createHourRecovery($input) {
         $input['date_of_absence'] = to_date($input['date_of_absence']);
-        $input['recovery_start_date'] = to_date($input['recovery_start_date']);
-        $input['recovery_end_date'] = to_date($input['recovery_end_date']);
+        $input['recovery_start_date'] = convert_date_to_database_date($input['recovery_start_date']);
+        $input['recovery_end_date'] = convert_date_to_database_date($input['recovery_end_date']);
 
         if (Carbon::make($input['recovery_start_date'])->gt(Carbon::make($input['recovery_end_date']))) {
             throw new Exception("La date fin de récupération est inférieure par rapport à la date de début");
         }
-        return HourRecovery::create($input);
+        $id = $input['id'] ?? null;
+        return HourRecovery::updateOrCreate( ["id" => $id ] ,$input);
     }
 
     public function scopeGetDetail($query, $options)

@@ -5,16 +5,16 @@
         
         <div class="row">
             <div class="col-md-6">
-                <div class="alert alert-dismissible bg-light-danger border border-primary border-dashed d-flex flex-column flex-sm-row w-100 p-5 mb-2">
-                    <label for="accept" class="radio radio-primary">
+                <div class="alert  bg-light-success border border-success  d-flex flex-column flex-sm-row w-100 p-5 mb-2">
+                    <label for="accept" class="radio radio-success">
                         <input type="radio" name="response" id="accept" value="1">
                         <span>Accepter</span>
                     </label>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="alert alert-dismissible bg-light-danger border border-warning border-dashed d-flex flex-column flex-sm-row w-100 p-5 mb-2">
-                    <label for="Refuser" class="radio radio-warning">
+                <div class="alert  bg-light-danger border border-danger  d-flex flex-column flex-sm-row w-100 p-5 mb-2">
+                    <label for="Refuser" class="radio radio-danger">
                         <input type="radio" name="response" id="Refuser" value="0">
                         <span>Refuser</span>
                     </label>
@@ -22,6 +22,7 @@
             </div>
         </div>
 
+   </div>
     <div class="card-footer">
         <div class="d-flex justify-content-end">
             <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-light-light btn-sm mr-2 "> @lang('lang.cancel')</button>
@@ -29,8 +30,7 @@
                 @include('partials.general._button-indicator', ['label' => trans('lang.save'),"message" => trans('lang.sending')])
             </button>
         </div>
-    </div>
-    
+    </div> 
 </form>
 <script>
 $(document).ready(function() {

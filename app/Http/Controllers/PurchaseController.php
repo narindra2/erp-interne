@@ -52,11 +52,10 @@ class PurchaseController extends Controller
         }
         
         return [
-            "DT_RowId" => row_id("tickets", $purchase->id),
+            "DT_RowId" => row_id("purchases", $purchase->id),
             'info' => "<span data-kt-element='bullet' class='bullet bullet-vertical d-flex align-items-center min-h-30px  bg-$statusColor'></span>",
             'date' => $purchase->purchase_date->format("d-M-Y"),
             'author' => $purchase->author->sortname,
-            // 'method' => "<span class='badge badge-sm badge-info'></span>" ,
             'method' => "<span class='badge badge-sm badge-light-info'>$purchase->method</span>" ,
             'items' => $items ,
             'total_price' => "<h5>$purchase->total_price</h5>" . env("CURRENCY"),
