@@ -55,7 +55,7 @@ class HourRecoveryController extends Controller
         $row['delete']  = "";
         
         if ($is_can_access_to_valid) {
-            $row['response'] .= modal_anchor(url("/modal-hour-recoveries-response/$hourRecovery->id"), "<button class='btn btn-success btn-sm'> <i class='fas fa-reply'></i></button>", ["title" => "Donner un résultat à la demande"]);
+            $row['response'] .= modal_anchor(url("/modal-hour-recoveries-response/$hourRecovery->id"), "<i class='fs-2 fas fa-reply text-success'></i>", ["title" => "Donner un résultat à la demande"]);
         }
         /** Can update it */
         if ($is_can_access_to_valid || (Auth::id() == $hourRecovery->user_id && !$hourRecovery->is_validated)) {
@@ -63,11 +63,11 @@ class HourRecoveryController extends Controller
             $row['action'] = modal_anchor(url("/hour-recoveries/form/$hourRecovery->id"), '<i class="fas fa-pen"></i>', ['title' => "Modifier", 'class' => '' , "data-modal-lg" => true,  "data-post-hour_recovery_id" =>$hourRecovery->id]);;
         }
         if ($hourRecovery->is_validated  == "0") {
-            $row['delete']  = '<i class="mx-4 fas fa-lock text-dark" style="font-size:12px"></i>';
+            $row['delete']  = '<i class="mx-4 fas fa-lock " style="font-size:12px"></i>';
             $row['action'] = "";
         }
         if ($hourRecovery->is_validated  == "1") {
-            $row['delete']  = '<i class="mx-4 fas fa-lock text-dark" style="font-size:12px"></i>';
+            $row['delete']  = '<i class="mx-4 fas fa-lock " style="font-size:12px"></i>';
         }
         return $row;
     }
