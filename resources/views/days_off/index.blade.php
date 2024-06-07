@@ -118,6 +118,7 @@
                         }
                 },
                 responsive: true,
+                order: [[7, 'asc']],
                 columns: [
                     {data: "created_at", title: 'Date de demande'},
                     {data: "registration_number", title: 'Matricule'},
