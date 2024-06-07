@@ -116,7 +116,7 @@
                         <span class="text-gray-700 pt-1 fw-semibold fs-6">Type {{  $absence }} : </span>
                         <select id="type_id" name="type_id" class="form-select form-select-lg form-select-solid"  data-control="select2" data-hide-search="false" data-dropdown-parent="#ajax-modal">
                             @foreach ($types as $type)
-                                <option value="{{ $type->id }}" @if ($dayOff && $dayOff->type_id == $type->type) selected @endif>{{ $type->name . ($type->nb_days ?   " - $type->nb_days"  . " jrs" : "") }}</option>
+                                <option value="{{ $type->id }}" @if ($dayOff && $dayOff->type_id == $type->id) selected @endif>{{ $type->name . ($type->nb_days ?   " - $type->nb_days"  . " jrs" : "") }}</option>
                             @endforeach
                         </select>
                     </div>

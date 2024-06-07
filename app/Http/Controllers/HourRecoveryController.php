@@ -64,7 +64,9 @@ class HourRecoveryController extends Controller
         }
         if ($hourRecovery->is_validated  == "0") {
             $row['delete']  = '<i class="mx-4 fas fa-lock " style="font-size:12px"></i>';
-            $row['action'] = "";
+            if (Auth::id() == $hourRecovery->user_id) {
+                $row['action'] =  '<i class="mx-4 fas fa-lock " style="font-size:12px"></i>';
+            }
         }
         if ($hourRecovery->is_validated  == "1") {
             $row['delete']  = '<i class="mx-4 fas fa-lock " style="font-size:12px"></i>';
