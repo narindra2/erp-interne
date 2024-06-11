@@ -25,10 +25,11 @@
             
             <div class="col-md-6">
                 <div class="card-title d-flex flex-column">   
-                    <span class="text-gray-700 pt-1 fw-semibold fs-6">Paiement par : </span>
+                    <span class="text-gray-700 pt-1 fw-semibold fs-6">Paiement parss : </span>
                     <div class="d-flex align-items-center">
                         <select class="form-select form-select-sm form-select-solid"
                         name="method" data-hide-search="true" data-control="select2" data-placeholder="Paiement par "  tabindex="-1">
+                        <option @if (!$purchase_model->method  == "Pas encore definis" || !$purchase_model->id ) selected  @endif value="Pas encore definis">Pas encore definis</option>
                         <option @if ($purchase_model->method == "Carte (VISA)") selected  @endif value="Carte (VISA)">Carte (VISA)</option>
                         <option @if ($purchase_model->method == "Carte (MASTERCARD)") selected  @endif value="Carte (MASTERCARD)">Carte (MASTERCARD)</option>
                         <option @if ($purchase_model->method == "Chèque") selected  @endif value="Chèque">Chèque</option>
@@ -72,162 +73,196 @@
                 <textarea id="note"  name="note" placeholder="Note concernant de la demande d 'achat ..." class="form-control form-control form-control-solid" rows="1" data-kt-autosize="true" data-rule-required="fales" >{{ $purchase_model->note }}</textarea>
             </div>
         </div>
-        <div class="form-group row">
-            <div class="row">
-                @if ($purchase_model->id)
-                    <div class="col-md-6">
-                        <div class="card-title d-flex flex-column">   
-                            <span class="text-gray-700 pt-1 fw-semibold fs-6  mb-1">Fichiers joints :</span>
-                            @if ($purchase_model->files->count())
-                                <div class="row">
-                                @include('purchases.columns.files', ['files' => $purchase_model->files])
-                                </div>
-                            @else 
-                                <i class="mt-2" >Pas de piéce joint ajouté.</i>
-                            @endif
-                        </div>
-                    </div>   
-                @endif
-               
-                <div class="col-md-{{  $purchase_model->id ? "6" : "12" }}">
-                    <div class="card-title d-flex flex-column">   
-                        <span class="text-gray-700 pt-1 fw-semibold fs-6 mb-1">Ajouter {{ $purchase_model->id ? "autre" : "" }} des fichiers joints : </span>
-                        <input class="form-control form-control-sm" name="files[]" type="file" multiple>
-                    </div>
-                </div>
-            </div>
-        </div>
+       
        <div class="separator border-info mt-3 mb-3"></div>
 
-       <div class="row">
-            <div class="col-md-12">
-                <div class="card-title d-flex flex-column">   
-                    <span class="text-gray-700 pt-1 fw-semibold fs-6"> Articles à acheté : </span>
-                    <div class="d-flex align-items-center">
-                        <div class="table-responsive">
-                            <!--begin::Table-->
-                            <table class="table table-rounded table-row-bordered border gy-4 gs-4">
-                                <!--begin::Table head-->
-                                <thead>
-                                    <tr class="fw-semibold fs-6 text-gray-800 border-bottom-2 border-gray-200">
-                                        <th class="min-w-150px text-center"> <span title="Ajouter une ligne"  id="addLine"><i class="fs-3 fas fa-plus-circle text-info to-link "></i></span></th>
-                                        <th class="min-w-150px text-center">Propriété</th>
-                                        <th >Quantité </th>
-                                        <th >Unité</th>
-                                        <th >Prix unitaire</th>
-                                        <th >Total</th>
-                                        <th class=""></th>
-                                    </tr>
-                                </thead>
-                             
-                                <tbody class="item-list">
-                                    
-                                    <tr class="add_tr d-none">
-                                        <!--begin::Product-->
-                                        <td class="text-start w-200px">
-                                            <select class="form-control form-control-sm "  name="item_type_id[]" data-hide-search="false" data-control="select2" data-placeholder="Materiel ..."  data-dropdown-parent="#ajax-modal">
-                                                <option  value="0" selected> Liste des arcticles..</option>
-                                                @foreach ($itemTypes as $type)
-                                                    <option value="{{ $type->id }}">{{ $type->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <!--end::Product-->
-                                        <!--begin::Quantity-->
-                                        <td class="text-end w-200px">
-                                            <input type="text " autocomplete="off" class="form-control  form-control-sm  w-200px " placeholder="Son marque ,taille , poids , ..." name="proprieties[]"  value="">
-                                        </td>
-                                        <td class="text-end ">
-                                            <input type="number"  autocomplete="off" class="form-control  form-control-sm  w-75px calcul quantity" name="quantity[]" min="1" value="1">
-                                        </td>
-                                       
-                                        <!--end::Quantity-->
-                                        <!--begin::Quantity-->
-                                        <td>
-                                            <select class="form-control form-control-sm   w-75px "  name="unit_item_id[]" data-hide-search="true" data-control="select2" data-placeholder="Paiement par ">
-                                                @foreach ($units as $unit)
-                                                    <option value="{{ $unit->id }}">{{ $unit->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <!--end::Quantity-->
-                                        <!--begin::Price-->
-                                        <td class="text-end">
-                                            <input type="number" autocomplete="off" class="form-control   form-control-sm w-150px calcul unitPrice"  name="unit_price[]" min="0" value="0">
-                                        </td>
-                                        <!--end::Price-->
-                                        <!--begin::Total-->
-                                        <td class="mt-2"><input type="text"  autocomplete="off" class="form-control form-control-sm form-control-transparent total" value="0"/></td>
-                                        <td class="text-center">
-                                            <span class="to-link " title="Supprimer cette ligne" onclick="deleteLine(this)"><i  class="far fa-trash-alt mt-3 text-danger  "></i></span>
-                                        </td>
-                                        <!--end::Total-->
-                                    </tr>
-
-                                    @forelse ($purchase_model->details as $item )
-                                        <tr class="add_tr">
+       <ul class="nav nav-tabs" id="purchaseTab" role="tablist">
+        <li class="nav-item" role="presentation">
+        <button class="nav-link text-info active" id="article-tab" data-bs-toggle="tab" data-bs-target="#article" type="button" role="tab" aria-controls="home" aria-selected="true">Articles à acheté :</button>
+        </li>
+        <li class="nav-item" role="presentation">
+        <button class="nav-link text-info" id="purchased-tab" data-bs-toggle="tab" data-bs-target="#purchased" type="button" role="tab" aria-controls="profile" aria-selected="false">Aprés achat</button>
+        </li>
+        <li class="nav-item" role="presentation">
+        <button class="nav-link text-info" id="fichier-tab" data-bs-toggle="tab" data-bs-target="#fichier" type="button" role="tab" aria-controls="contact" aria-selected="false">Fichiers</button>
+        </li>
+    </ul>
+    <div class="tab-content" id="purchaseTabContent">
+        <div class="tab-pane fade show active" id="article" role="tabpanel" aria-labelledby="article-tab">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card-title d-flex flex-column">   
+                        <span class="text-gray-700 pt-1 fw-semibold fs-6">  </span>
+                        <div class="d-flex align-items-center">
+                            <div class="table-responsive">
+                                <!--begin::Table-->
+                                <table class="table table-rounded table-row-bordered border gy-4 gs-4">
+                                    <!--begin::Table head-->
+                                    <thead>
+                                        <tr class="fw-semibold fs-6 text-gray-800 border-bottom-2 border-gray-200">
+                                            <th class="min-w-150px text-center"> <span title="Ajouter une ligne"  id="addLine"><i class="fs-3 fas fa-plus-circle text-info to-link "></i></span></th>
+                                            <th class="min-w-150px text-center">Propriété</th>
+                                            <th >Quantité </th>
+                                            <th >Unité</th>
+                                            <th >Prix unitaire</th>
+                                            <th >Total</th>
+                                            <th class=""></th>
+                                        </tr>
+                                    </thead>
+                                 
+                                    <tbody class="item-list">
+                                        
+                                        <tr class="add_tr d-none">
                                             <!--begin::Product-->
                                             <td class="text-start w-200px">
-                                                <select class="form-control form-control-sm "  name="item_type_id[]" data-hide-search="false" data-control="select2" data-placeholder="Materiel ..."  data-dropdown-parent="#ajax-modal" data-direction = "">
-                                                    <option  value="0" > Liste des arcticles..</option>
+                                                <select class="form-control form-control-sm "  name="item_type_id[]" data-hide-search="false" data-control="select2" data-placeholder="Materiel ..."  data-dropdown-parent="#ajax-modal">
+                                                    <option  value="0" selected> Liste des arcticles..</option>
                                                     @foreach ($itemTypes as $type)
-                                                        <option value="{{ $type->id  }}" @if ($item->item_type_id == $type->id)  selected @endif >{{ $type->name }}</option>
+                                                        <option value="{{ $type->id }}">{{ $type->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </td>
                                             <!--end::Product-->
-                                            <td class="text-end w-200px">
-                                                <input type="text " class="form-control  form-control-sm w-200px "placeholder="Ex:Son marque ,taille , poids" name="proprieties[]"  value="{{ $item->propriety }}">
-                                            </td>
                                             <!--begin::Quantity-->
-                                            <td class="text-end">
-                                                <input type="number" class="form-control  form-control-sm  w-75px calcul quantity" name="quantity[]" min="1" value="{{ $item->quantity }}">
+                                            <td class="text-end w-200px">
+                                                <input type="text " autocomplete="off" class="form-control  form-control-sm  w-200px " placeholder="Son marque ,taille , poids , ..." name="proprieties[]"  value="">
+                                            </td>
+                                            <td class="text-end ">
+                                                <input type="number"  autocomplete="off" class="form-control  form-control-sm  w-75px calcul quantity" name="quantity[]" min="1" value="1">
                                             </td>
                                            
                                             <!--end::Quantity-->
                                             <!--begin::Quantity-->
                                             <td>
-                                                <select class="form-control form-control-sm  w-75px"  name="unit_item_id[]" data-hide-search="true" data-control="select2" >
+                                                <select class="form-control form-control-sm   w-75px "  name="unit_item_id[]" data-hide-search="true" data-control="select2" data-placeholder="Paiement par ">
                                                     @foreach ($units as $unit)
-                                                        <option value="{{ $unit->id }}" @if ($item->unit_item_id == $unit->id)  selected @endif>{{ $unit->name }}</option>
+                                                        <option value="{{ $unit->id }}">{{ $unit->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </td>
                                             <!--end::Quantity-->
                                             <!--begin::Price-->
                                             <td class="text-end">
-                                                <input type="number" class="form-control   form-control-sm w-150px calcul unitPrice" name="unit_price[]" min="0" value="{{ $item->unit_price }}">
+                                                <input type="number" autocomplete="off" class="form-control   form-control-sm w-150px calcul unitPrice"  name="unit_price[]" min="0" value="0">
                                             </td>
                                             <!--end::Price-->
                                             <!--begin::Total-->
-                                            <td class="mt-2"><input type="text" autocomplete="off" class="form-control  form-control-sm form-control-transparent total" value="{{ $item->unit_price * $item->quantity }}"/></td>
+                                            <td class="mt-2"><input type="text"  autocomplete="off" class="form-control form-control-sm form-control-transparent total" value="0"/></td>
                                             <td class="text-center">
-                                                <span class="to-link " title="Supprimer cette ligne" onclick="deleteLine(this)"><i  class="far fa-trash-alt mt-3 text-danger  "></i></span>
+                                                <span class="to-link " title="Supprimer cette ligne" onclick="deleteLineArtcile(this)"><i  class="far fa-trash-alt mt-3 text-danger  "></i></span>
                                             </td>
                                             <!--end::Total-->
                                         </tr>
-                                    @empty
-                                        {{-- <tr class="add_tr">
-                                           
-                                        </tr> --}}
-                                    @endforelse
-                                    <tr>
-                                        
-                                        <td colspan="4" class="fs-4 text-dark">Prix Total</td>
-                                        {{-- <td class="text-dark fs-3 fw-boldest" id="totalPrice">0</td> --}}
-                                        <td class="text-info fs-3 fw-boldest" id="totalPrice">{{ $purchase_model->id ? $purchase_model->total_price : 0   }}</td>
-                                    </tr>
-                                    <!--end::Grand total-->
-                                </tbody>
-                                <!--end::Table head-->
-                            </table>
-                            <!--end::Table-->
-                           
+    
+                                        @forelse ($purchase_model->details as $item )
+                                            <tr class="add_tr">
+                                                <!--begin::Product-->
+                                                <td class="text-start w-200px">
+                                                    <select class="form-control form-control-sm "  name="item_type_id[]" data-hide-search="false" data-control="select2" data-placeholder="Materiel ..."  data-dropdown-parent="#ajax-modal" data-direction = "">
+                                                        <option  value="0" > Liste des arcticles..</option>
+                                                        @foreach ($itemTypes as $type)
+                                                            <option value="{{ $type->id  }}" @if ($item->item_type_id == $type->id)  selected @endif >{{ $type->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </td>
+                                                <!--end::Product-->
+                                                <td class="text-end w-200px">
+                                                    <input type="text " class="form-control  form-control-sm w-200px "placeholder="Ex:Son marque ,taille , poids" name="proprieties[]"  value="{{ $item->propriety }}">
+                                                </td>
+                                                <!--begin::Quantity-->
+                                                <td class="text-end">
+                                                    <input type="number" class="form-control  form-control-sm  w-75px calcul quantity" name="quantity[]" min="1" value="{{ $item->quantity }}">
+                                                </td>
+                                               
+                                                <!--end::Quantity-->
+                                                <!--begin::Quantity-->
+                                                <td>
+                                                    <select class="form-control form-control-sm  w-75px"  name="unit_item_id[]" data-hide-search="true" data-control="select2" >
+                                                        @foreach ($units as $unit)
+                                                            <option value="{{ $unit->id }}" @if ($item->unit_item_id == $unit->id)  selected @endif>{{ $unit->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </td>
+                                                <!--end::Quantity-->
+                                                <!--begin::Price-->
+                                                <td class="text-end">
+                                                    <input type="number" class="form-control   form-control-sm w-150px calcul unitPrice" name="unit_price[]" min="0" value="{{ $item->unit_price }}">
+                                                </td>
+                                                <!--end::Price-->
+                                                <!--begin::Total-->
+                                                <td class="mt-2"><input type="text" autocomplete="off" class="form-control  form-control-sm form-control-transparent total" value="{{ $item->unit_price * $item->quantity }}"/></td>
+                                                <td class="text-center">
+                                                    <span class="to-link " title="Supprimer cette ligne" onclick="deleteLineArtcile(this)"><i  class="far fa-trash-alt mt-3 text-danger  "></i></span>
+                                                </td>
+                                                <!--end::Total-->
+                                            </tr>
+                                        @empty
+                                            {{-- <tr class="add_tr">
+                                               
+                                            </tr> --}}
+                                        @endforelse
+                                        <tr>
+                                            
+                                            <td colspan="4" class="fs-4 text-dark">Prix Total</td>
+                                            {{-- <td class="text-dark fs-3 fw-boldest" id="totalPrice">0</td> --}}
+                                            <td class="text-info fs-3 fw-boldest" id="totalPrice">{{ $purchase_model->id ? $purchase_model->total_price : 0   }}</td>
+                                        </tr>
+                                        <!--end::Grand total-->
+                                    </tbody>
+                                    <!--end::Table head-->
+                                </table>
+                                <!--end::Table-->
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+           </div>
+        </div>
+        <div class="tab-pane fade" id="purchased" role="tabpanel" aria-labelledby="purchased-tab">
+            
+            <div class="row">
+                <span class="mt-5 mb-5 text-gray-700 pt-1 fw-semibold fs-6">Ajouté des factures :  <span title="Ajouter une ligne"  id="addLineNunInvoice"><i class="fs-3 fas fa-plus-circle text-info to-link "></i></span> </span>
+                <div class="row mb-2 row-num-invoice d-none">
+                    <div class="col-md-5">
+                        <input id="num-invoice"  name="num_invoices[]" type="text" placeholder="Numéro de facture n° ..." class="form-control form-control form-control-solid"  data-rule-required="fales" />
+                    </div>   
+                    <div class="col-md-5 mt-2 "> 
+                        <div class="nice-input-file">Photo du facture</div>
+                        <input class="form-control form-control-sm"  name="file_invoices[]" type="file">
+                    </div>
+                    <div class="col-md-2 mt-2 "> <span class="to-link " title="Supprimer" onclick="deleteLineNumInvoice(this)"><i  class="far fa-trash-alt mt-3 text-danger  "></i></span></div>   
+                </div>
+        </div>
+        </div>
+        <div class="tab-pane fade" id="fichier" role="tabpanel" aria-labelledby="fichier-tab">
+            <div class="form-group row">
+                <div class="row">
+                    @if ($purchase_model->id)
+                        <div class="col-md-6">
+                            <div class="card-title d-flex flex-column">   
+                                <span class="text-gray-700 pt-1 fw-semibold fs-6  mb-1">Fichiers joints :</span>
+                                @if ($purchase_model->files->count())
+                                    <div class="row">
+                                    @include('purchases.columns.files', ['files' => $purchase_model->files])
+                                    </div>
+                                @else 
+                                    <i class="mt-2" >Pas de piéce joint ajouté.</i>
+                                @endif
+                            </div>
+                        </div>   
+                    @endif
+                   
+                    <div class="col-md-{{  $purchase_model->id ? "6" : "12" }}">
+                        <div class="card-title d-flex flex-column">   
+                            <span class="text-gray-700 pt-1 fw-semibold fs-6 mb-1">Ajouter {{ $purchase_model->id ? "autre" : "" }} des fichiers joints : </span>
+                            <input class="form-control form-control-sm" name="files[]" type="file" multiple>
                         </div>
                     </div>
                 </div>
             </div>
-       </div>
+        </div>
+    </div>
 
        <span class="text-gray-700 pt-1 fw-semibold fs-6 mb-3">Status  : </span>
        <div data-kt-buttons="true">
@@ -323,6 +358,17 @@
     #modal-dialog{
         min-width: 980px;
     }
+    .nice-input-file{
+        position: absolute;
+        height: 37px;
+        background: #5014D0;
+        width: 123px;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 6px 0 0 6px;
+    }
 </style>
 <script>
     @if ($purchase_model->id && $purchase_model->details->count() )
@@ -331,7 +377,9 @@
         var minItem = 0;
     @endif      
    
-    var deleteLine;
+    var minLineNunInvoice = 0;
+    var deleteLineArtcile;
+    var deleteLineNumInvoice;
     $(document).ready(function() {
         KTApp.initSelect2();
         $("#purchases-modal-form").appForm({
@@ -345,12 +393,22 @@
             $(".add_tr").eq(0).clone().insertAfter(".add_tr:last").removeClass("d-none");
             KTApp.initSelect2();
         });
-        deleteLine = function deleteLine(content) {
+        $("#addLineNunInvoice").on("click", function() {
+            minLineNunInvoice++;
+            $(".row-num-invoice").eq(0).clone().insertAfter(".row-num-invoice:last").removeClass("d-none");
+        });
+        deleteLineArtcile = function deleteLineArtcile(content) {
             if (minItem >= 0) {
                 minItem--;
                 $(content).closest(".add_tr").remove();
             }
             caclucTotal();
+        }
+        deleteLineNumInvoice = function deleteLineNumInvoice(content) {
+            if (minLineNunInvoice >= 0) {
+                minLineNunInvoice--;
+                $(content).closest(".row-num-invoice").remove();
+            }
         }
         function convertTo2Decimal(decimal = 0){
             if (decimal =="NaN") {
