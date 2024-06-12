@@ -395,6 +395,8 @@ Route::middleware(['auth', 'checkinweb', 'not_contributor'])->group(function () 
     Route::get("/purchases/details/{purchase}", [PurchaseController::class, "pageDetail"]);
     Route::get("/purchases/details-data/{purchase}", [PurchaseController::class, "getDetail"]);
     Route::get("/purchases/download-file/{purchaseFile}", [PurchaseController::class, 'downloadFile']);
+    Route::post("/purchase/save-num-invoice", [PurchaseController::class, 'saveNumInvoiceLine']);
+    Route::post("/purchase/delete-num-invoice", [PurchaseController::class, 'deleteNumInvoiceLine']);
 
     Route::get("/items", [ItemController::class, "index"]);
     Route::get("/items/list", [ItemController::class, "geViewItemTypeList"]);

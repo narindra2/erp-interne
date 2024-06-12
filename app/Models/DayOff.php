@@ -161,6 +161,11 @@ class DayOff extends Model
             $is_empty_filter = false;
             $daysOff->where('result', $result);
         }
+        $nature_id = get_array_value($options, 'nature_id');
+        if ($result) {
+            $is_empty_filter = false;
+            $daysOff->where('nature_id', $nature_id);
+        }
         $project_id = get_array_value($options, 'project_id');
         if ($project_id) {
             $is_empty_filter = false;
@@ -451,7 +456,16 @@ class DayOff extends Model
                 ],
                 'options' => $same_department_user,
             ];
+            
          }
+
+        
+        $filters[] = [
+            "label" => "Nature",
+            "name" => "nature_id",
+            "type" => "select",
+            "options" => to_dropdown( DayoffNatureColor::whereDeleted(0)->whereStatus(1)->latest()->get(),"id" , "nature")
+        ];
         $filters[] = [
             "label" => "Statut",
             "name" => "result",
@@ -469,6 +483,18 @@ class DayOff extends Model
                     "text" => 'En cours',
                     "value" => 'in_progress',
                 ]
+            ]
+        ];
+
+        $filters[] = [
+            "label" => "Etat",
+            "name" => "status_dayoff",
+            "type" => "select",
+            'width' => 'w-150px',
+            "options" => [
+                ["text" => 'En congé', "value" => 'in_progress'],
+                ["text" => 'Terminé', "value" => 'finish'],
+                ["text" => "Annulé", "value" => "is_canceled"]
             ]
         ];
        
@@ -550,6 +576,7 @@ class DayOff extends Model
                 'placeholder' => 'Absent au date ...',
             ]
         ];
+        
         $filters[] = [
             "label" => "Date demande",
             "name" => "created_at",

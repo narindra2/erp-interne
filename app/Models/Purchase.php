@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Purchase extends Model
 {
     use HasFactory;
-
+    protected $table = "purchases";
     protected $casts = [
         'purchase_date' => 'date'
     ];
@@ -37,11 +37,17 @@ class Purchase extends Model
     public function author() {
         return $this->belongsTo(User::class, 'author_id');
     }
+    public function getNumPurchase() {
+        return "#" . $this->id;
+    }
 
     public function details() {
         return $this->hasMany(PurchaseDetail::class, "purchase_id");
     }
 
+    public function numInvoiceLines() {
+        return $this->hasMany(PurchaseNumInvoiceLine::class, "purchase_id")->whereDeleted(0);
+    }
     public function files() {
         return $this->hasMany(PurchaseFile::class, "purchase_id");
     }

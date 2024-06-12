@@ -3,16 +3,26 @@
         @csrf
         @if ($purchase_model->id)
             <input type="hidden" name="is_update" value="true">
-            <input type="hidden" name="purchase_id" value="{{ $purchase_model->id }}">
+            <input type="hidden" name="purchase_id"  id="purchase_id" value="{{ $purchase_model->id }}">
         @endif
+        @if ($purchase_model->id)
+        <div class="row">
+           
+        </div>
+            @endif
         <div class="separator border-info mt-3 mb-3"></div>
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-5">
                 <div class="card-title d-flex flex-column">   
                     <span class="text-gray-700 pt-1 fw-semibold fs-6">Demandeur :  <span class="fs-5 fw-bold text-info me-2 lh-1 ls-n2">{{ $purchase_model->author->sortname ?? $auth->sortname }}</span></span>  
                 </div>
             </div>
             @if ($purchase_model->id)
+            <div class="col-md-3">
+                <div class="card-title d-flex flex-column">   
+                    <span class="text-gray-700 pt-1 fw-semibold fs-6">N° :  <span class="fs-5 fw-bold text-info me-2 lh-1 ls-n2">{{ $purchase_model->getNumPurchase() }}</span></span>  
+                </div>
+            </div>
                 <div class="col-md-4">
                     <div class="card-title d-flex flex-column">   
                         <span class="text-gray-700 pt-1 fw-semibold fs-6">Demandé :  <span class="fs-5 fw-bold text-info me-2 lh-1 ls-n2">{{ convert_to_real_time_humains($purchase_model->created_at)}}</span></span>  
@@ -78,16 +88,19 @@
 
        <ul class="nav nav-tabs" id="purchaseTab" role="tablist">
         <li class="nav-item" role="presentation">
-        <button class="nav-link text-info active" id="article-tab" data-bs-toggle="tab" data-bs-target="#article" type="button" role="tab" aria-controls="home" aria-selected="true">Articles à acheté :</button>
+            <button class="nav-link text-info active" id="article-tab" data-bs-toggle="tab" data-bs-target="#article" type="button" role="tab" aria-controls="home" aria-selected="true">Articles  </button>
         </li>
+        @if ($purchase_model->status == "purchased")
+            <li class="nav-item" role="presentation" data-nav-item="purchased-tab">
+                <button class="nav-link text-info" data-nav-item="purchased-tab"  id="purchased-tab" data-bs-toggle="tab" data-bs-target="#purchased" type="button" role="tab" aria-controls="profile" aria-selected="false">Aprés achat</button>
+            </li> 
+        @endif
+       
         <li class="nav-item" role="presentation">
-        <button class="nav-link text-info" id="purchased-tab" data-bs-toggle="tab" data-bs-target="#purchased" type="button" role="tab" aria-controls="profile" aria-selected="false">Aprés achat</button>
-        </li>
-        <li class="nav-item" role="presentation">
-        <button class="nav-link text-info" id="fichier-tab" data-bs-toggle="tab" data-bs-target="#fichier" type="button" role="tab" aria-controls="contact" aria-selected="false">Fichiers</button>
+            <button class="nav-link text-info" id="fichier-tab" data-bs-toggle="tab" data-bs-target="#fichier" type="button" role="tab" aria-controls="contact" aria-selected="false">Fichiers</button>
         </li>
     </ul>
-    <div class="tab-content" id="purchaseTabContent">
+    <div class="tab-content" style="min-height: 200px !important;" id="purchaseTabContent">
         <div class="tab-pane fade show active" id="article" role="tabpanel" aria-labelledby="article-tab">
             <div class="row">
                 <div class="col-md-12">
@@ -220,19 +233,39 @@
            </div>
         </div>
         <div class="tab-pane fade" id="purchased" role="tabpanel" aria-labelledby="purchased-tab">
-            
             <div class="row">
-                <span class="mt-5 mb-5 text-gray-700 pt-1 fw-semibold fs-6">Ajouté des factures :  <span title="Ajouter une ligne"  id="addLineNunInvoice"><i class="fs-3 fas fa-plus-circle text-info to-link "></i></span> </span>
+                <span class="mt-5 mb-5 text-gray-700 pt-1 fw-semibold fs-6">Ajouter des numéros factures :  <span title="Ajouter une ligne"  id="addLineNunInvoice"><i class="fs-3 fas fa-plus-circle text-info to-link "></i></span> </span>
                 <div class="row mb-2 row-num-invoice d-none">
                     <div class="col-md-5">
-                        <input id="num-invoice"  name="num_invoices[]" type="text" placeholder="Numéro de facture n° ..." class="form-control form-control form-control-solid"  data-rule-required="fales" />
+                        <input id="num-invoice"   type="text" placeholder="Numéro de facture n° ..." autocomplete="off" class="form-control form-control form-control-solid num-invoice-input"  data-rule-required="fales" />
                     </div>   
-                    <div class="col-md-5 mt-2 "> 
+                    {{-- <div class="col-md-5 mt-2 "> 
                         <div class="nice-input-file">Photo du facture</div>
                         <input class="form-control form-control-sm"  name="file_invoices[]" type="file">
-                    </div>
-                    <div class="col-md-2 mt-2 "> <span class="to-link " title="Supprimer" onclick="deleteLineNumInvoice(this)"><i  class="far fa-trash-alt mt-3 text-danger  "></i></span></div>   
+                    </div> --}}
+                    <div class="col-md-4 mt-2 ">
+                        <span class="to-link  text-info" title="Enreigistrer" onclick="saveNumInvoice('' ,  '', this)">Enregistrer</span>
+                            &nbsp; &nbsp;
+                         <span class="to-link text-danger" title="Supprimer" onclick=" deleteLineNumInvoice(this ,'') ">Supprimer</span>
+                    </div>   
+
                 </div>
+                @if ($purchase_model->id)
+                    @foreach ($purchase_model->numInvoiceLines as $n)
+                        <div class="row mb-2 row-num-invoice ">
+                            <div class="col-md-5">
+                                <input id="num-invoice-{{ $n->id }}"   autocomplete="off" type="text" value="{{  $n->num_invoice }}" placeholder="Numéro de facture n° ..." class="form-control form-control form-control-solid num-invoice-input"  data-rule-required="fales" />
+                            </div>   
+                            <div class="col-md-4 mt-2 ">
+                                <span class="to-link text-info" title="Enreigistrer" onclick=" saveNumInvoice( '{{ $n->id }}' , '{{ $n->num_invoice }}',this) ">Enregistrer</span>
+                                    &nbsp; &nbsp;
+                                <span class="to-link text-danger" title="Supprimer" onclick="deleteLineNumInvoice(this ,'{{ $n->id }}')">Supprimer</span>
+                            </div>   
+
+                        </div>
+                    @endforeach
+                @endif
+               
         </div>
         </div>
         <div class="tab-pane fade" id="fichier" role="tabpanel" aria-labelledby="fichier-tab">
@@ -255,7 +288,7 @@
                    
                     <div class="col-md-{{  $purchase_model->id ? "6" : "12" }}">
                         <div class="card-title d-flex flex-column">   
-                            <span class="text-gray-700 pt-1 fw-semibold fs-6 mb-1">Ajouter {{ $purchase_model->id ? "autre" : "" }} des fichiers joints : </span>
+                            <span class="text-gray-700 pt-1 fw-semibold fs-6 mb-1">Ajouter  des  {{ $purchase_model->id ? "autre" : "" }} fichiers joints : </span>
                             <input class="form-control form-control-sm" name="files[]" type="file" multiple>
                         </div>
                     </div>
@@ -341,14 +374,14 @@
                 Quitter          
             </button> &nbsp;
             @if ($isRhOrAdmin)
-                <button type="submit" class="btn btn-dark font-weight-bold mr-2 btn-sm">Sauvegarder</button>
+                <button type="submit" id="save-purchase-btn"  class="btn btn-dark font-weight-bold mr-2 btn-sm ">Sauvegarder</button>
             @endif
         @else 
             <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-light-dark btn-sm mr-2 ">
                 Annuler 
             </button> &nbsp;
             @if ($isRhOrAdmin)
-                <button type="submit" class="btn btn-light-info font-weight-bold mr-2 btn-sm">Créer la demande</button>
+                <button type="submit" id="save-purchase-btn" class="btn btn-light-info font-weight-bold mr-2 btn-sm">Créer la demande</button>
             @endif
 
         @endif
@@ -376,10 +409,15 @@
     @else 
         var minItem = 0;
     @endif      
+    @if ($purchase_model->id && $purchase_model->numInvoiceLines->count() )
+        var minLineNunInvoice = {{ $purchase_model->numInvoiceLines->count() }};
+    @else 
+        var minLineNunInvoice = 0;
+    @endif      
    
-    var minLineNunInvoice = 0;
     var deleteLineArtcile;
     var deleteLineNumInvoice;
+    var saveNumInvoice;
     $(document).ready(function() {
         KTApp.initSelect2();
         $("#purchases-modal-form").appForm({
@@ -397,17 +435,38 @@
             minLineNunInvoice++;
             $(".row-num-invoice").eq(0).clone().insertAfter(".row-num-invoice:last").removeClass("d-none");
         });
-        deleteLineArtcile = function deleteLineArtcile(content) {
+        deleteLineArtcile = function (content) {
             if (minItem >= 0) {
                 minItem--;
                 $(content).closest(".add_tr").remove();
             }
             caclucTotal();
         }
-        deleteLineNumInvoice = function deleteLineNumInvoice(content) {
+        deleteLineNumInvoice = function (content ,id ='') {
             if (minLineNunInvoice >= 0) {
+                if (id) {
+                    $.ajax({
+                    url: url("/purchase/delete-num-invoice"),
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        "_token" :_token ,
+                        "purchase_num_invoice_id" : id
+                    },
+                    success: function(result) {
+                        toastr.success(result.message);
+                    },
+                    error: function(xhr, status, error) {
+                        toastr.error('Opps !  un erreur se produit. Erreur : '  +  xhr.responseText);
+                    }
+                }); 
+
                 minLineNunInvoice--;
                 $(content).closest(".row-num-invoice").remove();
+                return;
+            }
+                
+              
             }
         }
         function convertTo2Decimal(decimal = 0){
@@ -427,9 +486,36 @@
             });
             $("#totalPrice").text(convertTo2Decimal(totalPrice));
         }
-        
+        saveNumInvoice = function  (id = "" , oldNumInvoice ='' , element  ){
+            $.ajax({
+                    url: url("/purchase/save-num-invoice"),
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        "_token" :_token ,
+                        "old_num_invoice"  :  oldNumInvoice , 
+                        "new_num_invoice"  : id ? $("#num-invoice-" + id).val()  :  $(element).closest(".row-num-invoice").find('input.num-invoice-input:first').val(), 
+                        "purchase_id" :  $("#purchase_id").val()
+                    },
+                    success: function(result) {
+                        toastr.success(result.message);
+                    },
+                    error: function(xhr, status, error) {
+                        var err = eval("(" + xhr.responseText + ")");
+                        toastr.error('Opps !  un erreur se produit. Erreur : '  + err);
+                    }
+                });
+        }
+
         $(document).on("keyup change", ".calcul", () => {
             caclucTotal();
+        });
+        $('.nav-item, .nav-link').on("click",  function () {
+            if ($(this).attr("data-nav-item") == "purchased-tab" ) {
+                    $("#save-purchase-btn").addClass("d-none").attr("type" ,"#")
+            }else{
+                $("#save-purchase-btn").removeClass("d-none").attr("type" ,"#")
+            }
         });
        
         function init_date(){

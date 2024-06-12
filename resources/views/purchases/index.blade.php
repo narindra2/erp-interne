@@ -53,6 +53,7 @@
                     dom : "tpr",
                     columns: [ 
                         {data :"info" , title: ''},
+                        {data :"num" , title: ''},
                         {data :"date" , title: 'Date'},
                         {data :"author" , title: 'Createur/Demandeur'},
                         {data :"items" , title: 'Article(s)'},
