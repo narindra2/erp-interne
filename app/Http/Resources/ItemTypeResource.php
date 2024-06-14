@@ -18,7 +18,7 @@ class ItemTypeResource extends JsonResource
             "DT_RowId" => row_id("itemType", $this->id),
             'name' => $this->name,
             'brand' => $this->brand,
-            'unit' => $this->unit->name,
+            'unit' => $this->unit->name ?? "-",
             'unit_price' => $this->unit_price,
             'actions' => $this->getActions()
         ];

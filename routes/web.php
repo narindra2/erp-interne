@@ -35,7 +35,7 @@ use App\Http\Controllers\ErpDocumentationController;
 use App\Http\Controllers\ErpInstructionController;
 use App\Http\Controllers\Auth\SocialiteLoginController;
 use App\Http\Controllers\Documentation\ReferencesController;
-
+use App\Http\Controllers\StockController;
 
 /*
 |--------------------------------------------------------------------------
@@ -386,7 +386,19 @@ Route::middleware(['auth', 'checkinweb', 'not_contributor'])->group(function () 
     Route::post("/item-movements/items/edit-code-form/{item}", [ItemMovementController::class, "getEditCodeForm"]);
     Route::post("/item-movements/items/save-code-form", [ItemMovementController::class, "saveNewItemCode"]);
 
-   
+
+    /** Stock */
+    Route::get("/stock/gerer", [StockController::class, "index"]);
+    Route::get("/stock/inventory/tab", [StockController::class, 'inventory']);
+
+    Route::get("/stock/category/tab", [StockController::class, 'category']);
+    Route::get("/stock/category/data-list", [StockController::class, 'category_data_list']);
+    Route::post("/stock/category/modal-form", [StockController::class, 'category_modal_form']);
+    Route::post("/stock/category/save", [StockController::class, 'category_save']);
+    Route::post("/stock/category/delete", [StockController::class, 'category_delete']);
+    
+
+
     Route::get('/purchases/new', [PurchaseController::class, "form"]);
     Route::post('/purchases/save', [PurchaseController::class, "save"]);
     Route::post('/purchases/delete', [PurchaseController::class, "delete"]);

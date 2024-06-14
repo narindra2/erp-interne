@@ -113,20 +113,6 @@ class PurchaseController extends Controller
         ];
     }
 
-    public function form()
-    {
-        $data = [];
-        $data['needs'] = DetailNeed::countItemPurchaseConfirmed();
-        $totalNeedsPrice = 0;
-        foreach ($data['needs'] as $need) {
-            $totalNeedsPrice += $need->total_price;
-        }
-        $data['totalNeedsPrice'] = $totalNeedsPrice;
-        $data['units'] = UnitItem::whereDeleted(0)->get();
-        $data['itemTypes'] = ItemType::whereDeleted(0)->orderBy('name', 'desc')->get();
-        return view('purchases.form', $data);
-    }
-
     public function save(PurchaseRequest $request)
     {
         try {
@@ -140,6 +126,19 @@ class PurchaseController extends Controller
             return ['success' => true, 'message' => "Demande d'achat bien " . ($request->purchase_id ? 'sauvegardée' :  'ajoutée')];
         } catch (Exception $e) {
             return ['success' => false, 'message' => $e->getMessage()];
+        }
+    }
+    public function delete(Request $request)
+    {
+        $purchase = Purchase::find($request->purchase_id);
+        if ($request->input("cancel")) {
+            $purchase->update(["deleted" => 0]);
+            PurchaseDetail::where("purchase_id", $purchase->id)->update(["deleted" => 0]);
+            return ["success" => true, "message" => trans("lang.success_canceled"), "data" => $this->_make_row($purchase)];
+        } else {
+            $purchase->update(["deleted" => 1]);
+            PurchaseDetail::where("purchase_id", $purchase->id)->update(["deleted" => 1]);
+            return ["success" => true, "message" => trans("lang.success_deleted")];
         }
     }
 
@@ -156,12 +155,6 @@ class PurchaseController extends Controller
         PurchaseNumInvoiceLine::where("id" ,$request->purchase_num_invoice_id)->update(["deleted" => 1]);
         return ['success' => true, 'message' => "Suppression avec success" ];
     }
-    public function pageDetail(Purchase $purchase)
-    {
-        $purchase->load('details.itemType');
-        $purchase->load('details.unit');
-        return view('purchases.detail', compact('purchase'));
-    }
 
     public function downloadFile(PurchaseFile $purchaseFile)
     {
@@ -169,17 +162,5 @@ class PurchaseController extends Controller
         return response()->download($url);
     }
 
-    public function delete(Request $request)
-    {
-        $purchase = Purchase::find($request->purchase_id);
-        if ($request->input("cancel")) {
-            $purchase->update(["deleted" => 0]);
-            PurchaseDetail::where("purchase_id", $purchase->id)->update(["deleted" => 0]);
-            return ["success" => true, "message" => trans("lang.success_canceled"), "data" => $this->_make_row($purchase)];
-        } else {
-            $purchase->update(["deleted" => 1]);
-            PurchaseDetail::where("purchase_id", $purchase->id)->update(["deleted" => 1]);
-            return ["success" => true, "message" => trans("lang.success_deleted")];
-        }
-    }
+   
 }

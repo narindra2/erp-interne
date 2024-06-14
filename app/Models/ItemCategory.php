@@ -10,6 +10,8 @@ class ItemCategory extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name'
+        'name',
+        "code",
+        "deleted"
     ];
 }

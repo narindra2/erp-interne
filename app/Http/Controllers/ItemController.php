@@ -79,8 +79,9 @@ class ItemController extends Controller
     }
 
     public function deleteItemCategory(ItemCategory $itemCategory) {
-        $itemCategory->deleted = true;
-        $itemCategory->save();
+       
+
+        
         return ['success' => true, "message" => "Catégorie supprimée"];
     }
 
