@@ -17,7 +17,6 @@ class BaseModel extends Model
     private function createListOfOperatorAdvanced()
     {
         $attributes = get_object_vars($this);
-        dd($attributes);
         $this->operatorAdvanced = $attributes;
     }
 

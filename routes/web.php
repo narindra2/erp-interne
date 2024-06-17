@@ -396,6 +396,12 @@ Route::middleware(['auth', 'checkinweb', 'not_contributor'])->group(function () 
     Route::post("/stock/category/modal-form", [StockController::class, 'category_modal_form']);
     Route::post("/stock/category/save", [StockController::class, 'category_save']);
     Route::post("/stock/category/delete", [StockController::class, 'category_delete']);
+
+    Route::get("/stock/article/tab", [StockController::class, 'article']);
+    Route::get("/stock/article/data-list", [StockController::class, 'article_data_list']);
+    Route::post("/stock/article/modal-form", [StockController::class, 'article_modal_form']);
+    Route::post("/stock/article/save", [StockController::class, 'article_save']);
+    Route::post("/stock/article/delete", [StockController::class, 'article_delete']);
     
 
 
