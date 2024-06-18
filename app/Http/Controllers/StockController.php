@@ -7,6 +7,7 @@ use App\Models\ItemType;
 use App\Models\UnitItem;
 use App\Models\ItemCategory;
 use Illuminate\Http\Request;
+use App\Http\Requests\ItemTypeRequest;
 use App\Http\Requests\CreateItemCategoryResquet;
 
 class StockController extends Controller
@@ -78,7 +79,7 @@ class StockController extends Controller
     
     public function article_data_list() {
         $data = [];
-        $articles = ItemType::with(["categorie"])->whereDeleted(0)->latest()->get();
+        $articles = ItemType::with(["category"])->whereDeleted(0)->latest()->get();
         foreach ($articles as $article) {
             $data[] = $this->_make_row_article( $article);
         }
@@ -93,7 +94,8 @@ class StockController extends Controller
             "DT_RowId" => row_id("article", $article->id),
             'name' => $article->name,
             'code' => $article->code ?? "-",
-            'category' => $article->categorie->name,
+            'category' =>  $article->category->name  ??  "-",
+            'sub_category' =>   $article->sub_category ??  "-",
             'actions' =>  $actions,
         ];
     }
@@ -102,11 +104,16 @@ class StockController extends Controller
         $article = ItemType::find($request->article_id) ?? new ItemType;
         $data['article'] =  $article;
         $data['categories'] =  ItemCategory::whereDeleted(0)->latest()->get();
+        $data['sub_cats'] =  ItemType::getSubCategory();
         return view('stock.article.article-modal-form', $data);
     }
-    public function article_save(CreateItemCategoryResquet $request) {
+    public function article_save(ItemTypeRequest $request) {
+
         try {
-            $article = ItemType::updateOrCreate(["id" => $request->id], $request->except("_token"));
+            $data = $request->except("_token");
+            $data["category_id"] = $request->category_id == "non-definie" ? null :  $request->category_id;
+            $data["sub_category"] = $request->sub_category == "non-definie" ? null :  $request->sub_category;
+            $article = ItemType::updateOrCreate(["id" => $request->id], $data);
             return ["success" => true ,"message" => "Article bien sauvegardée" ,"row_id" => $request->id ? row_id("article", $article->id) : null, "data" => $this->_make_row_article( $article)];
         }
         catch (Exception $e) {

@@ -13,9 +13,17 @@ class ItemType extends Model
         'name',
         'code',
         'category_id',
+        'sub_category',
         'deleted'
     ];
-    public function categorie() {
+    const IMMOBILISATION = "immobilisation";
+    const CONSOMABLE = "consomable";
+
+
+    public function category() {
         return $this->belongsTo(ItemCategory::class, 'category_id');
     }
+    public static function getSubCategory() {
+            return [self::IMMOBILISATION , self::CONSOMABLE];
+    }   
 }

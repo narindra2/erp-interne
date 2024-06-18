@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\ItemType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ItemTypeRequest extends FormRequest
@@ -23,23 +24,22 @@ class ItemTypeRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'name' => 'required',
-            'brand' => 'required',
-            'item_category_id' => 'required',
-            'unit_price' => 'required|numeric|min:0'
         ];
+        if (request("sub_category") ==  ItemType::IMMOBILISATION) {
+            $rules["code"] = 'required';
+            $rules["category_id"] = 'required';
+        }
+        return $rules;
     }
 
     public function messages()
     {
         return [
             'name.required' => 'Le champ nom est requis',
-            'brand.required' => 'Le champ marque est requis',
-            'item_category_id.required' => 'Veuillez choisir une catégorie',
-            'unit_price.required' => 'Le champ prix est requis',
-            'unit_price.numeric' => 'Le champ prix doit être un nombre',
-            'unit_price.min' => 'Le prix doit être positif'
+            'code.required' => "Le champ code article  est requis si c'est un article d'" .ItemType::IMMOBILISATION,
+            'category_id.required' => "Le champ catégorie article est requis si c'est un article d'" .ItemType::IMMOBILISATION,
         ];
     }
 

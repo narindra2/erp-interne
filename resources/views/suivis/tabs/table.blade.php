@@ -203,27 +203,27 @@
 
                     dataTableShowRowDetails("#suiviTable", dataTableInstance.suiviTable,"details-row"); /** includes/helpers-js*/
             
-            $('a.columns-visibility').on('click', function (e) {
-                    e.preventDefault();
-                    let index = $(this).attr('data-column')
-                    let column = dataTableInstance.suiviTable.column(index);
-                    column.visible() ?  $(this).addClass("text-gray-500") : $(this).removeClass("text-gray-500");
-                    column.visible(!column.visible());
-                    $.ajax({
-                    url: url("/suivi/save/custom-visible-column"),
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {"column_rang" : index ,"_token" :_token},
-                    success: function(result) {
-                        if (result.success) {
-                            return true
-                        }
-                        return false
-                    },
-                    error: function(request, status, error) {
-                        
-                    }
-                });
+                    $('a.columns-visibility').on('click', function (e) {
+                            e.preventDefault();
+                            let index = $(this).attr('data-column')
+                            let column = dataTableInstance.suiviTable.column(index);
+                            column.visible() ?  $(this).addClass("text-gray-500") : $(this).removeClass("text-gray-500");
+                            column.visible(!column.visible());
+                            $.ajax({
+                            url: url("/suivi/save/custom-visible-column"),
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {"column_rang" : index ,"_token" :_token},
+                            success: function(result) {
+                                if (result.success) {
+                                    return true
+                                }
+                                return false
+                            },
+                            error: function(request, status, error) {
+                                
+                            }
+                        });
                    
             });
             $('.suiviTable').on('change , keyup', function() {

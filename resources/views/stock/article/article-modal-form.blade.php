@@ -18,10 +18,24 @@
         <div class="form-group row mb-5">
             <label class="col-form-label col-4">Catégorie</label>
             <div class="col-6">
-                <select id="category_id" name="category_id" class="form-select form-select-sm form-select-solid" data-control="select2" data-dropdown-parent="#ajax-modal" data-rule-required="true"  data-msg-required="@lang('lang.required_input')">
+                <select id="category_id" name="category_id" class="form-select form-select-sm form-select-solid" data-control="select2" data-dropdown-parent="#ajax-modal" data-rule-required="false"  data-msg-required="@lang('lang.required_input')">
                     <option disabled  >-- Catégorie --</option>
+                    <option selected value="non-definie"> Non définie</option>
                     @foreach ($categories as $categories)
-                        <option value="{{ $categories->id }}"  @if ((!$article->id && $loop->first )|| $categories->id == $article->category_id  )  selected  @endif>{{ $categories->name }}</option>
+                        <option value="{{ $categories->id }}"  @if ( $categories->id == $article->category_id  )  selected  @endif>{{ $categories->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="form-group row mb-5">
+            <label class="col-form-label col-4">Sous catégorie</label>
+            <div class="col-6">
+                <select id="sub_cat" name="sub_category" class="form-select form-select-sm form-select-solid" data-control="select2" data-dropdown-parent="#ajax-modal" data-rule-required="false"  data-msg-required="@lang('lang.required_input')">
+                    <option disabled  >-- Sous categorie --</option>
+                    <option  selected value="non-definie" > Non définie</option>
+                    
+                    @foreach ($sub_cats as $sub_cat)
+                        <option value="{{ $sub_cat }}"  @if ($article->sub_category == $sub_cat )  selected  @endif>{{ $sub_cat }}</option>
                     @endforeach
                 </select>
             </div>

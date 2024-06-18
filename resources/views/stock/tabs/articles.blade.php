@@ -29,6 +29,10 @@
                     title: 'Catégorie'
                 },
                 {
+                    data: "sub_category",
+                    title: 'Sous catégorie'
+                },
+                {
                     data: "actions",
                     searchable: false,
                     orderable: false
@@ -39,7 +43,9 @@
             },
             language: {
                 url: "https://cdn.datatables.net/plug-ins/1.11.3/i18n/fr_fr.json"
-            },
+            }, initComplete: function(settings, json) {
+                $('input[type=search]').addClass("form-control-sm")
+            }
         });
         $('#search-articles').on('keyup', function() {
                 dataTableInstance.articlesDataTable.search(this.value).draw();
