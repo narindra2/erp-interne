@@ -46,8 +46,8 @@ if (!function_exists('get_menus_list')) {
 
             $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Gestion de stock</span>'];
             // $menu_vertical[] = ["title" => "Stock", 'path'  => 'item-movements',  'icon'  => '<i class="fas fa-project-diagram fs-3"></i> '];
-            $menu_vertical[] = ["title" => "Stock", 'path'  => 'stock/gerer',  'icon'  => ' <i class="fas fa-project-diagram fs-3"></i> '];
             $menu_vertical[] = ["title" => "Achats", 'path'  => 'purchases',  'icon'  => ' <i class="fas fa-cart-arrow-down fs-3"></i> '];
+            $menu_vertical[] = ["title" => "Stock", 'path'  => 'stock/gerer',  'icon'  => ' <i class="fas fa-project-diagram fs-3"></i> '];
             // $menu_vertical[] = ["title" => "Article", 'path'  => 'items',  'icon'  => ' <i class="fas fa-list-ol  fs-3 "></i> '];
             // $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Debugage</span>'];
             // $menu_vertical[] = ["title" => "Debug/Outils", 'path'  => '/outils-debug',  'icon'  => '<i class="fas fa-wrench"></i>'];
@@ -71,9 +71,8 @@ if (!function_exists('get_menus_list')) {
             if ($auth_user->isTech()) {
                 $menu_vertical[] = ["title" => "Besoin ticket", 'path'  => '/needToBuy',   'icon' => '<i class="fas fa-clipboard-list fs-3"></i>'];
                 $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Gestion de stock</span>'];
-                // $menu_vertical[] = ["title" => "Stock", 'path'  => 'item-movements',  'icon'  => ' <i class="fas fa-clipboard-list fs-3"></i> '];
-                $menu_vertical[] = ["title" => "Stock", 'path'  => 'stock/gerer',  'icon'  => ' <i class="fas fa-project-diagram fs-3"></i> '];
                 $menu_vertical[] = ["title" => "Achats", 'path'  => 'purchases',  'icon'  => ' <i class="fas fa-clipboard-list fs-3"></i> '];
+                $menu_vertical[] = ["title" => "Stock", 'path'  => 'stock/gerer',  'icon'  => ' <i class="fas fa-project-diagram fs-3"></i> '];
                 // $menu_vertical[] = ["title" => "Article", 'path'  => 'items',  'icon'  => ' <i class="fas fa-clipboard-list fs-3"></i> '];
             }
             if (in_array($auth_user->registration_number,  Menu::$USER_ALLOWED_PART_ACCESS["debug_tools"])) {

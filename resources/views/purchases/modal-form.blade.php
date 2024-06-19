@@ -138,7 +138,7 @@
                                             <!--end::Product-->
                                             <!--begin::Quantity-->
                                             <td class="text-end w-200px">
-                                                <input type="text " autocomplete="off" class="form-control  form-control-sm  w-200px " placeholder="Son marque ,taille , poids , ..." name="proprieties[]"  value="">
+                                                <input type="text " autocomplete="off" class="form-control  form-control-sm  w-200px " placeholder="Ex: Son marque ,taille , poids , ..." name="proprieties[]"  value="">
                                             </td>
                                             <td class="text-end ">
                                                 <input type="number"  autocomplete="off" class="form-control  form-control-sm  w-75px calcul quantity" name="quantity[]" min="1" value="1">
@@ -180,7 +180,7 @@
                                                 </td>
                                                 <!--end::Product-->
                                                 <td class="text-end w-200px">
-                                                    <input type="text " class="form-control  form-control-sm w-200px "placeholder="Ex:Son marque ,taille , poids" name="proprieties[]"  value="{{ $item->propriety }}">
+                                                    <input type="text " class="form-control  form-control-sm w-200px "placeholder="Ex: Son marque ,taille , poids" name="proprieties[]"  value="{{ $item->propriety }}">
                                                 </td>
                                                 <!--begin::Quantity-->
                                                 <td class="text-end">
