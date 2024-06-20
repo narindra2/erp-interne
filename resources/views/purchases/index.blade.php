@@ -19,6 +19,7 @@
                 </div>
             </div>
         </div>
+        
         <div class="col-xxl-12" id="category-section">
             <div class="card shadow-sm card-xxl-stretch mb-3 mb-xl-1">
                 <div class="card-body py-5">
@@ -57,11 +58,12 @@
                         {data :"date" , title: 'Date'},
                         {data :"author" , title: 'Createur/Demandeur'},
                         {data :"items" , title: 'Article(s)'},
-                        {data :"total_price" , title: 'Total'},
                         {data :"method" , title: 'Paiement'},
-                        {data: "files", title: "Fichiers joints"},
-                        {data: "status", title: "Statut"},
+                        {data :"total_price" , title: 'Total'},
+                        // {data: "files", title: "Fichiers joints"},
                         {data :"created_at" , title: 'Crée le'},
+                        {data: "status", title: "Statut"},
+                        {data :"actions2"},
                         {data :"actions"},
                         {data :"delete"},
                     ],

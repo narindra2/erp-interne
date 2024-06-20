@@ -44,6 +44,7 @@ class PurchaseController extends Controller
     {
         $num_purchase = $purchase->getNumPurchase();
         $detail = modal_anchor(url('/purchases/demande-form'), 'Détail <i class="fas fa-external-link-alt mb-1"></i> ', ['title' => "Détail de la demande  d'achat : $num_purchase", 'class' => 'btn btn-link btn-color-info', "data-modal-lg" => true, "data-post-purchase_id" => $purchase->id]);
+        $stockAction = modal_anchor(url('/purchases/to-stcok-modal-form'), 'Stock <i class="fas fa-dolly-flatbed mb-1"></i> ', ['title' => "Mise en stock : $num_purchase", 'class' => 'btn btn-link btn-color-dark', "data-modal-lg" => true, "data-post-purchase_id" => $purchase->id]);
         $itemsName = $purchase->details->pluck("itemType")->implode("name", ", ");
         $sortItemsName = str_limite($itemsName, 15);
         $items = modal_anchor(url('/purchases/demande-form'), $sortItemsName, ['title' => "Détail de la demande d'achat : $num_purchase ", 'class' => 'btn btn-link btn-color-dark', "data-modal-lg" => true, "data-post-purchase_id" => $purchase->id]);
@@ -63,11 +64,12 @@ class PurchaseController extends Controller
             'method' => "<span class='badge badge-sm badge-light-info'>$purchase->method</span>",
             'items' => $items,
             'total_price' => "<h5>$purchase->total_price</h5>" . env("CURRENCY"),
-            'files' => $this->createColumnFiles($purchase),
-            'status' => "<span class='badge badge-sm badge-$statusColor'>$statusText</span>",
-            'created_at' => convert_to_real_time_humains($purchase->created_at, 'd-M-Y'),
+            // 'files' => $this->createColumnFiles($purchase),
+            'status' => "<span class='badge badge-sm mb-3 badge-$statusColor'>$statusText</span>" ,
+            'created_at' => convert_to_real_time_humains($purchase->created_at, 'd-M-Y' , false),
             'delete' =>  js_anchor('<i class="fas fa-trash " style="font-size:12px" ></i>', ["data-action-url" => url("/purchases/delete"), "data-post-purchase_id" => $purchase->id, "class" => "btn btn-sm btn-clean ", "title" => "Supprimé", "data-action" => "delete"]),
-            'actions' => $detail
+            'actions' => $detail,
+            'actions2' => $stockAction
         ];
     }
 
@@ -161,6 +163,10 @@ class PurchaseController extends Controller
         $url = storage_path($purchaseFile->src);
         return response()->download($url);
     }
-
+    public function migrationToStockModal(Request $request)
+    {
+        $purchase_model = Purchase::with(["details.itemType", "numInvoiceLines"])->find($request->purchase_id);
+        return view("purchases.modal-form-migration-stock", ["purchase_model" => $purchase_model]);
+    }
    
 }

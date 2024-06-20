@@ -403,8 +403,6 @@ Route::middleware(['auth', 'checkinweb', 'not_contributor'])->group(function () 
     Route::post("/stock/article/save", [StockController::class, 'article_save']);
     Route::post("/stock/article/delete", [StockController::class, 'article_delete']);
     
-
-
     Route::get('/purchases/new', [PurchaseController::class, "form"]);
     Route::post('/purchases/save', [PurchaseController::class, "save"]);
     Route::post('/purchases/delete', [PurchaseController::class, "delete"]);
@@ -415,6 +413,8 @@ Route::middleware(['auth', 'checkinweb', 'not_contributor'])->group(function () 
     Route::get("/purchases/download-file/{purchaseFile}", [PurchaseController::class, 'downloadFile']);
     Route::post("/purchase/save-num-invoice", [PurchaseController::class, 'saveNumInvoiceLine']);
     Route::post("/purchase/delete-num-invoice", [PurchaseController::class, 'deleteNumInvoiceLine']);
+    Route::post("/purchases/to-stcok-modal-form", [PurchaseController::class, 'migrationToStockModal']);
+    
 
     Route::get("/items", [ItemController::class, "index"]);
     Route::get("/items/list", [ItemController::class, "geViewItemTypeList"]);
