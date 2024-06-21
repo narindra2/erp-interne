@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use Exception;
+use App\Models\Item;
 use App\Models\User;
 use App\Models\ItemType;
 use App\Models\Purchase;
@@ -44,7 +45,7 @@ class PurchaseController extends Controller
     {
         $num_purchase = $purchase->getNumPurchase();
         $detail = modal_anchor(url('/purchases/demande-form'), 'Détail <i class="fas fa-external-link-alt mb-1"></i> ', ['title' => "Détail de la demande  d'achat : $num_purchase", 'class' => 'btn btn-link btn-color-info', "data-modal-lg" => true, "data-post-purchase_id" => $purchase->id]);
-        $stockAction = modal_anchor(url('/purchases/to-stcok-modal-form'), 'Stock <i class="fas fa-dolly-flatbed mb-1"></i> ', ['title' => "Mise en stock : $num_purchase", 'class' => 'btn btn-link btn-color-dark', "data-modal-lg" => true, "data-post-purchase_id" => $purchase->id]);
+        $stockAction = modal_anchor(url('/purchases/to-stcok-modal-form'), 'Stock <i class="fas fa-dolly-flatbed mb-1"></i> ', ['title' => "Mise en stock de la demande d'achat : $num_purchase", 'class' => 'btn btn-link btn-color-dark', "data-modal-lg" => true, "data-post-purchase_id" => $purchase->id]);
         $itemsName = $purchase->details->pluck("itemType")->implode("name", ", ");
         $sortItemsName = str_limite($itemsName, 15);
         $items = modal_anchor(url('/purchases/demande-form'), $sortItemsName, ['title' => "Détail de la demande d'achat : $num_purchase ", 'class' => 'btn btn-link btn-color-dark', "data-modal-lg" => true, "data-post-purchase_id" => $purchase->id]);
@@ -72,8 +73,6 @@ class PurchaseController extends Controller
             'actions2' => $stockAction
         ];
     }
-
-
 
     public function createColumnFiles($purchase)
     {
@@ -157,7 +156,6 @@ class PurchaseController extends Controller
         PurchaseNumInvoiceLine::where("id" ,$request->purchase_num_invoice_id)->update(["deleted" => 1]);
         return ['success' => true, 'message' => "Suppression avec success" ];
     }
-
     public function downloadFile(PurchaseFile $purchaseFile)
     {
         $url = storage_path($purchaseFile->src);
@@ -168,5 +166,11 @@ class PurchaseController extends Controller
         $purchase_model = Purchase::with(["details.itemType", "numInvoiceLines"])->find($request->purchase_id);
         return view("purchases.modal-form-migration-stock", ["purchase_model" => $purchase_model]);
     }
-   
+    public function createArticleMigrationToStock(Request $request)
+    {
+        $data = $request->all();
+        $data["date"] = convert_date_to_database_date($request->date);
+        $item =  Item::updateOrCreate( ["id" => $request->item_id ], $data);
+        return ['success' => true, 'message' => "Sauvegarder avec success" , "item_id" => $item->id ];
+    }
 }

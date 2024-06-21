@@ -501,7 +501,7 @@
                         toastr.success(result.message);
                     },
                     error: function(xhr, status, error) {
-                        var err = eval("(" + xhr.responseText + ")");
+                        var err = ("(" + xhr.responseText + ")");
                         toastr.error('Opps !  un erreur se produit. Erreur : '  + err);
                     }
                 });

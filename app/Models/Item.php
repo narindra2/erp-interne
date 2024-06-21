@@ -10,23 +10,27 @@ class Item extends Model
     use HasFactory;
 
     protected $fillable = [
-        'code',
-        'item_type_id'
+        'item_type_id',
+        'purchase_id',
+        'num_invoice_id',
+        'price_htt',
+        'price_ht',
+        'propriety',
+        'observation',
+        'date',
+        'deleted',
+        'code'
     ];
 
-    public function type() {
+    const SEPARATOR_CODE = "/";
+
+    public function article() {
         return $this->belongsTo(ItemType::class, "item_type_id");
     }
-
-    public function mvts() {
-        return $this->hasMany(ItemMovement::class, "item_id");
+    public function purchase() {
+        return $this->belongsTo(Purchase::class, "purchase_id");
     }
-
-    public function lastMvt() {
-        return $this->hasOne(ItemMovement::class, "item_id")->latestOfMany();
-    }
-
-    public function getNameAndCode() {
-        return $this->code . " - " . $this->type->name;
+    public function num_invoice() {
+        return $this->belongsTo(Purchase::class, "num_invoice_id");
     }
 }

@@ -414,6 +414,7 @@ Route::middleware(['auth', 'checkinweb', 'not_contributor'])->group(function () 
     Route::post("/purchase/save-num-invoice", [PurchaseController::class, 'saveNumInvoiceLine']);
     Route::post("/purchase/delete-num-invoice", [PurchaseController::class, 'deleteNumInvoiceLine']);
     Route::post("/purchases/to-stcok-modal-form", [PurchaseController::class, 'migrationToStockModal']);
+    Route::post("/purchase/migrate-one-article-to-stock", [PurchaseController::class, 'createArticleMigrationToStock']);
     
 
     Route::get("/items", [ItemController::class, "index"]);
