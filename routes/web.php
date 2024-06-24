@@ -389,7 +389,12 @@ Route::middleware(['auth', 'checkinweb', 'not_contributor'])->group(function () 
 
     /** Stock */
     Route::get("/stock/gerer", [StockController::class, "index"]);
+    
     Route::get("/stock/inventory/tab", [StockController::class, 'inventory']);
+    Route::get("/stock/inventory/data_list", [StockController::class, 'inventory_data_list']);
+    Route::post("/stock/inventory/modal-form", [StockController::class, 'inventor_modal_form']);
+    Route::post("/stock/inventory/save/inventor/from-edit", [StockController::class, 'save_inventor_from_update']);
+    Route::post("/purchase/migrate-one-article-to-stock", [StockController::class, 'create_article_migration_to_stock']);
 
     Route::get("/stock/category/tab", [StockController::class, 'category']);
     Route::get("/stock/category/data-list", [StockController::class, 'category_data_list']);
@@ -403,6 +408,7 @@ Route::middleware(['auth', 'checkinweb', 'not_contributor'])->group(function () 
     Route::post("/stock/article/save", [StockController::class, 'article_save']);
     Route::post("/stock/article/delete", [StockController::class, 'article_delete']);
     
+
     Route::get('/purchases/new', [PurchaseController::class, "form"]);
     Route::post('/purchases/save', [PurchaseController::class, "save"]);
     Route::post('/purchases/delete', [PurchaseController::class, "delete"]);
@@ -414,7 +420,7 @@ Route::middleware(['auth', 'checkinweb', 'not_contributor'])->group(function () 
     Route::post("/purchase/save-num-invoice", [PurchaseController::class, 'saveNumInvoiceLine']);
     Route::post("/purchase/delete-num-invoice", [PurchaseController::class, 'deleteNumInvoiceLine']);
     Route::post("/purchases/to-stcok-modal-form", [PurchaseController::class, 'migrationToStockModal']);
-    Route::post("/purchase/migrate-one-article-to-stock", [PurchaseController::class, 'createArticleMigrationToStock']);
+   
     
 
     Route::get("/items", [ItemController::class, "index"]);

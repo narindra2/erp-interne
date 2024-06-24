@@ -186,11 +186,4 @@ class PurchaseController extends Controller
         $purchase_model = Purchase::with(["details.itemType", "numInvoiceLines" ,"itemsInStock"])->find($request->purchase_id);
         return view("purchases.modal-form-migration-stock", ["purchase_model" => $purchase_model]);
     }
-    public function createArticleMigrationToStock(Request $request)
-    {
-        $data = $request->all();
-        $data["date"] = convert_date_to_database_date($request->date);
-        $item =  Item::updateOrCreate( ["id" => $request->item_id ], $data);
-        return ['success' => true, 'message' => "Sauvegarder avec success" , "item_id" => $item->id ];
-    }
 }
