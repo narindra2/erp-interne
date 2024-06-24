@@ -51,10 +51,12 @@ class Purchase extends Model
     public function files() {
         return $this->hasMany(PurchaseFile::class, "purchase_id");
     }
-
-    public function dateHTML() {
-        return $this->purchase_date->translatedFormat('d M Y');
+    public function itemsInStock() {
+        return $this->hasMany(Item::class, "purchase_id");
     }
+    // public function dateHTML() {
+    //     return $this->purchase_date->translatedFormat('d M Y');
+    // }
     public static function purchaseStatusList() {
        return [
         ["value" => null,"text" => "Statut" ],
@@ -124,22 +126,8 @@ class Purchase extends Model
                 'unit_price' => $unitPrice,
                 'propriety' => $propriety
             ];
-            /*
-            for ($i = 0; $i < $quantity; $i++) {
-                $item = Item::create([
-                    'item_type_id' => $itemTypeID,
-                    'code' => "achat-" . $purchase->created_at->format('Y-m-d')
-                ]);
-                $dataItemMovement[] = [
-                    'location_id' => 1,
-                    'item_status_id' => 1, 
-                    'item_id' => $item->id
-                ];
-            }
-            */
         }, $unitPrice, $quantity, $itemTypeID, $unitItemID,$propriety);
         PurchaseDetail::upsert($dataPurchaseDetail, ['unit_price'], ['unit_price']);
-        // ItemMovement::upsert($dataItemMovement, ['item_id'], ['item_id']);
         if (!isset($input['purchase_id'])) {
             dispatch(new TicketJobNotification(  $purchase->getUserNotification(), new NewPurcahseNotification( $purchase ,  $auth)))->afterResponse();
         }else{
@@ -150,7 +138,6 @@ class Purchase extends Model
                 dispatch(new TicketJobNotification(  $purchase->getUserNotification(), new UpdateStatusPurchseNotification( $purchase  ,  $auth , $changed)))->afterResponse();
             }
         }
-        // return $purchase;
     }
 
     public static function getTotalPrice($unitPrice, $quantity) {

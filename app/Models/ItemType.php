@@ -18,8 +18,7 @@ class ItemType extends Model
     ];
     const IMMOBILISATION = "immobilisation";
     const CONSOMABLE = "consomable";
-
-
+    
     public function category() {
         return $this->belongsTo(ItemCategory::class, 'category_id');
     }

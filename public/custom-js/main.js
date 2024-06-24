@@ -3,9 +3,6 @@
 $(document).ready(function () {
     var intervalID;
 
-    
-
-
     //custom app form controller
     var blockLoader = '<div  class="blockui-message"><span class="spinner-border text-primary"></span> ' + app_lang.please_wait + ' <span id ="upload-info"></span></div>'
     var blockToMask = document.querySelector("#ajax-modal-content");

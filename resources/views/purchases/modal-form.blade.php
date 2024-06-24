@@ -156,7 +156,7 @@
                                             <!--end::Quantity-->
                                             <!--begin::Price-->
                                             <td class="text-end">
-                                                <input type="number" autocomplete="off" class="form-control   form-control-sm w-150px calcul unitPrice"  name="unit_price[]" min="0" value="0">
+                                                <input type="number" autocomplete="off" step="50" class="form-control   form-control-sm w-150px calcul unitPrice"  name="unit_price[]" min="0" value="0">
                                             </td>
                                             <!--end::Price-->
                                             <!--begin::Total-->
@@ -199,7 +199,7 @@
                                                 <!--end::Quantity-->
                                                 <!--begin::Price-->
                                                 <td class="text-end">
-                                                    <input type="number" class="form-control   form-control-sm w-150px calcul unitPrice" name="unit_price[]" min="0" value="{{ $item->unit_price }}">
+                                                    <input type="number" class="form-control   form-control-sm w-150px calcul unitPrice"  min="0"  step="50" name="unit_price[]" min="0" value="{{ $item->unit_price }}">
                                                 </td>
                                                 <!--end::Price-->
                                                 <!--begin::Total-->

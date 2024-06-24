@@ -28,7 +28,7 @@ class PurchaseController extends Controller
     {
         $data = [];
         $auth = Auth::user();
-        $purchases = Purchase::with(['author', 'files', "details.itemType"])->getDetails($request->all())->get();
+        $purchases = Purchase::with(['author', 'files', "details.itemType" , "itemsInStock"])->getDetails($request->all())->get();
         foreach ($purchases as  $purchase) {
             if ($purchase->tagged_users) {
                 /** If auth is not admin and not the specifique tagged don't add it */
@@ -45,7 +45,6 @@ class PurchaseController extends Controller
     {
         $num_purchase = $purchase->getNumPurchase();
         $detail = modal_anchor(url('/purchases/demande-form'), 'Détail <i class="fas fa-external-link-alt mb-1"></i> ', ['title' => "Détail de la demande  d'achat : $num_purchase", 'class' => 'btn btn-link btn-color-info', "data-modal-lg" => true, "data-post-purchase_id" => $purchase->id]);
-        $stockAction = modal_anchor(url('/purchases/to-stcok-modal-form'), 'Stock <i class="fas fa-dolly-flatbed mb-1"></i> ', ['title' => "Mise en stock de la demande d'achat : $num_purchase", 'class' => 'btn btn-link btn-color-dark', "data-modal-lg" => true, "data-post-purchase_id" => $purchase->id]);
         $itemsName = $purchase->details->pluck("itemType")->implode("name", ", ");
         $sortItemsName = str_limite($itemsName, 15);
         $items = modal_anchor(url('/purchases/demande-form'), $sortItemsName, ['title' => "Détail de la demande d'achat : $num_purchase ", 'class' => 'btn btn-link btn-color-dark', "data-modal-lg" => true, "data-post-purchase_id" => $purchase->id]);
@@ -53,7 +52,29 @@ class PurchaseController extends Controller
         $statusText = get_array_value($statusInfo, "text");
         $statusColor = get_array_value($statusInfo, "color");
         $statusColor = get_array_value($statusInfo, "color");
+        $stockAction = '<span class="to-link" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="En attente d\'achat fait" ><i class="fas fa-info-circle"></i></span>';
+        $progressStock = '';
         if ($purchase->status == Purchase::PURCHASED_PURCHASE) {
+            $stockAction = modal_anchor(url('/purchases/to-stcok-modal-form'), 'Stock <i class="fas fa-dolly-flatbed mb-1"></i> ', ['title' => "Mise en stock de la demande d'achat : $num_purchase", 'class' => 'btn btn-link btn-color-dark', "data-modal-lg" => true, "data-post-purchase_id" => $purchase->id]);
+            $real_quantity = $purchase->details->sum("quantity");
+            $item_already_in_stock = $purchase->itemsInStock->count();
+            $rest_to_migrate_in_stock = $real_quantity - $item_already_in_stock;
+            
+            if ($rest_to_migrate_in_stock) {
+                $progress = round($item_already_in_stock * 100 / $real_quantity); 
+                $progressbar = " <div class='progress-bar bg-primary' role='progressbar' style='width:$progress%' aria-valuenow='$progress' aria-valuemin='0' aria-valuemax='100'></div>";
+                $progressStock =  '<div class="progress h-6px w-100 me-2 bg-light-primary">'. $progressbar . '</div>';
+            }elseif ($rest_to_migrate_in_stock == 0) {
+                $progressbar = " <div class='progress-bar bg-success' role='progressbar' style='width:100%' aria-valuenow='10' aria-valuemin='0' aria-valuemax='100'></div>";
+                $progressStock =  '<div class="progress h-6px w-100 me-2 bg-success">'. $progressbar . '</div>';
+                $stockAction = modal_anchor(url('/purchases/to-stcok-modal-form'), 'Stock <i class="fas fa-check-circle"></i>', ['title' => "Mise en stock fait : $num_purchase", 'class' => 'btn btn-link btn-color-success', "data-modal-lg" => true, "data-post-purchase_id" => $purchase->id]);
+            }else{
+                $progressbar = " <div class='progress-bar bg-dark' role='progressbar' style='width:10%' aria-valuenow='10' aria-valuemin='0' aria-valuemax='100'></div>";
+                $progressStock =  '<div class="progress h-6px w-100 me-2 bg-dark">'. $progressbar . '</div>';
+            }
+        }
+        if ($purchase->status == Purchase::REFUSED_PURCHASE) {
+            $stockAction = '<i class="fas fa-lock"></i>';
         }
 
         return [
@@ -70,7 +91,7 @@ class PurchaseController extends Controller
             'created_at' => convert_to_real_time_humains($purchase->created_at, 'd-M-Y' , false),
             'delete' =>  js_anchor('<i class="fas fa-trash " style="font-size:12px" ></i>', ["data-action-url" => url("/purchases/delete"), "data-post-purchase_id" => $purchase->id, "class" => "btn btn-sm btn-clean ", "title" => "Supprimé", "data-action" => "delete"]),
             'actions' => $detail,
-            'actions2' => $stockAction
+            'stock' => $stockAction . " " .  $progressStock
         ];
     }
 
@@ -142,7 +163,6 @@ class PurchaseController extends Controller
             return ["success" => true, "message" => trans("lang.success_deleted")];
         }
     }
-
     public function saveNumInvoiceLine(Request $request)
     {
         PurchaseNumInvoiceLine::updateOrCreate(
@@ -163,7 +183,7 @@ class PurchaseController extends Controller
     }
     public function migrationToStockModal(Request $request)
     {
-        $purchase_model = Purchase::with(["details.itemType", "numInvoiceLines"])->find($request->purchase_id);
+        $purchase_model = Purchase::with(["details.itemType", "numInvoiceLines" ,"itemsInStock"])->find($request->purchase_id);
         return view("purchases.modal-form-migration-stock", ["purchase_model" => $purchase_model]);
     }
     public function createArticleMigrationToStock(Request $request)

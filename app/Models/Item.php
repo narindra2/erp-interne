@@ -21,7 +21,9 @@ class Item extends Model
         'deleted',
         'code'
     ];
-
+    protected $casts = [
+        'date'  => 'date:d/m/Y',
+    ];
     const SEPARATOR_CODE = "/";
 
     public function article() {

@@ -63,8 +63,8 @@
                         // {data: "files", title: "Fichiers joints"},
                         {data :"created_at" , title: 'Crée le'},
                         {data: "status", title: "Statut"},
-                        {data :"actions2"},
                         {data :"actions"},
+                        {data :"stock",title: "Mise en stock"},
                         {data :"delete"},
                     ],
                     ajax: {
@@ -78,15 +78,25 @@
                     language: {
                         url: "https://cdn.datatables.net/plug-ins/1.11.3/i18n/fr_fr.json"
                     },
+                    initComplete: function(settings, json) {
+                        KTApp.initBootstrapTooltips();
+                    }
                 });
+                
                 $('#search-purchases').on('keyup', function() {
                     dataTableInstance.purchasesTable.search(this.value).draw();
                 });
                 $('#do-reload').on('click', function(e) {
                     dataTableInstance.purchasesTable.ajax.reload();
+                    setTimeout(() => {
+                        KTApp.initBootstrapTooltips();
+                    }, 1000);
                 });
                 $('.purchasesTable').on('change', function() {
                     dataTableInstance.purchasesTable.ajax.reload();
+                    setTimeout(() => {
+                        KTApp.initBootstrapTooltips();
+                    }, 1000);
                 });
             });
         </script>
