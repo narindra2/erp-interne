@@ -39,7 +39,7 @@ class Item extends Model
     }
     public function getEtatInfo() {
         if($this->etat == "fonctionnel"){
-             return ["text" => 'Fonctionnnel' , "color" => "info"];
+             return ["text" => 'Fonctionnnel' , "color" => "success"];
         }elseif ($this->etat == "en_panne") {
             return ["text" => 'En panne' , "color" => "warning"];
         }elseif ($this->etat == "perdu") {

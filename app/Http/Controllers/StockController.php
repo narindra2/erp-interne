@@ -72,7 +72,7 @@ class StockController extends Controller
         $row["date"] = $item->date->format("d-M-Y");
         $row["prix_ht"] = $item->price_ht ? "<span class='badge badge-light-dark '>$item->price_ht Ar</span>"  :  "-" ;
         $row["prix_htt"] = $item->price_htt ? "<span class='badge badge-light-dark '>$item->price_htt Ar</span>"  :  "-" ;
-        $row["num_invoice"] = $item->num_invoice_id ? $item->num_invoice->num_invoice : "-";
+        $row["num_invoice"] = $item->num_invoice ? $item->num_invoice->num_invoice : "-";
         $observation_sort  = str_limite($item->observation,20);
         $row["observation"] = !$item->observation  ? "-"  : "<span class='to-link' data-bs-toggle='tooltip'  data-bs-placement='top' title='{$item->observation}' > $observation_sort </span>";
         $row["detail"] =   modal_anchor(url("/stock/inventory/modal-form"), '<i class="fas fa-pen fs-4 me-3"></i>', ["title" => "Edition du " . $item->code , "data-post-item_id" => $item->id]);
@@ -94,8 +94,9 @@ class StockController extends Controller
         $data["date"] = convert_date_to_database_date($request->date);
         $data["num_invoice_id"] = $request->num_invoice_id == "0" ? null  : $request->num_invoice_id;
         $data["purchase_id"] = $request->purchase_id == "0" ? null  : $request->purchase_id;
-        $item =  Item::with(["article.category","purchase","num_invoice"])->find(  $request->item_id);
+        $item = Item::find($request->item_id);
         $item->update($data);
+        $item->refresh()->load(["article.category","purchase","num_invoice"]);
         return ['success' => true, 'message' => "Mise à jour avec succès" , "row_id" =>  row_id("invetory",$item->id )  ,"data" => $this->_make_row_inventory( $item)];
     }
 
