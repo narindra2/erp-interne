@@ -47,6 +47,10 @@ class StockController extends Controller
         if ($sub_cat) {
             $query->whereRelation("article", "sub_category",$sub_cat);
         }
+        $article_id = get_array_value( $req,"article_id");
+        if ($article_id) {
+            $query->whereRelation("article", "id",$article_id);
+        }
         $items = $query->latest()->get();
         foreach ($items as $item) {
             $data[] = $this->_make_row_inventory( $item);
@@ -70,7 +74,7 @@ class StockController extends Controller
         $row["prix_htt"] = $item->price_htt ? "<span class='badge badge-light-dark '>$item->price_htt Ar</span>"  :  "-" ;
         $row["num_invoice"] = $item->num_invoice_id ? $item->num_invoice->num_invoice : "-";
         $observation_sort  = str_limite($item->observation,20);
-        $row["observation"] = "<span class='to-link' data-bs-toggle='tooltip'  data-bs-placement='top' title='{$item->observation}' > $observation_sort </span>";
+        $row["observation"] = !$item->observation  ? "-"  : "<span class='to-link' data-bs-toggle='tooltip'  data-bs-placement='top' title='{$item->observation}' > $observation_sort </span>";
         $row["detail"] =   modal_anchor(url("/stock/inventory/modal-form"), '<i class="fas fa-pen fs-4 me-3"></i>', ["title" => "Edition du " . $item->code , "data-post-item_id" => $item->id]);
         return $row;
     }

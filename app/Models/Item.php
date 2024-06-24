@@ -55,6 +55,17 @@ class Item extends Model
     {
         $filters = [];
         $filters[] = [
+            "label" => "Article", 
+            "name" =>"article_id",
+            "type" => "select",
+            "width"  =>"w-200px",
+            'attributes' => [
+                "data-hide-search" => "false",
+                "data-allow-clear" => "true",
+            ],
+            "options" => to_dropdown(ItemType::whereDeleted(0)->get(),"id","name"),
+        ];
+        $filters[] = [
             "label" => "Catégorie", 
             "name" =>"cat_id",
             "type" => "select",
@@ -66,7 +77,7 @@ class Item extends Model
             "options" => to_dropdown(ItemCategory::whereDeleted(0)->get(),"id","name"),
         ];
         $filters[] = [
-            "label" => "Sous-catégorie", 
+            "label" => "Sous-cat", 
             "name" =>"sub_cat",
             "type" => "select",
             "width"  =>"w-200px",

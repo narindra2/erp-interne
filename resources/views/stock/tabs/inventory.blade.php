@@ -30,7 +30,9 @@
 
 <script>
     $(document).ready(function() {
-        KTApp.initSelect2();
+        setTimeout(() => {
+            KTApp.initSelect2();
+        }, 1000);
         dataTableInstance.invetoryListDataTable = $("#invetoryListDataTable").DataTable({
             processing: true,
             dom:"tpr",
