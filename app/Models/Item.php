@@ -136,11 +136,10 @@ class Item extends Model
                 "data-allow-clear" => "true",
             ],
             "options" =>  [
-                ["value" => null , "text" => "Etat"],
                 ["value" => "fonctionnel" , "text" => "Fonctionnel"],
                 ["value" => "en_panne" , "text" => "En panne"],
-                ["value" => "perdu" , "text" => "Perdu"],
                 ["value" => "detruit" , "text" => "Détruit"],
+                ["value" => "perdu" , "text" => "Perdu"],
             ],
         ];
         

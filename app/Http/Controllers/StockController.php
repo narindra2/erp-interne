@@ -132,14 +132,14 @@ class StockController extends Controller
         $num_invoices = PurchaseNumInvoiceLine::whereDeleted(0)->get();
         return view('stock.article.create-article-to-stock-modal-form', ["articles" =>$articles , "purchases"  =>$purchases , "num_invoices" => $num_invoices]);
     }
-    public function save_article_to_stock(Request $request)
+    public function save_new_article_to_stock(Request $request)
     {   
         if (!$request->item_type_id) {
            die(json_encode(["success" => false, "validation" => true,  "message" =>  "Le champ « matériel à ajouter » ne peux pas être vide pour un nouvel enreigistrement svp !"]));
         }
         $data = $request->all();
         $data["created_from"] = "inventory_form";
-        $data["code"] =Item::generateCodeItemForNew($request->item_type_id);
+        $data["code"] = Item::generateCodeItemForNew($request->item_type_id);
         $data["date"] = convert_date_to_database_date($request->date);
         $data["num_invoice_id"] = $request->num_invoice_id == "0" ? null  : $request->num_invoice_id;
         $data["purchase_id"] = $request->purchase_id == "0" ? null  : $request->purchase_id;

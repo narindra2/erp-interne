@@ -396,7 +396,7 @@ Route::middleware(['auth', 'checkinweb', 'not_contributor'])->group(function () 
     Route::post("/stock/inventory/save/inventor/from-edit", [StockController::class, 'save_inventor_from_update']);
     Route::post("/purchase/migrate-one-article-to-stock", [StockController::class, 'create_article_migration_to_stock']);
     Route::post("/stock/inventory/create-article", [StockController::class, 'create_article_to_stock_modal_form']);
-    Route::post("/stock/inventory/save-new-article", [StockController::class, 'save_article_to_stock']);
+    Route::post("/stock/inventory/save-new-article", [StockController::class, 'save_new_article_to_stock']);
 
     Route::get("/stock/category/tab", [StockController::class, 'category']);
     Route::get("/stock/category/data-list", [StockController::class, 'category_data_list']);

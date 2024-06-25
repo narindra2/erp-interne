@@ -1,6 +1,6 @@
 <div class="card shadow-sm">
     <div class="card-body">
-        <div class="d-flex justify-content-end mb-5">
+        <div class="d-flex justify-content-end mb-0">
             <div class="filter-datatable">
                 @include('filters.filters-basic', ["inputs" => $basic_filter ,"filter_for" => "inventorTable"])
             </div>
@@ -19,7 +19,7 @@
             </div>
             <div class="me-4 my-2">
                 @php
-                    echo modal_anchor(url('/stock/inventory/create-article'), '<button class="btn  btn-sm btn-light-info "><i class="fas fa-plus "></i> Faire une enreigistrement</button>', ['title' => 'Nouvel enreigistrement'])
+                    echo modal_anchor(url('/stock/inventory/create-article'), '<button class="btn btn-sm btn-light-info "><i class="fas fa-plus "></i> Faire une enreigistrement</button>', ['title' => 'Nouvel enreigistrement'])
                 @endphp
             </div>
         </div>
