@@ -71,14 +71,14 @@ class StockController extends Controller
         }
         /*** Relationship  in num_invoice */
         if ($item->num_invoice) {
-            $row["num_invoice"] =$item->num_invoice->num_invoice;
+            $row["num_invoice"] = $item->num_invoice->num_invoice;
         }else{
             /*** num_invoice add manuely */
             if($item->num_invoice_id){
                 $row["num_invoice"] = $item->num_invoice_id;
             }
         }
-        $row["num_invoice"] .= $row["purchase"];
+        $row["num_invoice"] = $row["num_invoice"] ." ". $row["purchase"];
         $etat_info = $item->getEtatInfo();
         $etat_class = $etat_info["color"];
         $etat_text = $etat_info["text"];
@@ -113,7 +113,11 @@ class StockController extends Controller
     
     public function create_article_migration_to_stock(Request $request)
     {
+        if (!$request->item_type_id) {
+            die(json_encode(["success" => false, "validation" => true,  "message" =>  "Le champ « matériel à ajouter » ne peux pas être vide pour un nouvel enreigistrement svp !"]));
+        }
         $data = $request->all();
+        $data["code"] = Item::generateCodeItemForNew($request->item_type_id);
         $data["date"] = convert_date_to_database_date($request->date);
         $data["num_invoice_id"] = $request->num_invoice_id == "0" ? null  : $request->num_invoice_id;
         $data["etat"] = "fonctionnel";
@@ -131,10 +135,11 @@ class StockController extends Controller
     public function save_article_to_stock(Request $request)
     {   
         if (!$request->item_type_id) {
-           die(json_encode(["success" => false, "validation" => true,  "message" =>  "Le champ matériel à ajouter ne peux pas être vide pour un nouvel enreigistrement svp !"]));
+           die(json_encode(["success" => false, "validation" => true,  "message" =>  "Le champ « matériel à ajouter » ne peux pas être vide pour un nouvel enreigistrement svp !"]));
         }
         $data = $request->all();
         $data["created_from"] = "inventory_form";
+        $data["code"] =Item::generateCodeItemForNew($request->item_type_id);
         $data["date"] = convert_date_to_database_date($request->date);
         $data["num_invoice_id"] = $request->num_invoice_id == "0" ? null  : $request->num_invoice_id;
         $data["purchase_id"] = $request->purchase_id == "0" ? null  : $request->purchase_id;

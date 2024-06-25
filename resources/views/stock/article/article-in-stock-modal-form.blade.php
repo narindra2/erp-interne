@@ -56,7 +56,11 @@
                     <option value="0" selected >Aucun</option>
                     @foreach ($num_invoices as $num)
                         <option value="{{ $num->id }}" @if ($num->id  == $item->num_invoice_id) selected @endif>{{ $num->num_invoice }}</option>
-                    @endforeach      
+                    @endforeach  
+                    {{-- The num invoice save manuely --}}
+                    @if (!$item->num_invoices &&  $item->num_invoice_id)
+                        <option value="{{ $item->num_invoice_id }}" selected >{{ $item->num_invoice_id }}</option>
+                    @endif
                 </select>
             </div>
         </div>

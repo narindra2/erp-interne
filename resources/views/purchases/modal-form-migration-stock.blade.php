@@ -41,7 +41,7 @@
                         <td><input type="number" min="50" name="price_htt"  step="50" value="{{ $item_in_stock->price_htt }}" class="form-control form-control-sm w-150px" placeholder="Prix HTT"/></td>
                         <td>
                             <select class="form-control form-control-sm  w-150px"  name="num_invoice_id" data-hide-search="true" data-control="select2"   data-placeholder="N° factuere ..."  data-dropdown-parent="#ajax-modal">
-                                <option value="null"  selected>Vide</option>
+                                <option value="0"  selected>Vide</option>
                                 @foreach ($purchase_model->numInvoiceLines  as $num)
                                     <option value="{{ $num->id }}" @if ($item_in_stock->num_invoice_id) selected  @endif >{{ $num->num_invoice }}</option>
                                 @endforeach
@@ -79,7 +79,7 @@
                         <td><input type="number" name="price_htt" min="50"  step="50" class="form-control form-control-sm w-150px" placeholder="Prix HTT"/></td>
                         <td>
                             <select class="form-control form-control-sm  w-150px"  name="num_invoice_id" data-hide-search="true" data-control="select2"   data-placeholder="N° factuere ..."  data-dropdown-parent="#ajax-modal">
-                                <option value="null"  selected>Vide</option>
+                                <option value="0"  selected>Vide</option>
                                 @foreach ($purchase_model->numInvoiceLines  as $num)
                                     <option value="{{ $num->id }}" >{{ $num->num_invoice }}</option>
                                 @endforeach
@@ -126,10 +126,12 @@
             $(this).val("")
             $(this).change()
         });
-        function releaseBtnSave(btnSave){
+        function releaseBtnSave(btnSave , success = true){
             btnSave.attr("data-kt-indicator" , "off")
-            btnSave.removeClass("btn-light-info")
-            btnSave.addClass("btn-light-success")
+            if (success) {
+                btnSave.removeClass("btn-light-info")
+                btnSave.addClass("btn-light-success")
+            }
             btnSave.attr("disabled" , false)
         }
         /** Save row info article*/ 
@@ -139,7 +141,7 @@
             btnSave.attr("disabled" , true)
             btnSave.closest(".rows-detail-to-stock").find(':input, select, textarea').each(function() {
                 if ($(this).attr("name")) {
-                    data[$(this).attr("name")] = $(this).val()
+                    data[$(this).attr("name")] = $(this).val();
                 }
             });
             $.ajax({
@@ -148,19 +150,25 @@
                     dataType: 'json',
                     data: data,
                     success: function(result) {
-                        btnSave.closest(".rows-detail-to-stock").find('.item_id').eq(0).val(result.item_id);
-                        btnSave.find('span').eq(0).text("Mettre à jour");
-                        releaseBtnSave(btnSave)
-                        toastr.clear()
-                        toastr.success(result.message);
-                        try {
-                            dataTableInstance.purchasesTable.ajax.reload();
-                        } catch (error) {
-                            
+                        if (result.success) {
+                            btnSave.closest(".rows-detail-to-stock").find('.item_id').eq(0).val(result.item_id);
+                            releaseBtnSave(btnSave);
+                            btnSave.find('span').eq(0).text("Mettre à jour");
+                            toastr.clear()
+                            toastr.success(result.message);
+                            try {
+                                dataTableInstance.purchasesTable.ajax.reload();
+                            } catch (error) {
+                                
+                            } 
+                        }else{
+                            toastr.error(result.message);
+                            releaseBtnSave(btnSave ,false);
                         }
+                       
                     },
                     error: function(xhr, status, error) {
-                        releaseBtnSave(btnSave)
+                        releaseBtnSave(btnSave , false)
                         var err = ("(" + xhr.responseText + ")");
                         toastr.error('Opps !  un erreur se produit. Erreur : '  + err);
                     }

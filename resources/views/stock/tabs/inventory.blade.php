@@ -44,7 +44,7 @@
                 { data: "sub_cat",title: 'sous-cat'},
                 { data: "cat",title: 'Categorie'},
                 { data: "date",title: 'Date d\'aquisation'},
-                { data: "purchase",title: 'N° facture'},
+                { data: "num_invoice",title: 'N° facture'},
                 { data: "prix_ht",title: 'Montant HT'},
                 { data: "prix_htt",title: 'Montant HTT'},
                 { data: "etat",title: 'Etat'},

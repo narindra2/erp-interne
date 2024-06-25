@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use App\Models\ItemCategory;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -37,7 +38,6 @@ class Item extends Model
     public function getCodeDetailAttribute() {
         return $this->get_code_detail_item();
     }
-
     /** Identité + order chronologique +date d'aquisation + nature */
     public function get_code_detail_item() {
         $separator = self::SEPARATOR_CODE;
@@ -51,13 +51,17 @@ class Item extends Model
         return $code_article.$separator.$code_item.$separator.$date_item.$separator.$code_category;
     }
     public static function generateCodeItemForNew($item_type_id) {
-        $last_item =  DB::table('items')->where("item_type_id", "=",$item_type_id)->orderBy('code', 'desc')->first();
-        /** First record  */
-        if (!$last_item) {
-            return 1;
-        }
-        /** For -n record  */
-        return $last_item->code  + 1;
+       try {
+            $last_item =  DB::table('items')->where("item_type_id", "=",$item_type_id)->orderBy('code', 'desc')->first();
+            /** First record  */
+            if (!$last_item) {
+                return 1;
+            }
+            /** For n-ème record  */
+            return  (int) $last_item->code + 1;
+       } catch (Exception $e) {
+            die("Impossible de generer le code article error : "  . $e->getMessage());
+       }
     }
     public function article() {
         return $this->belongsTo(ItemType::class, "item_type_id");
