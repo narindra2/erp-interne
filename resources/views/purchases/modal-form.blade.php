@@ -88,11 +88,11 @@
 
        <ul class="nav nav-tabs" id="purchaseTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link text-info active" id="article-tab" data-bs-toggle="tab" data-bs-target="#article" type="button" role="tab" aria-controls="home" aria-selected="true">Articles  </button>
+            <button class="nav-link text-info active" id="article-tab" data-bs-toggle="tab" data-bs-target="#article-purchase" type="button" role="tab" aria-controls="home" aria-selected="true">Articles  </button>
         </li>
         @if ($purchase_model->status == "purchased")
             <li class="nav-item" role="presentation" data-nav-item="purchased-tab">
-                <button class="nav-link text-info" data-nav-item="purchased-tab"  id="purchased-tab" data-bs-toggle="tab" data-bs-target="#purchased" type="button" role="tab" aria-controls="profile" aria-selected="false">Aprés achat</button>
+                <button class="nav-link text-info" data-nav-item="purchased-tab"  id="purchased-tab" data-bs-toggle="tab" data-bs-target="#purchased" type="button" role="tab" aria-controls="profile" aria-selected="false">Facturations</button>
             </li> 
         @endif
        
@@ -101,7 +101,7 @@
         </li>
     </ul>
     <div class="tab-content" style="min-height: 200px !important;" id="purchaseTabContent">
-        <div class="tab-pane fade show active" id="article" role="tabpanel" aria-labelledby="article-tab">
+        <div class="tab-pane fade show active" id="article-purchase" role="tabpanel" aria-labelledby="article-tab">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card-title d-flex flex-column">   

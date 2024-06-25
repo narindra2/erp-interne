@@ -19,7 +19,7 @@
             </div>
             <div class="me-4 my-2">
                 @php
-                    echo modal_anchor(url('/stock/inventory/modal-form'), '<button class="btn  btn-sm btn-light-info "><i class="fas fa-plus "></i> Faire une enreigistrement</button>', ['title' => 'Nouvel enreigistrement'])
+                    echo modal_anchor(url('/stock/inventory/create-article'), '<button class="btn  btn-sm btn-light-info "><i class="fas fa-plus "></i> Faire une enreigistrement</button>', ['title' => 'Nouvel enreigistrement'])
                 @endphp
             </div>
         </div>
@@ -40,11 +40,11 @@
             columns: [
                 { data: "code",title: 'Code' , orderable:false},
                 { data: "name",title: 'Article'},
+                { data: "propriety",title: 'Propriété'},
                 { data: "sub_cat",title: 'sous-cat'},
                 { data: "cat",title: 'Categorie'},
                 { data: "date",title: 'Date d\'aquisation'},
-                { data: "purchase",title: 'Achat'},
-                { data: "num_invoice",title: 'N° facture'},
+                { data: "purchase",title: 'N° facture'},
                 { data: "prix_ht",title: 'Montant HT'},
                 { data: "prix_htt",title: 'Montant HTT'},
                 { data: "etat",title: 'Etat'},

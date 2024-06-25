@@ -6,7 +6,6 @@ use Exception;
 use App\Models\Item;
 use App\Models\ItemType;
 use App\Models\Purchase;
-use App\Models\UnitItem;
 use App\Models\ItemCategory;
 use Illuminate\Http\Request;
 use App\Http\Requests\ItemTypeRequest;
@@ -59,12 +58,27 @@ class StockController extends Controller
     }
     public function _make_row_inventory(Item $item) {
         $row["DT_RowId"] = row_id("invetory", $item->id);
-
-        $row["code"] =  modal_anchor(url("/stock/inventory/modal-form"), "<span class='text-info fs-4'>1000/14565/MI/2024</span>", ["title" => "Edition du " . $item->code , "data-post-item_id" => $item->id]); ;
+        $row["code"] =  modal_anchor(url("/stock/inventory/modal-form"), "<span class='text-info fs-4'>{$item->code_detail}</span>", ["title" => "Edition du " . $item->code_detail , "data-post-item_id" => $item->id]); ;
         $row["name"] = "<span class='text-dark fs-4 fw-bold'>{$item->article->name}</span>" ;
+        $row["propriety"] = $item->propriety ? "<span class='text-gray-700 fw-semibold d-block fs-7'>{$item->propriety}</span>"  :"-";
         $row["sub_cat"] = $item->article->sub_category;
-        $row["cat"] = $item->article->category->name  ;
-        $row["purchase"] = $item->purchase_id ?  $item->purchase->getNumPurchase() : "-";
+        $row["cat"] = $item->article->category->name ;
+        $row["purchase"] = $row["num_invoice"] = "";
+        if ($item->purchase_id) {
+            $num =  $item->purchase->getNumPurchase();
+            $row["purchase"] = modal_anchor(url('/purchases/demande-form'), "$num <i class='fas fa-link'></i> ", ['title' => "Détail de la demande  d'achat : $num ", 'class' => 'btn btn-link btn-color-info', "data-modal-lg" => true, "data-post-purchase_id" => $item->purchase_id]);
+         
+        }
+        /*** Relationship  in num_invoice */
+        if ($item->num_invoice) {
+            $row["num_invoice"] =$item->num_invoice->num_invoice;
+        }else{
+            /*** num_invoice add manuely */
+            if($item->num_invoice_id){
+                $row["num_invoice"] = $item->num_invoice_id;
+            }
+        }
+        $row["num_invoice"] .= $row["purchase"];
         $etat_info = $item->getEtatInfo();
         $etat_class = $etat_info["color"];
         $etat_text = $etat_info["text"];
@@ -72,10 +86,9 @@ class StockController extends Controller
         $row["date"] = $item->date->format("d-M-Y");
         $row["prix_ht"] = $item->price_ht ? "<span class='badge badge-light-dark '>$item->price_ht Ar</span>"  :  "-" ;
         $row["prix_htt"] = $item->price_htt ? "<span class='badge badge-light-dark '>$item->price_htt Ar</span>"  :  "-" ;
-        $row["num_invoice"] = $item->num_invoice ? $item->num_invoice->num_invoice : "-";
         $observation_sort  = str_limite($item->observation,20);
         $row["observation"] = !$item->observation  ? "-"  : "<span class='to-link' data-bs-toggle='tooltip'  data-bs-placement='top' title='{$item->observation}' > $observation_sort </span>";
-        $row["detail"] =   modal_anchor(url("/stock/inventory/modal-form"), '<i class="fas fa-pen fs-4 me-3"></i>', ["title" => "Edition du " . $item->code , "data-post-item_id" => $item->id]);
+        $row["detail"] =   modal_anchor(url("/stock/inventory/modal-form"), '<i class="fas fa-pen fs-4 me-3"></i>', ["title" => "Edition du " . $item->code_detail , "data-post-item_id" => $item->id]);
         return $row;
     }
     public function inventor_modal_form(Request $request) {
@@ -84,11 +97,9 @@ class StockController extends Controller
         $num_invoices = PurchaseNumInvoiceLine::whereDeleted(0)->get();
         if ($request->item_id) {
             return view('stock.article.article-in-stock-modal-form', ["item" =>$item , "purchases"  =>$purchases , "num_invoices" => $num_invoices]);
-        }else{
-            return view('stock.article.article-in-stock-modal-form', ["purchases"  =>$purchases , "num_invoices" => $num_invoices]);
         }
     }
-
+    
     public function save_inventor_from_update(Request $request) {
         $data = $request->all();
         $data["date"] = convert_date_to_database_date($request->date);
@@ -99,17 +110,38 @@ class StockController extends Controller
         $item->refresh()->load(["article.category","purchase","num_invoice"]);
         return ['success' => true, 'message' => "Mise à jour avec succès" , "row_id" =>  row_id("invetory",$item->id )  ,"data" => $this->_make_row_inventory( $item)];
     }
-
+    
     public function create_article_migration_to_stock(Request $request)
     {
         $data = $request->all();
         $data["date"] = convert_date_to_database_date($request->date);
         $data["num_invoice_id"] = $request->num_invoice_id == "0" ? null  : $request->num_invoice_id;
         $data["etat"] = "fonctionnel";
+        $data["created_from"] = "purchase_form"; /** From migration  form in purchase request*/
         $item =  Item::updateOrCreate( ["id" => $request->item_id ], $data);
         return ['success' => true, 'message' => "Sauvegarder avec succès" , "item_id" => $item->id ];
     }
-
+    public function create_article_to_stock_modal_form(Request $request)
+    {
+        $articles = ItemType::whereDeleted(0)->get();
+        $purchases = Purchase::with(['author'])->whereDeleted(0)->get();
+        $num_invoices = PurchaseNumInvoiceLine::whereDeleted(0)->get();
+        return view('stock.article.create-article-to-stock-modal-form', ["articles" =>$articles , "purchases"  =>$purchases , "num_invoices" => $num_invoices]);
+    }
+    public function save_article_to_stock(Request $request)
+    {   
+        if (!$request->item_type_id) {
+           die(json_encode(["success" => false, "validation" => true,  "message" =>  "Le champ matériel à ajouter ne peux pas être vide pour un nouvel enreigistrement svp !"]));
+        }
+        $data = $request->all();
+        $data["created_from"] = "inventory_form";
+        $data["date"] = convert_date_to_database_date($request->date);
+        $data["num_invoice_id"] = $request->num_invoice_id == "0" ? null  : $request->num_invoice_id;
+        $data["purchase_id"] = $request->purchase_id == "0" ? null  : $request->purchase_id;
+        $item =  Item::create($data);
+        return ['success' => true, 'message' => "Sauvegarder avec succès"   ,"data" => $this->_make_row_inventory($item)];
+    }
+   
 
     /** Category item */
     public function category_data_list() {

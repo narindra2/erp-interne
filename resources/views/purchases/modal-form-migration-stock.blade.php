@@ -20,7 +20,7 @@
             <tbody>
                 @php
                     $real_quantity =  $detail->quantity;
-                    $item_already_in_stock = $itemsInStock->where("item_type_id"   , $detail->item_type_id)->where("purchase_id" , $detail->purchase_id);
+                    $item_already_in_stock = $itemsInStock->where("item_type_id"   , $detail->item_type_id)->where("purchase_id" , $detail->purchase_id)->where("created_from","purchase_form");
                     $rest_to_migrate_in_stock = $real_quantity - $item_already_in_stock->count();
                 @endphp
                 @foreach ($item_already_in_stock as $item_in_stock)

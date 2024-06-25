@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Models\ItemCategory;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -20,14 +22,43 @@ class Item extends Model
         'observation',
         'date',
         'etat',
+        'created_from',
         'deleted',
         'code'
     ];
     protected $casts = [
         'date'  => 'date:d/m/Y',
     ];
+    protected $appends = [
+        'codeDetail',
+    ];
     const SEPARATOR_CODE = "/";
 
+    public function getCodeDetailAttribute() {
+        return $this->get_code_detail_item();
+    }
+
+    /** Identité + order chronologique +date d'aquisation + nature */
+    public function get_code_detail_item() {
+        $separator = self::SEPARATOR_CODE;
+        if (!$this->article) {
+            $this->load("article.category");
+        }
+        $code_article = $this->article ? $this->article->code : "non-defiie";
+        $code_category = $this->article ? $this->article->category->code : "non-defiie";
+        $code_item = $this->code ?? "code-item";
+        $date_item = Carbon::parse($this->date)->format("dmY");
+        return $code_article.$separator.$code_item.$separator.$date_item.$separator.$code_category;
+    }
+    public static function generateCodeItemForNew($item_type_id) {
+        $last_item =  DB::table('items')->where("item_type_id", "=",$item_type_id)->orderBy('code', 'desc')->first();
+        /** First record  */
+        if (!$last_item) {
+            return 1;
+        }
+        /** For -n record  */
+        return $last_item->code  + 1;
+    }
     public function article() {
         return $this->belongsTo(ItemType::class, "item_type_id");
     }
