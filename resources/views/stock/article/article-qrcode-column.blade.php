@@ -1,5 +1,5 @@
 @if ($item->qrCode)
-    <div id="qrcode-img-{{ $item->id }}" class=" mb-2 symbol d-none to-link symbol-100px symbol-lg-160px symbol-fixed position-relative">
+    <div id="qrcode-img-{{ $item->id }}" class=" mb-2 symbol d-none to-link ">
         {{ $item->qrcode }}
     </div>
     <div class="form-check form-switch form-check-custom justify-content-center " title="Afficher le Qrcode du {{ $item->code_detail }}">
@@ -15,7 +15,6 @@
             }
         });
     </script>  
-
 @else 
     <div class="form-check form-switch form-check-custom justify-content-center " title="Pas de Qrcode du {{ $item->code_detail }}">
         <input disabled class="form-check-input h-15px w-30px" type="checkbox" role="switch" >

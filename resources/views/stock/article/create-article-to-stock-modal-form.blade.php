@@ -21,6 +21,7 @@
                     <span class="text-gray-700 pt-1 fw-semibold fs-6">Etat du matériel</span>
                     <select id="etat" name="etat" class="form-select form-select-sm form-select-solid" data-placeholder="Etat"  data-control="select2" data-hide-search="true" data-dropdown-parent="#ajax-modal">
                         <option value="fonctionnel" selected >Fonctionnel</option>
+                        {{-- <option value="en_stock" >En stock</option> --}}
                         <option value="detruit"   >Détruit</option>
                         <option value="perdu"  >Perdu</option>
                         <option value="en_panne"   >En panne</option>

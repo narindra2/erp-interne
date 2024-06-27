@@ -90,6 +90,7 @@
                     <span class="text-gray-700 pt-1 fw-semibold fs-6">Etat du matériel</span>
                     <select id="etat" name="etat" class="form-select form-select-sm form-select-solid" data-placeholder="Etat"  data-control="select2" data-hide-search="true" data-dropdown-parent="#ajax-modal">
                         <option value="fonctionnel" @if($item->etat == 'fonctionnel') selected @endif>Fonctionnel</option>
+                        {{-- <option value="en_stock" @if($item->etat == 'en_stock') selected @endif >En stock</option> --}}
                         <option value="detruit" @if($item->etat == 'detruit') selected @endif >Détruit</option>
                         <option value="perdu"  @if($item->etat == 'perdu') selected @endif>Perdu</option>
                         <option value="en_panne" @if($item->etat == 'en_panne') selected @endif  >En panne</option>

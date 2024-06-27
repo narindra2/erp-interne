@@ -59,9 +59,7 @@ class StockController extends Controller
     public function _make_row_inventory(Item $item) {
         $row["DT_RowId"] = row_id("invetory", $item->id);
         $row["qrcode"]  = "";
-        // if ($item->qrCode) {
-            $row["qrcode"]  =   view("stock.article.article-qrcode-column",["item" => $item])->render();
-        // }
+        $row["qrcode"]  =   view("stock.article.article-qrcode-column",["item" => $item])->render();
         $row["code"] =  modal_anchor(url("/stock/inventory/modal-form"), "<span class='text-info fs-4'>{$item->code_detail}</span>", ["title" => "Edition du " . $item->code_detail , "data-post-item_id" => $item->id]); ;
         $row["name"] = "<span class='text-dark fs-4 fw-bold'>{$item->article->name}</span>" ;
         $row["propriety"] = $item->propriety ? "<span class='text-gray-700 fw-semibold d-block fs-7'>{$item->propriety}</span>"  :"-";
@@ -71,7 +69,6 @@ class StockController extends Controller
         if ($item->purchase_id) {
             $num =  $item->purchase->getNumPurchase();
             $row["purchase"] = modal_anchor(url('/purchases/demande-form'), "$num <i class='fas fa-link'></i> ", ['title' => "Détail de la demande  d'achat : $num ", 'class' => 'btn btn-link btn-color-info', "data-modal-lg" => true, "data-post-purchase_id" => $item->purchase_id]);
-         
         }
         /*** Relationship  in num_invoice */
         if ($item->num_invoice) {
@@ -125,7 +122,9 @@ class StockController extends Controller
         $data["code"] = Item::generateCodeItemForNew($request->item_type_id);
         $data["date"] = convert_date_to_database_date($request->date);
         $data["num_invoice_id"] = $request->num_invoice_id == "0" ? null  : $request->num_invoice_id;
-        $data["etat"] = "fonctionnel";
+        $article = ItemType::find($request->item_type_id);
+        // $data["etat"] =  $article->sub_category == ItemType::CONSOMABLE ? "en_stock"  : "fonctionnel";
+        $data["etat"] =  "fonctionnel";
         $data["created_from"] = "purchase_form"; /** From migration  form in purchase request*/
         $item =  Item::updateOrCreate( ["id" => $request->item_id ], $data);
         return ['success' => true, 'message' => "Sauvegarder avec succès" , "item_id" => $item->id ];

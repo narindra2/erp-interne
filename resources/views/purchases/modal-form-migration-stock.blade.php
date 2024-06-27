@@ -8,13 +8,20 @@
         <table class="table table-row-bordered">
             <thead>
                 <tr class="fw-bold  text-white  bg-info text-center w-100px">
-                    <th>{{ $detail->itemType->name }} {{ $detail->quantity }} unité(s) </th>
-                    <th>Date d'aquisation</th>
-                    <th>Propriété</th>
-                    <th>Prix HT</th>
-                    <th>Prix HTT</th>
-                    <th>N° Facture</th>
-                    <th></th>
+                    <th>{{ $detail->article->name }} {{ $detail->quantity }} unité(s) </th>
+                    @if ($detail->article->sub_category === "immobilisation")
+                        <th>Date d'aquisation</th>
+                        <th>Propriété</th>
+                        <th>Prix HT</th>
+                        <th>Prix HTT</th>
+                        <th>N° Facture</th>
+                        <th></th>
+                    @else  
+                     @php
+                         continue; // if article->sub_category is not immobilisation show only the quantity an to continue the other detail
+                     @endphp
+                    @endif
+                    
                 </tr>
             </thead>
             <tbody>
@@ -29,7 +36,7 @@
                         <input type="hidden"  name="purchase_id"  value="{{ $item_in_stock->purchase_id }}">
                         <input type="hidden"  name="item_id"  class="item_id" value="{{ $item_in_stock->id }}">
                         <td>
-                            <input type="text" class="form-control form-control  form-control-sm"  disabled value="{{ $detail->itemType->name }}">
+                            <input type="text" class="form-control form-control  form-control-sm"  disabled value="{{ $detail->article->name }}">
                         </td>
                         <td>
                             <input type="text" class="form-control form-control  form-control-sm date-to-stock" name="date" placeholder="Date d'aquisation" value="{{ $item_in_stock->date ? \Carbon\Carbon::parse($item_in_stock->date)->format("d/m/Y")   :  now()->format("d/m/Y") }}"/>
@@ -67,7 +74,7 @@
                         <input type="hidden"  name="purchase_id"  value="{{ $detail->purchase_id }}">
                         <input type="hidden"  name="item_id"  class="item_id" value="">
                         <td>
-                            <input type="text" class="form-control form-control  form-control-sm"  disabled value="{{ $detail->itemType->name }}">
+                            <input type="text" class="form-control form-control  form-control-sm"  disabled value="{{ $detail->article->name }}">
                         </td>
                         <td>
                             <input type="text" class="form-control form-control  form-control-sm date-to-stock" name="date" placeholder="Date d'aquisation" value="{{ now()->format("d/m/Y") }}"/>

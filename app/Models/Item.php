@@ -117,8 +117,10 @@ class Item extends Model
         
         }elseif ($this->etat == "detruit") {
             return ["text" => 'Détruit' , "color" => "dark"];
+        }else if ($this->etat == "en_stock") {
+            return ["text" => "En stock" , "color" => "info"];
         }else{
-            return ["text" => 'Non definie' , "color" => "dark"];
+            return ["text" => $this->etat , "color" => "dark"];
         }
     }
     public static function createFilter($options = [])

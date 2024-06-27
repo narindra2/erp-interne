@@ -23,7 +23,7 @@ class PurchaseDetail extends Model
         return $this->belongsTo(UnitItem::class, 'unit_item_id');
     }
 
-    public function itemType() {
+    public function article() {
         return $this->belongsTo(ItemType::class, "item_type_id");
     }
 

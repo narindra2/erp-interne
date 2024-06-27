@@ -28,7 +28,7 @@ class PurchaseController extends Controller
     {
         $data = [];
         $auth = Auth::user();
-        $purchases = Purchase::with(['author', 'files', "details.itemType" , "itemsInStock"])->getDetails($request->all())->get();
+        $purchases = Purchase::with(['author', 'files', "details.article" , "itemsInStock"])->getDetails($request->all())->get();
         foreach ($purchases as  $purchase) {
             if ($purchase->tagged_users) {
                 /** If auth is not admin and not the specifique tagged don't add it */
@@ -45,7 +45,7 @@ class PurchaseController extends Controller
     {
         $num_purchase = $purchase->getNumPurchase();
         $detail = modal_anchor(url('/purchases/demande-form'), 'Détail <i class="fas fa-external-link-alt mb-1"></i> ', ['title' => "Détail de la demande  d'achat : $num_purchase", 'class' => 'btn btn-link btn-color-info', "data-modal-lg" => true, "data-post-purchase_id" => $purchase->id]);
-        $itemsName = $purchase->details->pluck("itemType")->implode("name", ", ");
+        $itemsName = $purchase->details->pluck("article")->implode("name", ", ");
         $sortItemsName = str_limite($itemsName, 15);
         $items = modal_anchor(url('/purchases/demande-form'), $sortItemsName, ['title' => "Détail de la demande d'achat : $num_purchase ", 'class' => 'btn btn-link btn-color-dark', "data-modal-lg" => true, "data-post-purchase_id" => $purchase->id]);
         $statusInfo = Purchase::getPurchaseStatusInfo($purchase->status);
@@ -56,7 +56,12 @@ class PurchaseController extends Controller
         $progressStock = '';
         if ($purchase->status == Purchase::PURCHASED_PURCHASE) {
             $stockAction = modal_anchor(url('/purchases/to-stcok-modal-form'), 'Stock <i class="fas fa-dolly-flatbed mb-1"></i> ', ['title' => "Mise en stock de la demande d'achat : $num_purchase", 'class' => 'btn btn-link btn-color-dark', "data-modal-lg" => true, "data-post-purchase_id" => $purchase->id]);
-            $real_quantity = $purchase->details->sum("quantity");
+            $real_quantity = 0;
+            foreach ($purchase->details as $one_detail ) {
+                if ($one_detail->article->sub_category == ItemType::IMMOBILISATION) {
+                    $real_quantity += $one_detail->quantity;
+                }
+            }
             $item_already_in_stock = $purchase->itemsInStock->count();
             $rest_to_migrate_in_stock = $real_quantity - $item_already_in_stock;
             
@@ -183,7 +188,7 @@ class PurchaseController extends Controller
     }
     public function migrationToStockModal(Request $request)
     {
-        $purchase_model = Purchase::with(["details.itemType", "numInvoiceLines" ,"itemsInStock"])->find($request->purchase_id);
+        $purchase_model = Purchase::with(["details.article", "numInvoiceLines" ,"itemsInStock"])->find($request->purchase_id);
         return view("purchases.modal-form-migration-stock", ["purchase_model" => $purchase_model]);
     }
 }
