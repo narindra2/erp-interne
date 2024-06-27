@@ -58,10 +58,7 @@ class StockController extends Controller
     }
     public function _make_row_inventory(Item $item) {
         $row["DT_RowId"] = row_id("invetory", $item->id);
-        $row["qrcode"] = "";
-        if (1) {
-            $row["qrcode"]  =   view("stock.article.article-qrcode",["item" => $item])->render();
-        }
+        $row["qrcode"]  =   view("stock.article.article-qrcode",["item" => $item])->render();
         $row["code"] =  modal_anchor(url("/stock/inventory/modal-form"), "<span class='text-info fs-4'>{$item->code_detail}</span>", ["title" => "Edition du " . $item->code_detail , "data-post-item_id" => $item->id]); ;
         $row["name"] = "<span class='text-dark fs-4 fw-bold'>{$item->article->name}</span>" ;
         $row["propriety"] = $item->propriety ? "<span class='text-gray-700 fw-semibold d-block fs-7'>{$item->propriety}</span>"  :"-";
@@ -89,7 +86,7 @@ class StockController extends Controller
         $row["etat"] = "<span class='badge badge-$etat_class '> $etat_text </span>" ;
         $row["date"] = $item->date->format("d-M-Y");
         $row["prix_ht"] = $item->price_ht ? "<span class='badge badge-light-dark '>$item->price_ht Ar</span>"  :  "-" ;
-        $row["prix_htt"] = $item->price_htt ? "<span class='badge badge-light-dark '>$item->price_htt Ar</span>"  :  "-" ;
+        // $row["prix_htt"] = $item->price_htt ? "<span class='badge badge-light-dark '>$item->price_htt Ar</span>"  :  "-" ;
         $observation_sort  = str_limite($item->observation,20);
         $row["observation"] = !$item->observation  ? "-"  : "<span class='to-link' data-bs-toggle='tooltip'  data-bs-placement='top' title='{$item->observation}' > $observation_sort </span>";
         $row["detail"] =   modal_anchor(url("/stock/inventory/modal-form"), '<i class="fas fa-pen fs-4 me-3"></i>', ["title" => "Edition du " . $item->code_detail , "data-post-item_id" => $item->id]);

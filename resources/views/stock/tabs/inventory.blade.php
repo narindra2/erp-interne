@@ -47,7 +47,7 @@
                 { data: "date",title: 'Date d\'aquisation'},
                 { data: "num_invoice",title: 'N° facture'},
                 { data: "prix_ht",title: 'Montant HT'},
-                { data: "prix_htt",title: 'Montant HTT'},
+                // { data: "prix_htt",title: 'Montant HTT'},
                 { data: "etat",title: 'Etat'},
                 { data: "observation",title: 'observation'},
                 { data: "detail",title: ''},
