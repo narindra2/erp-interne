@@ -46,11 +46,12 @@ class Item extends Model
             $this->load("article.category");
         }
         $data["article"] = $this->article->name;
+        $data["code"] = $this->codeDetail;
         $data["date_acquisition"] = Carbon::parse($this->date)->format("d/m/Y");
         if ($this->article->code) {
             $data["code_article"] = $this->article->code;
         }
-        if ($this->article->category) {
+        if (isset($this->article->category)) {
             $data["categorie"] = $this->article->category->name;
         }
         $data["propriety"] = $this->propriety;
@@ -64,7 +65,7 @@ class Item extends Model
         }
         $code_article = $this->article ? $this->article->code : "non-defiie";
         $code_category = $this->article ? $this->article->category->code : "non-defiie";
-        $code_item = $this->code ?? "code-item";
+        $code_item = $this->code ?  sprintf("%04d", $this->code) : "code-item"; // make alwayse  4 digit the code ex : code = 9 => 0009
         $date_item = Carbon::parse($this->date)->format("dmY");
         return $code_article.$separator.$code_item.$separator.$date_item.$separator.$code_category;
     }
