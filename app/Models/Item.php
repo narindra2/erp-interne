@@ -30,6 +30,7 @@ class Item extends Model
     ];
     protected $casts = [
         'date'  => 'date:d/m/Y',
+        'code'  => 'integer',
     ];
     protected $appends = [
         'codeDetail',
@@ -41,6 +42,9 @@ class Item extends Model
         return $this->get_code_detail_item();
     }
     public function getQrCodeAttribute() {
+        if ($this->article->sub_category != ItemType::IMMOBILISATION) {
+          return null;
+        }
         $data = collect();
         if (!$this->article) {
             $this->load("article.category");
@@ -60,14 +64,14 @@ class Item extends Model
         $data[] = $this->codeDetail;
         $data[] = $this->article->name;
         $data[] = Carbon::parse($this->date)->format("d/m/Y");
-        if ($this->article->code) {
-            $data[] = $this->article->code;
-        }
+        // if ($this->article->code) {
+        //     $data[] = $this->article->code;
+        // }
         if (isset($this->article->category)) {
             $data[] = $this->article->category->name;
         }
         $data[] = $this->propriety;
-        return QrCode::size(130)->color(82, 27, 195)->generate(($data)->implode("|"));
+        return QrCode::size(130)->color(82, 27, 195)->generate(($data)->implode(", "));
     }
     /** Identité + order chronologique +date d'aquisation + nature */
     public function get_code_detail_item() {
@@ -75,9 +79,9 @@ class Item extends Model
         if (!$this->article) {
             $this->load("article.category");
         }
-        $code_article = $this->article ? $this->article->code : "non-defiie";
-        $code_category = $this->article ? $this->article->category->code : "non-defiie";
-        $code_item = $this->code ?  sprintf("%04d", $this->code) : "code-item"; // make alwayse  4 digit the code ex : code = 9 => 0009
+        $code_article =  $this->article->code ? $this->article->code : "-";
+        $code_category = ($this->article && isset($this->article->category) ) ? $this->article->category->code : "-";
+        $code_item = $this->code ?  sprintf("%04d", $this->code) : "-"; // make alwayse  4 digit the code ex : code = 9 => 0009
         $date_item = Carbon::parse($this->date)->format("dmY");
         return $code_article.$separator.$code_item.$separator.$date_item.$separator.$code_category;
     }

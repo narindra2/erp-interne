@@ -102,13 +102,13 @@
             <div class="col-md-5">
                 <div class="card-title d-flex flex-column">   
                     <span class="text-gray-700 pt-1 fw-semibold fs-6">Propriété : </span>
-                    <textarea id="propriety" name="propriety" class="form-control form-control form-control-sm form-control-solid" rows="3" data-kt-autosize="true"  placeholder="Ex:Marque, couleur , ..." > {{ $item->propriety }} </textarea>
+                    <textarea id="propriety" name="propriety" class="form-control form-control form-control-sm form-control-solid" rows="5" data-kt-autosize="true"  placeholder="Ex:Marque, couleur , ..." > {{ $item->propriety }} </textarea>
                 </div>
             </div>
             <div class="col-md-5">
                 <div class="card-title d-flex flex-column">   
                     <span class="text-gray-700 pt-1 fw-semibold fs-6">Observation : </span>
-                    <textarea id="observation" name="observation" class="form-control form-control form-control-sm form-control-solid" rows="3" data-kt-autosize="true"  placeholder="Obsevration" > {{ $item->observation }} </textarea>
+                    <textarea id="observation" name="observation" class="form-control form-control form-control-sm form-control-solid" rows="5" data-kt-autosize="true"  placeholder="Obsevration" > {{ $item->observation }} </textarea>
                 </div>
             </div>
             <div class="col-md-2">
