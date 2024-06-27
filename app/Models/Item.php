@@ -41,21 +41,33 @@ class Item extends Model
         return $this->get_code_detail_item();
     }
     public function getQrCodeAttribute() {
-        $data = [];
+        $data = collect();
         if (!$this->article) {
             $this->load("article.category");
         }
-        $data["article"] = $this->article->name;
-        $data["code"] = $this->codeDetail;
-        $data["date_acquisition"] = Carbon::parse($this->date)->format("d/m/Y");
+        // $data["article"] = $this->article->name;
+        // $data["code"] = $this->codeDetail;
+        // $data["date_acquisition"] = Carbon::parse($this->date)->format("d/m/Y");
+        // if ($this->article->code) {
+        //     $data["code_article"] = $this->article->code;
+        // }
+        // if (isset($this->article->category)) {
+        //     $data["categorie"] = $this->article->category->name;
+        // }
+        if (!$this->article) {
+            $this->load("article.category");
+        }
+        $data[] = $this->codeDetail;
+        $data[] = $this->article->name;
+        $data[] = Carbon::parse($this->date)->format("d/m/Y");
         if ($this->article->code) {
-            $data["code_article"] = $this->article->code;
+            $data[] = $this->article->code;
         }
         if (isset($this->article->category)) {
-            $data["categorie"] = $this->article->category->name;
+            $data[] = $this->article->category->name;
         }
-        $data["propriety"] = $this->propriety;
-        return QrCode::size(130)->encoding("UTF-8")->color(82, 27, 195)->generate(json_encode( $data));
+        $data[] = $this->propriety;
+        return QrCode::size(130)->color(82, 27, 195)->generate(($data)->implode("|"));
     }
     /** Identité + order chronologique +date d'aquisation + nature */
     public function get_code_detail_item() {
