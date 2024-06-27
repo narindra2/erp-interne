@@ -54,9 +54,6 @@ class Purchase extends Model
     public function itemsInStock() {
         return $this->hasMany(Item::class, "purchase_id");
     }
-    // public function dateHTML() {
-    //     return $this->purchase_date->translatedFormat('d M Y');
-    // }
     public static function purchaseStatusList() {
        return [
         ["value" => null,"text" => "Statut" ],

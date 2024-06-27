@@ -36,7 +36,7 @@
                         <input type="hidden"  name="purchase_id"  value="{{ $item_in_stock->purchase_id }}">
                         <input type="hidden"  name="item_id"  class="item_id" value="{{ $item_in_stock->id }}">
                         <td>
-                            <input type="text" class="form-control form-control  form-control-sm"  disabled value="{{ $detail->article->name }}">
+                            <input type="text" class="form-control form-control  form-control-sm" title="{{ $item_in_stock->codeDetail }}"  disabled value="{{ $item_in_stock->codeDetail }}">
                         </td>
                         <td>
                             <input type="text" class="form-control form-control  form-control-sm date-to-stock" name="date" placeholder="Date d'aquisation" value="{{ $item_in_stock->date ? \Carbon\Carbon::parse($item_in_stock->date)->format("d/m/Y")   :  now()->format("d/m/Y") }}"/>
