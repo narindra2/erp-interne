@@ -172,7 +172,6 @@
                             toastr.error(result.message);
                             releaseBtnSave(btnSave ,false);
                         }
-                       
                     },
                     error: function(xhr, status, error) {
                         releaseBtnSave(btnSave , false)
