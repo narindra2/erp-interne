@@ -2,7 +2,17 @@
     <div class="card-body">
         @csrf
         <input type="hidden" name="item_id" value="{{ $item->id }}" >
-        <div class="separator border-info mt-3 mb-3"></div>
+       {{-- <div class="row">
+            <div class="col-md-4">
+                
+            </div>
+            <div class="col-md-4">
+                {{ $item->qrcode }}
+            </div>
+            <div class="col-md-4">
+               
+            </div>  
+       </div> --}}
        <div class="row">
             <div class="col-md-4">
                 <div class="card-title d-flex flex-column">   
@@ -89,17 +99,20 @@
         </div>
         <div class="separator border-info mt-3 mb-3"></div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="card-title d-flex flex-column">   
                     <span class="text-gray-700 pt-1 fw-semibold fs-6">Propriété : </span>
                     <textarea id="propriety" name="propriety" class="form-control form-control form-control-sm form-control-solid" rows="3" data-kt-autosize="true"  placeholder="Ex:Marque, couleur , ..." > {{ $item->propriety }} </textarea>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="card-title d-flex flex-column">   
                     <span class="text-gray-700 pt-1 fw-semibold fs-6">Observation : </span>
                     <textarea id="observation" name="observation" class="form-control form-control form-control-sm form-control-solid" rows="3" data-kt-autosize="true"  placeholder="Obsevration" > {{ $item->observation }} </textarea>
                 </div>
+            </div>
+            <div class="col-md-2">
+                {{ $item->qrcode }}
             </div>
         </div>
     </div>

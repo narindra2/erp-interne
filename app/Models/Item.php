@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use Exception;
 use Carbon\Carbon;
 use App\Models\ItemCategory;
-use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Item extends Model
@@ -32,11 +33,15 @@ class Item extends Model
     ];
     protected $appends = [
         'codeDetail',
+        'qrCode',
     ];
     const SEPARATOR_CODE = "/";
 
     public function getCodeDetailAttribute() {
         return $this->get_code_detail_item();
+    }
+    public function getQrCodeAttribute() {
+        return QrCode::size(130) ->color(82, 27, 195)->generate($this->codeDetail);;
     }
     /** Identité + order chronologique +date d'aquisation + nature */
     public function get_code_detail_item() {

@@ -38,6 +38,7 @@
             paging: false,
             dom:"itpr",
             columns: [
+                { data: "qrcode", orderable:false},
                 { data: "code",title: 'Code' , orderable:false},
                 { data: "name",title: 'Article'},
                 { data: "propriety",title: 'Propriété'},

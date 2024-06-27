@@ -244,9 +244,9 @@
                         <input class="form-control form-control-sm"  name="file_invoices[]" type="file">
                     </div> --}}
                     <div class="col-md-4 mt-2 ">
-                        <span class="to-link  text-info" title="Enreigistrer" onclick="saveNumInvoice('' ,  '', this)">Enregistrer</span>
+                        <button class="to-link  highlight-copy btn" title="Enreigistrer" onclick="saveNumInvoice('' ,  '', this)">Enregistrer</button>
                             &nbsp; &nbsp;
-                         <span class="to-link text-danger" title="Supprimer" onclick=" deleteLineNumInvoice(this ,'') ">Supprimer</span>
+                         <button class="to-link highlight-copy btn text-danger" title="Supprimer" onclick=" deleteLineNumInvoice(this ,'') ">Supprimer</button>
                     </div>   
 
                 </div>
@@ -257,9 +257,9 @@
                                 <input id="num-invoice-{{ $n->id }}"   autocomplete="off" type="text" value="{{  $n->num_invoice }}" placeholder="Numéro de facture n° ..." class="form-control form-control form-control-solid num-invoice-input"  data-rule-required="fales" />
                             </div>   
                             <div class="col-md-4 mt-2 ">
-                                <span class="to-link text-info" title="Enreigistrer" onclick=" saveNumInvoice( '{{ $n->id }}' , '{{ $n->num_invoice }}',this) ">Enregistrer</span>
+                                <button class="highlight-copy btn" title="Enreigistrer" onclick=" saveNumInvoice( '{{ $n->id }}' , '{{ $n->num_invoice }}',this) ">Enregistrer</button>
                                     &nbsp; &nbsp;
-                                <span class="to-link text-danger" title="Supprimer" onclick="deleteLineNumInvoice(this ,'{{ $n->id }}')">Supprimer</span>
+                                <button class="to-link highlight-copy btn text-danger" title="Supprimer" onclick="deleteLineNumInvoice(this ,'{{ $n->id }}')">Supprimer</button>
                             </div>   
 
                         </div>
@@ -487,6 +487,8 @@
             $("#totalPrice").text(convertTo2Decimal(totalPrice));
         }
         saveNumInvoice = function  (id = "" , oldNumInvoice ='' , element  ){
+            $(element).attr("disabled",true)
+            $(element).text("En cours ...")
             $.ajax({
                     url: url("/purchase/save-num-invoice"),
                     type: 'POST',
@@ -498,10 +500,14 @@
                         "purchase_id" :  $("#purchase_id").val()
                     },
                     success: function(result) {
+                        $(element).attr("disabled",false)
+                        $(element).text("Enregistrer")
                         toastr.success(result.message);
                     },
                     error: function(xhr, status, error) {
                         var err = ("(" + xhr.responseText + ")");
+                        $(element).attr("disabled",false)
+                        $(element).text("Enregistrer")
                         toastr.error('Opps !  un erreur se produit. Erreur : '  + err);
                     }
                 });

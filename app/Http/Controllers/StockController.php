@@ -9,8 +9,8 @@ use App\Models\Purchase;
 use App\Models\ItemCategory;
 use Illuminate\Http\Request;
 use App\Http\Requests\ItemTypeRequest;
-use App\Http\Requests\CreateItemCategoryResquet;
 use App\Models\PurchaseNumInvoiceLine;
+use App\Http\Requests\CreateItemCategoryResquet;
 
 class StockController extends Controller
 {
@@ -58,6 +58,10 @@ class StockController extends Controller
     }
     public function _make_row_inventory(Item $item) {
         $row["DT_RowId"] = row_id("invetory", $item->id);
+        $row["qrcode"] = "";
+        if (1) {
+            $row["qrcode"]  =   view("stock.article.article-qrcode",["item" => $item])->render();
+        }
         $row["code"] =  modal_anchor(url("/stock/inventory/modal-form"), "<span class='text-info fs-4'>{$item->code_detail}</span>", ["title" => "Edition du " . $item->code_detail , "data-post-item_id" => $item->id]); ;
         $row["name"] = "<span class='text-dark fs-4 fw-bold'>{$item->article->name}</span>" ;
         $row["propriety"] = $item->propriety ? "<span class='text-gray-700 fw-semibold d-block fs-7'>{$item->propriety}</span>"  :"-";
@@ -93,10 +97,11 @@ class StockController extends Controller
     }
     public function inventor_modal_form(Request $request) {
         $item =  Item::with(["article.category"])->find($request->item_id);
+        
         $purchases = Purchase::with(['author' ])->whereDeleted(0)->get();
         $num_invoices = PurchaseNumInvoiceLine::whereDeleted(0)->get();
         if ($request->item_id) {
-            return view('stock.article.article-in-stock-modal-form', ["item" =>$item , "purchases"  =>$purchases , "num_invoices" => $num_invoices]);
+            return view('stock.article.article-in-stock-modal-form', ["item" =>$item , "purchases"  =>$purchases , "num_invoices" => $num_invoices ]);
         }
     }
     
@@ -130,6 +135,7 @@ class StockController extends Controller
         $articles = ItemType::whereDeleted(0)->get();
         $purchases = Purchase::with(['author'])->whereDeleted(0)->get();
         $num_invoices = PurchaseNumInvoiceLine::whereDeleted(0)->get();
+        
         return view('stock.article.create-article-to-stock-modal-form', ["articles" =>$articles , "purchases"  =>$purchases , "num_invoices" => $num_invoices]);
     }
     public function save_new_article_to_stock(Request $request)

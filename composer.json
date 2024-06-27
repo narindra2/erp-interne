@@ -24,6 +24,7 @@
         "predis/predis": "^2.0",
         "pusher/pusher-php-server": "^7.0",
         "renatomarinho/laravel-page-speed": "^2.0",
+        "simplesoftwareio/simple-qrcode": "~4",
         "spatie/laravel-activitylog": "^3.17",
         "spatie/laravel-permission": "^4.0",
         "wrapi/slack": "*",
