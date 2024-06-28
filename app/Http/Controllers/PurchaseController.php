@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App;
 use Auth;
 use Exception;
 use App\Models\Item;
@@ -14,6 +15,7 @@ use App\Models\PurchaseFile;
 use Illuminate\Http\Request;
 use App\Models\PurchaseDetail;
 use App\Http\Requests\PurchaseRequest;
+use App\Models\Menu;
 use App\Models\PurchaseNumInvoiceLine;
 
 
@@ -21,7 +23,12 @@ class PurchaseController extends Controller
 {
     public function index()
     {
-        return view('purchases.index', ["basic_filter" => Purchase::createFilter(), "can_create_new_purchase" => Auth::user()->isRhOrAdmin()]);
+        $auth_user = Auth::user();
+        if (!Menu::_can_access_purchase($auth_user)) {
+            abort(401);
+        }
+        $can_create_new_purchase =  $auth_user->isCompta() || $auth_user->isRhOrAdmin();
+        return view('purchases.index', ["basic_filter" => Purchase::createFilter(), "can_create_new_purchase" => $can_create_new_purchase]);
     }
 
     public function getPurchaseList(Request $request)
@@ -54,7 +61,9 @@ class PurchaseController extends Controller
         $statusColor = get_array_value($statusInfo, "color");
         $stockAction = '<span class="to-link" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="En attente d\'achat fait" ><i class="fas fa-info-circle"></i></span>';
         $progressStock = '';
-        if ($purchase->status == Purchase::PURCHASED_PURCHASE) {
+        if ($purchase->status == Purchase::REFUSED_PURCHASE || !Menu::_can_access_stock(Auth::user()) ) {
+            $stockAction = '<i class="fas fa-lock"></i>';
+        }elseif($purchase->status == Purchase::PURCHASED_PURCHASE) {
             $stockAction = modal_anchor(url('/purchases/to-stcok-modal-form'), 'Stock <i class="fas fa-dolly-flatbed mb-1"></i> ', ['title' => "Mise en stock de la demande d'achat : $num_purchase", 'class' => 'btn btn-link btn-color-dark', "data-modal-lg" => true, "data-post-purchase_id" => $purchase->id]);
             $real_quantity = 0;
             foreach ($purchase->details as $one_detail ) {
@@ -78,10 +87,6 @@ class PurchaseController extends Controller
                 $progressStock =  '<div class="progress h-6px w-100 me-2 bg-dark">'. $progressbar . '</div>';
             }
         }
-        if ($purchase->status == Purchase::REFUSED_PURCHASE) {
-            $stockAction = '<i class="fas fa-lock"></i>';
-        }
-
         return [
             "DT_RowId" => row_id("purchases", $purchase->id),
             'num' =>$num_purchase ,
@@ -142,6 +147,9 @@ class PurchaseController extends Controller
 
     public function save(PurchaseRequest $request)
     {
+        if (!Menu::_can_access_purchase(Auth::user())) {
+            return ['success' => false, 'message' => "Vous n 'avez pas l'accès"];
+        }
         try {
             if ($request->purchase_id &&  $request->is_update == "true") {
                 PurchaseDetail::where("purchase_id", $request->purchase_id)->delete();
@@ -157,6 +165,9 @@ class PurchaseController extends Controller
     }
     public function delete(Request $request)
     {
+        if (!Menu::_can_access_purchase(Auth::user())) {
+            return ['success' => false, 'message' => "Vous n 'avez pas l'accès"];
+        }
         $purchase = Purchase::find($request->purchase_id);
         if ($request->input("cancel")) {
             $purchase->update(["deleted" => 0]);
@@ -188,6 +199,7 @@ class PurchaseController extends Controller
     }
     public function migrationToStockModal(Request $request)
     {
+        
         $purchase_model = Purchase::with(["details.article", "numInvoiceLines" ,"itemsInStock"])->find($request->purchase_id);
         return view("purchases.modal-form-migration-stock", ["purchase_model" => $purchase_model]);
     }

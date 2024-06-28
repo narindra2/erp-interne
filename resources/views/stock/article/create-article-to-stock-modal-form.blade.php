@@ -37,11 +37,11 @@
                 <input id="date" name="date" data-rule-required="true" data-msg-required="@lang('lang.required_input')" class="form-control form-control-sm form-control-solid datepicker" autocomplete="off"  placeholder="DD/MM/YYYY" data-rule-required="true" data-msg-required="@lang('lang.required_input')" value="{{ now()->format("d/m/Y")   }}"/>
             </div>
             <div class="col-md-4">
-                <span class="text-gray-700 pt-1 fw-semibold fs-6">Lié au demande d'achat de  </span>
+                <span class="text-gray-700 pt-1 fw-semibold fs-6">Venant du demande d'achat   </span>
                 <select id="purchase_id" name="purchase_id" class="form-select form-select-sm form-select-solid" data-placeholder="Selectionner ..."  data-control="select2" data-hide-search="false" data-dropdown-parent="#ajax-modal">
                     <option value="0" selected >Aucun</option>
                     @foreach ($purchases as $purchase)
-                        <option value="{{ $purchase->id }}" >{{ $purchase->getNumPurchase() . " " .  "({$purchase->author->sortname})" }}</option>
+                        <option value="{{ $purchase->id }}" >N° {{ $purchase->getNumPurchase() . " " .  "(demandé par {$purchase->author->sortname})" }}</option>
                     @endforeach      
                 </select>
             </div>

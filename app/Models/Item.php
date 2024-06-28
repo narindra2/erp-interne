@@ -49,24 +49,12 @@ class Item extends Model
         if (!$this->article) {
             $this->load("article.category");
         }
-        // $data["article"] = $this->article->name;
-        // $data["code"] = $this->codeDetail;
-        // $data["date_acquisition"] = Carbon::parse($this->date)->format("d/m/Y");
-        // if ($this->article->code) {
-        //     $data["code_article"] = $this->article->code;
-        // }
-        // if (isset($this->article->category)) {
-        //     $data["categorie"] = $this->article->category->name;
-        // }
         if (!$this->article) {
             $this->load("article.category");
         }
         $data[] = $this->codeDetail;
         $data[] = $this->article->name;
         $data[] = Carbon::parse($this->date)->format("d/m/Y");
-        // if ($this->article->code) {
-        //     $data[] = $this->article->code;
-        // }
         if (isset($this->article->category)) {
             $data[] = $this->article->category->name;
         }

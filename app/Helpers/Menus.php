@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Menu;
-use App\Models\Purchase;
 
 /** Make menu user's localisation in views\layout\demo1\aside\_menu.blade.php */
 if (!function_exists('get_menus_list')) {
@@ -41,14 +40,10 @@ if (!function_exists('get_menus_list')) {
             $menu_vertical[] = ["title" => "Tâches", 'path'  => '/tâche/list',   'icon' => '<i class="far fa-calendar-check fs-3"></i>'];
             $menu_vertical[] = ["title" => "SDF", 'path'  => '/salle-de-reunion',  'icon'  => '<i class="fas fa-user-clock"></i>'];
             $menu_vertical[] = ["title" => "Suivis & prod", 'path'  => '/suivi/v2/projet',   'icon' => '<i class="fas fa-tasks fs-3"></i>'];
-            // $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Suivi</span>'];
-
-
-            $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Gestion de stock</span>'];
-            // $menu_vertical[] = ["title" => "Stock", 'path'  => 'item-movements',  'icon'  => '<i class="fas fa-project-diagram fs-3"></i> '];
+        
+            $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Achat & Stock</span>'];
             $menu_vertical[] = ["title" => "Achats", 'path'  => 'purchases',  'icon'  => ' <i class="fas fa-cart-arrow-down fs-3"></i> '];
             $menu_vertical[] = ["title" => "Stock", 'path'  => 'stock/gerer',  'icon'  => ' <i class="fas fa-project-diagram fs-3"></i> '];
-            // $menu_vertical[] = ["title" => "Article", 'path'  => 'items',  'icon'  => ' <i class="fas fa-list-ol  fs-3 "></i> '];
             // $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Debugage</span>'];
             // $menu_vertical[] = ["title" => "Debug/Outils", 'path'  => '/outils-debug',  'icon'  => '<i class="fas fa-wrench"></i>'];
         } elseif (!$auth_user->isAdmin() || !$auth_user->isHR()) {
@@ -70,23 +65,26 @@ if (!function_exists('get_menus_list')) {
             }
             if ($auth_user->isTech()) {
                 $menu_vertical[] = ["title" => "Besoin ticket", 'path'  => '/needToBuy',   'icon' => '<i class="fas fa-clipboard-list fs-3"></i>'];
-                $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Gestion de stock</span>'];
-                $menu_vertical[] = ["title" => "Achats", 'path'  => 'purchases',  'icon'  => ' <i class="fas fa-clipboard-list fs-3"></i> '];
-                $menu_vertical[] = ["title" => "Stock", 'path'  => 'stock/gerer',  'icon'  => ' <i class="fas fa-project-diagram fs-3"></i> '];
-                // $menu_vertical[] = ["title" => "Article", 'path'  => 'items',  'icon'  => ' <i class="fas fa-clipboard-list fs-3"></i> '];
+                $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Achat & Stock</span>'];
             }
+            
             if (in_array($auth_user->registration_number,  Menu::$USER_ALLOWED_PART_ACCESS["debug_tools"])) {
                 $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Debugage</span>'];
                 $menu_vertical[] = ["title" => "Debug/Outils", 'path'  => '/outils-debug',  'icon'  => '<i class="fas fa-wrench"></i>'];
             }
-            if (Purchase::whereRaw('FIND_IN_SET("' . $auth_user->id . '", tagged_users)')->whereDeleted(0)->first()) {
-                $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Achat</span>'];
-                $menu_vertical[] = ["title" => "Achats", 'path'  => 'purchases',  'icon'  => ' <i class="fas fa-cart-arrow-down fs-3"></i> '];
+            /** Achat et gestion de stock */
+            $can_access_purchase = Menu::_can_access_purchase($auth_user);
+            $can_access_stock =  Menu::_can_access_stock($auth_user);
+            if ($can_access_purchase || $can_access_stock) {
+                $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Achat & Stock</span>'];
+                if ($can_access_purchase) {
+                    $menu_vertical[] = ["title" => "Achats", 'path'  => 'purchases',  'icon'  => ' <i class="fas fa-cart-arrow-down fs-3"></i> '];
+                }
+                if ($can_access_stock) {
+                    $menu_vertical[] = ["title" => "Stock", 'path'  => 'stock/gerer',  'icon'  => ' <i class="fas fa-project-diagram fs-3"></i> '];
+                }
             }
         }
-
-        // $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Réunion</span>'];
-
         $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Informations</span>'];
         $menu_vertical[] = ["title" => "Règlement Intérieur", 'path'  => '/informations',  'icon'  => '<i class="fas fa-ruler-vertical fs-3"></i>'];
         $menu_vertical[] = ["title" => "Fonctionnement en Interne", 'path' => '/Guides', 'icon' => '<i class="fas fa-ruler-vertical fs-3"></i>'];

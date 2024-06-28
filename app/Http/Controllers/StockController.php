@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Exception;
 use App\Models\Item;
+use App\Models\Menu;
 use App\Models\ItemType;
 use App\Models\Purchase;
 use App\Models\ItemCategory;
@@ -11,10 +12,15 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ItemTypeRequest;
 use App\Models\PurchaseNumInvoiceLine;
 use App\Http\Requests\CreateItemCategoryResquet;
+use Auth;
 
 class StockController extends Controller
 {
     public function index() {
+        $auth_user = Auth::user();
+        if (!Menu::_can_access_stock($auth_user)) {
+            abort(401);
+        }
         return view('stock.index');
     }
     /** Tabs */
@@ -127,7 +133,7 @@ class StockController extends Controller
         $data["etat"] =  "fonctionnel";
         $data["created_from"] = "purchase_form"; /** From migration  form in purchase request*/
         $item =  Item::updateOrCreate( ["id" => $request->item_id ], $data);
-        return ['success' => true, 'message' => "Sauvegarder avec succès" , "item_id" => $item->id ];
+        return ['success' => true, 'message' => "Sauvegarder avec succès" , "item" => $item ];
     }
     public function create_article_to_stock_modal_form(Request $request)
     {

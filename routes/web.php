@@ -9,6 +9,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CerfaController;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\StockController;
 use App\Http\Controllers\SuiviController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\DayOffController;
@@ -20,6 +21,7 @@ use App\Http\Controllers\SortableController;
 use App\Http\Controllers\MessagingController;
 use App\Http\Controllers\NeedToBuyController;
 use App\Http\Controllers\ToolsDebugController;
+use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\MeetingRoomController;
 use App\Http\Controllers\HourRecoveryController;
 use App\Http\Controllers\ItemMovementController;
@@ -28,14 +30,13 @@ use App\Http\Controllers\PointingTempController;
 use App\Http\Controllers\PublicHolidayController;
 use App\Http\Controllers\SlackEndpointController;
 use App\Http\Controllers\ComplementHourController;
+use App\Http\Controllers\ErpInstructionController;
 use App\Http\Controllers\Logs\AuditLogsController;
 use App\Http\Controllers\Logs\SystemLogsController;
 use App\Http\Controllers\Account\SettingsController;
 use App\Http\Controllers\ErpDocumentationController;
-use App\Http\Controllers\ErpInstructionController;
 use App\Http\Controllers\Auth\SocialiteLoginController;
 use App\Http\Controllers\Documentation\ReferencesController;
-use App\Http\Controllers\StockController;
 
 /*
 |--------------------------------------------------------------------------
@@ -368,25 +369,7 @@ Route::middleware(['auth', 'checkinweb', 'role:2,4'])->group(function () {
 
     Route::post('load/users', [UserController::class, 'load_user']);
 });
-Route::middleware(['auth', 'checkinweb', 'not_contributor'])->group(function () {
-    Route::get("/item-movements", [ItemMovementController::class, "index"]);
-    Route::get("/item-movements/assign", [ItemMovementController::class, 'getViewAssign']);
-    Route::get("/item-movements/movements/data", [ItemMovementController::class, 'getLastAssignationData']);
-    Route::post('/item-movements/modal/edit-user/{itemMovement}', [ItemMovementController::class, "modalEditUser"]);
-    Route::post('/item-movements/save-edit-user', [ItemMovementController::class, "saveUsers"]);
-    Route::post("/item-movements/item-historic/{item}", [ItemMovementController::class, "getModalHistoric"]);
-    Route::get('/item-movements/item-historic-data/{item}', [ItemMovementController::class, "getItemHistoric"]);
-    Route::post("/item-movements/new", [ItemMovementController::class, "modalNewItemMovement"]);
-    Route::post("/item-movements/new-save", [ItemMovementController::class, "saveNewMvt"]);
-
-    Route::get("/item-movements/stock", [ItemMovementController::class, "getViewStock"]);
-    Route::get("/item-movements/stock/data", [ItemMovementController::class, "getDataStock"]);
-    Route::get("/item-movements/items", [ItemMovementController::class, "getViewItem"]);
-    Route::get("/item-movements/items/data", [ItemMovementController::class, "getDataItem"]);
-    Route::post("/item-movements/items/edit-code-form/{item}", [ItemMovementController::class, "getEditCodeForm"]);
-    Route::post("/item-movements/items/save-code-form", [ItemMovementController::class, "saveNewItemCode"]);
-
-
+Route::middleware(['auth', 'checkinweb'])->group(function () {
     /** Stock */
     Route::get("/stock/gerer", [StockController::class, "index"]);
     
@@ -410,39 +393,15 @@ Route::middleware(['auth', 'checkinweb', 'not_contributor'])->group(function () 
     Route::post("/stock/article/save", [StockController::class, 'article_save']);
     Route::post("/stock/article/delete", [StockController::class, 'article_delete']);
     
-
-    Route::get('/purchases/new', [PurchaseController::class, "form"]);
+    /** Purchase */
     Route::post('/purchases/save', [PurchaseController::class, "save"]);
     Route::post('/purchases/delete', [PurchaseController::class, "delete"]);
-    Route::get("/purchases/page_list", [PurchaseController::class, "getViewList"]);
-
     Route::get("/purchases/details/{purchase}", [PurchaseController::class, "pageDetail"]);
     Route::get("/purchases/details-data/{purchase}", [PurchaseController::class, "getDetail"]);
     Route::get("/purchases/download-file/{purchaseFile}", [PurchaseController::class, 'downloadFile']);
     Route::post("/purchase/save-num-invoice", [PurchaseController::class, 'saveNumInvoiceLine']);
     Route::post("/purchase/delete-num-invoice", [PurchaseController::class, 'deleteNumInvoiceLine']);
     Route::post("/purchases/to-stcok-modal-form", [PurchaseController::class, 'migrationToStockModal']);
-   
-    
-
-    Route::get("/items", [ItemController::class, "index"]);
-    Route::get("/items/list", [ItemController::class, "geViewItemTypeList"]);
-    Route::get("/items/list/data", [ItemController::class, "getListOfTypeList"]);
-    Route::post("/items/modal-type/{itemType?}", [ItemController::class, "itemTypeForm"]);
-    Route::post("/items/save-type", [ItemController::class, "saveItemType"]);
-    Route::post("/items/itemType/delete/{itemType}", [ItemController::class, "deleteItemType"]);
-
-    Route::get("/items/categories", [ItemController::class, "getViewItemCategorie"]);
-    Route::get("/items/categories/data", [ItemController::class, "getListOfItemCategorie"]);
-    Route::post("/items/modal-category/{itemCategory?}", [ItemController::class, "itemCategoryForm"]);
-    Route::post("/items/save-category", [ItemController::class, "saveItemCategory"]);
-    Route::post("/items/itemCategory/delete/{itemCategory}", [ItemController::class, "deleteItemCategory"]);
-
-    Route::get("/items/units", [ItemController::class, "getViewItemUnit"]);
-    Route::get("/items/units/data", [ItemController::class, "getListOfItemUnit"]);
-    Route::post("/items/modal-unit/{unitItem?}", [ItemController::class, "itemUnitForm"]);
-    Route::post("/items/save-unit", [ItemController::class, "saveItemUnit"]);
-    Route::post("/items/itemUnit/delete/{unitItem}", [ItemController::class, "deleteItemUnit"]);
 });
 
 Route::get("/purchases", [PurchaseController::class, 'index']);

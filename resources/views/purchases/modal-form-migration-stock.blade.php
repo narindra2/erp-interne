@@ -36,7 +36,7 @@
                         <input type="hidden"  name="purchase_id"  value="{{ $item_in_stock->purchase_id }}">
                         <input type="hidden"  name="item_id"  class="item_id" value="{{ $item_in_stock->id }}">
                         <td>
-                            <input type="text" class="form-control form-control  form-control-sm" title="{{ $item_in_stock->codeDetail }}"  disabled value="{{ $item_in_stock->codeDetail }}">
+                            <p class="text-info mt-3 ">{{ $item_in_stock->codeDetail }}</p>
                         </td>
                         <td>
                             <input type="text" class="form-control form-control  form-control-sm date-to-stock" name="date" placeholder="Date d'aquisation" value="{{ $item_in_stock->date ? \Carbon\Carbon::parse($item_in_stock->date)->format("d/m/Y")   :  now()->format("d/m/Y") }}"/>
@@ -55,9 +55,9 @@
                             </select>
                         </td>
                         <td>
-                            <button  title="Migrer dans stock" class="btn btn-sm btn-light-success w-150px save-to-stock" > 
+                            <button  class="btn btn-sm btn-light-success w-150px save-to-stock" > 
                                 <span class="indicator-label">
-                                    Mettre  à jour
+                                    Mettre à jour
                                 </span>
                                 <span class="indicator-progress">
                                     Mise à jour  <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
@@ -66,15 +66,14 @@
                         </td>
                     </tr>
                 @endforeach
-
-
+                
                 @for ($i = 1; $i <=   $rest_to_migrate_in_stock;  $i++)
                     <tr class="text-center rows-detail-to-stock">
                         <input type="hidden"  name="item_type_id"  value="{{ $detail->item_type_id ?? null }}">
                         <input type="hidden"  name="purchase_id"  value="{{ $detail->purchase_id }}">
                         <input type="hidden"  name="item_id"  class="item_id" value="">
                         <td>
-                            <input type="text" class="form-control form-control  form-control-sm"  disabled value="{{ $detail->article->name }}">
+                            <p class="text-info mt-3 ">{{ $detail->article->name }}</p>
                         </td>
                         <td>
                             <input type="text" class="form-control form-control  form-control-sm date-to-stock" name="date" placeholder="Date d'aquisation" value="{{ now()->format("d/m/Y") }}"/>
@@ -158,7 +157,8 @@
                     data: data,
                     success: function(result) {
                         if (result.success) {
-                            btnSave.closest(".rows-detail-to-stock").find('.item_id').eq(0).val(result.item_id);
+                            btnSave.closest(".rows-detail-to-stock").find('.item_id').eq(0).val(result.item.id);
+                            btnSave.closest(".rows-detail-to-stock").find('p').eq(0).text(result.item.codeDetail);
                             releaseBtnSave(btnSave);
                             btnSave.find('span').eq(0).text("Mettre à jour");
                             toastr.clear()

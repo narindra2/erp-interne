@@ -49,21 +49,20 @@ class PurchaseRequest extends FormRequest
         array_shift($itemTypeID);
         array_shift( $unitItemID );
         $i = 1;
-        $rowValideValue = [null , 0 , false , "0" , "null" , "NULL" , "Null"];
-        $messageError = [];
-        array_map(function ($unitPrices, $quantity , $itemTypeID ,  $unitItemID) use (&$i ,  $rowValideValue) {
-            if (in_array($unitPrices  , $rowValideValue )) {
-                die(json_encode(["success" => false, "validation" => true,  "message" =>"Une valeur vide ou zéro a été envoyée dans la line article  n° $i ."]));
+        $rowInValideValue = [null , 0 , false , "0" , "null" , "NULL" , "Null"];
+        array_map(function ($unitPrices, $quantity , $itemTypeID ,  $unitItemID) use (&$i ,  $rowInValideValue) {
+            if (in_array($unitPrices  , $rowInValideValue )) {
+                die(json_encode(["success" => false, "validation" => true,  "message" =>"Vous avez oublié le prix à la line article  n° $i ."]));
             }
-            if (in_array($quantity  , $rowValideValue )) {
-                die(json_encode(["success" => false, "validation" => true,  "message" =>"Une valeur vide ou zéro a été envoyée dans la line article  n° $i ."]));
+            if (in_array($quantity  , $rowInValideValue )) {
+                die(json_encode(["success" => false, "validation" => true,  "message" =>"Vous avez envoyé zéro quantité à la line article  n° $i ."]));
             }
             
-            if (in_array($itemTypeID  , $rowValideValue )) {
-                die(json_encode(["success" => false, "validation" => true,  "message" =>"Une valeur vide ou zéro a été envoyée dans la line article  n° $i ."]));
+            if (in_array($itemTypeID  , $rowInValideValue )) {
+                die(json_encode(["success" => false, "validation" => true,  "message" =>"Vous n'avez pas selectionné l'article a acheté  à la line article  n° $i ."]));
             }
-            if (in_array($unitItemID  , $rowValideValue )) {
-                die(json_encode(["success" => false, "validation" => true,  "message" =>"Une valeur vide ou zéro a été envoyée dans la line article  n° $i ."]));
+            if (in_array($unitItemID  , $rowInValideValue )) {
+                die(json_encode(["success" => false, "validation" => true,  "message" =>"Vous n'avez pas selectionné l'unité à la line article  n° $i ."]));
             }
             $i++;
         }, $unitPrices, $quantity , $itemTypeID ,  $unitItemID);

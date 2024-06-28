@@ -103,6 +103,7 @@ class User extends Authenticatable
     public function isTech() {
         return $this->user_type_id == UserType::$_TECH;
     }
+   
     public function isCp() {
         try {
             return $this->userJob->is_cp == 1;
@@ -121,6 +122,14 @@ class User extends Authenticatable
     {
         try {
             return $this->userJob->department_id == Department::$_IT;
+        }
+        catch (Exception $e) {
+            return false;
+        }
+    }
+    public function isCompta() {
+        try {
+            return $this->userJob->department_id == Department::$_COMPTA;
         }
         catch (Exception $e) {
             return false;

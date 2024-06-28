@@ -12,6 +12,7 @@ class Department extends Model
 
     public static $_IT = "1";
     public static $_DEV = "8";
+    public static $_COMPTA = "2";
 
     public function scopeGetEmployeeByIdDepartement($query, $idDepartement)
     {

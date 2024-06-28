@@ -2,7 +2,15 @@
     <div class="card-body ">
         @csrf
         <input type="hidden" name="id" value="{{ $article->id }}">
-        
+        @if (!$article->id)
+            <div class="alert alert-danger d-flex align-items-center p-5">
+                <div class="d-flex flex-column">
+                    <h4 class="mb-1 text-danger">A lire</h4>
+                    <span>Pour éviter le doublon ,rassurez-vous que le nom de l'article que vous allez ajouter ici n'est pas encore enregistré.</span>
+                </div>
+            </div> 
+        @endif
+       
         <div class="form-group row mb-5">
             <label class="col-form-label col-4">Nom de l'article</label>
             <div class="col-6">
@@ -50,6 +58,11 @@
         </div>
     </div>
 </form>
+<style>
+    #modal-dialog{
+        min-width: 700px;
+    }
+</style>
 <script>
 $(document).ready(function() {
     KTApp.initSelect2();

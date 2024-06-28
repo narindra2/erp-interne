@@ -1,4 +1,4 @@
-<form action="{{ url('/purchases/save') }}" method="POST" id="purchases-modal-form">
+<form action="{{ url('/purchases/save') }}" class="form" method="POST" id="purchases-modal-form">
     <div class="card-body">
         @csrf
         @if ($purchase_model->id)
@@ -80,7 +80,7 @@
        <div class="col-md-12">
             <div class="card-title d-flex flex-column">   
                 <span class="text-gray-700 pt-1 fw-semibold fs-6">Note : </span>
-                <textarea id="note"  name="note" placeholder="Note concernant de la demande d 'achat ..." class="form-control form-control form-control-solid" rows="1" data-kt-autosize="true" data-rule-required="fales" >{{ $purchase_model->note }}</textarea>
+                <textarea id="note"  name="note" placeholder="Note concernant de la demande d 'achat ..." class="form-control form-control form-control-solid" rows="2" data-kt-autosize="true" data-rule-required="fales" >{{ $purchase_model->note }}</textarea>
             </div>
         </div>
        
@@ -237,7 +237,7 @@
                 <span class="mt-5 mb-5 text-gray-700 pt-1 fw-semibold fs-6">Ajouter des numéros factures :  <span title="Ajouter une ligne"  id="addLineNunInvoice"><i class="fs-3 fas fa-plus-circle text-info to-link "></i></span> </span>
                 <div class="row mb-2 row-num-invoice d-none">
                     <div class="col-md-5">
-                        <input id="num-invoice"   type="text" placeholder="Numéro de facture n° ..." autocomplete="off" class="form-control form-control form-control-solid num-invoice-input"  data-rule-required="fales" />
+                        <input id="num-invoice"   type="text" placeholder="Facture n° ..." autocomplete="off" class="form-control form-control form-control-solid num-invoice-input"  data-rule-required="fales" />
                     </div>   
                     {{-- <div class="col-md-5 mt-2 "> 
                         <div class="nice-input-file">Photo du facture</div>
@@ -254,7 +254,7 @@
                     @foreach ($purchase_model->numInvoiceLines as $n)
                         <div class="row mb-2 row-num-invoice ">
                             <div class="col-md-5">
-                                <input id="num-invoice-{{ $n->id }}"   autocomplete="off" type="text" value="{{  $n->num_invoice }}" placeholder="Numéro de facture n° ..." class="form-control form-control form-control-solid num-invoice-input"  data-rule-required="fales" />
+                                <input id="num-invoice-{{ $n->id }}"   autocomplete="off" type="text" value="{{  $n->num_invoice }}" placeholder="Facture n° ..." class="form-control form-control form-control-solid num-invoice-input"  data-rule-required="fales" />
                             </div>   
                             <div class="col-md-4 mt-2 ">
                                 <button class="highlight-copy btn" title="Enreigistrer" onclick=" saveNumInvoice( '{{ $n->id }}' , '{{ $n->num_invoice }}',this) ">Enregistrer</button>
@@ -368,7 +368,7 @@
      @php
         $isRhOrAdmin = $auth->isRhOrAdmin();
      @endphp
-    <div class="d-flex justify-content-end mt-5">
+    <div class="d-flex justify-content-end mt-5" id="save-purchase">
         @if ($purchase_model->id)
             <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-light-dark btn-sm mr-2 ">
                 Quitter          
@@ -381,7 +381,7 @@
                 Annuler 
             </button> &nbsp;
             @if ($isRhOrAdmin)
-                <button type="submit" id="save-purchase-btn" class="btn btn-light-info font-weight-bold mr-2 btn-sm">Créer la demande</button>
+                <button type="submit"  id="save-purchase-btn" class="btn btn-light-info font-weight-bold mr-2 btn-sm">Créer la demande</button>
             @endif
 
         @endif
@@ -390,6 +390,15 @@
 <style>
     #modal-dialog{
         min-width: 980px;
+    }
+    .form .form-control  {
+        background-color: #F5F8FA;
+        border-color: #F5F8FA;
+        color: #7239ea !important;
+        transition: color 0.2s ease, background-color 0.2s ease;
+    }
+    .form .select2-container--bootstrap5 .select2-selection--single.form-select-solid .select2-selection__rendered {
+        color: #7239ea;
     }
     .nice-input-file{
         position: absolute;
@@ -518,9 +527,11 @@
         });
         $('.nav-item, .nav-link').on("click",  function () {
             if ($(this).attr("data-nav-item") == "purchased-tab" ) {
-                    $("#save-purchase-btn").addClass("d-none").attr("type" ,"#")
+                    $("#save-purchase").addClass("d-none").attr("type" ,"#")
+                    $("#save-purchase-btn").attr("type" ,"#")
             }else{
-                $("#save-purchase-btn").removeClass("d-none").attr("type" ,"#")
+                $("#save-purchase").removeClass("d-none").attr("type" ,"submit")
+                $("#save-purchase-btn").attr("type" ,"submit")
             }
         });
        
