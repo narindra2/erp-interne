@@ -1,5 +1,4 @@
 <x-base-layout>
-
         <div class="card-body bg-white shadow-sm ">
             <ul class="nav nav-stretch nav-line-tabs  border-transparent  fw-bolder flex-nowrap mx-4">
                 <li class="nav-item">

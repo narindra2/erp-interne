@@ -157,7 +157,13 @@ class StockController extends Controller
         $item =  Item::create($data);
         return ['success' => true, 'message' => "Sauvegarder avec succès"   ,"data" => $this->_make_row_inventory($item)];
     }
-   
+    public function  detail_after_scanned_qrcode (Request $request){
+        $item =  $item = Item::with((["article.category"]))->find($request->route("item_id"));
+        if (!$item) {
+            abort(404);
+        }
+        return view ("stock.article.scanned-detail",["item" => $item]);
+    }
 
     /** Category item */
     public function category_data_list() {
@@ -262,4 +268,5 @@ class StockController extends Controller
             return ["success" => true, "message" => trans("lang.success_deleted")];
         }
     }
+    
 }
