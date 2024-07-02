@@ -41,7 +41,7 @@
                 { data: "qrcode", orderable:false},
                 { data: "code",title: 'Code' , orderable:false},
                 { data: "name",title: 'Article'},
-                { data: "propriety",title: 'Propriété'},
+                { data: "propriety",title: 'Critère'},
                 { data: "sub_cat",title: 'sous-cat'},
                 { data: "cat",title: 'Categorie'},
                 { data: "date",title: 'Date d\'aquisation'},

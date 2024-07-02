@@ -11,7 +11,7 @@
                     <th>{{ $detail->article->name }} {{ $detail->quantity }} unité(s) </th>
                     @if ($detail->article->sub_category === "immobilisation")
                         <th>Date d'aquisation</th>
-                        <th>Propriété</th>
+                        <th>Critère</th>
                         <th>Prix HT</th>
                         <th>Prix HTT</th>
                         <th>N° Facture</th>

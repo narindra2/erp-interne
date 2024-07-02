@@ -91,7 +91,7 @@
         <div class="row">
             <div class="col-md-5">
                 <div class="card-title d-flex flex-column">   
-                    <span class="text-gray-700 pt-1 fw-semibold fs-6">Propriété : </span>
+                    <span class="text-gray-700 pt-1 fw-semibold fs-6">Critère : </span>
                     <textarea id="propriety" name="propriety" class="form-control form-control form-control-sm form-control-solid" rows="5" data-kt-autosize="true"  placeholder="Ex:Marque, couleur , ..." > {{ $item->propriety }} </textarea>
                 </div>
             </div>

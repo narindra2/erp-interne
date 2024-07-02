@@ -237,7 +237,7 @@ return [
     'comments' => "Commentaires",
     'send' => "Envoyer",
     'add' => "Ajouter",
-    'propriety' => "Propriété",
+    'propriety' => "Critère",
     'config' => "Paramétre",
     'recurring_type' => "recurente",
     'nb_jr' => "nombre du jours",

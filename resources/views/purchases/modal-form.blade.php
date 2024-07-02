@@ -114,7 +114,7 @@
                                     <thead>
                                         <tr class="fw-semibold fs-6 text-gray-800 border-bottom-2 border-gray-200">
                                             <th class="min-w-150px text-center"> <span title="Ajouter une ligne"  id="addLine"><i class="fs-3 fas fa-plus-circle text-info to-link "></i></span></th>
-                                            <th class="min-w-150px text-center">Propriété</th>
+                                            <th class="min-w-150px text-center">Critère</th>
                                             <th >Quantité </th>
                                             <th >Unité</th>
                                             <th >Prix unitaire</th>
