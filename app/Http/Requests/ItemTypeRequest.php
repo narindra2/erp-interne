@@ -27,8 +27,9 @@ class ItemTypeRequest extends FormRequest
         $rules = [
             'name' => 'required',
         ];
+        $id = request("id") ? ",".request("id") : "";
+        $rules["code"] = 'required|unique:item_types,code' . $id;
         if (request("sub_category") ==  ItemType::IMMOBILISATION) {
-            $rules["code"] = 'required|unique:item_types,code' . request("id");
             $rules["category_id"] = 'required';
         }
         return $rules;
