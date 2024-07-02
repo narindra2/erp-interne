@@ -426,6 +426,8 @@ class User extends Authenticatable
     public function getLogoAttribute()
     {
         $file = 'logos/logo2.png';
+       
+        return  asset(theme()->getMediaUrlPath() . 'logos/logo1.png') ; // Aftert thirtyOne is in local with desineo
         if ($this->userJob) {
             $file = $file = 'logos/logo' . $this->userJob->local . '.png';
         }
