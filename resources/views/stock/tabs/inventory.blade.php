@@ -19,11 +19,11 @@
             </div>
             <div class="me-4 my-2">
                 @php
-                    echo modal_anchor(url('/stock/inventory/create-article'), '<button class="btn btn-sm btn-light-info "><i class="fas fa-plus "></i> Faire une enreigistrement</button>', ['title' => 'Nouvel enreigistrement'])
+                    echo modal_anchor(url('/stock/inventory/create-article'), '<button class="btn btn-sm btn-light-info "><i class="fas fa-plus "></i> Enreigistrement</button>', ['title' => 'Nouvel enreigistrement'])
                 @endphp
             </div>
         </div>
-        <table id="invetoryListDataTable" class="table table-row-dashed table-row-gray-200 align-middle gs-0 gy-4 table-hover ">
+        <table id="invetoryListDataTable" class="table table-row-dashed table-row-gray-200 align-middle table-hover ">
         </table>
     </div>
 </div>

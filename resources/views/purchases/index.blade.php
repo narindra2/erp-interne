@@ -1,7 +1,7 @@
 <x-base-layout>
     <div class="row">
         <div class="col-xxl-12 mb-10" id="category-section">
-            <div class="card shadow-sm card-xxl-stretch mb-3 mb-xl-1">
+            <div class="card shadow-sm  mb-3 mb-xl-1">
                 <div class="card-header border-1 pt-1">
                     <div class="me-2 card-title align-items-start flex-column">
                         <span class="card-label  fs-3 mb-1"> Gestion Achat </span>
@@ -21,7 +21,7 @@
         </div>
         
         <div class="col-xxl-12" id="category-section">
-            <div class="card shadow-sm card-xxl-stretch mb-3 mb-xl-1">
+            <div class="card shadow-sm  mb-3 mb-xl-1">
                 <div class="card-body py-5">
                     <div class="d-flex justify-content-end mb-5">
                         <div class="filter-datatable">
@@ -41,7 +41,7 @@
                             </a>
                         </div>
                     </div>
-                    <table id="purchasesTable" class="table table-row-dashed table-row-gray-200 align-middle gs-0 gy-4 table-hover "></table>
+                    <table id="purchasesTable" class="table table-row-dashed table-row-gray-200 align-middle  table-hover "></table>
                 </div>
             </div>
         </div>

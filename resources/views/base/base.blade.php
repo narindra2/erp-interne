@@ -3,12 +3,12 @@
 {{-- begin::Head --}}
 <head>
     <meta charset="utf-8"/>
-    <title>ERP | Thirty-One Agency</title>
+    <title>ERP | Desineo </title>
     {{-- <meta name="description" content="{{ ucfirst(theme()->getOption('meta', 'description')) }}"/>
     <meta name="keywords" content="{{ theme()->getOption('meta', 'keywords') }}"/>
     <link rel="canonical" href="{{ ucfirst(theme()->getOption('meta', 'canonical')) }}"/> --}}
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    {{-- <link rel="shortcut icon" href="{{ asset(theme()->getDemo() . '/' .theme()->getOption('assets', 'favicon')) }}"/> --}}
+    <link rel="icon" type="image/x-icon" href="{{ asset("icons/desineo.png") }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @yield('dynamic_link')
     @if (auth()->user())

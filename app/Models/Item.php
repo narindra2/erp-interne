@@ -144,21 +144,21 @@ class Item extends Model
             ],
             "options" => to_dropdown(ItemCategory::whereDeleted(0)->get(),"id","name"),
         ];
-        $filters[] = [
-            "label" => "Sous-cat", 
-            "name" =>"sub_cat",
-            "type" => "select",
-            "width"  =>"w-200px",
-            'attributes' => [
-                "data-hide-search" => "true",
-                "data-allow-clear" => "true",
-            ],
-            "options" =>  [
-                ["value" => null , "text" => "Sous-catégorie"],
-                ["value" => "immobilisation" , "text" => "Immobilisation"],
-                ["value" => "consomable" , "text" => "Consomable"],
-            ],
-        ];
+        // $filters[] = [
+        //     "label" => "Sous-cat", 
+        //     "name" =>"sub_cat",
+        //     "type" => "select",
+        //     "width"  =>"w-200px",
+        //     'attributes' => [
+        //         "data-hide-search" => "true",
+        //         "data-allow-clear" => "true",
+        //     ],
+        //     "options" =>  [
+        //         ["value" => null , "text" => "Sous-catégorie"],
+        //         ["value" => "immobilisation" , "text" => "Immobilisation"],
+        //         ["value" => "consomable" , "text" => "Consomable"],
+        //     ],
+        // ];
         $filters[] = [
             "label" => "Etat", 
             "name" =>"etat",
