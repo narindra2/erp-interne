@@ -66,8 +66,8 @@ class StockController extends Controller
         $row["DT_RowId"] = row_id("invetory", $item->id);
         $row["qrcode"]  = "";
         $row["qrcode"]  =   view("stock.article.article-qrcode-column",["item" => $item])->render();
-        $row["code"] =  modal_anchor(url("/stock/inventory/modal-form"), "<span class='text-info fs-4'>{$item->code_detail}</span>", ["title" => "Edition du " . $item->code_detail , "data-post-item_id" => $item->id]); ;
-        $row["name"] = "<span class='text-dark fs-4 fw-bold'>{$item->article->name}</span>" ;
+        $row["code"] =  modal_anchor(url("/stock/inventory/modal-form"), "<span class='text-info fs-5'>{$item->code_detail}</span>", ["title" => "Edition du " . $item->code_detail , "data-post-item_id" => $item->id]); ;
+        $row["name"] = "<span class='text-dark fs-5 fw-bold'>{$item->article->name}</span>" ;
         $row["propriety"] = $item->propriety ? "<span class='text-gray-700 fw-semibold d-block fs-7'>{$item->propriety}</span>"  :"-";
         $row["sub_cat"] = $item->article->sub_category;
         $row["cat"] =  ($item->article && isset($item->article->category) )  ? $item->article->category->name : "-" ;
