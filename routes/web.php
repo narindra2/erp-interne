@@ -372,6 +372,7 @@ Route::middleware(['auth', 'checkinweb', 'role:2,4'])->group(function () {
 Route::middleware(['auth', 'checkinweb'])->group(function () {
     /** Stock */
     Route::get("/stock/gerer", [StockController::class, "index"]);
+    Route::get("/stock", [StockController::class, "index"]);
     
     Route::get("/stock/inventory/tab", [StockController::class, 'inventory']);
     Route::get("/stock/inventory/data_list", [StockController::class, 'inventory_data_list']);

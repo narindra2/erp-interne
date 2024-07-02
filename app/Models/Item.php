@@ -42,9 +42,29 @@ class Item extends Model
         return $this->get_code_detail_item();
     }
     public function getQrCodeAttribute() {
-        if ($this->article->sub_category != ItemType::IMMOBILISATION) {
-          return null;
+        return $this->get_qrcode_detail_item(true);
+    }
+    /** Identité + order chronologique +date d'aquisation + nature */
+    public function get_code_detail_item() {
+        $separator = self::SEPARATOR_CODE;
+        if (!$this->article) {
+            $this->load("article.category");
         }
+        $code_article =  $this->article->code ? $this->article->code : "-";
+        $code_category = ($this->article && isset($this->article->category) ) ? $this->article->category->code : "-";
+        $code_item = $this->code ?  sprintf("%04d", $this->code) : "-"; // make alwayse  4 digit the code ex : code = 9 => 0009
+        $date_item = Carbon::parse($this->date)->format("dmY");
+        return $code_article.$separator.$code_item.$separator.$date_item.$separator.$code_category;
+    }
+    public function get_qrcode_detail_item($detailRedirectionurl = false) {
+       
+        if ($this->article->sub_category != ItemType::IMMOBILISATION) {
+            return null;
+        }
+        if ($detailRedirectionurl) {
+            return QrCode::size(130)->color(82, 27, 195)->generate(url("/stock/qrcode-scanned/detail/$this->id"));
+        }
+
         $data = collect();
         if (!$this->article) {
             $this->load("article.category");
@@ -60,18 +80,6 @@ class Item extends Model
         }
         $data[] = $this->propriety;
         return QrCode::size(130)->color(82, 27, 195)->generate(($data)->implode(", "));
-    }
-    /** Identité + order chronologique +date d'aquisation + nature */
-    public function get_code_detail_item() {
-        $separator = self::SEPARATOR_CODE;
-        if (!$this->article) {
-            $this->load("article.category");
-        }
-        $code_article =  $this->article->code ? $this->article->code : "-";
-        $code_category = ($this->article && isset($this->article->category) ) ? $this->article->category->code : "-";
-        $code_item = $this->code ?  sprintf("%04d", $this->code) : "-"; // make alwayse  4 digit the code ex : code = 9 => 0009
-        $date_item = Carbon::parse($this->date)->format("dmY");
-        return $code_article.$separator.$code_item.$separator.$date_item.$separator.$code_category;
     }
     public static function generateCodeItemForNew($item_type_id) {
        try {

@@ -48,32 +48,42 @@
         <div class="card card-flush h-xl-100  shadow-sm ">
             <div class="card-header pt-7 ">
                 <h3 class="card-title align-items-start flex-column">
-                    <span class="card-label fw-bold text-gray-800">{{ $item->article->name }}</span>
-                    <span class="text-gray-500 mt-1 fw-semibold fs-6">Propieté : {{ $item->propriety ?? "-" }}</span>
+                    <span class="card-label fw-bold text-info">{{ $item->article->name }}</span>
+                    <span class="text-gray-500  fw-semibold fs-6">
+                        Propieté : {{ $item->propriety ?? "-" }}<br>
+                        
+                        @if ($item->article->category)
+                            {{ $item->article->category->name }}
+                        @endif
+                        @if ($item->article->sub_category)
+                          ,  {{ $item->article->sub_category  }}
+                        @endif
+                    </span> <br>
                 </h3>
             </div>
                 <div class="card-body bg-white">
-                    <ul class="nav nav-tabs nav-line-tabs mb-5 fs-6">
-                        <li class="nav-item">
-                            <a class="nav-link active" data-bs-toggle="tab" href="#kt_tab_pane_1">Link 1</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="#kt_tab_pane_2">Link 2</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="#kt_tab_pane_3">Link 3</a>
-                        </li>
-                    </ul>
-                    
-                    <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel">
-                            ...d
-                        </div>
-                        <div class="tab-pane fade" id="kt_tab_pane_2" role="tabpanel">
-                            ..e.
-                        </div>
-                        <div class="tab-pane fade" id="kt_tab_pane_3" role="tabpanel">
-                            ...s
+                    <div class="tab-content" >
+                        <div class="tab-pane fade show active" id="detai" role="tabpanel">
+                            <div class="mb-4 text-center">
+                                {{ $item->qrCode }}
+                            </div>
+                            <div class="mb-4 text-center text-info"><strong>{{ $item->codeDetail }}</strong></div>
+                            <div class="mb-4">
+                                <label class="form-label">Date d'aquisition</label>
+                                <input type="text" class="form-control form-control-sm form-control-solid" readonly  value="{{ $item->date->format("d/m/Y") }}">
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Etat</label>
+                                <input type="text" class="form-control form-control-sm form-control-solid" readonly  value="{{ $item->etat }}">
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Prix HT</label>
+                                <input type="text" class="form-control form-control-sm form-control-solid" readonly  value="{{ $item->price_ht ?? "-" }}">
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Observation </label>
+                                <input type="text" class="form-control form-control-sm form-control-solid" readonly  value="{{ $item->observation ?? "Aucun" }}">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -85,6 +95,12 @@
 
 
 <style>
+    .tab-content .form-control.form-control-solid {
+        background-color: #F5F8FA;
+        border-color: #F5F8FA;
+        color: #7239ea !important;
+        transition: color 0.2s ease, background-color 0.2s ease;
+    }
     .to-link{
         cursor: pointer;
     }
