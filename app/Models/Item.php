@@ -56,15 +56,15 @@ class Item extends Model
         $date_item = Carbon::parse($this->date)->format("dmY");
         return $code_article.$separator.$code_item.$separator.$date_item.$separator.$code_category;
     }
-    public function get_qrcode_detail_item($detailRedirectionurl = false) {
+    public function get_qrcode_detail_item($typeRedirectionUrl = false) {
        
         if ($this->article->sub_category != ItemType::IMMOBILISATION) {
             return null;
         }
-        if ($detailRedirectionurl) {
+        if ($typeRedirectionUrl) {
             return QrCode::size(130)->color(82, 27, 195)->generate(url("/stock/qrcode-scanned/detail/$this->id"));
         }
-
+        /** Type info details */
         $data = collect();
         if (!$this->article) {
             $this->load("article.category");
