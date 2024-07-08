@@ -41,9 +41,8 @@
                 <select id="sub_cat" name="sub_category" class="form-select form-select-sm form-select-solid" data-control="select2" data-dropdown-parent="#ajax-modal" data-rule-required="false"  data-msg-required="@lang('lang.required_input')">
                     <option disabled  >-- Sous categorie --</option>
                     <option  selected value="non-definie" > Non définie</option>
-                    
                     @foreach ($sub_cats as $sub_cat)
-                        <option value="{{ $sub_cat }}"  @if ($article->sub_category == $sub_cat )  selected  @endif>{{ $sub_cat }}</option>
+                        <option value="{{ $sub_cat }}"  @if ($article->sub_category == $sub_cat )  selected  @endif>{{ ucfirst($sub_cat)  }}</option>
                     @endforeach
                 </select>
             </div>

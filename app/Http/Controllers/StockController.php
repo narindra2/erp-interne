@@ -122,7 +122,7 @@ class StockController extends Controller
     public function create_article_migration_to_stock(Request $request)
     {
         if (!$request->item_type_id) {
-            die(json_encode(["success" => false, "validation" => true,  "message" =>  "Le champ « matériel à ajouter » ne peux pas être vide pour un nouvel enreigistrement svp !"]));
+            die(json_encode(["success" => false, "validation" => true,  "message" =>  "Le champ « matériel à ajouter » ne peux pas être vide pour un nouvel enregistrement svp !"]));
         }
         $data = $request->all();
         $data["code"] = Item::generateCodeItemForNew($request->item_type_id);

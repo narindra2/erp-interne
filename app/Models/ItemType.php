@@ -17,12 +17,12 @@ class ItemType extends Model
         'deleted'
     ];
     const IMMOBILISATION = "immobilisation";
-    const CONSOMABLE = "consomable";
+    const CONSOMABLE = "consommable";
     
     public function category() {
         return $this->belongsTo(ItemCategory::class, 'category_id');
     }
     public static function getSubCategory() {
-            return [self::IMMOBILISATION , self::CONSOMABLE];
+        return [self::IMMOBILISATION , self::CONSOMABLE];
     }   
 }

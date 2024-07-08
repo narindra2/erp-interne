@@ -226,7 +226,7 @@ class DayOffController extends Controller
         foreach ($daysOff as $dayOff) {
             $data[] = $this->make_row_my_request_days_off($dayOff);
         }
-        die(json_encode(["data" => $data]));
+        return((["data" => $data]));
     }
 
     public function make_row_my_request_days_off($dayOff)
@@ -316,7 +316,7 @@ class DayOffController extends Controller
         
         $dayOff = DayOff::requestDaysOff($input, $files);
         delete_users_cache();
-        die(json_encode(["success" => true, "data" => $dayOff, "message" => "La demande a été bien sauvegardée"]));
+        return ["success" => true, "data" => $dayOff, "message" => "La demande a été bien sauvegardée"];
     }
 
     private function _can_make_request_permission($applicant_id, DayOffRequest $request)
@@ -387,7 +387,7 @@ class DayOffController extends Controller
                 
                 $dayoff->load("applicant");
                 $dayoff->load("applicant.userjob");
-                die(json_encode(["success" => true, "row_id" => row_id("dayoff", $request->id),  "data" => $this->make_row($dayoff), "message" => "La demande a été bien sauvegardé"]));
+                return((["success" => true, "row_id" => row_id("dayoff", $request->id),  "data" => $this->make_row($dayoff), "message" => "La demande a été bien sauvegardé"]));
             }
         }
     }

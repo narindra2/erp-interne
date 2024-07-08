@@ -28,9 +28,10 @@ class ItemTypeRequest extends FormRequest
             'name' => 'required',
         ];
         $id = request("id") ? ",".request("id") : "";
-        $rules["code"] = 'required|unique:item_types,code' . $id;
+        $rules["code"] = 'unique:item_types,code' . $id;
         if (request("sub_category") ==  ItemType::IMMOBILISATION) {
             $rules["category_id"] = 'required';
+            $rules["code"] = 'required|unique:item_types,code' . $id;
         }
         return $rules;
     }
@@ -38,8 +39,8 @@ class ItemTypeRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => "Le champ nom de l'article  est requis",
-            'code.required' => "Le champ code article  est requis si c'est un article d'" .ItemType::IMMOBILISATION,
+            'name.required' => "Le champ nom de l'article est requis",
+            'code.required' => "Le champ code article est requis si c'est un article d'" .ItemType::IMMOBILISATION,
             'code.unique' => "Le code article a déjà été pris, c'est unique.",
             'category_id.required' => "Le champ catégorie article est requis si c'est un article d'" .ItemType::IMMOBILISATION,
         ];

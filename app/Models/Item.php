@@ -44,6 +44,32 @@ class Item extends Model
     public function getQrCodeAttribute() {
         return $this->get_qrcode_detail_item(true);
     }
+    
+    public function article() {
+        return $this->belongsTo(ItemType::class, "item_type_id");
+    }
+    public function purchase() {
+        return $this->belongsTo(Purchase::class, "purchase_id");
+    }
+    public function num_invoice() {
+        return $this->belongsTo(PurchaseNumInvoiceLine::class, "num_invoice_id");
+    }
+    public function getEtatInfo() {
+        if($this->etat == "fonctionnel"){
+             return ["text" => 'Fonctionnnel' , "color" => "success"];
+        }elseif ($this->etat == "en_panne") {
+            return ["text" => 'En panne' , "color" => "warning"];
+        }elseif ($this->etat == "perdu") {
+            return ["text" => 'Perdu' , "color" => "danger"];
+        
+        }elseif ($this->etat == "detruit") {
+            return ["text" => 'Détruit' , "color" => "dark"];
+        }else if ($this->etat == "en_stock") {
+            return ["text" => "En stock" , "color" => "info"];
+        }else{
+            return ["text" => $this->etat , "color" => "dark"];
+        }
+    }
     /** Identité + order chronologique +date d'aquisation + nature */
     public function get_code_detail_item() {
         $separator = self::SEPARATOR_CODE;
@@ -91,33 +117,8 @@ class Item extends Model
             /** For n-ème record  */
             return  (int) $last_item->code + 1;
        } catch (Exception $e) {
-            die("Impossible de generer le code article error : "  . $e->getMessage());
+            die("Impossible de generer le code article , Erreur : "  . $e->getMessage());
        }
-    }
-    public function article() {
-        return $this->belongsTo(ItemType::class, "item_type_id");
-    }
-    public function purchase() {
-        return $this->belongsTo(Purchase::class, "purchase_id");
-    }
-    public function num_invoice() {
-        return $this->belongsTo(PurchaseNumInvoiceLine::class, "num_invoice_id");
-    }
-    public function getEtatInfo() {
-        if($this->etat == "fonctionnel"){
-             return ["text" => 'Fonctionnnel' , "color" => "success"];
-        }elseif ($this->etat == "en_panne") {
-            return ["text" => 'En panne' , "color" => "warning"];
-        }elseif ($this->etat == "perdu") {
-            return ["text" => 'Perdu' , "color" => "danger"];
-        
-        }elseif ($this->etat == "detruit") {
-            return ["text" => 'Détruit' , "color" => "dark"];
-        }else if ($this->etat == "en_stock") {
-            return ["text" => "En stock" , "color" => "info"];
-        }else{
-            return ["text" => $this->etat , "color" => "dark"];
-        }
     }
     public static function createFilter($options = [])
     {
@@ -156,7 +157,7 @@ class Item extends Model
         //     "options" =>  [
         //         ["value" => null , "text" => "Sous-catégorie"],
         //         ["value" => "immobilisation" , "text" => "Immobilisation"],
-        //         ["value" => "consomable" , "text" => "Consomable"],
+        //         ["value" => "consommable" , "text" => "Consommable"],
         //     ],
         // ];
         $filters[] = [
