@@ -245,7 +245,6 @@ class StockController extends Controller
         return view('stock.article.article-modal-form', $data);
     }
     public function article_save(ItemTypeRequest $request) {
-
         try {
             $data = $request->except("_token");
             $data["category_id"] = $request->category_id == "non-definie" ? null :  $request->category_id;
@@ -268,5 +267,4 @@ class StockController extends Controller
             return ["success" => true, "message" => trans("lang.success_deleted")];
         }
     }
-    
 }
