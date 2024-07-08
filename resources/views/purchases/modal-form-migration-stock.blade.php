@@ -10,7 +10,7 @@
                 <tr class="fw-bold  text-white  bg-info text-center w-100px">
                     <th>{{ $detail->article->name }} {{ $detail->quantity }} unité(s) </th>
                     @if ($detail->article->sub_category === "immobilisation")
-                        <th>Date d'aquisation</th>
+                        <th>Date d'acquisition</th>
                         <th>Critère</th>
                         <th>Prix HT</th>
                         <th>Prix HTT</th>
@@ -39,7 +39,7 @@
                             <p class="text-info mt-3 ">{{ $item_in_stock->codeDetail }}</p>
                         </td>
                         <td>
-                            <input type="text" class="form-control form-control  form-control-sm date-to-stock" name="date" placeholder="Date d'aquisation" value="{{ $item_in_stock->date ? \Carbon\Carbon::parse($item_in_stock->date)->format("d/m/Y")   :  now()->format("d/m/Y") }}"/>
+                            <input type="text" class="form-control form-control  form-control-sm date-to-stock" name="date" placeholder="Date d'acquisition" value="{{ $item_in_stock->date ? \Carbon\Carbon::parse($item_in_stock->date)->format("d/m/Y")   :  now()->format("d/m/Y") }}"/>
                         </td>
                         <td>
                             <textarea class="form-control" name="propriety" placeholder=" Ex : Hp, noir, 32 pouces,... " >{{ $item_in_stock->propriety }}</textarea>
@@ -76,7 +76,7 @@
                             <p class="text-info mt-3 ">{{ $detail->article->name }}</p>
                         </td>
                         <td>
-                            <input type="text" class="form-control form-control  form-control-sm date-to-stock" name="date" placeholder="Date d'aquisation" value="{{ now()->format("d/m/Y") }}"/>
+                            <input type="text" class="form-control form-control  form-control-sm date-to-stock" name="date" placeholder="Date d'acquisition" value="{{ now()->format("d/m/Y") }}"/>
                         </td>
                         <td>
                             <textarea class="form-control" name="propriety" placeholder=" Ex : Hp, noir, 32 pouces,... " >{{ $detail->propriety }}</textarea>

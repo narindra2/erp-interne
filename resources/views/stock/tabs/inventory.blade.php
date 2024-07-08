@@ -44,7 +44,7 @@
                 { data: "propriety",title: 'Critère'},
                 { data: "sub_cat",title: 'sous-cat'},
                 { data: "cat",title: 'Categorie'},
-                { data: "date",title: 'Date d\'aquisation'},
+                { data: "date",title: 'Date d\'acquisition'},
                 { data: "num_invoice",title: 'N° facture'},
                 { data: "prix_ht",title: 'Montant HT'},
                 // { data: "prix_htt",title: 'Montant HTT'},

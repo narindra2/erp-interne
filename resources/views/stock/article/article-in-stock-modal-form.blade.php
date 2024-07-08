@@ -37,7 +37,7 @@
         <div class="separator border-info mt-3 mb-3"></div>
         <div class="row">
             <div class="col-md-4">
-                <span class="text-gray-700 pt-1 fw-semibold fs-6">Date d'aquisation </span>
+                <span class="text-gray-700 pt-1 fw-semibold fs-6">Date d'acquisition </span>
                 <input id="date" name="date" data-rule-required="true" data-msg-required="@lang('lang.required_input')" class="form-control form-control-sm form-control-solid datepicker" autocomplete="off"  placeholder="DD/MM/YYYY" data-rule-required="true" data-msg-required="@lang('lang.required_input')" value="{{ $item->date ? \Carbon\Carbon::parse($item->date)->format("d/m/Y")   : null }}"/>
             </div>
             <div class="col-md-4">
@@ -91,7 +91,12 @@
         <div class="row">
             <div class="col-md-5">
                 <div class="card-title d-flex flex-column">   
-                    <span class="text-gray-700 pt-1 fw-semibold fs-6">Critère : </span>
+                    <span class="text-gray-700 pt-1 fw-semibold fs-6">Critère 
+                        <span  data-bs-toggle="tooltip" data-bs-placement="top" title="Mettez du virgule ',' pour séparer un critére">
+                            <i class="fas fa-question-circle"></i>
+                        </span>
+                        : 
+                    </span>
                     <textarea id="propriety" name="propriety" class="form-control form-control form-control-sm form-control-solid" rows="5" data-kt-autosize="true"  placeholder="Ex:Marque, couleur , ..." > {{ $item->propriety }} </textarea>
                 </div>
             </div>
@@ -130,6 +135,7 @@
 <script>
     $(document).ready(function() {
         KTApp.initSelect2();
+        KTApp.initBootstrapTooltips();
         $("#modal-form-inventor").appForm({
             onSuccess: function(response) {
                 if (response.row_id) {
