@@ -11,11 +11,10 @@ class ItemMovement extends Model
 
     protected $fillable = [
         'location_id',
-        'item_status_id',
+        'place',
         'item_id',
         'user_id'
     ];
-
     public function item() {
         return $this->belongsTo(Item::class, "item_id");
     }

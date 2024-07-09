@@ -89,6 +89,48 @@
         </div>
         <div class="separator border-info mt-3 mb-3"></div>
         <div class="row">
+            <div class="col-md-4">
+                <div class="card-title d-flex flex-column">   
+                    <span class="text-gray-700 pt-1 fw-semibold fs-6">Lieu d'emplacement </span>
+                    @php
+                        $item_locaction  = null; $item_place  = ""; $assigned = [];
+                        $place = $item->get_actualy_place();
+                        if ($place) {
+                            $item_locaction  =  $place->location_id;
+                            $item_place   =  $place->place;
+                            $assigned = explode(",", $place->user_id);
+                        }
+                    @endphp
+                    <select id="location_id" name="location_id" class="form-select form-select-sm form-select-solid" data-placeholder="Lieu d'emplacement"  data-control="select2" data-hide-search="true" data-dropdown-parent="#ajax-modal">
+                        @foreach ($locations as $location)
+                        <option value="{{ $location->id }}" @if($location->id == $item_locaction) selected @endif >{{ $location->name }}</option>
+                      @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card-title d-flex flex-column">   
+                    <span class="text-gray-700 pt-1 fw-semibold fs-6">Place</span>
+                    <div class="input-group ">
+                        <input type="text"   autocomplete="off" class="form-control  form-control-sm form-control-solid" name= "place" value="{{ $item_place  }}" placeholder="Ex : P1"/>
+                        <span class="input-group-text">$</span>
+                      </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="card-title d-flex flex-column">   
+                    <span class="text-gray-700 pt-1 fw-semibold fs-6">Assigné à</span>
+                    <select id="user_id" name="user_id[]"   class="form-select form-select-sm form-select-solid" data-placeholder="Assigné à ... "  multiple data-control="select2" data-hide-search="true" data-dropdown-parent="#ajax-modal">
+                        <option value=""  disabled  >Aucun</option>
+                        @foreach ($users as $user)
+                            <option value="{{ $user->id }}" @if(in_array($user->id, $assigned)) selected @endif >{{ $user->sortname }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="separator border-info mt-3 mb-3"></div>
+        <div class="row">
             <div class="col-md-5">
                 <div class="card-title d-flex flex-column">   
                     <span class="text-gray-700 pt-1 fw-semibold fs-6">Critère 

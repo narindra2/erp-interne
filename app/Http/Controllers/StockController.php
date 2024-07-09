@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Exception;
 use App\Models\Item;
 use App\Models\Menu;
+use App\Models\User;
 use App\Models\ItemType;
+use App\Models\Location;
 use App\Models\Purchase;
 use App\Models\ItemCategory;
 use Illuminate\Http\Request;
 use App\Http\Requests\ItemTypeRequest;
 use App\Models\PurchaseNumInvoiceLine;
 use App\Http\Requests\CreateItemCategoryResquet;
-use Auth;
+use DB;
+use PhpParser\Node\Expr\FuncCall;
 
 class StockController extends Controller
 {
@@ -33,6 +37,9 @@ class StockController extends Controller
 
     public function category() {
         return view('stock.tabs.category');
+    }
+    public function location() {
+        return view('stock.tabs.location');
     }
     /** End tabs */
 
@@ -64,7 +71,7 @@ class StockController extends Controller
     }
     public function _make_row_inventory(Item $item) {
         $row["DT_RowId"] = row_id("invetory", $item->id);
-        $row["qrcode"]  = "";
+     
         $row["qrcode"]  =   view("stock.article.article-qrcode-column",["item" => $item])->render();
         $row["code"] =  modal_anchor(url("/stock/inventory/modal-form"), "<span class='text-info fs-5'>{$item->code_detail}</span>", ["title" => "Edition du " . $item->code_detail , "data-post-item_id" => $item->id]); ;
         $row["name"] = "<span class='text-dark fs-5 fw-bold'>{$item->article->name}</span>" ;
@@ -76,6 +83,7 @@ class StockController extends Controller
             $num =  $item->purchase->getNumPurchase();
             $row["purchase"] = modal_anchor(url('/purchases/demande-form'), "$num <i class='fas fa-link'></i> ", ['title' => "Détail de la demande  d'achat : $num ", 'class' => 'btn btn-link btn-color-info', "data-modal-lg" => true, "data-post-purchase_id" => $item->purchase_id]);
         }
+        $row["location"]  = "";
         /*** Relationship  in num_invoice */
         if ($item->num_invoice) {
             $row["num_invoice"] = $item->num_invoice->num_invoice;
@@ -99,12 +107,13 @@ class StockController extends Controller
         return $row;
     }
     public function inventor_modal_form(Request $request) {
-        $item =  Item::with(["article.category"])->find($request->item_id);
-        
+        $item =  Item::with(["article.category" ])->find($request->item_id);
         $purchases = Purchase::with(['author' ])->whereDeleted(0)->get();
         $num_invoices = PurchaseNumInvoiceLine::whereDeleted(0)->get();
+        $locations = Location::whereDeleted(0)->get();
+        $users = User::whereDeleted(0)->get();
         if ($request->item_id) {
-            return view('stock.article.article-in-stock-modal-form', ["item" =>$item , "purchases"  =>$purchases , "num_invoices" => $num_invoices ]);
+            return view('stock.article.article-in-stock-modal-form', ["item" =>$item , "purchases"  =>$purchases , "num_invoices" => $num_invoices , "locations" => $locations , "users" => $users]);
         }
     }
     
@@ -115,10 +124,24 @@ class StockController extends Controller
         $data["purchase_id"] = $request->purchase_id == "0" ? null  : $request->purchase_id;
         $item = Item::find($request->item_id);
         $item->update($data);
+        $where = $request->only(["location_id","item_id","place"]);
+        $where["user_id"] = collect($request->user_id)->implode(",");
+        /** Check */
+        if (!DB::table("item_movements")->where($where)->orderBy("id","DESC")->count()) {
+            $this->_update_mouvement($request);
+        }
         $item->refresh()->load(["article.category","purchase","num_invoice"]);
         return ['success' => true, 'message' => "Mise à jour avec succès" , "row_id" =>  row_id("invetory",$item->id )  ,"data" => $this->_make_row_inventory( $item)];
     }
-    
+    public function _update_mouvement(Request $request){
+        if ($request->location_id) {
+            $locations  = $request->only(["location_id","item_id","place"]);
+            if (count($request->user_id ?? [])) {
+                $locations["user_id"] = collect($request->user_id)->implode(",");
+            }
+            DB::table("item_movements")->insert($locations);
+        }
+    }
     public function create_article_migration_to_stock(Request $request)
     {
         if (!$request->item_type_id) {
@@ -133,6 +156,7 @@ class StockController extends Controller
         $data["etat"] =  "fonctionnel";
         $data["created_from"] = "purchase_form"; /** From migration  form in purchase request*/
         $item =  Item::updateOrCreate( ["id" => $request->item_id ], $data);
+        DB::table("item_movements")->insert(["location_id" => Location::STOCK_ID]);
         return ['success' => true, 'message' => "Sauvegarder avec succès" , "item" => $item ];
     }
     public function create_article_to_stock_modal_form(Request $request)
@@ -264,6 +288,55 @@ class StockController extends Controller
             return ["success" => true, "message" => trans("lang.success_canceled"), "data" => $this->_make_row_article($article)];
         } else {
             $article->update(["deleted" => 1]);
+            return ["success" => true, "message" => trans("lang.success_deleted")];
+        }
+    }
+
+    /** Location */
+    public function location_data_list() {
+        $data = [];
+        $location = Location::whereDeleted(0)->latest()->get();
+        foreach ($location as $location) {
+            $data[] = $this->_make_row_location( $location);
+        }
+        return ["data"  => $data];
+    }
+
+    public function _make_row_location(Location $location)
+    {
+        $actions = modal_anchor(url("/stock/location/modal-form"), '<i class="fas fa-edit me-4 fs-3 text-info"></i>', ["title" => "Edition du " . $location->name , "data-post-location_id" => $location->id]);
+        $actions .= " " . js_anchor('<i class="fas fa-trash me-4 fs-3 text-danger"></i>', [ 'data-action-url' => url("/stock/location/delete"), "title" => "Supprimer","data-post-location_id" => $location->id , "data-action" => "delete"]);
+        return [
+            "DT_RowId" => row_id("location", $location->id),
+            'name' => $location->name,
+            'code' => $location->code_location ?? "",
+            'actions' =>  $location->name == "Stock"  ? ""   : $actions,
+        ];
+    }
+    public function location_modal_form(Request $request) {
+        $data = [];
+        $location = Location::find($request->location_id) ?? new location;
+        $data['location'] =  $location;
+        return view('stock.location.modal-form', $data);
+    }
+    public function location_save( Request $request) {
+        try {
+            $data = $request->except("_token");
+            $location = Location::updateOrCreate(["id" => $request->id], $data);
+            return ["success" => true ,"message" => "Emplacement bien sauvegardée" ,"row_id" => $request->id ? row_id("location", $location->id) : null, "data" => $this->_make_row_location( $location)];
+        }
+        catch (Exception $e) {
+            return ['success' => false, 'message' => $e->getMessage()];
+        }
+    }
+    public function location_delete(Request $request)
+    {
+        $location = Location::find($request->location_id);
+        if ($request->input("cancel")) {
+            $location->update(["deleted" => 0]);
+            return ["success" => true, "message" => trans("lang.success_canceled"), "data" => $this->_make_row_location($location)];
+        } else {
+            $location->update(["deleted" => 1]);
             return ["success" => true, "message" => trans("lang.success_deleted")];
         }
     }

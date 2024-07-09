@@ -21,7 +21,6 @@
                          continue; // if article->sub_category is not immobilisation show only the quantity an to continue the other detail
                      @endphp
                     @endif
-                    
                 </tr>
             </thead>
             <tbody>

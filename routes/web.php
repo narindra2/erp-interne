@@ -393,6 +393,14 @@ Route::middleware(['auth', 'checkinweb'])->group(function () {
     Route::post("/stock/article/modal-form", [StockController::class, 'article_modal_form']);
     Route::post("/stock/article/save", [StockController::class, 'article_save']);
     Route::post("/stock/article/delete", [StockController::class, 'article_delete']);
+
+    /**Location */
+    Route::get("/stock/location/tab", [StockController::class, 'location']);
+    Route::get("/stock/location/data-list", [StockController::class, 'location_data_list']);
+    Route::post("/stock/location/modal-form", [StockController::class, 'location_modal_form']);
+    Route::post("/stock/location/save", [StockController::class, 'location_save']);
+    Route::post("/stock/location/delete", [StockController::class, 'location_delete']);
+
     
     /** Purchase */
     Route::post('/purchases/save', [PurchaseController::class, "save"]);
@@ -403,6 +411,8 @@ Route::middleware(['auth', 'checkinweb'])->group(function () {
     Route::post("/purchase/save-num-invoice", [PurchaseController::class, 'saveNumInvoiceLine']);
     Route::post("/purchase/delete-num-invoice", [PurchaseController::class, 'deleteNumInvoiceLine']);
     Route::post("/purchases/to-stcok-modal-form", [PurchaseController::class, 'migrationToStockModal']);
+
+
 });
 
 Route::get("/purchases", [PurchaseController::class, 'index']);

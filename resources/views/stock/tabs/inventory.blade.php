@@ -35,6 +35,7 @@
         }, 1000);
         dataTableInstance.invetoryListDataTable = $("#invetoryListDataTable").DataTable({
             processing: true,
+            ordering: false,
             paging: false,
             dom:"itpr",
             columns: [

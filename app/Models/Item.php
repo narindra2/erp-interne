@@ -5,6 +5,7 @@ namespace App\Models;
 use Exception;
 use Carbon\Carbon;
 use App\Models\ItemCategory;
+use FontLib\Table\Type\loca;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -44,7 +45,6 @@ class Item extends Model
     public function getQrCodeAttribute() {
         return $this->get_qrcode_detail_item(true);
     }
-    
     public function article() {
         return $this->belongsTo(ItemType::class, "item_type_id");
     }
@@ -53,6 +53,12 @@ class Item extends Model
     }
     public function num_invoice() {
         return $this->belongsTo(PurchaseNumInvoiceLine::class, "num_invoice_id");
+    }
+    public function mouvements() {
+        return $this->belongsToMany(Location::class,"item_movements","location_id", "item_id")->withPivot(["place","item_id","user_id","deleted"]);
+    }
+    public function get_actualy_place() {
+        return DB::table("item_movements")->where("item_id", $this->id)->orderBy("id","DESC")->first();
     }
     public function getEtatInfo() {
         if($this->etat == "fonctionnel"){
