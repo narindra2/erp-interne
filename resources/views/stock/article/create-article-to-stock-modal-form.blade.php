@@ -50,7 +50,7 @@
                 <select id="num_invoice_id" name="num_invoice_id" class="form-select form-select-sm form-select-solid" data-tags="true" data-placeholder="Saissis + touche entre pour ajouter ..."  data-control="select2" data-allow-clear="true" data-hide-search="false" data-dropdown-parent="#ajax-modal">
                     <option value="0" selected >Aucun</option>
                     @foreach ($num_invoices as $num)
-                        <option value="{{ $num->id }}" >{{ $num->num_invoice }}</option>
+                        <option value="{{ $num->id }}">{{ $num->num_invoice }}</option>
                     @endforeach      
                 </select>
             </div>
@@ -69,7 +69,7 @@
             <div class="col-md-4">
                 <div class="card-title d-flex flex-column">   
                     <span class="text-gray-700 pt-1 fw-semibold fs-6">Place</span>
-                    <div class="input-group ">
+                    <div class="input-group input-group-sm">
                         <input type="text" autocomplete="off" class="form-control  form-control-sm form-control-solid" name= "place" value="" placeholder="Ex : P1"/>
                         <span class="input-group-text" id="location-code"></span>
                       </div>

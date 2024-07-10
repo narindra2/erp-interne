@@ -36,6 +36,7 @@ class Item extends Model
     protected $appends = [
         'codeDetail',
         'qrCode',
+        'placeInfo',
     ];
     const SEPARATOR_CODE = "/";
 
@@ -44,6 +45,9 @@ class Item extends Model
     }
     public function getQrCodeAttribute() {
         return $this->get_qrcode_detail_item(true);
+    }
+    public function getPlaceInfoAttribute() {
+        return $this->get_actualy_place_info();
     }
     public function article() {
         return $this->belongsTo(ItemType::class, "item_type_id");
@@ -61,8 +65,8 @@ class Item extends Model
         return DB::table("item_movements")->where("item_id", $this->id)->orderBy("id","DESC")->first();
     }
     public function get_actualy_place() {
-        $actuel_place = $this->get_actualy_place_info();
-        if ($actuel_place && $actuel_place->user_id) {
+        $actuel_place = $this->placeInfo;
+        if ($actuel_place) {
             $location = Location::find($actuel_place->location_id);
             return  $actuel_place->place . "" . ($location->code_location ?? $location->name);
         }else{
@@ -71,11 +75,30 @@ class Item extends Model
         }
     }
     public function get_user_use_it() {
-       $actuel_place = $this->get_actualy_place_info();
+       $actuel_place = $this->placeInfo;
        if ($actuel_place && $actuel_place->user_id) {
-         return User::findMany(explode(",",$actuel_place->user_id))->implode("sortname", ", ");
+        return User::findMany(explode(",",$actuel_place->user_id))->implode("sortname", ", ");
        }
     }
+    public function get_disponible() {
+        $actuel_place = $this->placeInfo;
+        if (in_array($this->etat , ["perdu","detruit"])) {
+            return  "Hors d'usage";
+        }
+        
+        if (!$actuel_place) {
+            return  "Libre";
+        }elseif ($actuel_place->location_id == Location::STOCK_ID && !$actuel_place->place) {
+            return  "Libre";
+        }elseif ($actuel_place->location_id != Location::STOCK_ID && !$actuel_place->user_id) {
+            return  "Libre";
+        }elseif ($actuel_place->location_id != Location::STOCK_ID && $actuel_place->user_id) {
+            return  "En usage";
+        }else{
+            return  "Libre";
+        }
+    }
+
     public function getEtatInfo() {
         if($this->etat == "fonctionnel"){
              return ["text" => 'Fonctionnnel' , "color" => "success"];

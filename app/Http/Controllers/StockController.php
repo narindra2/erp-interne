@@ -86,6 +86,7 @@ class StockController extends Controller
         }
         $row["location"]  = $item->get_actualy_place();
         $row["assigned"]  = $item->get_user_use_it();
+        $row["disponiblity"]  = $item->get_disponible();
         
         /*** Relationship  in num_invoice */
         if ($item->num_invoice) {
@@ -139,11 +140,14 @@ class StockController extends Controller
         $item->refresh()->load(["article.category","purchase","num_invoice"]);
         return ['success' => true, 'message' => "Mise à jour avec succès" , "row_id" =>  row_id("invetory",$item->id )  ,"data" => $this->_make_row_inventory( $item)];
     }
-    public function _set_new_mouvement(Request $request){
+    public function _set_new_mouvement(Request $request , $item_id = 0){
         if ($request->location_id) {
             $locations  = $request->only(["location_id","item_id","place"]);
             if (count($request->user_id ?? [])) {
                 $locations["user_id"] = collect($request->user_id)->implode(",");
+            }
+            if ($item_id) {
+                $locations["item_id"] = $item_id;
             }
             ItemMovement::create($locations);
         }
@@ -187,6 +191,7 @@ class StockController extends Controller
         $data["num_invoice_id"] = $request->num_invoice_id == "0" ? null  : $request->num_invoice_id;
         $data["purchase_id"] = $request->purchase_id == "0" ? null  : $request->purchase_id;
         $item =  Item::create($data);
+        $this->_set_new_mouvement($request , $item->id );
         return ['success' => true, 'message' => "Sauvegarder avec succès"   ,"data" => $this->_make_row_inventory($item)];
     }
     public function  detail_after_scanned_qrcode (Request $request){

@@ -9,14 +9,14 @@
                 <div class="d-flex align-items-center position-relative my-1">
                     <input type="text" id="search-item" autocomplete="off"
                         class="form-control form-control-solid form-select-sm w-300px ps-9 "
-                        placeholder="{{ trans('lang.search') }} : Eplacement , critère , etat, ...">
+                        placeholder="{{ trans('lang.search') }} : Emplacement , critère , etat, ...">
                 </div>
             </div>
-            <div class="me-4 my-2">
+            {{-- <div class="me-4 my-2">
                 <a id="do-reload" title = "Recharger" class="btn btn-sm btn-outline  btn-outline-default">
                     <i class="fas fa-sync-alt" style="width: 10px;"></i>
                 </a>
-            </div>
+            </div> --}}
             <div class="me-4 my-2">
                 @php
                     echo modal_anchor(url('/stock/inventory/create-article'), '<button class="btn btn-sm btn-light-info "><i class="fas fa-plus "></i> Enreigistrement</button>', ['title' => 'Nouvel enreigistrement'])
@@ -52,7 +52,8 @@
                 { data: "prix_ht",title: 'Montant HT'},
                 // { data: "prix_htt",title: 'Montant HTT'},
                 { data: "etat",title: 'Etat'},
-                { data: "observation",title: 'observation'},
+                // { data: "observation",title: 'observation'},
+                { data: "disponiblity",title: 'Disponibilité'},
                 { data: "detail",title: ''},
             ],
             ajax: {

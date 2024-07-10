@@ -111,7 +111,7 @@
             <div class="col-md-4">
                 <div class="card-title d-flex flex-column">   
                     <span class="text-gray-700 pt-1 fw-semibold fs-6">Place</span>
-                    <div class="input-group ">
+                    <div class="input-group input-group-sm">
                         <input type="text" autocomplete="off" class="form-control  form-control-sm form-control-solid" name= "place" value="{{ $item_place  }}" placeholder="Ex : P1"/>
                         <span class="input-group-text" id="location-code"></span>
                       </div>
