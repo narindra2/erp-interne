@@ -91,7 +91,7 @@ class PurchaseController extends Controller
             "DT_RowId" => row_id("purchases", $purchase->id),
             'num' =>$num_purchase ,
             'info' => "<span data-kt-element='bullet' class='bullet bullet-vertical d-flex align-items-center min-h-30px  bg-$statusColor'></span>",
-            'date' => $purchase->purchase_date->format("d-M-Y"),
+            'date' => $purchase->purchase_date->translatedFormat("d-M-Y"),
             'author' => $purchase->author->sortname,
             'method' => "<span class='badge badge-sm badge-light-info'>$purchase->method</span>",
             'items' => $items,
@@ -199,7 +199,6 @@ class PurchaseController extends Controller
     }
     public function migrationToStockModal(Request $request)
     {
-        
         $purchase_model = Purchase::with(["details.article", "numInvoiceLines" ,"itemsInStock"])->find($request->purchase_id);
         return view("purchases.modal-form-migration-stock", ["purchase_model" => $purchase_model]);
     }

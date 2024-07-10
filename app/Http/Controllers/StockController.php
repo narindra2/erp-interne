@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use Auth;
 use Exception;
 use App\Models\Item;
@@ -11,12 +12,12 @@ use App\Models\ItemType;
 use App\Models\Location;
 use App\Models\Purchase;
 use App\Models\ItemCategory;
+use App\Models\ItemMovement;
 use Illuminate\Http\Request;
+use PhpParser\Node\Expr\FuncCall;
 use App\Http\Requests\ItemTypeRequest;
 use App\Models\PurchaseNumInvoiceLine;
 use App\Http\Requests\CreateItemCategoryResquet;
-use DB;
-use PhpParser\Node\Expr\FuncCall;
 
 class StockController extends Controller
 {
@@ -83,7 +84,9 @@ class StockController extends Controller
             $num =  $item->purchase->getNumPurchase();
             $row["purchase"] = modal_anchor(url('/purchases/demande-form'), "$num <i class='fas fa-link'></i> ", ['title' => "Détail de la demande  d'achat : $num ", 'class' => 'btn btn-link btn-color-info', "data-modal-lg" => true, "data-post-purchase_id" => $item->purchase_id]);
         }
-        $row["location"]  = "";
+        $row["location"]  = $item->get_actualy_place();
+        $row["assigned"]  = $item->get_user_use_it();
+        
         /*** Relationship  in num_invoice */
         if ($item->num_invoice) {
             $row["num_invoice"] = $item->num_invoice->num_invoice;
@@ -125,21 +128,24 @@ class StockController extends Controller
         $item = Item::find($request->item_id);
         $item->update($data);
         $where = $request->only(["location_id","item_id","place"]);
-        $where["user_id"] = collect($request->user_id)->implode(",");
-        /** Check */
-        if (!DB::table("item_movements")->where($where)->orderBy("id","DESC")->count()) {
-            $this->_update_mouvement($request);
+        $assigned = collect($request->user_id)->implode(",");
+        /** Check if item is moved */
+        $last_location = ItemMovement::where($where)->orderBy("id","DESC")->take(2)->get();
+        if ($last_location->count()  &&  $last_location->first()->user_id == $assigned )  {
+            // Not moved , nothing to do
+        }else{
+            $this->_set_new_mouvement($request);
         }
         $item->refresh()->load(["article.category","purchase","num_invoice"]);
         return ['success' => true, 'message' => "Mise à jour avec succès" , "row_id" =>  row_id("invetory",$item->id )  ,"data" => $this->_make_row_inventory( $item)];
     }
-    public function _update_mouvement(Request $request){
+    public function _set_new_mouvement(Request $request){
         if ($request->location_id) {
             $locations  = $request->only(["location_id","item_id","place"]);
             if (count($request->user_id ?? [])) {
                 $locations["user_id"] = collect($request->user_id)->implode(",");
             }
-            DB::table("item_movements")->insert($locations);
+            ItemMovement::create($locations);
         }
     }
     public function create_article_migration_to_stock(Request $request)
@@ -151,21 +157,23 @@ class StockController extends Controller
         $data["code"] = Item::generateCodeItemForNew($request->item_type_id);
         $data["date"] = convert_date_to_database_date($request->date);
         $data["num_invoice_id"] = $request->num_invoice_id == "0" ? null  : $request->num_invoice_id;
-        $article = ItemType::find($request->item_type_id);
+        // $article = ItemType::find($request->item_type_id);
         // $data["etat"] =  $article->sub_category == ItemType::CONSOMABLE ? "en_stock"  : "fonctionnel";
         $data["etat"] =  "fonctionnel";
         $data["created_from"] = "purchase_form"; /** From migration  form in purchase request*/
         $item =  Item::updateOrCreate( ["id" => $request->item_id ], $data);
-        DB::table("item_movements")->insert(["location_id" => Location::STOCK_ID]);
+        ItemMovement::create(["location_id" => Location::STOCK_ID , "item_id" =>  $item->id]);
         return ['success' => true, 'message' => "Sauvegarder avec succès" , "item" => $item ];
     }
     public function create_article_to_stock_modal_form(Request $request)
     {
         $articles = ItemType::whereDeleted(0)->get();
         $purchases = Purchase::with(['author'])->whereDeleted(0)->get();
+        $locations = Location::whereDeleted(0)->get();
+        $users = User::whereDeleted(0)->get();
         $num_invoices = PurchaseNumInvoiceLine::whereDeleted(0)->get();
         
-        return view('stock.article.create-article-to-stock-modal-form', ["articles" =>$articles , "purchases"  =>$purchases , "num_invoices" => $num_invoices]);
+        return view('stock.article.create-article-to-stock-modal-form', ["articles" =>$articles , "purchases"  =>$purchases , "num_invoices" => $num_invoices , "locations" => $locations , "users" => $users]);
     }
     public function save_new_article_to_stock(Request $request)
     {   
@@ -304,13 +312,17 @@ class StockController extends Controller
 
     public function _make_row_location(Location $location)
     {
-        $actions = modal_anchor(url("/stock/location/modal-form"), '<i class="fas fa-edit me-4 fs-3 text-info"></i>', ["title" => "Edition du " . $location->name , "data-post-location_id" => $location->id]);
-        $actions .= " " . js_anchor('<i class="fas fa-trash me-4 fs-3 text-danger"></i>', [ 'data-action-url' => url("/stock/location/delete"), "title" => "Supprimer","data-post-location_id" => $location->id , "data-action" => "delete"]);
+        if (($location->name == "Stock" ||  $location->id == Location::STOCK_ID)) {
+            $actions = "";
+        }else{
+            $actions = modal_anchor(url("/stock/location/modal-form"), '<i class="fas fa-edit me-4 fs-3 text-info"></i>', ["title" => "Edition du " . $location->name , "data-post-location_id" => $location->id]);
+            $actions .= " " . js_anchor('<i class="fas fa-trash me-4 fs-3 text-danger"></i>', [ 'data-action-url' => url("/stock/location/delete"), "title" => "Supprimer","data-post-location_id" => $location->id , "data-action" => "delete"]);
+        }
         return [
             "DT_RowId" => row_id("location", $location->id),
             'name' => $location->name,
             'code' => $location->code_location ?? "",
-            'actions' =>  $location->name == "Stock"  ? ""   : $actions,
+            'actions' =>  $actions,
         ];
     }
     public function location_modal_form(Request $request) {
@@ -339,5 +351,43 @@ class StockController extends Controller
             $location->update(["deleted" => 1]);
             return ["success" => true, "message" => trans("lang.success_deleted")];
         }
+    }
+    public function get_location_code(Request $request)
+    {
+        try {
+            $location = Location::find($request->location_id);
+            return ["success" => true,  "code" => $location->code_location ?? $location->name  ];
+        } catch (Exception $e) {
+            return ["success" => true,  "message" => $e->getMessage() ];
+        }
+    }
+    public function item_location_history(Request $request)
+    {
+        $data = [];
+        $mouvements = ItemMovement::with(["location"])->where("item_id" , $request->item_id )->oldest()->get();
+        $count_mouvmnt = $mouvements->count();
+        if (! $count_mouvmnt ) {
+            return ["data" => [
+                [
+                    "location" =>  Location::find(Location::STOCK_ID)->name . " <span class='badge badge-info'>Emplacement actuel</span>",
+                    "date" => now()->translatedFormat("d-M-Y"),
+                    "used_by" => "",
+                ]
+            ]];
+        }
+        $i = 1;
+        foreach ($mouvements  as $mouvement) {
+           $location =  $mouvement->place . $mouvement->location->code_location . "({$mouvement->location->name})";
+           if ( $i == $count_mouvmnt) {
+                $location .= "<span class='badge badge-info'>Emplacement actuel</span>";
+           } 
+           $data[] = [
+            "location" =>  $location,
+            "date" => $mouvement->created_at->translatedFormat("d-M-Y"),
+            "used_by" => User::findMany(explode(",",$mouvement->user_id))->implode("sortname", ", "),
+           ];
+           $i++;
+        }
+        return ["data" => $data];
     }
 }

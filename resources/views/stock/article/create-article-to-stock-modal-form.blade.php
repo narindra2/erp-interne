@@ -55,6 +55,38 @@
                 </select>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card-title d-flex flex-column">   
+                    <span class="text-gray-700 pt-1 fw-semibold fs-6">Lieu d'emplacement </span>
+                    <select id="location_id" name="location_id" class="form-select form-select-sm form-select-solid" data-placeholder="Lieu d'emplacement"  data-control="select2" data-hide-search="false" data-dropdown-parent="#ajax-modal">
+                        @foreach ($locations as $location)
+                        <option value="{{ $location->id }}"  >{{ $location->name }}</option>
+                      @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card-title d-flex flex-column">   
+                    <span class="text-gray-700 pt-1 fw-semibold fs-6">Place</span>
+                    <div class="input-group ">
+                        <input type="text" autocomplete="off" class="form-control  form-control-sm form-control-solid" name= "place" value="" placeholder="Ex : P1"/>
+                        <span class="input-group-text" id="location-code"></span>
+                      </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card-title d-flex flex-column">   
+                    <span class="text-gray-700 pt-1 fw-semibold fs-6">Assigné(s) à</span>
+                    <select id="user_id" name="user_id[]"   class="form-select form-select-sm form-select-solid" data-placeholder="Assigné à ... "  multiple data-control="select2" data-dropdown-parent="#ajax-modal">
+                        <option value=""  disabled  >Aucun</option>
+                        @foreach ($users as $user)
+                            <option value="{{ $user->id }}"  >{{ $user->sortname }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+        </div>
         <div class="separator border-info mt-3 mb-3"></div>
         <div class="row">
             <div class="col-md-4">
@@ -141,5 +173,29 @@
                 });
             }
         init_date(); 
+        $("#location_id").on("change",function(){
+            let  location_id = $(this).val();
+            getLocationCode(location_id)
+        })
+        getLocationCode($("#location_id").val());
+        function getLocationCode( location_id = 0){
+            $.ajax({
+                url: url("/stock/get-location-code"),
+                type: 'POST',
+                dataType: 'json',
+                data: {"location_id" : location_id , "_token" : _token},
+                success: function(result) {
+                    if (result.success) {
+                        $("#location-code").text(result.code)
+                    }else{
+                        toastr.error(result.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    var err = ("(" + xhr.responseText + ")");
+                    toastr.error('Opps !  un erreur se produit. Erreur : '  + err);
+                }
+            });
+        }
     });
 </script>

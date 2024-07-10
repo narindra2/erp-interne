@@ -94,33 +94,33 @@
                     <span class="text-gray-700 pt-1 fw-semibold fs-6">Lieu d'emplacement </span>
                     @php
                         $item_locaction  = null; $item_place  = ""; $assigned = [];
-                        $place = $item->get_actualy_place();
+                        $place = $item->get_actualy_place_info();
                         if ($place) {
                             $item_locaction  =  $place->location_id;
                             $item_place   =  $place->place;
                             $assigned = explode(",", $place->user_id);
                         }
                     @endphp
-                    <select id="location_id" name="location_id" class="form-select form-select-sm form-select-solid" data-placeholder="Lieu d'emplacement"  data-control="select2" data-hide-search="true" data-dropdown-parent="#ajax-modal">
+                    <select id="location_id" name="location_id" class="form-select form-select-sm form-select-solid" data-placeholder="Lieu d'emplacement"  data-control="select2" data-hide-search="false" data-dropdown-parent="#ajax-modal">
                         @foreach ($locations as $location)
                         <option value="{{ $location->id }}" @if($location->id == $item_locaction) selected @endif >{{ $location->name }}</option>
                       @endforeach
                     </select>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="card-title d-flex flex-column">   
                     <span class="text-gray-700 pt-1 fw-semibold fs-6">Place</span>
                     <div class="input-group ">
-                        <input type="text"   autocomplete="off" class="form-control  form-control-sm form-control-solid" name= "place" value="{{ $item_place  }}" placeholder="Ex : P1"/>
-                        <span class="input-group-text">$</span>
+                        <input type="text" autocomplete="off" class="form-control  form-control-sm form-control-solid" name= "place" value="{{ $item_place  }}" placeholder="Ex : P1"/>
+                        <span class="input-group-text" id="location-code"></span>
                       </div>
                 </div>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-4">
                 <div class="card-title d-flex flex-column">   
-                    <span class="text-gray-700 pt-1 fw-semibold fs-6">Assigné à</span>
-                    <select id="user_id" name="user_id[]"   class="form-select form-select-sm form-select-solid" data-placeholder="Assigné à ... "  multiple data-control="select2" data-hide-search="true" data-dropdown-parent="#ajax-modal">
+                    <span class="text-gray-700 pt-1 fw-semibold fs-6">Assigné(s) à</span>
+                    <select id="user_id" name="user_id[]"   class="form-select form-select-sm form-select-solid" data-placeholder="Assigné à ... "  multiple data-control="select2"  data-dropdown-parent="#ajax-modal">
                         <option value=""  disabled  >Aucun</option>
                         @foreach ($users as $user)
                             <option value="{{ $user->id }}" @if(in_array($user->id, $assigned)) selected @endif >{{ $user->sortname }}</option>
@@ -129,6 +129,7 @@
                 </div>
             </div>
         </div>
+        
         <div class="separator border-info mt-3 mb-3"></div>
         <div class="row">
             <div class="col-md-5">
@@ -152,6 +153,7 @@
                 {{ $item->qrcode }}
             </div>
         </div>
+        
     </div>
     <div class="card-footer d-flex justify-content-end ">
         <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn  btn-sm btn-secondary">Quitter </button>
@@ -159,6 +161,16 @@
             @include('partials.general._button-indicator', ['label' =>"Enregistrer la modification" ,"message" => trans('lang.sending')])
         </button>
     </div>
+    <div class="separator border-info mt-3 mb-3"></div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card-title d-flex flex-column">   
+                    <span class="text-gray-700 pt-1 fw-semibold fs-6">Historique d'emplacement </span>
+                    <table id="historyLocation" class="table table-row-dashed table-row-gray-200 align-middle table-hover "></table>
+                </div>
+            </div>
+            
+        </div>
 </form>
 <style>
     #modal-dialog{
@@ -178,11 +190,33 @@
     $(document).ready(function() {
         KTApp.initSelect2();
         KTApp.initBootstrapTooltips();
+        dataTableInstance.historyLocation = $("#historyLocation").DataTable({
+            processing: true,
+            ordering: false,
+            paging: false,
+            dom:"tpr",
+            columns: [
+                { data: "date",title: 'Date'},
+                { data: "location",title: 'Empalcement'},
+                { data: "used_by",title: 'utilisé(s) par'},
+            ],
+            ajax: {
+                url: url("/stock/location/history"),
+                data: function(data) {
+                    data.item_id = "{{ $item->id }}";
+                }
+            },
+            language: {
+                url: "https://cdn.datatables.net/plug-ins/1.11.3/i18n/fr_fr.json"
+            },
+        });
         $("#modal-form-inventor").appForm({
+            isModal: false,
             onSuccess: function(response) {
                 if (response.row_id) {
                     dataTableUpdateRow(dataTableInstance.invetoryListDataTable, response.row_id,response.data) 
                 }
+                dataTableInstance.historyLocation.ajax.reload();
             },
         });
         function init_date(){
@@ -208,5 +242,30 @@
                 });
             }
         init_date(); 
+        $("#location_id").on("change",function(){
+            let  location_id = $(this).val();
+            getLocationCode(location_id)
+        })
+        getLocationCode($("#location_id").val());
+        function getLocationCode( location_id = 0){
+            $.ajax({
+                url: url("/stock/get-location-code"),
+                type: 'POST',
+                dataType: 'json',
+                data: {"location_id" : location_id , "_token" : _token},
+                success: function(result) {
+                    if (result.success) {
+                        $("#location-code").text(result.code)
+                    }else{
+                        toastr.error(result.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    var err = ("(" + xhr.responseText + ")");
+                    toastr.error('Opps !  un erreur se produit. Erreur : '  + err);
+                }
+            });
+        }
+        
     });
 </script>

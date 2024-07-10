@@ -57,8 +57,24 @@ class Item extends Model
     public function mouvements() {
         return $this->belongsToMany(Location::class,"item_movements","location_id", "item_id")->withPivot(["place","item_id","user_id","deleted"]);
     }
-    public function get_actualy_place() {
+    public function get_actualy_place_info() {
         return DB::table("item_movements")->where("item_id", $this->id)->orderBy("id","DESC")->first();
+    }
+    public function get_actualy_place() {
+        $actuel_place = $this->get_actualy_place_info();
+        if ($actuel_place && $actuel_place->user_id) {
+            $location = Location::find($actuel_place->location_id);
+            return  $actuel_place->place . "" . ($location->code_location ?? $location->name);
+        }else{
+            $location = Location::find(Location::STOCK_ID);
+           return  $location->code_location ??  $location->name;
+        }
+    }
+    public function get_user_use_it() {
+       $actuel_place = $this->get_actualy_place_info();
+       if ($actuel_place && $actuel_place->user_id) {
+         return User::findMany(explode(",",$actuel_place->user_id))->implode("sortname", ", ");
+       }
     }
     public function getEtatInfo() {
         if($this->etat == "fonctionnel"){

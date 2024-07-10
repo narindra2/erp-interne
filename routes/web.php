@@ -400,6 +400,8 @@ Route::middleware(['auth', 'checkinweb'])->group(function () {
     Route::post("/stock/location/modal-form", [StockController::class, 'location_modal_form']);
     Route::post("/stock/location/save", [StockController::class, 'location_save']);
     Route::post("/stock/location/delete", [StockController::class, 'location_delete']);
+    Route::post("/stock/get-location-code", [StockController::class, 'get_location_code']);
+    Route::get("/stock/location/history", [StockController::class, 'item_location_history']);
 
     
     /** Purchase */

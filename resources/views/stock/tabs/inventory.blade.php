@@ -8,8 +8,8 @@
             <div class="me-4 my-2 ml-3">
                 <div class="d-flex align-items-center position-relative my-1">
                     <input type="text" id="search-item" autocomplete="off"
-                        class="form-control form-control-solid form-select-sm w-200px ps-9 "
-                        placeholder="{{ trans('lang.search') }}">
+                        class="form-control form-control-solid form-select-sm w-300px ps-9 "
+                        placeholder="{{ trans('lang.search') }} : Eplacement , critère , etat, ...">
                 </div>
             </div>
             <div class="me-4 my-2">
@@ -45,7 +45,9 @@
                 { data: "propriety",title: 'Critère'},
                 { data: "sub_cat",title: 'sous-cat'},
                 { data: "cat",title: 'Categorie'},
-                { data: "date",title: 'Date d\'acquisition'},
+                { data: "date",title: 'Acquisition'},
+                // { data: "assigned",title: ''},
+                { data: "location",title: 'Emplacement'},
                 { data: "num_invoice",title: 'N° facture'},
                 { data: "prix_ht",title: 'Montant HT'},
                 // { data: "prix_htt",title: 'Montant HTT'},

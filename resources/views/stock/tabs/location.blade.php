@@ -1,7 +1,7 @@
 <div class="card shadow-sm">
     <div class="d-flex justify-content-end mx-5 my-5">
         @php
-            echo modal_anchor(url('/location/modal-form'), '<button class="btn btn-light-info font-weight-bold mr-2 btn-sm"><i class="fas fa-plus "></i> Ajouter une nouvelle catégorie</button>', ['title' => 'Nouvelle catégorie'])
+            echo modal_anchor(url('/stock/location/modal-form'), '<button class="btn btn-light-info font-weight-bold mr-2 btn-sm"><i class="fas fa-plus "></i> Ajouter une nouvelle catégorie</button>', ['title' => 'Nouvelle catégorie'])
         @endphp
     </div>
     <div class="card-body">
@@ -12,6 +12,7 @@
     $(document).ready(function() {
         dataTableInstance.location = $("#location").DataTable({
             processing: true,
+            paging:false,
             dom: "tpr",
             columns: [
                 {data: "name",title: 'Nom' },
