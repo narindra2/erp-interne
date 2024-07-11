@@ -87,6 +87,9 @@ class StockController extends Controller
         $row["location"]  = $item->get_actualy_place();
         $row["assigned"]  = $item->get_user_use_it();
         $row["disponiblity"]  = $item->get_disponible();
+        if ($row["disponiblity"] == "En usage") {
+            $row["disponiblity"]  .=  " : " . $row["assigned"];
+        }
         
         /*** Relationship  in num_invoice */
         if ($item->num_invoice) {

@@ -420,7 +420,7 @@ Route::middleware(['auth', 'checkinweb'])->group(function () {
 Route::get("/purchases", [PurchaseController::class, 'index']);
 Route::get("/purchases/data_list", [PurchaseController::class, "getPurchaseList"]);
 Route::post('/purchases/demande-form', [PurchaseController::class, "modal_form"]);
-Route::get('/stock/qrcode-scanned/detail/{item_id}', [StockController::class, "detail_after_scanned_qrcode"]);
+Route::get('/inventaire/{item_id}', [StockController::class, "detail_after_scanned_qrcode"]);
 
 Route::middleware(['auth', 'checkinweb', 'not_contributor'])->group(function () {
     Route::get("/needToBuy", [NeedToBuyController::class, "index"]);

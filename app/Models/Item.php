@@ -133,7 +133,7 @@ class Item extends Model
             return null;
         }
         if ($typeRedirectionUrl) {
-            return QrCode::size(130)->color(82, 27, 195)->generate(url("/stock/qrcode-scanned/detail/$this->id"));
+            return QrCode::size(130)->color(82, 27, 195)->generate(url("/inventaire/$this->id"));
         }
         /** Type info details */
         $data = collect();
