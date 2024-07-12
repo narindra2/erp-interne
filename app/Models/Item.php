@@ -133,7 +133,7 @@ class Item extends Model
             return null;
         }
         if ($typeRedirectionUrl) {
-            return QrCode::size(130)->color(82, 27, 195)->generate(url("/inventaire/$this->id"));
+            return QrCode::size(130)->color(82, 27, 195)->generate(url("/item/$this->id"));
         }
         /** Type info details */
         $data = collect();
@@ -154,7 +154,7 @@ class Item extends Model
     }
     public static function generateCodeItemForNew($item_type_id) {
        try {
-            $last_item =  DB::table('items')->where("item_type_id", "=",$item_type_id)->orderBy('code', 'desc')->first();
+            $last_item =  DB::table('items')->where("item_type_id", "=",$item_type_id)->orderBy('code', 'desc')->whereDeleted(0)->first();
             /** First record  */
             if (!$last_item) {
                 return 1;

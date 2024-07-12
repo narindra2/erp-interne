@@ -381,6 +381,7 @@ Route::middleware(['auth', 'checkinweb'])->group(function () {
     Route::post("/purchase/migrate-one-article-to-stock", [StockController::class, 'create_article_migration_to_stock']);
     Route::post("/stock/inventory/create-article", [StockController::class, 'create_article_to_stock_modal_form']);
     Route::post("/stock/inventory/save-new-article", [StockController::class, 'save_new_article_to_stock']);
+    Route::post("/stock/delete/item", [StockController::class, 'delete_item_in_inventory_list']);
 
     Route::get("/stock/category/tab", [StockController::class, 'category']);
     Route::get("/stock/category/data-list", [StockController::class, 'category_data_list']);
@@ -420,7 +421,7 @@ Route::middleware(['auth', 'checkinweb'])->group(function () {
 Route::get("/purchases", [PurchaseController::class, 'index']);
 Route::get("/purchases/data_list", [PurchaseController::class, "getPurchaseList"]);
 Route::post('/purchases/demande-form', [PurchaseController::class, "modal_form"]);
-Route::get('/inventaire/{item_id}', [StockController::class, "detail_after_scanned_qrcode"]);
+Route::get('/item/{item_id}', [StockController::class, "detail_after_scanned_qrcode"]);
 
 Route::middleware(['auth', 'checkinweb', 'not_contributor'])->group(function () {
     Route::get("/needToBuy", [NeedToBuyController::class, "index"]);

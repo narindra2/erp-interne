@@ -72,7 +72,6 @@ class StockController extends Controller
     }
     public function _make_row_inventory(Item $item) {
         $row["DT_RowId"] = row_id("invetory", $item->id);
-     
         $row["qrcode"]  =   view("stock.article.article-qrcode-column",["item" => $item])->render();
         $row["code"] =  modal_anchor(url("/stock/inventory/modal-form"), "<span class='text-info fs-5'>{$item->code_detail}</span>", ["title" => "Edition du " . $item->code_detail , "data-post-item_id" => $item->id]); ;
         $row["name"] = "<span class='text-dark fs-5 fw-bold'>{$item->article->name}</span>" ;
@@ -110,7 +109,8 @@ class StockController extends Controller
         // $row["prix_htt"] = $item->price_htt ? "<span class='badge badge-light-dark '>$item->price_htt Ar</span>"  :  "-" ;
         $observation_sort  = str_limite($item->observation,20);
         $row["observation"] = !$item->observation  ? "-"  : "<span class='to-link' data-bs-toggle='tooltip'  data-bs-placement='top' title='{$item->observation}' > $observation_sort </span>";
-        $row["detail"] =   modal_anchor(url("/stock/inventory/modal-form"), '<i class="fas fa-pen fs-4 me-3"></i>', ["title" => "Edition du " . $item->code_detail , "data-post-item_id" => $item->id]);
+        $row["detail"] =   modal_anchor(url("/stock/inventory/modal-form"), 'Détail ', ["title" => "Edition du " . $item->code_detail , "data-post-item_id" => $item->id]);
+        $row["delete"] =  js_anchor('<i class="fas fa-trash me-4 "></i>', [ 'data-action-url' => url("/stock/delete/item"), "title" => "Supprimer","data-post-item_id" => $item->id , "data-action" => "delete"]);
         return $row;
     }
     public function inventor_modal_form(Request $request) {
@@ -121,6 +121,16 @@ class StockController extends Controller
         $users = User::whereDeleted(0)->get();
         if ($request->item_id) {
             return view('stock.article.article-in-stock-modal-form', ["item" =>$item , "purchases"  =>$purchases , "num_invoices" => $num_invoices , "locations" => $locations , "users" => $users]);
+        }
+    }
+    public function delete_item_in_inventory_list(Request $request) {
+        $item = Item::find($request->item_id);
+        if ($request->input("cancel")) {
+            $item->update(["deleted" => 0]);
+            return ["success" => true, "message" => trans("lang.success_canceled"), "data" => $this->_make_row_inventory($item)];
+        } else {
+            $item->update(["deleted" => 1]);
+            return ["success" => true, "message" => trans("lang.success_deleted")];
         }
     }
     

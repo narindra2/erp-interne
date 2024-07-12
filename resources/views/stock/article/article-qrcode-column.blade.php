@@ -4,7 +4,7 @@
     </div>
     <div class="form-check form-switch form-check-custom justify-content-center " title="Afficher le Qrcode du {{ $item->code_detail }}">
         <input class="form-check-input h-15px w-30px" type="checkbox" role="switch" value="1"  id="show-qrcode-{{ $item->id }}">
-        <label class="form-check-label" for="show-qrcode-{{ $item->id }}">QrCode</label>
+        {{-- <label class="form-check-label" for="show-qrcode-{{ $item->id }}">QrCode</label> --}}
     </div>
     <script>
         $("#show-qrcode-{{ $item->id }}").on("change",function(){
@@ -18,6 +18,6 @@
 @else 
     <div class="form-check form-switch form-check-custom justify-content-center " title="Pas de Qrcode du {{ $item->code_detail }}">
         <input disabled class="form-check-input h-15px w-30px" type="checkbox" role="switch" >
-        <label class="form-check-label" >QrCode</label>
+        {{-- <label class="form-check-label" >QrCode</label> --}}
     </div>
 @endif
