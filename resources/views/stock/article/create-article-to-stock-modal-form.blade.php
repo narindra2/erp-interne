@@ -55,6 +55,7 @@
                 </select>
             </div>
         </div>
+        <div class="separator border-info mt-3 mb-3"></div>
         <div class="row">
             <div class="col-md-4">
                 <div class="card-title d-flex flex-column">   
@@ -78,7 +79,7 @@
             <div class="col-md-4">
                 <div class="card-title d-flex flex-column">   
                     <span class="text-gray-700 pt-1 fw-semibold fs-6">Assigné(s) à</span>
-                    <select id="user_id" name="user_id[]"   class="form-select form-select-sm form-select-solid" data-placeholder="Assigné à ... "  multiple data-control="select2" data-dropdown-parent="#ajax-modal">
+                    <select id="user_id" name="user_id[]"   class="form-select form-select-sm form-select-solid" data-placeholder="Assigné(s) à"  multiple data-control="select2" data-dropdown-parent="#ajax-modal">
                         <option value=""  disabled  >Aucun</option>
                         @foreach ($users as $user)
                             <option value="{{ $user->id }}"  >{{ $user->sortname }}</option>

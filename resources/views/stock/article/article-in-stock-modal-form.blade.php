@@ -114,6 +114,32 @@
                 </div>
             </div>
         </div>
+        
+        
+        <div class="separator border-info mt-2 mb-2"></div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card-title d-flex flex-column">   
+                    <span class="text-gray-700 pt-1 fw-semibold fs-6">Critère 
+                        <span  data-bs-toggle="tooltip" data-bs-placement="top" title="Mettez du virgule ',' pour séparer un critére">
+                            <i class="fas fa-question-circle"></i>
+                        </span>
+                        : 
+                    </span>
+                    <textarea id="propriety" name="propriety" class="form-control form-control form-control-sm form-control-solid" rows="2" data-kt-autosize="true"  placeholder="Ex:Marque, couleur , ..." > {{ $item->propriety }} </textarea>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card-title d-flex flex-column">   
+                    <span class="text-gray-700 pt-1 fw-semibold fs-6">Observation : </span>
+                    <textarea id="observation" name="observation" class="form-control form-control form-control-sm form-control-solid" rows="2" data-kt-autosize="true"  placeholder="Obsevration" > {{ $item->observation }} </textarea>
+                </div>
+            </div>
+            {{-- <div class="col-md-2">
+
+                {{ $item->qrcode }}
+            </div> --}}
+        </div>
         <div class="separator border-info mt-2 mb-2"></div>
         <div class="row">
             <div class="col-md-4">
@@ -147,7 +173,7 @@
             <div class="col-md-4">
                 <div class="card-title d-flex flex-column">   
                     <span class="text-gray-700 pt-1 fw-semibold fs-6">Assigné(s) à</span>
-                    <select id="user_id" name="user_id[]"   class="form-select form-select-sm form-select-solid" data-placeholder="Assigné à ... "  multiple data-control="select2"  data-dropdown-parent="#ajax-modal">
+                    <select id="user_id" name="user_id[]"   class="form-select form-select-sm form-select-solid" data-placeholder="Assigné(s) à ... "  multiple data-control="select2"  data-dropdown-parent="#ajax-modal">
                         <option value=""  disabled  >Aucun</option>
                         @foreach ($users as $user)
                             <option value="{{ $user->id }}" @if(in_array($user->id, $assigned)) selected @endif >{{ $user->sortname }}</option>
@@ -155,31 +181,6 @@
                     </select>
                 </div>
             </div>
-        </div>
-        
-        <div class="separator border-info mt-2 mb-2"></div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card-title d-flex flex-column">   
-                    <span class="text-gray-700 pt-1 fw-semibold fs-6">Critère 
-                        <span  data-bs-toggle="tooltip" data-bs-placement="top" title="Mettez du virgule ',' pour séparer un critére">
-                            <i class="fas fa-question-circle"></i>
-                        </span>
-                        : 
-                    </span>
-                    <textarea id="propriety" name="propriety" class="form-control form-control form-control-sm form-control-solid" rows="2" data-kt-autosize="true"  placeholder="Ex:Marque, couleur , ..." > {{ $item->propriety }} </textarea>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card-title d-flex flex-column">   
-                    <span class="text-gray-700 pt-1 fw-semibold fs-6">Observation : </span>
-                    <textarea id="observation" name="observation" class="form-control form-control form-control-sm form-control-solid" rows="2" data-kt-autosize="true"  placeholder="Obsevration" > {{ $item->observation }} </textarea>
-                </div>
-            </div>
-            {{-- <div class="col-md-2">
-
-                {{ $item->qrcode }}
-            </div> --}}
         </div>
         
     </div>
