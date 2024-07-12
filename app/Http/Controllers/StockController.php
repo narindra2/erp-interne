@@ -208,8 +208,8 @@ class StockController extends Controller
         return ['success' => true, 'message' => "Sauvegarder avec succès"   ,"data" => $this->_make_row_inventory($item)];
     }
     public function  detail_after_scanned_qrcode (Request $request){
-        $item =  $item = Item::with((["article.category"]))->find($request->route("item_id"));
-        if (!$item) {
+        $item =  $item = Item::with((["article.category","mouvements"]))->find($request->route("item_id"));
+        if (!$item || $item->deleted) {
             abort(404);
         }
         return view ("stock.article.scanned-detail",["item" => $item]);

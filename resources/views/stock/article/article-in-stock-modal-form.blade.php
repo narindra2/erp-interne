@@ -227,7 +227,7 @@
             columns: [
                 { data: "date",title: 'Date'},
                 { data: "location",title: 'Empalcement'},
-                { data: "used_by",title: 'utilisé(s) par'},
+                { data: "used_by",title: 'En usage'},
             ],
             ajax: {
                 url: url("/stock/location/history"),

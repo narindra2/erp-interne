@@ -51,8 +51,7 @@
                 <h3 class="card-title align-items-start flex-column">
                     <span class="card-label fw-bold text-info">{{ $item->article->name }}</span>
                     <span class="text-gray-500  fw-semibold fs-6">
-                        Propieté : {{ $item->propriety ?? "-" }}<br>
-                        
+                        Critère : {{ $item->propriety ?? "-" }}<br>
                         @if ($item->article->category)
                             {{ $item->article->category->name }}
                         @endif
@@ -78,22 +77,41 @@
                                 <input type="text" class="form-control form-control-sm form-control-solid" readonly  value="{{ $item->etat }}">
                             </div>
                             <div class="mb-4">
-                                <label class="form-label">Prix HT</label>
-                                <input type="text" class="form-control form-control-sm form-control-solid" readonly  value="{{ $item->price_ht ?? "-" }}">
-                            </div>
-                            <div class="mb-4">
                                 <label class="form-label">Observation </label>
                                 <input type="text" class="form-control form-control-sm form-control-solid" readonly  value="{{ $item->observation ?? "Aucun" }}">
                             </div>
+                            <div class="mb-4">
+                                <label class="form-label">Disponibilité </label>
+                                <input type="text" class="form-control form-control-sm form-control-solid" readonly  value="{{ $item->get_disponible() ?? "Aucun" }}">
+                            </div>
                         </div>
+                        <label class="form-label">Historique d'emplacement : </label>
+                        <table class="table">
+                            <thead class="thead-dark">
+                              <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Emplacement</th>
+                                <th scope="col">En usage de</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($item->mouvements as $mouvement)
+                                    @php
+                                        $place = $mouvement->pivot->place  . $mouvement->code_location . "($mouvement->name)";
+                                    @endphp
+                                    <tr>
+                                        <td>{{ $mouvement->created_at->translatedFormat("d-M-Y") }}</td>
+                                        <td>{{ $place }} {{ $loop->index == 0 ? "(Actuel)" : ""}}</td>
+                                        <td>{{ \App\Models\User::findMany(explode(",",$mouvement->pivot->user_id))->implode("sortname", ", ") }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                          </table>
                     </div>
                 </div>
         </div>
     </div>
 </div>
-
-
-
 
 <style>
     .tab-content .form-control.form-control-solid {
