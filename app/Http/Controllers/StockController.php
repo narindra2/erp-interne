@@ -48,7 +48,7 @@ class StockController extends Controller
     public function inventory_data_list(Request $request) {
         $data = [] ; $req = $request->all();
         $query = Item::query()->with(["article.category","purchase","num_invoice"])->whereDeleted(0);
-        $etat = get_array_value( $req,"etat");
+        $etat = get_array_value( $req,"etat_item");
         if ($etat) {
             $query->where("etat", $etat);
         }

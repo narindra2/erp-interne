@@ -49,8 +49,8 @@
         <div class="card card-flush h-xl-100  shadow-sm ">
             <div class="card-header pt-7 ">
                 <h3 class="card-title align-items-start flex-column">
-                    <span class="card-label fw-bold text-info">{{ $item->article->name }}</span>
-                    <span class="text-gray-500  fw-semibold fs-6">
+                    <span class="card-label fw-bold text-info fs-1">{{ $item->article->name }}</span>
+                    <span class="text-gray-500  fw-semibold fs-3">
                         Critère : {{ $item->propriety ?? "-" }}<br>
                         @if ($item->article->category)
                             {{ $item->article->category->name }}
@@ -100,7 +100,7 @@
                                         $place = $mouvement->pivot->place  . $mouvement->code_location . "($mouvement->name)";
                                     @endphp
                                     <tr>
-                                        <td>{{ $mouvement->created_at->translatedFormat("d-M-Y") }}</td>
+                                        <td>{{ $mouvement->pivot->created_at->translatedFormat("d-M-Y") }}</td>
                                         <td>{{ $place }} {{ $loop->index == 0 ? "(Actuel)" : ""}}</td>
                                         <td>{{ \App\Models\User::findMany(explode(",",$mouvement->pivot->user_id))->implode("sortname", ", ") }}</td>
                                     </tr>
@@ -112,7 +112,6 @@
         </div>
     </div>
 </div>
-
 <style>
     .tab-content .form-control.form-control-solid {
         background-color: #F5F8FA;
@@ -125,5 +124,4 @@
     }
 </style>
 </body>
-
 </html>

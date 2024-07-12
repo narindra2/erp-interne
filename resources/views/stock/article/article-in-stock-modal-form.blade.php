@@ -3,7 +3,7 @@
         @csrf
         <input type="hidden" name="item_id" value="{{ $item->id }}" >
         
-        <div class="separator border-info mt-2 mb-2"></div>
+        <div class="separator border-info mb-2"></div>
        <div class="row">
             <div class="col-md-4">
                 <div class="card-title d-flex flex-column">   
@@ -56,7 +56,7 @@
                <div class="card-title d-flex flex-column">   
                    <span class="text-gray-700 pt-1 fw-semibold fs-6">Disponibilité</span>
                    <div class="d-flex align-items-center">
-                       <span  style="cursor: no-drop;" class="fs-5 fw-bold text-info me-2 lh-1 ls-n2">{{  $item->get_disponible() }}</span>
+                       <span  style="cursor: no-drop;" class="fs-5 fw-bold text-info me-2 lh-1 ls-n2">{{  $item->get_disponible() }} {{ $item->get_disponible() == "En usage"  ? " de " .$item->get_user_use_it() : "" }}</span>
                    </div>
                </div> 
            </div>

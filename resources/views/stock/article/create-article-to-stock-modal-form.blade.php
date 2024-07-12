@@ -1,7 +1,7 @@
 <form class="form-save-new-inventory" action="{{ url("/stock/inventory/save-new-article") }}" method="POST" id="form-save-new-inventory">
     <div class="card-body">
         @csrf
-        <div class="separator border-info mt-3 mb-3"></div>
+        <div class="separator border-info mb-3"></div>
         <div class="row">
             <div class="col-md-4">
                 <span class="text-gray-700 pt-1 fw-semibold fs-6">Code article </span>

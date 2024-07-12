@@ -59,7 +59,7 @@ class Item extends Model
         return $this->belongsTo(PurchaseNumInvoiceLine::class, "num_invoice_id");
     }
     public function mouvements() {
-        return $this->belongsToMany(Location::class,"item_movements", "item_id","location_id")->withPivot(["place","item_id","user_id","deleted"]);
+        return $this->belongsToMany(Location::class,"item_movements", "item_id","location_id")->withPivot(["place","item_id","user_id","deleted","created_at"]);
     }
     public function get_actualy_place_info() {
         return DB::table("item_movements")->where("item_id", $this->id)->orderBy("id","DESC")->first();
@@ -207,7 +207,7 @@ class Item extends Model
         // ];
         $filters[] = [
             "label" => "Etat", 
-            "name" =>"etat",
+            "name" =>"etat_item",
             "type" => "select",
             "width"  =>"w-200px",
             'attributes' => [
