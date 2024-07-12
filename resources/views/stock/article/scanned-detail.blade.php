@@ -51,7 +51,7 @@
                 <h3 class="card-title align-items-start flex-column">
                     <span class="card-label fw-bold text-info fs-1">{{ $item->article->name }}</span>
                     <span class="text-gray-500  fw-semibold fs-3">
-                        Critère : {{ $item->propriety ?? "-" }}<br>
+                        Critère(s) : {{ $item->propriety ?? "-" }}<br>
                         @if ($item->article->category)
                             {{ $item->article->category->name }}
                         @endif
@@ -67,7 +67,7 @@
                             <div class="mb-4 text-center">
                                 {{ $item->qrCode }}
                             </div>
-                            <div class="mb-4 text-center text-info"><strong>{{ $item->codeDetail }}</strong></div>
+                            <div class="mb-4 text-center text-info fs-2"><strong>{{ $item->codeDetail }}</strong></div>
                             <div class="mb-4">
                                 <label class="form-label">Date d'aquisition</label>
                                 <input type="text" class="form-control form-control-sm form-control-solid" readonly  value="{{ $item->date->format("d/m/Y") }}">
@@ -85,7 +85,7 @@
                                 <input type="text" class="form-control form-control-sm form-control-solid" readonly  value="{{ $item->get_disponible() ?? "Aucun" }}">
                             </div>
                         </div>
-                        <label class="form-label">Historique d'emplacement : </label>
+                        <label class="form-label">Historique d'emplacement (Mouvement) : </label>
                         <table class="table">
                             <thead class="thead-dark">
                               <tr>

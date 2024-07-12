@@ -194,7 +194,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card-title d-flex flex-column">   
-                    <span class="text-gray-700 pt-1 fw-semibold fs-6">Historique d'emplacement :</span>
+                    <span class="text-gray-700 pt-1 fw-semibold fs-6">Historique d'emplacement (Mouvement) :</span>
                     <table id="historyLocation" class="table table-row-dashed table-row-gray-200 align-middle table-hover "></table>
                 </div>
             </div>
