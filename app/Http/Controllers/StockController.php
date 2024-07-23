@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use DB;
 use Auth;
 use Exception;
 use App\Models\Item;
@@ -14,7 +13,6 @@ use App\Models\Purchase;
 use App\Models\ItemCategory;
 use App\Models\ItemMovement;
 use Illuminate\Http\Request;
-use PhpParser\Node\Expr\FuncCall;
 use App\Http\Requests\ItemTypeRequest;
 use App\Models\PurchaseNumInvoiceLine;
 use App\Http\Requests\CreateItemCategoryResquet;
@@ -47,7 +45,7 @@ class StockController extends Controller
     /** Artilce inventory gestion */
     public function inventory_data_list(Request $request) {
         $data = [] ; $req = $request->all();
-        $query = Item::query()->with(["article.category","purchase","num_invoice"])->whereDeleted(0);
+        $query = Item::with(["article.category","purchase","num_invoice"])->whereDeleted(0);
         $etat = get_array_value( $req,"etat_item");
         if ($etat) {
             $query->where("etat", $etat);

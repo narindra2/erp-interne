@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use App\Models\ItemCategory;
 use FontLib\Table\Type\loca;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -133,7 +134,9 @@ class Item extends Model
             return null;
         }
         if ($typeRedirectionUrl) {
-            return QrCode::size(130)->color(82, 27, 195)->generate(url("/item/$this->id"));
+            return Cache::rememberForever("item_qrcode_img_$this->id", function () {
+                return QrCode::size(130)->color(82, 27, 195)->generate(url("/item/$this->id"));
+            });
         }
         /** Type info details */
         $data = collect();
