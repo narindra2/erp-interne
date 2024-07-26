@@ -102,7 +102,7 @@ class StockController extends Controller
         $etat_class = $etat_info["color"];
         $etat_text = $etat_info["text"];
         $row["etat"] = "<span class='badge badge-$etat_class '> $etat_text </span>" ;
-        $row["date"] = $item->date->format("d-M-Y");
+        $row["date"] = $item->date->format("d-m-Y");
         $row["prix_ht"] = $item->price_ht ? "<span class='badge badge-light-dark '>$item->price_ht Ar</span>"  :  "-" ;
         // $row["prix_htt"] = $item->price_htt ? "<span class='badge badge-light-dark '>$item->price_htt Ar</span>"  :  "-" ;
         $observation_sort  = str_limite($item->observation,20);

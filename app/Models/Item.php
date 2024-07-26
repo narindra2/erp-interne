@@ -134,7 +134,7 @@ class Item extends Model
             return null;
         }
         if ($typeRedirectionUrl) {
-            return Cache::rememberForever("item_qrcode_img_$this->id", function () {
+            return Cache::rememberForever("item_$this->id", function () {
                 return QrCode::size(130)->color(82, 27, 195)->generate(url("/item/$this->id"));
             });
         }
