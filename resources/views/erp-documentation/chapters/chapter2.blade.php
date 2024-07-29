@@ -4,7 +4,8 @@
     </h3>
     <h6 class="mb-5" style="text-decoration: underline;">Article 1 : Date de prise d’effet et Durée</h6>
     <p>
-        Le présent Règlement intérieur s’applique à compter du <b>03 janvier 2022.</b>
+        Le présent Règlement intérieur s’applique à compter sa date d’affichage en version physique sur le
+        tableau d’affichage officiel au sein de l’entreprise.
     </p>
     <h6 class="mb-5" style="text-decoration: underline;">Article 2 : MISE À JOUR</h6>
     <p>

@@ -8,7 +8,7 @@
         chaque travailleur devrait justifier les événements par des pièces justificatives.
     </p>
     <p>Les dossiers à fournir sont détaillés dans le tableau suivant selon la situation :</p>
-    <table class="table table-row-dashed table-row-gray-300 gy-7">
+    <table class="table table-row-dashed table-row-gray-300 gy-2">
         <tr>
             <th>LE CAS</th>
             <th>PIÈCES JUSTIFICATIVES

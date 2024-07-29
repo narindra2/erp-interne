@@ -21,13 +21,26 @@
             <div class="card card-custom d-flex flex-grow-1">
                 <div class="card-body flex-grow-1 no-copy">
                     <h2 class="text-center mb-10">Fonctionnement en Interne</h2>
-                    <div>
-                        <img src="images/image1.png" >
-                        <img src="images/image2.png" >
-                        <img src="images/image3.png" >
+                    <div id="imag-1">
+                        <h6 class="mb-2 text-center" style="text-decoration: underline;">Absence non envisagé – Retards – Congé</h6>
+                        <img src="{{ asset("images/F-1.png") }}" >
+                     
+                    </div>
+                    <div id="imag-2">
+                        <h6 class="mb-2 text-center" style="text-decoration: underline;"> Permission – Récupération – Demande d'attestation</h6>
+                        <img src="{{ asset("images/F-2.png") }}" >
+                    </div>
+                    <div id="imag-3">
+                        <h6 class="mb-2 text-center" style="text-decoration: underline;">Permission d'urgence – Permission médicale – Congé d'urgence</h6>
+                        <img src="{{ asset("images/F-3.png") }}" >
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <style>
+        img {
+            width: 100%;
+        }
+    </style>
 </x-base-layout>

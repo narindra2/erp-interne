@@ -72,13 +72,11 @@
                 <div class="card-body flex-grow-1 no-copy">
                     <h2 class="text-center mb-10">Règlement Intérieur</h2>
                     <h4 class="text-center mb-10">Préambule</h4>
-        
                     <p>
                         Afin d’établir pour le Personnel de la « société », un statut garantissant l’indépendance, la dignité,
                         l’épanouissement de chacun, et l’intégrité physique du Personnel et de sa famille, afin de préserver
                         les droits inaliénables du travailleur et de garantir l’équilibre social dans l’Entreprise.
                     </p>
-        
                     <p>
                         Conscients que l’avenir de la société est lié à la performance de son personnel, à l’amélioration de
                         ses compétences pour donner satisfaction à ses clients.
