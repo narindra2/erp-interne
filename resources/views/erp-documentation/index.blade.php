@@ -60,6 +60,9 @@
                     <p>
                         <a href="#chapt-14" class="text-dark summary">Chapitre XIV : Les hiérarchies de sanction et leurs modes d'applications</a>
                     </p>
+                    <p>
+                        <a href="#chapt-15" class="text-dark summary">Chapitre XIV : Le règlement spécifique</a>
+                    </p>
                 </div>
             </div>
         </div>
@@ -71,27 +74,28 @@
                     <h4 class="text-center mb-10">Préambule</h4>
         
                     <p>
-                        Afin d’établir pour le Personnel de la « société », un statut garantissant l’indépendance, la
-                        dignité, l’épanouissement de chacun, et l’intégrité physique du Personnel et de sa famille,
-                        afin de préserver les droits inaliénables du travailleur et de garantir l’équilibre social dans
-                        l’Entreprise.
+                        Afin d’établir pour le Personnel de la « société », un statut garantissant l’indépendance, la dignité,
+                        l’épanouissement de chacun, et l’intégrité physique du Personnel et de sa famille, afin de préserver
+                        les droits inaliénables du travailleur et de garantir l’équilibre social dans l’Entreprise.
                     </p>
         
                     <p>
-                        Conscients que l’avenir de la société est lié à la performance de son personnel, à
-                        l’amélioration de ses compétences pour donner satisfaction à ses clients
+                        Conscients que l’avenir de la société est lié à la performance de son personnel, à l’amélioration de
+                        ses compétences pour donner satisfaction à ses clients.
                     </p>
         
                     <p>
-                        En vue d’assurer l’harmonie nécessaire à la bonne marche des services, à la défense des
-                        intérêts communs de la profession et au rendement de ses activités.
+                        En vue d’assurer l’harmonie nécessaire à la bonne marche des services, à la défense des intérêts
+                        communs de la profession et au rendement de ses activités.
                     </p>
         
                     <p>
                         La présente Convention a été adoptée.
                     </p>
-        
-                    @for ($i = 1; $i <= 14; $i++)
+                    @php
+                        $chapter_count = 15;
+                    @endphp
+                    @for ($i = 1; $i <= $chapter_count; $i++)
                         <div id="{{ "chapt-". $i }}"></div>
                         @include('erp-documentation.chapters.chapter' . $i, ['agency' => $agency])
                     @endfor

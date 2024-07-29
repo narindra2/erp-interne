@@ -8,26 +8,27 @@
     </p>
     <h6 class="mb-5" style="text-decoration: underline;">Article 2 : MISE À JOUR</h6>
     <p>
-        Il peut être ajusté chaque année après consultation et proposition des représentants et/ou
-        l’ensemble du personnel.    
+        Il peut être ajusté chaque année après consultation et proposition des représentants et/ou l’ensemble
+        du personnel.
     </p>
     <p>
-        Afin de veiller à l’harmonie du présent Règlement intérieur aux lois en vigueur, toute
-        modification de la législation du travail fera l’objet d’une information aux représentants et/ ou
-        l’ensemble du personnel lors de la réunion périodique et sera consignée dans le
-        procès-verbal y afférent, pour diffusion et application.
+        Afin de veiller à l’harmonie du présent Règlement intérieur aux lois en vigueur, toute modification de la
+        législation du travail fera l’objet d’une information aux représentants et/ ou l’ensemble du personnel
+        lors de la réunion périodique et sera consignée dans le procès-verbal y afférent, pour diffusion et
+        application.
     </p>
     <p>
-        En cas de dénonciation, modification et révision, le présent Règlement intérieur restera en
-        vigueur, jusqu’à la signature du nouveau Règlement intérieur.
+        En cas de dénonciation, modification et révision, le présent Règlement intérieur restera en vigueur,
+        jusqu’au Visa du nouveau Règlement Intérieur par l’Inspection du travail.
     </p>
     <h6 class="mb-5" style="text-decoration: underline;">Article 3 : Publication</h6>
     <p>
-        Un exemplaire du présent Règlement intérieur sera déposé au Greffe du Tribunal de Travail
-        et à l’Inspection de Travail d’Antananarivo.
+        Un exemplaire du présent Règlement intérieur sera déposé au Greffe du Tribunal de Travail et à
+        l’Inspection de Travail d’Antananarivo.
     </p>
     <p>
-        Des exemplaires supplémentaires seront tenus à la disposition du personnel auprès du
-        service administratif et financier des sociétés.
+        Des exemplaires supplémentaires seront tenus à la disposition du personnel auprès du département
+        des Ressources Humaines, accompagné d’un affichage permanent <strong>sur le tableau d’affichage
+        officiel de chaque local de travail</strong>  et sur le Progiciel de Gestion Intégrée de la société (ERP).
     </p>
 </div>
