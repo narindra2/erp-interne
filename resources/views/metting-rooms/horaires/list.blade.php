@@ -26,7 +26,8 @@
            
          </div>
      </div>
-     @if (!$horaire->is_past() && auth()->id() == $horaire->creator_id)
+     {{-- @if (!$horaire->is_past() && auth()->id() == $horaire->creator_id) --}}
+     @if ( auth()->id() == $horaire->creator_id)
          @php
             echo modal_anchor(url('/meeting-room/create-meeting/modal-form'), "Editer" , [
                 'title' => ' Modifier l\'horaire ',

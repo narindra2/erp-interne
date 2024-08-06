@@ -23,8 +23,10 @@
                 @endphp
             </div>
         </div>
-        <table id="invetoryListDataTable" class="table table-row-dashed table-row-gray-200 align-middle table-hover ">
-        </table>
+        <div class="table-responsive ">
+            <table id="invetoryListDataTable" class="table table-row-dashed table-row-gray-200 align-middle table-hover ">
+            </table>
+        </div>
     </div>
 </div>
 

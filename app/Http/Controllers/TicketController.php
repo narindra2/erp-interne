@@ -34,8 +34,18 @@ class TicketController extends Controller
     {
         $users = User::where('user_type_id', "<>", UserType::$_ADMIN)->whereDeleted(0)->get();
         $from = [];
-        foreach ($users as $user) {
-            $from[] = ["value" => $user->id, "text" => $user->sortname];
+        // foreach ($users as $user) {
+        //     $from[] = ["value" => $user->id, "text" => $user->sortname];
+        // }
+        $usersJob = Department::with(["user"])->getAllEmployee()->get();
+        foreach ($usersJob as $userJob) {
+            try {
+                if (!$userJob->user->deleted) { // remove all user deleted
+                    $from[] = ["value" => $userJob->user->id, "text" => $userJob->user->sortname];
+                }
+            } catch (Exception $e) {
+                
+            }
         }
         $suggestions = $this->suggestion;
         return view("tickets.modal-form", compact("from", "suggestions"));

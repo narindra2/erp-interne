@@ -79,7 +79,7 @@
                     </p>
                     <p>
                         Conscients que l’avenir de la société est lié à la performance de son personnel, à l’amélioration de
-                        ses compétences pour donner satisfaction à ses clients.
+                        ses compétences pour donner satisfaction à ses clients
                     </p>
         
                     <p>
@@ -88,7 +88,7 @@
                     </p>
         
                     <p>
-                        La présente Convention a été adoptée.
+                        Le présent règlement a été adopté.
                     </p>
                     @php
                         $chapter_count = 15;

@@ -57,7 +57,7 @@
                         <div class="form-check form-check-custom form-check-solid">
                             <input class="form-check-input" type="checkbox" value="1" name="deleted" id="deleted"/>
                             <label class="form-check-label" for="deleted">
-                                Supprimer cet occupation du salle ?
+                                Supprimer ou anunler cet occupation du salle ?
                             </label>
                         </div>
                     </div>
