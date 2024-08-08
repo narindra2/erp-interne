@@ -54,8 +54,7 @@
         <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-light-light btn-sm mr-2 ">
             @lang('lang.cancel')</button>
         <button type="submit" id="submit" class=" btn btn-sm btn-light-primary  mr-2">
-            @include('partials.general._button-indicator', ['label' => trans('lang.save'),"message" =>
-            trans('lang.sending')])
+            @include('partials.general._button-indicator', ['label' => trans('lang.save'),"message" =>   trans('lang.sending')])
         </button>
     </div>
 </form>

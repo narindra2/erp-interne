@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\PointingTempResource;
-use App\Models\PointingTemp;
-use App\Models\User;
-use App\Models\UserType;
 use Exception;
+use App\Models\PointingTemp;
 use Illuminate\Http\Request;
+use App\Imports\UserCumulativeHour;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Resources\PointingTempResource;
 
 class PointingTempController extends Controller
 {
@@ -26,6 +26,17 @@ class PointingTempController extends Controller
         return PointingTempResource::collection($data);
     }
 
+    public function import(Request $request) {
+        if (!$request->hasFile("file")) {
+           return ["success" => false , "message" => "Veuillez choisir le fichier à importer"];
+        }
+        try {
+            Excel::import(new UserCumulativeHour, $request->file("file"), null, \Maatwebsite\Excel\Excel::CSV);
+            return ["success" => true , "message" => "Importation faite avec succés."];
+        } catch (Exception $e) {
+            return ["success" => false , "message" => $e->getMessage()];
+        } 
+    }
     public function store(Request $request) {
         try {
             PointingTemp::saveOrUpdatePointingTemp($request->input());

@@ -362,6 +362,7 @@ Route::middleware(['auth', 'checkinweb', 'role:2,4'])->group(function () {
     Route::get('/pointing-temp', [PointingTempController::class, 'index']);
     Route::get('/pointing-temp/data', [PointingTempController::class, 'getData']);
     Route::post('/pointing-temp', [PointingTempController::class, 'store']);
+    Route::post('/pointing-temp/import-file', [PointingTempController::class, 'import']);
 
     Route::get("/negative-cumulative-hour", [CheckInController::class, 'negative_hour']);
     Route::get('/users-pointing/dataList-cumul-negative', [CheckInController::class, 'data_list_negative']);

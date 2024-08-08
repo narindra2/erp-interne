@@ -18,7 +18,6 @@ class PointingTemp extends Model
     }
 
     public static function saveOrUpdatePointingTemp($input) {
-        // dd($input);
         PointingTemp::updateOrCreate([
             'user_id' => $input['user_id']
         ], $input);
