@@ -127,8 +127,8 @@ class DayOffController extends Controller
             "registration_number" => $dayOff->applicant->registration_number,
             "name" => $dayOff->applicant->sortname,
             "job" => $dayOff->getApplicantJob(),
-            "start_date" => $dayOff->start_date->translatedFormat("d-M-Y"),
-            "return_date" => $dayOff->return_date->translatedFormat("d-M-Y"),
+            "start_date" =>     $dayOff->start_date->translatedFormat("d-M-Y") . ($dayOff->start_date_is_morning == 0 ? "<br> Après-midi" : "")  ,
+            "return_date" => $dayOff->return_date->translatedFormat("d-M-Y") . ($dayOff->return_date_is_morning == 0 ? "<br> Après-midi" : ""),
             "duration" => $dayOff->duration . "jrs",
             "status" => $dayOff->getResult(),
             'nature'=> $dayOff->nature ? '<span class="badge  " style="min-width: 90%;color:white;background-color:'.$dayOff->nature->color.'">'.$dayOff->nature->nature.'</span>'  : "" ,
@@ -332,6 +332,10 @@ class DayOffController extends Controller
 
         $sum_request =  $return->diffInDays($start);
         $sum_total = $sum_created + $sum_request;
+        $rest_permission = User::get_rest_permission($applicant_id);
+        if ( $rest_permission > $sum_request) {
+            die(json_encode(["success" => false, "message" => "Vous ne pouvez pas effectuer la demandé car il vous reste " .  $rest_permission .  "jrs valable."]));
+        } 
         if ($sum_total > (DayOff::$_max_permission_on_year + 1)) {
             die(json_encode(["success" => false, "message" => trans("lang.max_perssion_on_year_executed") . ". Déjà demandé :  $sum_created jr(s)" . " , Demandé : $sum_request jr(s) "]));
         }

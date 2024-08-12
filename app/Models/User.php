@@ -5,6 +5,7 @@ namespace App\Models;
 use Auth;
 use Exception;
 use Carbon\Carbon;
+use App\Models\DayOff;
 use App\Models\SuiviPauseProd;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -49,6 +50,7 @@ class User extends Authenticatable
         'user_type_id',
         'email_verified_at',
         'nb_days_off_remaining',
+        'nb_permissions',
         'marry_fullname',
         'marry_birthdate',
         'marry_place_of_birth',
@@ -457,6 +459,16 @@ class User extends Authenticatable
         $sum = get_cache_total_permission($user_id);
         $rest =   intval($sum[0]->total);
         return  $rest ;  
+    }
+    public static function get_rest_permission($user){
+
+        $user = $user instanceof User ?  $user  :  User::find($user);
+        if ($user && $user->nb_permissions) {
+            return $user->nb_permissions;
+        }
+        $sum = self::get_cache_total_permission($user->id);
+        $rest =  DayOff::$_max_permission_on_year - intval($sum[0]->total);
+        return  $rest;  
     }
 
     public function getCumulativeHour() {

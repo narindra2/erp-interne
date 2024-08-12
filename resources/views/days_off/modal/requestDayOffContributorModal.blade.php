@@ -74,10 +74,10 @@
                 <div class="col-4">
                     <select data-rule-required="true" data-msg-required="@lang('lang.required_input')" name="return_date_is_morning"class="form-select form-select-sm form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Choisissez le type de congé">
                         <option value="1" @if ($dayOff->return_date_is_morning == 1)
-                            checked
+                            selected
                         @endif>Matinée</option>
                         <option value="0" @if ($dayOff->return_date_is_morning == 0)
-                            checked
+                            selected
                         @endif>Après-midi</option>
                     </select>
                 </div>

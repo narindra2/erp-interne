@@ -254,6 +254,17 @@
                         <input class="form-control form-control-solid" autocomplete="off" type="number" step="any" name="nb_days_off_remaining" value="{{ $user->nb_days_off_remaining }}" min="0" data-rule-required="true"
                         data-msg-required="@lang('lang.required')"/>
                     </div>
+                    <label  class="col-md-2 col-form-label">Permission</label>
+                    <div class="col-md-3">
+                        @php
+                        $max_permission = App\Models\DayOff::$_max_permission_on_year;
+                        $rest_of_permission =App\Models\User::get_rest_permission($user);
+                        @endphp
+                        <input class="form-control form-control-solid" autocomplete="off" type="number" step="any" name="nb_permissions" value="{{ $rest_of_permission  }}" min="0" max="{{ $max_permission }}" />
+                    </div>
+                   
+                </div>
+                <div class="form-group row py-4">
                     <label  class="col-md-2 col-form-label required">@lang('lang.role')</label>
                     <div class="col-md-5 mt-2">
                         <select class="form-select form-select-solid" name="user_type_id" data-hide-search="true" data-control="select2" data-placeholder="Select an option">

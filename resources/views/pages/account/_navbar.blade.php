@@ -152,7 +152,7 @@
                                 <div class="d-flex align-items-center">
                                     @php
                                         $max_permission = App\Models\DayOff::$_max_permission_on_year;
-                                        $permission_total =App\Models\User::get_cache_total_permission( $user->id);
+                                        $permission_total =App\Models\User::get_cache_total_permission($user->id);
                                     @endphp
                                     <div class="fs-2 fw-bolder">{{ $max_permission - $permission_total }} / {{ $max_permission ." jr(s)" }}</div>
                                 </div>

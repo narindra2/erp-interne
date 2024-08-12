@@ -182,7 +182,7 @@ class DayOff extends Model
         $absence_date = get_array_value($options, 'absence_date');
         if ($absence_date) {
             $daysOff->whereDate('start_date', '<=', to_date($absence_date))
-                    ->whereDate('return_date', '>', to_date($absence_date))
+                    ->whereDate('return_date', '>', to_date($absence_date) ." 00:00:00" )
                     // ->where('result', 'validated')
                     ->where("is_canceled", 0);
         }
@@ -190,12 +190,12 @@ class DayOff extends Model
         if ($status_dayoff) {
             $is_empty_filter = false;
             if ($status_dayoff == "finish") {
-                $daysOff->whereDate('return_date', '<=', Carbon::now()->format("Y-m-d"))
+                $daysOff->whereDate('return_date', '<=', Carbon::now()->format("Y-m-d") ." 00:00:00" )
                     ->where('result', 'validated')
                     ->where("is_canceled", 0);
             } else if ($status_dayoff == "in_progress") {
-                $daysOff->whereDate('start_date', '<=', Carbon::now()->format("Y-m-d"))
-                    ->whereDate('return_date', '>', Carbon::now()->format("Y-m-d"))
+                $daysOff->whereDate('start_date', '<=', Carbon::now()->format("Y-m-d") ." 00:01:00")
+                    ->whereDate('return_date', '>', Carbon::now()->format("Y-m-d") ." 00:00:00")
                     ->where('result', 'validated')
                     ->where("is_canceled", 0);
             } else if ($status_dayoff == "is_canceled") {
@@ -290,7 +290,13 @@ class DayOff extends Model
 
         /** New  dayoff info */
         $data['start_date'] = to_date($data['start_date']);
+        if ($data['start_date_is_morning'] == 0) {
+            $data['start_date'] =  $data['start_date'] . " 12:00:00"; // Start in apres midi
+        }
         $data['return_date'] = to_date($data['return_date']);
+        if ($data['return_date_is_morning'] == 0) {
+            $data['return_date'] =  $data['return_date'] . " 12:00:00"; // return in apres midi
+        }
         $data['result_date'] = null;
         if ($data['result'] == 'validated'){
             $data['result_date'] = Carbon::now();
@@ -351,7 +357,13 @@ class DayOff extends Model
     public static function requestDaysOff($input, $files)
     {
         $input['start_date'] = to_date($input['start_date']);
+        if ($input['start_date_is_morning'] == 0) {
+            $input['start_date'] =  $input['start_date'] . " 12:00:00"; // Start in apres midi
+        }
         $input['return_date'] = to_date($input['return_date']);
+        if ($input['return_date_is_morning'] == 0) {
+            $input['return_date'] =  $input['return_date'] . " 12:00:00"; // return in apres midi
+        }
         $input['result'] = "in_progress";
         $validate_immediately = isset($input['validate_immediately']) &&  $input['validate_immediately'] == "true" &&  auth()->user()->isRhOrAdmin();
         if ($validate_immediately  ) {

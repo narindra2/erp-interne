@@ -184,6 +184,9 @@ class UserController extends Controller
         // $user->layoff = $request->layoff;
         // Notifications update dayoff
         $user->nb_days_off_remaining = $request->nb_days_off_remaining;
+        if ($request->nb_permissions &&  $request->nb_permissions <= DayOff::$_max_permission_on_year ) {
+            $user->nb_permissions = $request->nb_permissions;
+        }
         if($request->marital_status_id == 2 ){
             $user->marry_fullname = $request->marry_fullname;
             if($request->marry_birthdate!=null) $user->marry_birthdate = to_date($request->marry_birthdate);

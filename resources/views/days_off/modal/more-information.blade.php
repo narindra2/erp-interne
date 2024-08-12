@@ -100,11 +100,32 @@
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label class="col-form-label ">Date début : </label>
-                        <input id="start_date" name="start_date" data-rule-required="true" data-msg-required="@lang('lang.required_input')" class="form-control form-control-sm form-control-solid datepicker" autocomplete="off" name="start_date" placeholder="DD/MM/YYYY" data-rule-required="true" data-msg-required="@lang('lang.required_input')" value="{{ $dayOff->getStartDate()->format('d/m/Y') }}"/>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <select name="start_date_is_morning" class="form-select form-select-sm form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Choisissez le type de congé" data-rule-required="true" data-msg-required="@lang('lang.required_input')">
+                                    <option value="1" @if ($dayOff->start_date_is_morning == 1)  selected  @endif>Le matinée du</option>
+                                    <option value="0" @if ($dayOff->start_date_is_morning == 0) selected @endif> Après-midi du</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <input id="start_date" name="start_date" data-rule-required="true" data-msg-required="@lang('lang.required_input')" class="form-control form-control-sm form-control-solid datepicker" autocomplete="off" name="start_date" placeholder="DD/MM/YYYY" data-rule-required="true" data-msg-required="@lang('lang.required_input')" value="{{ $dayOff->getStartDate()->format('d/m/Y') }}"/>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group col-md-6">
                         <label class="col-form-label ">Date de retour : </label>
-                        <input id="return_date" name="return_date" data-rule-required="true" data-msg-required="@lang('lang.required_input')" class="form-control form-control-sm form-control-solid datepicker" autocomplete="off" name="start_date" placeholder="DD/MM/YYYY" data-rule-required="true" data-msg-required="@lang('lang.required_input')" value="{{ $dayOff->getReturnDate()->format('d/m/Y') }}"/>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input id="return_date" name="return_date" data-rule-required="true" data-msg-required="@lang('lang.required_input')" class="form-control form-control-sm form-control-solid datepicker" autocomplete="off" name="start_date" placeholder="DD/MM/YYYY" data-rule-required="true" data-msg-required="@lang('lang.required_input')" value="{{ $dayOff->getReturnDate()->format('d/m/Y') }}"/>
+                            </div>
+                            <div class="col-md-6">
+                                <select name="return_date_is_morning" class="form-select form-select-sm form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Choisissez le type de congé" data-rule-required="true" data-msg-required="@lang('lang.required_input')">
+                                    <option value="1" @if ($dayOff->return_date_is_morning == 1)  selected  @endif>le matinée </option>
+                                    <option value="0" @if ($dayOff->return_date_is_morning == 0) selected @endif> après-midi </option>
+                                </select>
+                            </div>
+                            
+                        </div>
                     </div>
                 </div>
                 @php
