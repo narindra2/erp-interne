@@ -30,7 +30,7 @@
             </div>
             <div class="form-group">
                 <div class="mb-5">
-                    <label class="col-form-label text-right col-md-10">@lang('lang.impact_in_daysoff_balance')</label>
+                    <label class="col-form-label text-right ">@lang('lang.impact_in_daysoff_balance')</label>
                     <select class="form-select form-select-solid" name="impact_in_dayoff_balance" data-hide-search="true"  data-rule-required="true" 
                     data-msg-required="@lang('lang.impact_in_daysoff_balance')" data-control="select2" data-placeholder="Select an option">
                     <option @if($dayoffType->impact_in_dayoff_balance == 0 ) selected @endif value=0>@lang('lang.no')</</option>
@@ -41,10 +41,10 @@
             
             <div class="form-group">
                 <div class="mb-5">
-                    <label for="nb_days" class="required form-label">@lang('lang.nb_days') </label>
+                    <label for="nb_days" class=" form-label">@lang('lang.nb_days') </label>
                     <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-html="true" data-bs-content="@lang('lang.nb_days_comma')" data-bs-original-title="" title=""></i>
                     <input  type="text" value="{{ $dayoffType->nb_days }}" autocomplete="off" name="nb_days" class="form-control form-control-solid"
-                        placeholder="@lang('lang.nb_days')" data-rule-required="true"
+                        placeholder="@lang('lang.nb_days')" data-rule-required="false"
                         data-msg-required="@lang('lang.required_input')" />
                 </div>
             </div>

@@ -95,7 +95,7 @@ return [
     'fin' => 'Quitter',
     "yes" => "Oui",
     "no" => "Non",
-    "impact_in_daysoff_balance" => "Ceci à un impacte au solde de congé",
+    "impact_in_daysoff_balance" => "Ceci impactera le solde de congé ou de permission.",
     'upgrade_days_off' => 'Mis à jour des soldes',
     'collaborator' => 'Collaborateurs',
     'new_collaborator' => 'Nouveau collaborateur',

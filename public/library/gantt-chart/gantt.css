@@ -55,7 +55,8 @@ div.ganttview-hzheader-day {
 }
 
 div.ganttview-hzheader-day.ganttview-weekend {
-    background: #f8f8f8
+    /* background: #f8f8f8 */
+    background-color: #3697d921;
 }
 
 div.ganttview-vtheader {

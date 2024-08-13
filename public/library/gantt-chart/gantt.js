@@ -216,6 +216,7 @@ var compareDateTo = function (start, end) {
                         var cellDiv = jQuery("<div>", {"class": "ganttview-grid-row-cell " + firstDayClass});
                         if (DateUtils.isWeekend(dates[y][m][d]) && showWeekends) {
                             cellDiv.addClass("ganttview-weekend");
+                            cellDiv.attr("title" , "Weekend");
                         }
                         rowDiv.append(cellDiv);
 

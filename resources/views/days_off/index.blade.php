@@ -88,6 +88,7 @@
             dayText: "jour",
             daysText: "jours",
             cellHeight: 50,
+            showWeekends : true,
             dataUrl : url("/days-off/dataListGantt"),
         });
     }

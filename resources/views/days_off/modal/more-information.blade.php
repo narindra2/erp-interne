@@ -103,7 +103,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <select name="start_date_is_morning" class="form-select form-select-sm form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Choisissez le type de congé" data-rule-required="true" data-msg-required="@lang('lang.required_input')">
-                                    <option value="1" @if ($dayOff->start_date_is_morning == 1)  selected  @endif>Le matinée du</option>
+                                    <option value="1" @if ($dayOff->start_date_is_morning == 1)  selected  @endif>De la matinée du</option>
                                     <option value="0" @if ($dayOff->start_date_is_morning == 0) selected @endif> Après-midi du</option>
                                 </select>
                             </div>
@@ -120,7 +120,7 @@
                             </div>
                             <div class="col-md-6">
                                 <select name="return_date_is_morning" class="form-select form-select-sm form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Choisissez le type de congé" data-rule-required="true" data-msg-required="@lang('lang.required_input')">
-                                    <option value="1" @if ($dayOff->return_date_is_morning == 1)  selected  @endif>le matinée </option>
+                                    <option value="1" @if ($dayOff->return_date_is_morning == 1)  selected  @endif>la matinée </option>
                                     <option value="0" @if ($dayOff->return_date_is_morning == 0) selected @endif> après-midi </option>
                                 </select>
                             </div>

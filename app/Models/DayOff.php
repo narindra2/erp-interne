@@ -142,7 +142,7 @@ class DayOff extends Model
         $user = Auth::user();
         if ($myDaysOff) {
             $user->load('userJob');
-            if ($user->userJob  ) {
+            if ($user->userJob) {
                 if ($user->userJob->is_cp || $user->isM2p()) {
                     $users_ID = UserJobView::where("department_id", $user->userJob->department_id)->get()->pluck("users_id");
                     $daysOff->whereIn("applicant_id", $users_ID);
@@ -308,17 +308,25 @@ class DayOff extends Model
      
         /** Check if  dayOff  type is impact in dayoff user balance */
         $is_impacted_in_dayoff_balance = $dayOff->type->impact_in_dayoff_balance  &&  $dayOff->type->type == "daysoff";
-       
+        /** Yeaaah the code is utra dynamic  */
+        $the_type_impacted = "";
+        if ($dayOff->type->type == "daysoff") {
+            $the_type_impacted = "nb_days_off_remaining";
+        }elseif($dayOff->type->type == "permission"){
+            $the_type_impacted = "nb_permissions";
+        }
+        /** Exectute the dynamic code start  */
         $already_validated = ($old_result == "validated");
+        
         if ($is_impacted_in_dayoff_balance &&  $already_validated && ($new_duration != $old_duration)) {
             /** Returned old deduce duration user dayoff balance and retrivew the new  */
-            $applicant->nb_days_off_remaining = ($applicant->nb_days_off_remaining +  $old_duration) - $new_duration;
+            $applicant->$the_type_impacted = ($applicant->$the_type_impacted  +  $old_duration) - $new_duration;
             $applicant->save();
         }
         
         if( $is_impacted_in_dayoff_balance &&  $already_validated &&  $new_result == "refused" ){
             /** Returned old deduce duration  */
-            $applicant->nb_days_off_remaining = $applicant->nb_days_off_remaining +  $old_duration;
+            $applicant->$the_type_impacted  = $applicant->$the_type_impacted  +  $old_duration;
             $applicant->save();
         }
         $dayOff->sendNotificationOnUpdate();
@@ -373,9 +381,17 @@ class DayOff extends Model
         }
         unset($input['files']);
         $dayOff = DayOff::updateOrCreate(["id" => $input['id']], $input);
-        if ($validate_immediately && $dayOff->type->impact_in_dayoff_balance && $dayOff->type->type == "daysoff" ) {
+
+        if ($validate_immediately && $dayOff->type->impact_in_dayoff_balance ) {
+            /** Yeaaah the code is utra dynamic  */
+            $the_type_impacted = "";
+            if ($dayOff->type->type == "daysoff") {
+                $the_type_impacted = "nb_days_off_remaining";
+            }elseif($dayOff->type->type == "permission"){
+                $the_type_impacted = "nb_permissions";
+            }
             $applicant = $dayOff->applicant;
-            $applicant->nb_days_off_remaining -= $dayOff->duration;
+            $applicant->$the_type_impacted -= $dayOff->duration;
             $applicant->save();
         }
         if ($files != null) {

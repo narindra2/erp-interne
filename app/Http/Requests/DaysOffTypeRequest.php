@@ -27,7 +27,7 @@ class DaysOffTypeRequest extends FormRequest
             "name" =>'required',
             "type" =>'required',
             "description" =>'required',
-            "nb_days" =>'required|numeric|min:0',
+            "nb_days" =>'numeric|min:0',
         ];
     }
     public function messages()
