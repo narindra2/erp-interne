@@ -237,21 +237,22 @@ class DayOffController extends Controller
         $row["matricule"] =  $dayOff->applicant->registration_number;
         $row["applicant"] = auth()->id() == $dayOff->applicant_id ? 'Moi' : $dayOff->applicant->sortname;
         $row["author"] = auth()->id() == $dayOff->author_id ? 'Moi-même' : $dayOff->author->sortname;
-        $row['start_date'] = $dayOff->start_date->translatedFormat("d-M-Y");
-        $row['return_date'] = $dayOff->return_date->translatedFormat("d-M-Y");
+        $row['start_date'] = $dayOff->start_date->translatedFormat("d-M-Y") . ($dayOff->start_date_is_morning == 0 ? "<br> Après-midi" : "")  ;
+        $row['return_date'] = $dayOff->return_date->translatedFormat("d-M-Y")  . ($dayOff->return_date_is_morning == 0 ? "<br> Après-midi" : "");
         $row['duration'] = $dayOff->duration . "jrs";
         $row['type'] = trans("lang.{$dayOff->type->type}");
         $row['status'] = $dayOff->getResult();
         $row['nature'] = $dayOff->nature ? '<span class="badge  " style="min-width: 90%;color: white;background-color:'.$dayOff->nature->color.'">'.$dayOff->nature->nature.'</span>'  : "" ;
         $row['reason'] = $dayOff->reason ;
-        $actions = "";
+        $row['status_dayoff'] = view("days_off.columns.status", ["status" => $this->row_status_dayoff($dayOff), "is_canceled" => $dayOff->is_canceled])->render();
+        $actions = '<i class="my-2 fas fa-lock"></i>';
         if ($dayOff->result == "in_progress") {
             if (auth()->user()->isCp()) {
-                $actions = modal_anchor(url("/days-off/information/modal/$dayOff->id"), '<i class="far fa-edit text-primary fs-3"></i>', ["title" => "Plus d'informations", "data-modal-lg" => true,]);
+                $actions = modal_anchor(url("/days-off/information/modal/$dayOff->id"), '<i class="fas fa-edit  fs-3"></i>', ["title" => "Plus d'informations", "data-modal-lg" => true,]);
             } else {
-                $actions = modal_anchor(url('/request_days_off/modal/' . $dayOff->id), '<i class="far fa-edit text-primary fs-3"></i>', ['title' => 'Editer la demande', 'data-modal-lg' => true, 'data-post-id' => 1]);
+                $actions = modal_anchor(url('/request_days_off/modal/' . $dayOff->id), '<i class="fas fa-edit  fs-3"></i>', ['title' => 'Editer la demande', 'data-modal-lg' => true, 'data-post-id' => 1]);
             }
-            $actions .= "&nbsp;&nbsp;&nbsp;" . js_anchor('<div class="mx-2"><i class="far fa-trash-alt text-danger fs-3"></i></div>', ['data-action-url' => url("/dayOff/delete/" . $dayOff->id), "title" => "Supprimer", "data-action" => "delete"]);
+            $actions .= "&nbsp;&nbsp;&nbsp;" . js_anchor('<i class=" mx-2 fas fa-trash  fs-4"></i>', ['data-action-url' => url("/dayOff/delete/" . $dayOff->id), "title" => "Supprimer", "data-action" => "delete"]);
         }
         $row['actions'] = $actions;
         return $row;
@@ -280,7 +281,7 @@ class DayOffController extends Controller
         }
         $natures = DayoffNatureColor::whereDeleted(0)->whereStatus(1)->latest()->get();
         if ($auth->isAdmin() ||  $auth->isHR()){
-            return view("days_off.modal.requestDayOffModal", ["dayOff" => $dayOff,  "natures" => $natures, "auth"  =>  $auth, "can_create_other_request" =>  $can, "can_make_request" => $can_make_request,  'users' => User::where('user_type_id', '<>', UserType::$_ADMIN)->whereDeleted(0)->get()]);
+            return view("days_off.modal.requestDayOffModal", ["dayOff" => $dayOff,  "natures" => $natures, "auth"  =>  $auth, "can_create_other_request" =>  $can, "can_make_request" => $can_make_request,  'users' => User::whereDeleted(0)->get()]);
         }else {
             return view("days_off.modal.requestDayOffContributorModal", ["dayOff" => $dayOff,  "natures" => $natures, "auth"  =>  $auth, "can_create_other_request" =>  $can, "can_make_request" => $can_make_request,  'users' => User::where('user_type_id', '<>', UserType::$_CONTRIBUTOR)->whereDeleted(0)->get()]);
         }

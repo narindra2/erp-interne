@@ -231,6 +231,10 @@ class User extends Authenticatable
     {
        return $this->belongsToMany(User::class,"project_group-members","user_id","project_id");
     }
+    public function dayoffValidatorInGroup()
+    {
+       return $this->belongsToMany(User::class,"project_group-dayoff_validator","user_id","project_id");
+    }
     public function sanctions() {
         return $this->hasMany(Sanction::class);
     }
@@ -466,8 +470,7 @@ class User extends Authenticatable
         if ($user && $user->nb_permissions) {
             return $user->nb_permissions;
         }
-        $sum = self::get_cache_total_permission($user->id);
-        $rest =  DayOff::$_max_permission_on_year - intval($sum[0]->total);
+        $rest =  DayOff::$_max_permission_on_year - self::get_cache_total_permission($user->id);
         return  $rest;  
     }
 

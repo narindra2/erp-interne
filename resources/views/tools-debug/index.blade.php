@@ -62,7 +62,7 @@
                         </div>
                         </form>
                     </div>
-                    <div class="card shadow-lg card-docs flex-row-fluid col-md-12">
+                    <div class="card shadow-lg card-docs flex-row-fluid col-md-12 mt-2">
                         <div class="card-header">
                             <h3 class="card-title">Réinitialisation de &nbsp;<u> Toutes </u>   &nbsp;les << mots de passes >> </h3>
                         </div>

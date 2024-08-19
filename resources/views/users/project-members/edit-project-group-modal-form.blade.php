@@ -32,11 +32,22 @@
                 </div>
                 <div class="form-group">
                     <div class="mb-3 col-md-12">
-                        <label for="exlude_users"> Rétirer des membres ou collaborateurs dans le projet  :</label>
-                        <select class="form-select" name="exlude_users[]" id="exlude_users" data-control="select2" data-close-on-select="false" data-placeholder="Selectionner les collaborateurs à rétirer" data-allow-clear="true" multiple="multiple">
-                            <option value="0" disabled  >--Collaborateurs à rétirer--</option>
+                        <label for="exlude_users"> Rétirer des membres dans {{ $project->name }} :</label>
+                        <select class="form-select" name="exlude_users[]" id="exlude_users" data-control="select2" data-close-on-select="false" data-placeholder="Selectionner les membres à rétirer" data-allow-clear="true" multiple="multiple">
+                            <option value="0" disabled  >-- Membres à rétirer--</option>
                                 @foreach ($project->members as $user)
                                     <option data-avatar= "{{  $user->avatarUrl }}" value="{{ $user->id }}">{{ $user->sortname}} ({{ $user->registration_number }}) </option>
+                                @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="mb-3 col-md-12">
+                        <label for="exlude_users_validator"> Rétirer un ou des validateur de congés dans {{ $project->name }} :</label>
+                        <select class="form-select" name="exlude_users_validator[]" id="exlude_users_validator" data-control="select2" data-close-on-select="false" data-placeholder="Selectionner les validateurs à rétirer" data-allow-clear="true" multiple="multiple">
+                            <option value="0" disabled  >--Validateur à rétirer--</option>
+                                @foreach ($project->dayoffValidator as $user)
+                                    <option data-avatar= "{{  $user->avatarUrl }}" value="{{ $user->id }}">{{ $user->sortname}}</option>
                                 @endforeach
                         </select>
                     </div>
@@ -47,7 +58,7 @@
                         <div class="form-check form-check-custom form-check-solid">
                             <input class="form-check-input " type="checkbox" value="1"  name="deleted" id="deleted-project"/>
                             <label class="form-check-label text-danger" for="deleted-project">
-                                Supprimé ce projet ?
+                                Supprimer ce  groupe ou ce projet ?
                             </label>
                         </div>
                     </div>
@@ -95,7 +106,7 @@
                 return $(span);
             }
 
-            $('#exlude_users').select2({
+            $('#exlude_users, #exlude_users_validator').select2({
                 templateSelection: optionFormat,
                 templateResult: optionFormat
             });

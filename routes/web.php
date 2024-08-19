@@ -305,6 +305,10 @@ Route::middleware(['auth', 'checkinweb', 'role:2,4'])->group(function () {
     Route::post('/project/save/new-members', [UserController::class, 'save_project_new_member_modal']);
     Route::post('/project/edit/modal', [UserController::class, 'edit_project_member_modal']);
     Route::post('/project/do-edit', [UserController::class, 'save_edit_project_group']);
+    Route::post('/project/add/validator-dayoff', [UserController::class, 'add_users_validator_dayoff_form']);
+    Route::post('/project/save-users-validator-dayoff', [UserController::class, 'save_users_validator_dayoff']);
+
+
 
     Route::post("/modal-hour-recoveries-response/{hourRecovery}", [HourRecoveryController::class, "modal_response"]);
     Route::post("/response-hour-recoveries", [HourRecoveryController::class, "response_request"]);

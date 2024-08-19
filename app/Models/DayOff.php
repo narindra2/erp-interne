@@ -142,14 +142,21 @@ class DayOff extends Model
         $user = Auth::user();
         if ($myDaysOff) {
             $user->load('userJob');
+            $dayoff_can_see = [$user->id];
+            /** Auth's and users in departement of auth */
             if ($user->userJob) {
                 if ($user->userJob->is_cp || $user->isM2p()) {
-                    $users_ID = UserJobView::where("department_id", $user->userJob->department_id)->get()->pluck("users_id");
-                    $daysOff->whereIn("applicant_id", $users_ID);
-                } else {
-                    $daysOff->where("applicant_id",  $user->id);
+                    $user_in_departement = UserJobView::where("department_id", $user->userJob->department_id)->get()->pluck("users_id");
+                    $dayoff_can_see = array_merge( $dayoff_can_see ,$user_in_departement );
                 }
             }
+            /** Auth's can validate dayoff */
+            $groups_auth_can_validate_dayoff = DB::table("project_group-dayoff_validator")->where("user_id",$user->id)->get(["user_id","project_id"])->pluck("project_id")->toArray();
+            if ($groups_auth_can_validate_dayoff) {
+                $users_in_group = DB::table("project_group-members")->whereIn("project_id" ,$groups_auth_can_validate_dayoff)->get(["user_id","project_id"])->pluck("user_id")->toArray();
+                $dayoff_can_see = array_merge( $dayoff_can_see ,$users_in_group );
+            }
+            $daysOff->whereIn("applicant_id", $dayoff_can_see);
         }
         $user_id = get_array_value($options, 'user_id');
         if ($user_id) {

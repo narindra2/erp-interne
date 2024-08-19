@@ -21,4 +21,8 @@ class ProjectGroup extends Model
     {
        return $this->belongsToMany(User::class,"project_group-members","project_id","user_id");
     }
+    public function dayoffValidator()
+    {
+       return $this->belongsToMany(User::class,"project_group-dayoff_validator","project_id","user_id");
+    }
 }

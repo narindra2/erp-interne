@@ -1,5 +1,8 @@
 <div class="symbol-group symbol-hover mb-3">
-    @foreach ($project->members as $user)
+    @php
+        $users = isset($validator_dayoff) ? $project->dayoffValidator :  $project->members;
+    @endphp
+    @foreach ($users as $user)
         <div class="symbol symbol-35px symbol-circle" title="{{ $user->sortname }}" data-bs-toggle="tooltip" aria-label="{{ $user->sortname }}" data-bs-original-title="{{ $user->sortname }}" data-kt-initialized="1">
             <img alt="Pic" src="{{ $user->avatarUrl }}">
             @if ($user->deleted)
@@ -12,6 +15,10 @@
     @endphp
    
     @php
-       echo modal_anchor(url('/project/add/members'), ' <span class="symbol-label bg-dark text-inverse-dark fs-8 fw-bold" >+</span>', ['title' => "Ajouter des membres dans ce projet : $project->name","data-post-id" => $project->id, "data-modal-lg" => true, 'class' => 'symbol symbol-35px symbol-circle']);
+    if (isset($validator_dayoff) && $validator_dayoff) {
+        echo modal_anchor(url('/project/add/validator-dayoff'), ' <span class="symbol-label bg-dark text-inverse-dark fs-8 fw-bold" >+</span>', ['title' => "Ajouter le validateur de congé : $project->name","data-post-id" => $project->id, "data-modal-lg" => true, 'class' => 'symbol symbol-35px symbol-circle']);
+    }else {
+        echo modal_anchor(url('/project/add/members'), ' <span class="symbol-label bg-dark text-inverse-dark fs-8 fw-bold" >+</span>', ['title' => "Ajouter des membres dans ce projet : $project->name","data-post-id" => $project->id, "data-modal-lg" => true, 'class' => 'symbol symbol-35px symbol-circle']);
+    }
     @endphp
 </div>

@@ -1,11 +1,11 @@
-     @if ($can_make_request)
+@if ($can_make_request)
      <form class="form" id="modal-form" method="POST" action="{{ url("/days-off/store-request") }}">
         <div class="card-body">
             @csrf
             <input type="hidden" name="id" value="{{ $dayOff->id }}">
             @if ($can_create_other_request)
-                <div class="form-group row">
-                    <label class="col-3 col-form-label mb-4">Employé(e)</label>
+                {{-- <div class="form-group row">
+                    <label class="col-3 text-gray-700 pt-1 fw-semibold fs-6 mb-4">Employé(e)</label>
                     <div class="col-4">
                         <select id="applicant_id" name="applicant_id" class="form-select form-select-sm form-select-solid" data-control="select2" data-dropdown-parent="#ajax-modal">
                             <option disabled selected >-- Collaborateur--</option>
@@ -17,17 +17,65 @@
                     <div class="col-4">
                         <input type="text" id="showBalance" class="form-control form-control-sm form-control-solid" disabled="disabled" placeholder="Solde de congé: ">
                     </div>
-                </div>
-            @else
-                <div class="form-group row">
-                    <label class="col-3 col-form-label mb-4">Votre solde de congé</label>
-                    <div class="col-4">
-                        <input type="text" class="form-control form-control-sm form-control-solid" disabled="disabled" placeholder="{{ auth()->user()->nb_days_off_remaining }}">
+                </div> --}}
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card-title d-flex flex-column input-group">   
+                            <label class="text-gray-700 pt-1 fw-semibold fs-6">Employé(e)</label>
+                            <select id="applicant_id" name="applicant_id" class="form-select form-select-sm form-select-solid" data-control="select2" data-dropdown-parent="#ajax-modal"  data-rule-required="true" data-msg-required="@lang('lang.required_input')">
+                                <option disabled selected >-- Employé --</option>
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->id }}">{{ $user->fullname }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                </div>
+                    
+                    <div class="col-md-4">
+                        <div class="card-title d-flex flex-column">   
+                            <label class="text-gray-700 pt-1 fw-semibold fs-6">Solde de congé :</label>
+                            <div class="d-flex align-items-center">
+                                <input type="text" id="showBalance" class="form-control form-control-sm form-control-solid" disabled="disabled" placeholder="Solde de congé: ">
+                            </div>
+                        </div>
+                    </div>
+               </div>
+            @else
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card-title d-flex flex-column">   
+                            <label class="text-gray-700 pt-1 fw-semibold fs-6">Congé de :</label>
+                            <div class="d-flex align-items-center">
+                                @if (isset($dayOff->id))
+                                    <span class="fs-5 fw-bold text-info me-2 lh-1 ls-n2">{{  $dayOff->applicant->fullname }}</span>
+                                 @else 
+                                    <span class="fs-5 fw-bold text-info me-2 lh-1 ls-n2">{{  auth()->user()->fullname }}</span>
+                                 @endif
+
+                            </div>
+                        </div>
+                    </div>
+                    @if ( !isset($dayOff->id) ||   (isset($dayOff->id) && $dayOff->applicant->id == auth()->id()))
+                        <div class="col-md-4">
+                            <div class="card-title d-flex flex-column">   
+                                <label class="text-gray-700 pt-1 fw-semibold fs-6">Solde de congé :</label>
+                                <div class="d-flex align-items-center">
+                                    <span class="fs-5 fw-bold text-info me-2 lh-1 ls-n2">{{  auth()->user()->nb_days_off_remaining }}</span>
+                                </div>
+                            </div>
+                        </div> 
+                    @endif
+                   
+            </div>
+                {{-- <div class="form-group row">
+                    <label class="col-3 text-gray-700 pt-1 fw-semibold fs-6 mb-4">Votre solde de congé</label>
+                    <div class="col-4">
+                    </div>
+                </div> --}}
             @endif
-            <div class="form-group row">
-                <label class="col-3 col-form-label mb-4">Type de la demande</label>
+            <div class="separator border-info mt-3 mb-3"></div>
+            {{-- <div class="form-group row">
+                <label class="col-3 text-gray-700 pt-1 fw-semibold fs-6 mb-4">Type de la demande</label>
                 <div class="col-4">
                     <select id="type" name="request_type" class="form-select form-select-sm form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Choisissez le type de congé">
                         <option value="daysoff"
@@ -43,14 +91,41 @@
                 <div class="col-4">
                     <select id="category" name="type_id" class="form-select form-select-sm form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Choisissez la catégorie" data-rule-required="true" data-msg-required="@lang('lang.required_input')"> </select>
                 </div>
+            </div> --}}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card-title d-flex flex-column">   
+                        <label class=" text-gray-700 pt-1 fw-semibold fs-6">Type de la demande</label>
+                        <div class="d-flex align-items-center">
+                            <select id="type" name="request_type" class="form-select form-select-sm form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Choisissez le type de congé">
+                                <option value="daysoff"
+                                @if ($dayOff->type_id == 1)
+                                    checked
+                                @endif>Congé</option>
+                                <option value="permission">Permission</option>
+                                @if ($dayOff->type_id == 2)
+                                    checked
+                                @endif>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card-title d-flex flex-column">   
+                        <span class="text-gray-700 pt-1 fw-semibold fs-6">Type : </span>
+                        <div class="d-flex align-items-center input-group">
+                            <select id="category" name="type_id" class=" form-select form-select-sm form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Choisissez la catégorie" data-rule-required="true" data-msg-required="@lang('lang.required_input')"> </select>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group row mb-4">
-                <label class="col-3 col-form-label">Date de début</label>
+            <div class="separator border-info mt-3 mb-3"></div>
+            {{-- <div class="form-group row mb-4">
+                <label class="col-3 text-gray-700 pt-1 fw-semibold fs-6">Date de début</label>
                 <div class="col-4">
-                    <input class="form-control form-control-sm form-control-solid datepicker" @if ($dayOff->start_date)
+                    <input id="" class="form-control form-control-sm form-control-solid datepicker" @if ($dayOff->start_date)
                         value="{{ $dayOff->start_date->format("d/m/Y") }}"
                     @endif autocomplete="off" name="start_date" placeholder="DD/MM/YYYY" data-rule-required="true" data-msg-required="@lang('lang.required_input')"/>
-                    {{-- <input type="date" class="form-control form-control-sm form-control-solid" id="start_date"> --}}
                 </div>
                 <div class="col-4">
                     <select name="start_date_is_morning" class="form-select form-select-sm form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Choisissez le type de congé" data-rule-required="true" data-msg-required="@lang('lang.required_input')">
@@ -64,50 +139,110 @@
                 </div>
             </div>
             <div class="form-group row mb-4">
-                <label class="col-3 col-form-label">Date de retour</label>
+                <label class="col-3 text-gray-700 pt-1 fw-semibold fs-6">Date de retour</label>
                 <div class="col-4">
                     <input data-rule-required="true" data-msg-required="@lang('lang.required_input')" class="form-control form-control-sm form-control-solid datepicker"  @if ($dayOff->return_date)
                         value="{{ $dayOff->return_date->format("d/m/Y") }}"
                     @endif autocomplete="off" name="return_date" placeholder="DD/MM/YYYY" />
-                    {{-- <input type="date" class="form-control form-control-sm form-control-solid" id="return_date"> --}}
                 </div>
                 <div class="col-4">
                     <select data-rule-required="true" data-msg-required="@lang('lang.required_input')" name="return_date_is_morning"class="form-select form-select-sm form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Choisissez le type de congé">
                         <option value="1" @if ($dayOff->return_date_is_morning == 1)
-                            selected
+                            checked
                         @endif>Matinée</option>
                         <option value="0" @if ($dayOff->return_date_is_morning == 0)
-                            selected
+                            checked
                         @endif>Après-midi</option>
                     </select>
                 </div>
+            </div> --}}
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label class="text-gray-700 pt-1 fw-semibold fs-6 ">Date début : </label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <select name="start_date_is_morning" class="form-select form-select-sm form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Choisissez le type de congé" data-rule-required="true" data-msg-required="@lang('lang.required_input')">
+                                <option value="1" @if ($dayOff->start_date_is_morning == 1 || !$dayOff->id )  selected  @endif>De la matinée du</option>
+                                <option value="0" @if ($dayOff->start_date_is_morning === 0) selected @endif> Après-midi du</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <input id="" class="form-control form-control-sm form-control-solid datepicker" 
+                                @if ($dayOff->start_date)value="{{ $dayOff->start_date->format("d/m/Y") }}" @endif autocomplete="off" name="start_date" placeholder="DD/MM/YYYY" data-rule-required="true" data-msg-required="@lang('lang.required_input')"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label class="text-gray-700 pt-1 fw-semibold fs-6 ">Date de retour : </label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input id="return_date" name="return_date" data-rule-required="true" data-msg-required="@lang('lang.required_input')" class="form-control form-control-sm form-control-solid datepicker" autocomplete="off" name="start_date" placeholder="DD/MM/YYYY" data-rule-required="true" data-msg-required="@lang('lang.required_input')" @if ($dayOff->return_date)
+                            value="{{ $dayOff->return_date->format("d/m/Y") }}"
+                        @endif />
+                        </div>
+                        <div class="col-md-6">
+                            <select name="return_date_is_morning" class="form-select form-select-sm form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Choisissez le type de congé" data-rule-required="true" data-msg-required="@lang('lang.required_input')">
+                                <option value="1" @if ($dayOff->return_date_is_morning == 1 || !$dayOff)  selected  @endif>la matinée </option>
+                                <option value="0" @if ($dayOff->return_date_is_morning === 0) selected @endif> après-midi </option>
+                            </select>
+                        </div>
+                        
+                    </div>
+                </div>
             </div>
+            <div class="separator border-info mt-3 mb-3"></div>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group  mb-4">
-                        <label class=" col-form-label">Nature de l' absence</label>
+                        <label class=" text-gray-700 pt-1 fw-semibold fs-6">Nature de l' absence</label>
                         <select name="nature_id" class="form-select form-select-sm form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Choisissez la nature de congé" data-rule-required="true" data-msg-required="@lang('lang.required_input')">
                             <option  value="0" @if ( !$dayOff ) selected   @endif  >- Nature de la demande - </option>
-                            <option value="4" @if ($dayOff && $dayOff->nature_id == 4) selected @endif>En permission</option>
-                            <option value="9" @if ($dayOff && $dayOff->nature_id == 9) selected @endif>En congé</option>
+                                @foreach ($natures as $nature)
+                                    <option value="{{  $nature->id}}" @if ( $nature->id == $dayOff->nature_id  ) selected   @endif>{{  $nature->nature}}</option>
+                                @endforeach
                         </select>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group  mb-4">
-                        <label class=" col-form-label">Description  de la demande</label>
+                        <label class=" text-gray-700 pt-1 fw-semibold fs-6">Description  de la demande</label>
                         <textarea data-rule-required="true" data-msg-required="@lang('lang.required_input')" name="reason" class="form-control form-control form-control-solid" data-kt-autosize="true">{{ $dayOff->reason }}</textarea>
                     </div>
                 </div>
             </div>
-           
-           
-            <div class="form-group row mb-6">
-                <label class="col-lg-3 col-form-label text-lg-right">Fichier joint</label>
+            <div class="separator border-info mt-3 mb-3"></div>
+            {{-- <div class="form-group row mb-6">
+                <label class="col-lg-3 text-gray-700 pt-1 fw-semibold fs-6 text-lg-right">Fichier joint</label>
                 <div class="col-8">
                     <input class="form-control form-control-sm" id="formFileSm" name="files[]" type="file" multiple>
                   </div>
+            </div> --}}
+
+            <div class="form-group row">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card-title d-flex flex-column">   
+                            <span class="text-gray-700 pt-1 fw-semibold fs-6  mb-1">Piéce(s) justificatif :</span>
+                            @if ($dayOff->attachments->count())
+                                <div class="row">
+                                    @foreach ($dayOff->attachments as $attachment) 
+                                        <span class="me-3 col-md-1"><a href="{{ url('days-off/download-attachment') . "/" . $attachment->id }}" target="_blank" rel="noopener noreferrer"><img src="{{ asset(theme()->getMediaUrlPath() . 'svg/files/upload.svg') }}" alt="" data-toggle="tooltip" data-placement="bottom" title="{{ $attachment->filename }}" height="40px" width="40px"></a></span>
+                                    @endforeach 
+                                </div>
+                            @else 
+                                <i class="mt-2" >Pas de piéce justificatif ajouté.</i>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-title d-flex flex-column">   
+                            <span class="text-gray-700 pt-1 fw-semibold fs-6 mb-1">Ajouté autre Piéce joint : </span>
+                           <input class="form-control form-control-sm" id="formFileSm" name="files[]" type="file" multiple>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <div class="separator border-info mt-3 mb-4"></div>
             @if (!$dayOff->id && auth()->user()->isRhOrAdmin() )
                 <div class="form-group mb-4" >
                     <div class="form-check form-check-custom form-check-success form-check-solid  form-check-sm">
@@ -208,7 +343,7 @@
             users.forEach(user => {
                 if (user.id == applicantID) {
                     let balance = user.nb_days_off_remaining;
-                    $("#showBalance").val("Solde de congé :  " + balance.toString());
+                    $("#showBalance").val( balance.toString());
                 }
             });
         });

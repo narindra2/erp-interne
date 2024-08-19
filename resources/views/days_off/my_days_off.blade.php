@@ -34,6 +34,12 @@
                             placeholder="{{ trans('lang.search') }} sur le resultat">
                     </div>
                 </div>
+                &nbsp; &nbsp;
+                <div class="me-4 my-2">
+                    <a id="do-reload" title = "Actualiser la table" class="btn btn-sm btn-outline btn-outline-dashed btn-outline-default">
+                        <i class="fas fa-sync-alt" style="width: 10px;"></i>
+                    </a>
+                </div>
             </div>
             <div class="">
                 <table class=" table table-row-dashed table-row-gray-300 gy-4 align-middle" id="my_days_off"></table>
@@ -87,17 +93,19 @@
                     }
                 },
                 columns: [
-                    {data: "created_at", title: 'Date de la demande'},
-                    {data: "matricule", title: 'matricule'},
+                    {data: "created_at", title: 'Date de demande'},
+                    // {data: "matricule", title: 'matricule'},
                     {data: "applicant", title: 'congé de'},
                     {data: "author", title: 'Demandé par'},
                     {data: "start_date", title: 'Debut'},
                     {data: "return_date", title: 'Retour'},
                     {data: "duration", title: "Durée"},
-                    {data: "type", title: 'Type de demande'},
+                    // {data: "type", title: 'Type de demande'},
+                    {data: "type", title: 'Type'},
                     {data: "nature", title: "Nature"},
-                    {data: "reason", title: "Description"},
+                    // {data: "reason", title: "Description"},
                     {data: "status", title: "status"},
+                    {data: "status_dayoff", title: "Etat"},
                     {data: "actions", class: "d-flex align-center"},
                 ],
             });
@@ -106,6 +114,9 @@
                 });
                 
                 $(".my_days_off").on("change", function() {
+                    dataTableInstance.my_days_off.ajax.reload();
+                });
+                $('#do-reload').on('click', function(e) {
                     dataTableInstance.my_days_off.ajax.reload();
                 });
             });

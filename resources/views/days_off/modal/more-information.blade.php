@@ -2,7 +2,7 @@
     <div class="card-body">
         @csrf
         <input type="hidden" name="id" value="{{ $dayOff->id }}" id="id">
-       @if ($dayOff->is_canceled)
+       @if($dayOff->is_canceled)
             <p class="text-info text-center mb-4">La demande a été annulée</p>
        @endif
        <div class="row">

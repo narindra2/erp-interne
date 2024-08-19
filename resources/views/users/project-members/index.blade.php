@@ -2,13 +2,13 @@
     <div class="card shadow-sm  mb-3 ">
         <div class="card-header border-1 pt-1">
             <div class="me-2 card-title align-items-start ">
-                <span class="card-label  fs-3 mb-1"> Projets & Collaborateurs </span>
+                <span class="card-label  fs-3 mb-1"> Projets ou Groupes </span>
                 <div class="text-muted fs-7 fw-bold"></div>
             </div>
             <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
                 data-bs-original-title="Créer un group de projet ">
                 @php
-                    echo modal_anchor(url('/project/add/modal-form'), '<i class="fas fa-plus"></i>' . "Créer un group de projet", ['title' => "Créer un group", 'class' => 'btn btn-sm btn-light-primary']);
+                    echo modal_anchor(url('/project/add/modal-form'), '<i class="fas fa-plus"></i>' . "Créer un group ou un projet", ['title' => "Créer un group", 'class' => 'btn btn-sm btn-light-primary']);
                 @endphp
             </div>
         </div>
@@ -33,7 +33,7 @@
                     </a>
                 </div>
             </div>
-            <table id="projectMembersTable" class="table table-row-dashed table-row-gray-200 align-middle gs-0 gy-4 table-hover "></table>
+            <table id="projectMembersTable" class="table table-row-dashed table-row-gray-200 align-middle  table-hover "></table>
         </div>
     </div>
     <style>
@@ -53,8 +53,9 @@
                     ordering :false,
                     columns:[
                         {data :"members_name_hidden" , title: '', "class":"text-left w-200px "},
-                        {data :"name" , title: 'Nom de projet', "class":"text-left w-250px"},
-                        {data :"members" , title: 'membres & Collaborateurs', "class":"text-left "},
+                        {data :"name" , title: 'Nom du groupe ou projet', "class":"text-left w-250px"},
+                        {data :"members" , title: 'Membres du groupe ou projet', "class":"text-left "},
+                        {data :"validator_dayoff" , title: 'Validateur des congés du groupe ou projet', "class":"text-left "},
                         {data :"action" , title: '', "class":"text-left "},
                     ],  
                     ajax: {

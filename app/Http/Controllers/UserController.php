@@ -548,7 +548,7 @@ class UserController extends Controller
         $data =[];
         $projects = ProjectGroup::with(["members" => function($q){
             $q->whereDeleted(0)->without(["userJob"]);
-        }])->whereDeleted(0)->get();
+        } ,"dayoffValidator"])->whereDeleted(0)->get();
         foreach ($projects as $project) {
             $data[] = $this->_make_project_member_data_list($project);
         }
@@ -565,6 +565,7 @@ class UserController extends Controller
                         </div>';
         $row["members_name_hidden"] = $project->members->implode("sortname","|");
         $row["members"] = view("users.project-members.member-list-column",["project" => $project])->render();
+        $row["validator_dayoff"] = view("users.project-members.member-list-column",["project" => $project , "validator_dayoff" => true ])->render();
         $row["action"] =modal_anchor(url('/project/edit/modal'), '<i class="fas fa-edit fs-4"></i> ', ['title' => "Edit/supprimer des membres dans ce projet","data-post-id" => $project->id, "data-modal-lg" => true, ]) ;
         return $row;
     }
@@ -584,7 +585,7 @@ class UserController extends Controller
     public function  edit_project_member_modal(Request $request) {
         $project =  ProjectGroup::with(["members" => function($q){
             $q->whereDeleted(0)->without(["userJob"]);
-        }])->find($request->id);
+        } , "dayoffValidator"])->find($request->id);
         return view('users.project-members.edit-project-group-modal-form', compact("project"));
     }
     public function  save_edit_project_group(Request $request) {
@@ -593,16 +594,28 @@ class UserController extends Controller
         if($request->new_name){
             $update["name"] =$request->new_name ;
         }
-        if($request->deleted ){
+        if($request->deleted){
             $update["deleted"] = 1 ;
         }
         if($request->exlude_users){
             $project->members()->detach($request->exlude_users);
         }
+        if($request->exlude_users_validator){
+            $project->dayoffValidator()->detach($request->exlude_users_validator);
+        }
         if(count($update)){
             $project->update($update);
         }
         return ["success" => true ,"deleted" => $request->deleted, "message" =>  $request->deleted ? trans("lang.success_deleted") :  trans("lang.success_record") ,"row_id" => row_id("project",$project->id) , "data"=> $this->_make_project_member_data_list($project)];
-
+    }
+    public function  add_users_validator_dayoff_form(Request $request) {
+        $project =  ProjectGroup::find($request->id);
+        $users =  User::select(["id","name","deleted","registration_number","firstname"])->without(["userJob"])->whereDeleted(0)->get();
+        return view('users.project-members.add-validator-dayoff-modal-form', compact("users" ,"project"));
+    }
+    public function  save_users_validator_dayoff(Request $request) {
+        $project =  ProjectGroup::find($request->id);
+        $project->dayoffValidator()->syncWithoutDetaching($request->users_validator);
+        return ["success" => true , "message" => trans("lang.success_record") ,"row_id" => row_id("project",$project->id) , "data"=> $this->_make_project_member_data_list($project)];
     }
 }

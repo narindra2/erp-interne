@@ -1,4 +1,5 @@
-<?php $status_dayoff = ""; 
+<?php 
+    $status_dayoff = ""; 
    $class = "";
 ?>
 @if ($is_canceled)

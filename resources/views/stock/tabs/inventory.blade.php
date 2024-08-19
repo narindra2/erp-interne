@@ -38,7 +38,8 @@
         dataTableInstance.invetoryListDataTable = $("#invetoryListDataTable").DataTable({
             processing: true,
             ordering: false,
-            paging: false,
+            // paging: false,
+            pageLength: 100,
             dom:"itpr",
             columns: [
                 { data: "qrcode", orderable:false},
