@@ -105,7 +105,7 @@ class DayOff extends Model
                 $duration += 0.5;
             }                                     
         }
-        return $duration;
+        return $duration * ($duration < 0 ? -1 : 1) ;
     }
     public function getNewCalculDuration($start_date, $return_date ,$start_date_is_morning ,$return_date_is_morning )
     {
@@ -120,7 +120,7 @@ class DayOff extends Model
                 $duration += 0.5;
             }                                     
         }
-        return $duration;
+        return $duration * ($duration < 0 ? -1 : 1) ;
     }
 
     //This function is used to display the result of the days off request
@@ -136,27 +136,27 @@ class DayOff extends Model
 
     public static function getDetails($options = [])
     {
+        $is_empty_filter = true;$auth = Auth::user();
         $daysOff = DayOff::with(['applicant.userjob.job', 'author',"nature"]);
-        $is_empty_filter = true;
+
         $myDaysOff = get_array_value($options, 'myDaysOff'); // the auth daysoff or  daysoff in his departemt
-        $user = Auth::user();
         if ($myDaysOff) {
-            $user->load('userJob');
-            $dayoff_can_see = [$user->id];
+            $auth->load('userJob');
+            $dayoff_can_see = [$auth->id];
             /** Auth's and users in departement of auth */
-            if ($user->userJob) {
-                if ($user->userJob->is_cp || $user->isM2p()) {
-                    $user_in_departement = UserJobView::where("department_id", $user->userJob->department_id)->get()->pluck("users_id");
+            if ($auth->userJob) {
+                if ($auth->userJob->is_cp || $auth->isM2p()) {
+                    $user_in_departement = UserJobView::where("department_id", $auth->userJob->department_id)->get()->pluck("users_id");
                     $dayoff_can_see = array_merge( $dayoff_can_see ,$user_in_departement );
                 }
             }
             /** Auth's can validate dayoff */
-            $groups_auth_can_validate_dayoff = DB::table("project_group-dayoff_validator")->where("user_id",$user->id)->get(["user_id","project_id"])->pluck("project_id")->toArray();
-            if ($groups_auth_can_validate_dayoff) {
-                $users_in_group = DB::table("project_group-members")->whereIn("project_id" ,$groups_auth_can_validate_dayoff)->get(["user_id","project_id"])->pluck("user_id")->toArray();
-                $dayoff_can_see = array_merge( $dayoff_can_see ,$users_in_group );
+            $list_users_where_auth_can_validate_dayoff = User::getListOfUsersCanValidateDayOff($auth->id) ;
+            if ($list_users_where_auth_can_validate_dayoff) {
+                $dayoff_can_see = array_merge( $dayoff_can_see ,$list_users_where_auth_can_validate_dayoff );
             }
-            $daysOff->whereIn("applicant_id", $dayoff_can_see);
+            /** Query auth's see can  dayoff */
+            $daysOff->whereIn("applicant_id", array_unique($dayoff_can_see) );
         }
         $user_id = get_array_value($options, 'user_id');
         if ($user_id) {
@@ -188,9 +188,9 @@ class DayOff extends Model
         }
         $absence_date = get_array_value($options, 'absence_date');
         if ($absence_date) {
+            $is_empty_filter = false;
             $daysOff->whereDate('start_date', '<=', to_date($absence_date))
                     ->whereDate('return_date', '>', to_date($absence_date) ." 00:00:00" )
-                    // ->where('result', 'validated')
                     ->where("is_canceled", 0);
         }
         $status_dayoff = get_array_value($options, 'status_dayoff'); //finish,in_progress
@@ -248,10 +248,6 @@ class DayOff extends Model
     {
         $daysOff = DayOff::with(['applicant', 'attachments']);
         $daysOff->whereNull('result_date');
-
-        // if (Auth::user()->not_rh()) {
-        //     $daysOff->where('applicant_id', Auth::user()->id);
-        // }
         $status = get_array_value($options, 'status');
         if ($status) {
             $daysOff->where('status ', $status);
@@ -270,9 +266,6 @@ class DayOff extends Model
         $dayOff = DayOff::with(["applicant","applicant.userjob"])->find($id);
         $dayOff->is_canceled = true;
         $dayOff->save();
-        // $dayOff->load("applicant");
-        // $dayOff->load("applicant.userjob");
-        
         $dayOff->returnDuration();
         $dayOff->sendNotificationOnUpdate();
         return $dayOff;
@@ -289,7 +282,6 @@ class DayOff extends Model
 
     public static function responseRequest($id, $data)
     {
-      
         /** Old dayoff info */
         $dayOff = DayOff::with(["type","applicant"])->find($id);
         $old_duration = $dayOff->duration;
@@ -339,25 +331,31 @@ class DayOff extends Model
         $dayOff->sendNotificationOnUpdate();
         return $dayOff;
     }
-
+    
     public function sendNotificationOnUpdate()
     {
+        $notify_to = [];
         if ($this->author_id != $this->applicant_id) {
-            $notify_to = User::findMany([$this->applicant_id, $this->author_id]);
+            $notify_to[] = $this->applicant_id;
+            $notify_to[] =  $this->author_id;
         } else {
-            $notify_to = User::where("id", $this->applicant_id)->whereDeleted(0)->get();
+            $notify_to[] = $this->applicant_id;
         }
+
+        $this->load(["applicant.userJob"]);
         /** get CP on user departement */
-        $applicant = User::find($this->applicant_id);
-        $applicant->load("userJob");
-        $department_id = $applicant->userJob->department_id;
-        $cp_ids =  UserJobView::where("department_id", $department_id)->where("is_cp", 1)->get()->pluck("users_id");
-        if ($cp_ids) {
-            $cp = User::findMany($cp_ids);
-            $notify_to = $notify_to->merge($cp);
+        try {
+            $department_id =  $this->applicant->userJob->department_id;
+            $cp_ids =  UserJobView::where("department_id", $department_id)->where("is_cp", 1)->get()->pluck("users_id")->toArray();
+            $notify_to = array_merge($notify_to ,$cp_ids);
+        } catch (\Throwable $th) {
+            
         }
-        if ($notify_to->count()) {
-            Notification::send($notify_to, new DayOffUpdateStatusNotification($this, Auth::user()));
+        $users_to_notify = User::findMany($notify_to);
+        $users_admin = get_cache_rh_admin();
+        $users_to_notify = $users_to_notify->merge($users_admin);
+        if ($users_to_notify->count()) {
+            Notification::send($users_to_notify, new DayOffUpdateStatusNotification($this, Auth::user()));
         }
     }
 
@@ -414,23 +412,23 @@ class DayOff extends Model
                 ]);
             }
         }
-
-        $applicant = User::find($dayOff->applicant_id);
-        $applicant->load("userJob");
-        $department_id = $applicant->userJob->department_id;
-        $cp_ids =  UserJobView::where("department_id", $department_id)->where("is_cp", 1)->get()->pluck("users_id");
-        $notify_to = get_cache_rh_admin();
-        if ($cp_ids) {
-            $cp = User::findMany($cp_ids);
-            $notify_to = $notify_to->merge($cp);
+        $dayOff->load(["applicant.userJob"]);
+        try {
+            $department_id = $dayOff->applicant->userJob->department_id;
+            $cp_ids =  UserJobView::where("department_id", $department_id)->where("is_cp", 1)->get()->pluck("users_id");
+        } catch (\Throwable $th) {
+            $cp_ids = [];
         }
-        dispatch(function ()use($input ,$dayOff,$notify_to){
+        $users_to_notify = get_cache_rh_admin();
+        if ($cp_ids) {
+            $users_to_notify = $users_to_notify->merge(User::findMany($cp_ids));
+        }
+        dispatch(function ()use($input ,$dayOff,$users_to_notify){
             if ($input['id']) {
-                Notification::send($notify_to, new DayOffCreatedNotification($dayOff, $dayOff->applicant, true));
+                Notification::send($users_to_notify, new DayOffCreatedNotification($dayOff, $dayOff->applicant, true));
             }
-            Notification::send($notify_to, new DayOffCreatedNotification($dayOff, $dayOff->applicant));
+            Notification::send($users_to_notify, new DayOffCreatedNotification($dayOff, $dayOff->applicant));
         })->afterResponse();
-        
         return $dayOff;
     }
 

@@ -71,44 +71,44 @@
     @section('scripts')
         <script type="text/javascript">
             $(document).ready(function() {
-                dataTableInstance.my_days_off = $("#my_days_off").DataTable({
-                processing: true,
-                order: [[0, "desc"]],
-                dom: "B<'row'<'col-sm-12'tr>>" +
-                        "<'row'<'col-sm-4'l><'col-sm-8'p>>",
-                buttons: [
-                        { extend: 'excel',className: 'btn btn-sm btn-light' },
-                        { extend: 'csv', className: 'btn btn-sm btn-light' },
-                        { extend: 'pdf', className: 'btn btn-sm btn-light' },
-                ],
-                language: {
-                    url: "https://cdn.datatables.net/plug-ins/1.11.3/i18n/fr_fr.json"
-                },
-                ajax: {
-                    url: url("/my_days_off/dataList"),
-                    data: function(data) {
-                        <?php foreach(inputs_filter_datatable($basic_filter) as $input ) { ?>
-                            data.{{ $input }} = $("#{{ $input }}").val();
-                        <?php } ?>
-                    }
-                },
-                columns: [
-                    {data: "created_at", title: 'Date de demande'},
-                    // {data: "matricule", title: 'matricule'},
-                    {data: "applicant", title: 'congé de'},
-                    {data: "author", title: 'Demandé par'},
-                    {data: "start_date", title: 'Debut'},
-                    {data: "return_date", title: 'Retour'},
-                    {data: "duration", title: "Durée"},
-                    // {data: "type", title: 'Type de demande'},
-                    {data: "type", title: 'Type'},
-                    {data: "nature", title: "Nature"},
-                    // {data: "reason", title: "Description"},
-                    {data: "status", title: "status"},
-                    {data: "status_dayoff", title: "Etat"},
-                    {data: "actions", class: "d-flex align-center"},
-                ],
-            });
+                    dataTableInstance.my_days_off = $("#my_days_off").DataTable({
+                    processing: true,
+                    order: [[0, "desc"]],
+                    dom: "B<'row'<'col-sm-12'tr>>" +
+                            "<'row'<'col-sm-4'l><'col-sm-8'p>>",
+                    buttons: [
+                            { extend: 'excel',className: 'btn btn-sm btn-light' },
+                            { extend: 'csv', className: 'btn btn-sm btn-light' },
+                            { extend: 'pdf', className: 'btn btn-sm btn-light' },
+                    ],
+                    language: {
+                        url: "https://cdn.datatables.net/plug-ins/1.11.3/i18n/fr_fr.json"
+                    },
+                    ajax: {
+                        url: url("/my_days_off/dataList"),
+                        data: function(data) {
+                            <?php foreach(inputs_filter_datatable($basic_filter) as $input ) { ?>
+                                data.{{ $input }} = $("#{{ $input }}").val();
+                            <?php } ?>
+                        }
+                    },
+                    columns: [
+                        {data: "created_at", title: 'Date de demande'},
+                        // {data: "matricule", title: 'matricule'},
+                        {data: "applicant", title: 'congé de'},
+                        {data: "author", title: 'Demandé par'},
+                        {data: "start_date", title: 'Debut'},
+                        {data: "return_date", title: 'Retour'},
+                        {data: "duration", title: "Durée"},
+                        // {data: "type", title: 'Type de demande'},
+                        {data: "type", title: 'Type'},
+                        {data: "nature", title: "Nature"},
+                        // {data: "reason", title: "Description"},
+                        {data: "status", title: "status"},
+                        {data: "status_dayoff", title: "Etat"},
+                        {data: "actions", class: "d-flex align-center"},
+                    ],
+                });
                 $('#search_dayoff').on('keyup', function() {
                     dataTableInstance.my_days_off.search(this.value).draw();
                 });
@@ -119,6 +119,15 @@
                 $('#do-reload').on('click', function(e) {
                     dataTableInstance.my_days_off.ajax.reload();
                 });
+                /** Azuste gant */
+                setTimeout(() => {
+                    var currentMonth = $(".ganttview-hzheader-month:contains({{ ucfirst(now()->translatedFormat('M - Y')) }})");
+                        if (currentMonth.length > 0) {
+                            var position = currentMonth.position().left;
+                            var offset = 200; 
+                            $('.ganttview-slide-container').scrollLeft(position  - offset);
+                        }
+                }, 3000);
             });
         </script>
     @endsection

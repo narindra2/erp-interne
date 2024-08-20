@@ -89,22 +89,22 @@
                     <div class="card-title d-flex flex-column">   
                         <label class=" text-gray-700 pt-1 fw-semibold fs-6">Type de la demande</label>
                         <div class="d-flex align-items-center">
-                            <select id="type" name="request_type" class="form-select form-select-sm form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Choisissez le type de congé">
-                                <option value="daysoff"
-                                @if ($dayOff->type_id == 1)
-                                    checked
-                                @endif>Congé</option>
-                                <option value="permission">Permission</option>
-                                @if ($dayOff->type_id == 2)
-                                    checked
-                                @endif>
-                            </select>
+                            @php
+                                $request_type = "daysoff";
+                                if ($dayOff->id) {
+                                    $request_type =  $dayOff->type->type;
+                                }
+                             @endphp
+                        <select id="type" name="request_type" class="form-select form-select-sm form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Choisissez le type de congé">
+                            <option value="daysoff" @if ($request_type == "daysoff") selected @endif>Congé</option>
+                            <option value="permission" @if ($request_type == "permission")selected  @endif> Permission</option>
+                        </select>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="card-title d-flex flex-column">   
-                        <span class="text-gray-700 pt-1 fw-semibold fs-6">Type : </span>
+                        <span class="text-gray-700 pt-1 fw-semibold fs-6">Type de congé : </span>
                         <div class="d-flex align-items-center input-group">
                             <select id="category" name="type_id" class=" form-select form-select-sm form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Choisissez la catégorie" data-rule-required="true" data-msg-required="@lang('lang.required_input')"> </select>
                         </div>
@@ -240,14 +240,13 @@
                     <div class="form-check form-check-custom form-check-success form-check-solid  form-check-sm">
                         <input class="form-check-input green-border" type="checkbox" value="true" name="validate_immediately"  id="validate-in-creation" />
                         <label class="form-check-label me-2" for="validate-in-creation">
-                        <u> Valider immédiatement cette demande</u> ? (cochez si oui  )
+                            <strong> Valider immédiatement cette demande</strong> ? (cochez si oui  )
                         </label> 
                     </div>
                     <style>
                         .green-border{
                             border: 2px solid #47BE7D !important;
                         }
-
                     </style>
                 </div> 
             @endif
@@ -283,14 +282,15 @@
             changeValueSelect($("#type").val());
         });
 
-        function changeValueSelect(type="daysoff")
+        function changeValueSelect(type="daysoff" , selected = 0)
         {
             $.ajax({
                 type: "GET",
                 url: url("/days-off/update-select-form"),
                 data: {
                     "type": type,
-                    "_token": _token
+                    "_token": _token,
+                    "selected" : selected 
                 },
                 success: function (response) {
                     $("#category").empty();
@@ -298,7 +298,7 @@
                 }
             });
         }
-        changeValueSelect(); 
+        changeValueSelect("{{ $request_type }}"  , '{{ $dayOff->type_id ?? 0 }}' ); 
         KTApp.initSelect2();
         function init_date(){
             var format = 'DD/MM/YYYY';

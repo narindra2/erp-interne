@@ -245,7 +245,7 @@ class DayOffController extends Controller
         $row['nature'] = $dayOff->nature ? '<span class="badge  " style="min-width: 90%;color: white;background-color:'.$dayOff->nature->color.'">'.$dayOff->nature->nature.'</span>'  : "" ;
         $row['reason'] = $dayOff->reason ;
         $row['status_dayoff'] = view("days_off.columns.status", ["status" => $this->row_status_dayoff($dayOff), "is_canceled" => $dayOff->is_canceled])->render();
-        $actions = '<i class="my-2 fas fa-lock"></i>';
+        $actions = '<i class="my-2 fas fa-lock" title="Contantez le service RH pour plus info."></i>';
         if ($dayOff->result == "in_progress") {
             if (auth()->user()->isCp()) {
                 $actions = modal_anchor(url("/days-off/information/modal/$dayOff->id"), '<i class="fas fa-edit  fs-3"></i>', ["title" => "Plus d'informations", "data-modal-lg" => true,]);
@@ -292,8 +292,12 @@ class DayOffController extends Controller
         $daysOffTypes = DaysOffType::whereType($request->type)->whereDeleted(0)->get();
         $select = "<option value='0' selected disabled>" . trans("lang.type") . ' ' . trans("lang.$request->type")  .  "</option>";
         foreach ($daysOffTypes as $type) {
-            $name = $type->name . " => " . ($type->nb_days ? $type->nb_days . " jour(s)" : "");
-            $select .= "<option value='$type->id'>$name</option>";
+            $name = $type->name;
+            if ($type->nb_days) {
+                $name .=  " => " . ($type->nb_days ? $type->nb_days . " jour(s)" : "");
+            }
+            $selected = $request->selected == $type->id ? "selected" : "";
+            $select .= "<option value='$type->id'  $selected >$name</option>";
         }
         return ["data" => $select];
     }

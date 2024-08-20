@@ -3,12 +3,12 @@
         @csrf
         <input type="hidden" name="id" value="{{ $dayOff->id }}" id="id">
        @if($dayOff->is_canceled)
-            <p class="text-info text-center mb-4">La demande a été annulée</p>
+            <h3 class="text-danger text-center mb-4">Cette demande a été annulée.</h3>
        @endif
        <div class="row">
             <div class="col-md-6">
                 <div class="card-title d-flex flex-column">   
-                    <span class="text-gray-700 pt-1 fw-semibold fs-6">Type d'absence:</span>
+                    <span class="text-gray-700 pt-1 fw-semibold fs-6">Type d'absence :</span>
                     <div class="d-flex align-items-center">
                         <span class="fs-5 fw-bold text-info me-2 lh-1 ls-n2">{{  $dayOff->type->getType() }}</span>
                     </div>
@@ -181,7 +181,7 @@
                     </div>
                 </div>
                 <div class="separator border-info mt-3 mb-3"></div>
-                <span class="text-gray-700 pt-1 fw-semibold fs-6">Statut  :</span>
+                <span class="text-gray-700 pt-1 fw-semibold fs-6 mb-1">Statut  :</span>
                 <div data-kt-buttons="true">
                     <div class="row">
                         <div class="col-md-4">
@@ -235,7 +235,7 @@
                     <div class="row">
                         <div class="form-check form-check-custom form-check-warning form-check-solid ">
                             <label class="form-check-label" for="">
-                                - Cocher ceci si vous voulez <span class="text-danger"> annuler </span> cet demande  :  &nbsp;
+                                - Cocher ceci si vous voulez <span class="text-danger"> annuler </span> cette demande  :  &nbsp;
                             </label>
                             <input class="form-check-input border-warning" type="checkbox" name="is_canceled" value="1" @if ($dayOff->is_canceled) cheked @endif />
                             

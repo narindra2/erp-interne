@@ -84,7 +84,7 @@
 <script type="text/javascript">
      function loadGantt() {
         $("#gantt-chart").ganttView({
-            monthNames: ["Jan", "Feb", "Mars", "Avr", "Mai", "Juin", "Jul", "Aout", "Sept", "Oct", "Nov", "Dec"],
+            monthNames: ["Jan", "Feb", "Mars", "Avr", "Mai", "Juin", "Jul", "Août", "Sept", "Oct", "Nov", "Dec"],
             dayText: "jour",
             daysText: "jours",
             cellHeight: 50,
@@ -160,6 +160,15 @@
             setTimeout(() => {
                     KTApp.initBootstrapTooltips();
             }, 300);
+            /** Azuste gant */
+            setTimeout(() => {
+                var currentMonth = $(".ganttview-hzheader-month:contains({{ ucfirst(now()->translatedFormat('M - Y')) }})");
+                    if (currentMonth.length > 0) {
+                        var position = currentMonth.position().left;
+                        var offset = 200; 
+                        $('.ganttview-slide-container').scrollLeft(position  - offset);
+                    }
+            }, 3000);
             
         });
     </script>

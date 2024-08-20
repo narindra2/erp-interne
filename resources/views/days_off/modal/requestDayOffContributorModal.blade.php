@@ -3,76 +3,33 @@
         <div class="card-body">
             @csrf
             <input type="hidden" name="id" value="{{ $dayOff->id }}">
-            @if ($can_create_other_request)
-                {{-- <div class="form-group row">
-                    <label class="col-3 text-gray-700 pt-1 fw-semibold fs-6 mb-4">Employé(e)</label>
-                    <div class="col-4">
-                        <select id="applicant_id" name="applicant_id" class="form-select form-select-sm form-select-solid" data-control="select2" data-dropdown-parent="#ajax-modal">
-                            <option disabled selected >-- Collaborateur--</option>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->fullname }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-4">
-                        <input type="text" id="showBalance" class="form-control form-control-sm form-control-solid" disabled="disabled" placeholder="Solde de congé: ">
-                    </div>
-                </div> --}}
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="card-title d-flex flex-column input-group">   
-                            <label class="text-gray-700 pt-1 fw-semibold fs-6">Employé(e)</label>
-                            <select id="applicant_id" name="applicant_id" class="form-select form-select-sm form-select-solid" data-control="select2" data-dropdown-parent="#ajax-modal"  data-rule-required="true" data-msg-required="@lang('lang.required_input')">
-                                <option disabled selected >-- Employé --</option>
-                                @foreach ($users as $user)
-                                    <option value="{{ $user->id }}">{{ $user->fullname }}</option>
-                                @endforeach
-                            </select>
+            <input type="hidden" name="applicant_id" value="{{ $dayOff->applicant_id ?? null }}">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card-title d-flex flex-column">   
+                        <label class="text-gray-700 pt-1 fw-semibold fs-6">Congé de :</label>
+                        <div class="d-flex align-items-center">
+                            @if (isset($dayOff->id))
+                                <span class="fs-5 fw-bold text-info me-2 lh-1 ls-n2">{{  $dayOff->applicant->fullname }}</span>
+                             @else 
+                                <span class="fs-5 fw-bold text-info me-2 lh-1 ls-n2">{{  auth()->user()->fullname }}</span>
+                             @endif
+
                         </div>
                     </div>
-                    
+                </div>
+                @if( !isset($dayOff->id) ||  (isset($dayOff->id) && $dayOff->applicant->id == auth()->id()))
                     <div class="col-md-4">
                         <div class="card-title d-flex flex-column">   
                             <label class="text-gray-700 pt-1 fw-semibold fs-6">Solde de congé :</label>
                             <div class="d-flex align-items-center">
-                                <input type="text" id="showBalance" class="form-control form-control-sm form-control-solid" disabled="disabled" placeholder="Solde de congé: ">
+                                <span class="fs-5 fw-bold text-info me-2 lh-1 ls-n2">{{  auth()->user()->nb_days_off_remaining }}</span>
                             </div>
                         </div>
                     </div>
-               </div>
-            @else
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="card-title d-flex flex-column">   
-                            <label class="text-gray-700 pt-1 fw-semibold fs-6">Congé de :</label>
-                            <div class="d-flex align-items-center">
-                                @if (isset($dayOff->id))
-                                    <span class="fs-5 fw-bold text-info me-2 lh-1 ls-n2">{{  $dayOff->applicant->fullname }}</span>
-                                 @else 
-                                    <span class="fs-5 fw-bold text-info me-2 lh-1 ls-n2">{{  auth()->user()->fullname }}</span>
-                                 @endif
-
-                            </div>
-                        </div>
-                    </div>
-                    @if ( !isset($dayOff->id) ||   (isset($dayOff->id) && $dayOff->applicant->id == auth()->id()))
-                        <div class="col-md-4">
-                            <div class="card-title d-flex flex-column">   
-                                <label class="text-gray-700 pt-1 fw-semibold fs-6">Solde de congé :</label>
-                                <div class="d-flex align-items-center">
-                                    <span class="fs-5 fw-bold text-info me-2 lh-1 ls-n2">{{  auth()->user()->nb_days_off_remaining }}</span>
-                                </div>
-                            </div>
-                        </div> 
-                    @endif
-                   
-            </div>
-                {{-- <div class="form-group row">
-                    <label class="col-3 text-gray-700 pt-1 fw-semibold fs-6 mb-4">Votre solde de congé</label>
-                    <div class="col-4">
-                    </div>
-                </div> --}}
-            @endif
+                @endif
+               
+                </div>
             <div class="separator border-info mt-3 mb-3"></div>
             {{-- <div class="form-group row">
                 <label class="col-3 text-gray-700 pt-1 fw-semibold fs-6 mb-4">Type de la demande</label>
@@ -97,15 +54,15 @@
                     <div class="card-title d-flex flex-column">   
                         <label class=" text-gray-700 pt-1 fw-semibold fs-6">Type de la demande</label>
                         <div class="d-flex align-items-center">
+                            @php
+                                $request_type = "daysoff";
+                                if ($dayOff->id) {
+                                    $request_type =  $dayOff->type->type;
+                                }
+                            @endphp
                             <select id="type" name="request_type" class="form-select form-select-sm form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Choisissez le type de congé">
-                                <option value="daysoff"
-                                @if ($dayOff->type_id == 1)
-                                    checked
-                                @endif>Congé</option>
-                                <option value="permission">Permission</option>
-                                @if ($dayOff->type_id == 2)
-                                    checked
-                                @endif>
+                                <option value="daysoff" @if ($request_type == "daysoff") selected @endif>Congé</option>
+                                <option value="permission" @if ($request_type == "permission")selected  @endif> Permission</option>
                             </select>
                         </div>
                     </div>
@@ -291,14 +248,15 @@
             changeValueSelect($("#type").val());
         });
 
-        function changeValueSelect(type="daysoff")
+        function changeValueSelect(type="daysoff" , selected = 0)
         {
             $.ajax({
                 type: "GET",
                 url: url("/days-off/update-select-form"),
                 data: {
                     "type": type,
-                    "_token": _token
+                    "_token": _token,
+                    "selected" : selected 
                 },
                 success: function (response) {
                     $("#category").empty();
@@ -306,7 +264,7 @@
                 }
             });
         }
-        changeValueSelect(); 
+        changeValueSelect("{{ $request_type }}"  , '{{ $dayOff->type_id ?? 0 }}' ); 
         KTApp.initSelect2();
         function init_date(){
             var format = 'DD/MM/YYYY';

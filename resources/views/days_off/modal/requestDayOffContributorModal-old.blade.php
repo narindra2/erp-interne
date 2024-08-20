@@ -3,29 +3,13 @@
         <div class="card-body">
             @csrf
             <input type="hidden" name="id" value="{{ $dayOff->id }}">
-            @if ($can_create_other_request)
-                <div class="form-group row">
-                    <label class="col-3 col-form-label mb-4">Employé(e)</label>
-                    <div class="col-4">
-                        <select id="applicant_id" name="applicant_id" class="form-select form-select-sm form-select-solid" data-control="select2" data-dropdown-parent="#ajax-modal">
-                            <option disabled selected >-- Collaborateur--</option>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->fullname }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-4">
-                        <input type="text" id="showBalance" class="form-control form-control-sm form-control-solid" disabled="disabled" placeholder="Solde de congé: ">
-                    </div>
+            <input type="hidden" name="applicant_id" value="{{ $dayOff->applicant_id ?? null }}">
+            <div class="form-group row">
+                <label class="col-3 col-form-label mb-4">Votre solde de congé</label>
+                <div class="col-4">
+                    <input type="text" class="form-control form-control-sm form-control-solid" disabled="disabled" placeholder="{{ auth()->user()->nb_days_off_remaining }}">
                 </div>
-            @else
-                <div class="form-group row">
-                    <label class="col-3 col-form-label mb-4">Votre solde de congé</label>
-                    <div class="col-4">
-                        <input type="text" class="form-control form-control-sm form-control-solid" disabled="disabled" placeholder="{{ auth()->user()->nb_days_off_remaining }}">
-                    </div>
-                </div>
-            @endif
+            </div>
             <div class="form-group row">
                 <label class="col-3 col-form-label mb-4">Type de la demande</label>
                 <div class="col-4">

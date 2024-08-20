@@ -277,10 +277,6 @@ class User extends Authenticatable
     {
         return Ticket::whereRaw('FIND_IN_SET(' . auth()->id() . ', assign_to)')->whereNotIn("status_id" ,TicketStatus::$_RESOLVED )->count();
     }
-    /**Redes broadcast drive user */
-    // public function receivesBroadcastNotificationsOn() {
-    //     return 'users.'.$this->id; 
-    // }
 
     public function getNameAndRegistrationNumber() {
         return $this->registration_number . " - " . $this->sortname;
@@ -489,6 +485,21 @@ class User extends Authenticatable
         $value = $sign . convertMinuteToHour($value);
         return "<div class='$class'>$value</div>";
     }
-
+    /** Get list of all user can a user validate or see */
+    public static function getListOfUsersCanValidateDayOff($user_id = 0) {
+        $groups_can_validate_dayoff = DB::table("project_group-dayoff_validator")->where("user_id",$user_id)->get(["user_id","project_id"])->pluck("project_id")->toArray();
+        if ($groups_can_validate_dayoff) {
+            return DB::table("project_group-members")->whereIn("project_id" ,$groups_can_validate_dayoff)->get(["user_id","project_id"])->pluck("user_id")->toArray();
+        }
+        return [];
+    }
+    /** Get list of validator    of a user */
+    public static function getListValidatorUserDayoff($user_id = 0) {
+        $groups_can_validate_dayoff = DB::table("project_group-dayoff_validator")->where("user_id",$user_id)->get(["user_id","project_id"])->pluck("project_id")->toArray();
+        if ($groups_can_validate_dayoff) {
+            return DB::table("project_group-members")->whereIn("project_id" ,$groups_can_validate_dayoff)->get(["user_id","project_id"])->pluck("user_id")->toArray();
+        }
+        return [];
+    }
     
 }
