@@ -5,7 +5,7 @@
                 @csrf
                 <div class="form-group">
                     <div class="mb-3">
-                        <label for="name" class="form-label require">Non du projet : </label>
+                        <label for="name" class="form-label require">Non du projet ou groupe : </label>
                         <div class="input-group mb-5">
                             <span class="input-group-text" id="basic-addon1">
                                 <span class="svg-icon svg-icon-2x">

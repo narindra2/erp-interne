@@ -11,14 +11,10 @@
         </div>
     @endforeach
     @php
-        // $count = $project->members->count();
-    @endphp
-   
-    @php
     if (isset($validator_dayoff) && $validator_dayoff) {
-        echo modal_anchor(url('/project/add/validator-dayoff'), ' <span class="symbol-label bg-dark text-inverse-dark fs-8 fw-bold" >+</span>', ['title' => "Ajouter le validateur de congé : $project->name","data-post-id" => $project->id, "data-modal-lg" => true, 'class' => 'symbol symbol-35px symbol-circle']);
+        echo modal_anchor(url('/project/add/validator-dayoff'), ' <span class="symbol-label bg-dark text-inverse-dark fs-8 fw-bold" >+</span>', ['title' => "Ajouter des validateurs de congé dans $project->name","data-post-id" => $project->id, "data-modal-lg" => true, 'class' => 'symbol symbol-35px symbol-circle']);
     }else {
-        echo modal_anchor(url('/project/add/members'), ' <span class="symbol-label bg-dark text-inverse-dark fs-8 fw-bold" >+</span>', ['title' => "Ajouter des membres dans ce projet : $project->name","data-post-id" => $project->id, "data-modal-lg" => true, 'class' => 'symbol symbol-35px symbol-circle']);
+        echo modal_anchor(url('/project/add/members'), ' <span class="symbol-label bg-dark text-inverse-dark fs-8 fw-bold" >+</span>', ['title' => "Ajouter des membres  dans $project->name","data-post-id" => $project->id, "data-modal-lg" => true, 'class' => 'symbol symbol-35px symbol-circle']);
     }
     @endphp
 </div>

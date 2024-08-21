@@ -10,13 +10,11 @@
             </div>
         </div>
     </div>
-    @if ($user->isCp() || $user->isM2p() )
-        <div class="card shadow-sm  mb-3 ">
-            <div class="w100p pt10">
-                <div id="gantt-chart" style="width: 100%;"></div>
-            </div>
+    <div class="card shadow-sm  mb-3 ">
+        <div class="w100p pt10">
+            <div id="gantt-chart" style="width: 100%;"></div>
         </div>
-    @endif
+    </div>
     <div class="card card-flush shadow-sm">
         {{-- <div class="card-header">
             <h3 class="card-title">Mes jours d'absences</h3>
@@ -46,7 +44,6 @@
             </div>
         </div>
     </div>
-@if ($user->isCp() || $user->isM2p())
     @section('dynamic_link')
     <link rel="stylesheet" href="{{ asset('library/gantt-chart/gantt.css') }}" />
     @endsection
@@ -66,8 +63,6 @@
         loadGantt();
     </script>
     @endsection   
-@endif
-
     @section('scripts')
         <script type="text/javascript">
             $(document).ready(function() {

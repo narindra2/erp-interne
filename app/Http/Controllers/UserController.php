@@ -563,7 +563,7 @@ class UserController extends Controller
                                 <div class="text-gray-800 fw-semibold fs-2">'.$project->name.'</div>
                             </div>
                         </div>';
-        $row["members_name_hidden"] = $project->members->implode("sortname","|");
+        $row["users_list"] = $project->members->implode("sortname","|")  . $project->dayoffValidator->implode("sortname","|")  ;
         $row["members"] = view("users.project-members.member-list-column",["project" => $project])->render();
         $row["validator_dayoff"] = view("users.project-members.member-list-column",["project" => $project , "validator_dayoff" => true ])->render();
         $row["action"] =modal_anchor(url('/project/edit/modal'), '<i class="fas fa-edit fs-4"></i> ', ['title' => "Edit/supprimer des membres dans ce projet","data-post-id" => $project->id, "data-modal-lg" => true, ]) ;

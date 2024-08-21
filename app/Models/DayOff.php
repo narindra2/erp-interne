@@ -356,7 +356,7 @@ class DayOff extends Model
         if ( $users_validator_ids ) {
             $ids_to_notify = array_merge($ids_to_notify ,$users_validator_ids);
         }
-        $users_to_notify = User::findMany(array_unique($ids_to_notify));
+        $users_to_notify = User::whereDeleted(0)->whereIn("id",array_unique($ids_to_notify))->get();
         $users_admin = get_cache_rh_admin();
         $users_to_notify = $users_to_notify->merge($users_admin);
         if ($users_to_notify->count()) {
@@ -435,14 +435,15 @@ class DayOff extends Model
         }
         /** List user to inform */
         $users_admin = get_cache_rh_admin();
-        $users_to_inform = User::findMany($ids_to_notify);
+        
+        $users_to_inform = User::whereDeleted(0)->whereIn("id",array_unique($ids_to_notify))->get();
 
         /** All user to inform */
         $users_to_notify = $users_to_inform->merge($users_admin);
         /** Send the notification */
         dispatch(function ()use($input ,$dayOff,$users_to_notify){
             if ($input['id']) {
-                Notification::send($users_to_notify, new DayOffCreatedNotification($dayOff, $dayOff->applicant, true));
+                Notification::send($users_to_notify, new DayOffCreatedNotification($dayOff, Auth::user(), true));
             }
             Notification::send($users_to_notify, new DayOffCreatedNotification($dayOff, $dayOff->applicant));
         })->afterResponse();
@@ -487,35 +488,40 @@ class DayOff extends Model
     //Create Filter
     public static function filterMyDaysOff()
     {
-        $filters = [];
-          if (Auth()->user()->isCp()) {
-            $same_department_user = [];
-            $users =Department::getUserByIdDepartement(Auth()->user()->userJob->department_id);
-            foreach ($users as $user) {
-                if ($user->deleted == 0) {
-                    $same_department_user[] = ["value" => $user->id, "text" => $user->sortname ." - ". $user->registration_number ];
+        $filters =  $users =  [ ];
+        $auth = Auth()->user(); 
+          $can_validate_dayoff = User::getListOfUsersCanValidateDayOff($auth->id);
+          if ($can_validate_dayoff) {
+            foreach (User::findMany($can_validate_dayoff) as $u) {
+               $users[] = ["value" => $u->id, "text" => $u->sortname  ];
+            }
+          }
+          if ($auth->isCp() ||  $auth->isM2p()) {
+            $usrs_same_dprtmt = Department::getUserByIdDepartement( Auth()->user()->userJob->department_id );
+            foreach ($usrs_same_dprtmt as $user) {
+                if ($user->deleted == 0 &&  !in_array($user->id,$can_validate_dayoff)) {
+                    $users[] = ["value" => $user->id, "text" => $user->sortname  ];
                 }
             }
-            $filters[] = [
-                "label" => "Congé de",
-                "name" => "user_id",
-                "type" => "select",
-                'attributes' => [
-                    "data-hide-search" => "false",
-                    "data-allow-clear" => "true",
-                ],
-                'options' => $same_department_user,
-            ];
-            
          }
 
-        
-        $filters[] = [
-            "label" => "Nature",
-            "name" => "nature_id",
+         $filters[] = [
+            "label" => "Congé de",
+            "name" => "user_id",
             "type" => "select",
-            "options" => to_dropdown( DayoffNatureColor::whereDeleted(0)->whereStatus(1)->latest()->get(),"id" , "nature")
+            'attributes' => [
+                "data-hide-search" => "false",
+                "data-allow-clear" => "true",
+            ],
+            'options' => $users,
         ];
+
+        // $filters[] = [
+        //     "label" => "Nature",
+        //     "name" => "nature_id",
+        //     "type" => "select",
+        //     "options" => to_dropdown( DayoffNatureColor::whereDeleted(0)->whereStatus(1)->latest()->get(),"id" , "nature")
+        // ];
         $filters[] = [
             "label" => "Statut",
             "name" => "result",
@@ -545,6 +551,14 @@ class DayOff extends Model
                 ["text" => 'En congé', "value" => 'in_progress'],
                 ["text" => 'Terminé', "value" => 'finish'],
                 ["text" => "Annulé", "value" => "is_canceled"]
+            ]
+        ];
+        $filters[] = [
+            "label" => "Absent au date ...",
+            "name" => "absence_date",
+            "type" => "date",
+            'attributes' => [
+                'placeholder' => 'Absent au date ...',
             ]
         ];
        

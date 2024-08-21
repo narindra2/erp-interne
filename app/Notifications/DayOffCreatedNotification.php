@@ -9,6 +9,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\DayOffController;
+use Auth;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\BroadcastMessage;
@@ -45,7 +46,9 @@ class DayOffCreatedNotification extends Notification
     public function via($notifiable)
     {
         $via = ['database','broadcast'];
-        if ($notifiable->id == $this->created_by->id) $via = [];
+        if ($notifiable->id == $this->created_by->id ) {
+            $via = [];
+        }
         return $via;
     }
 

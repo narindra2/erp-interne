@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\DayOff;
 use App\Models\UserType;
+use App\Models\Department;
 use App\Models\DaysOffType;
 use App\Models\UserJobView;
 use Illuminate\Support\Str;
@@ -141,18 +142,18 @@ class DayOffController extends Controller
     public function days_off_gantt(Request $request)
     {
         $series =  [];
-        $user = Auth::user();
+        $auth = Auth::user();
         $query = DayOff::with(['applicant',"nature"])->whereDeleted(0);
         /** User dayoff validate and not yet finish  */
         $query->whereDate('return_date', '>', Carbon::now()->format("Y-m-d"))->where('is_canceled', 0);
-        if ($user->isRhOrAdmin()) {
-         /** Dont filter dayoff  */   
-        }else{
-            $user->load('userJob');
-            if ($user->isCp() || $user->isM2p() ) {
-                $users_ID = UserJobView::where("department_id", $user->userJob->department_id)->get()->pluck("users_id");
-                $query->whereIn("applicant_id", $users_ID);
+        if (!$auth->isRhOrAdmin()) {
+            $auth->load('userJob');
+            $can_validate_ids = User::getListOfUsersCanValidateDayOff($auth->id);
+            $same_deprmtnt_ids = [];
+            if ($auth->isCp() || $auth->isM2p() ) {
+                $same_deprmtnt_ids = UserJobView::where("department_id", $auth->userJob->department_id)->get()->pluck("users_id");
             }
+            $query->whereIn("applicant_id", array_unique( array_merge($can_validate_ids ,$same_deprmtnt_ids)));
         }
         
         /** End  user not yet return work by return_date asc */

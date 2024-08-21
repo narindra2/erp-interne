@@ -8,7 +8,7 @@
             <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
                 data-bs-original-title="Créer un group de projet ">
                 @php
-                    echo modal_anchor(url('/project/add/modal-form'), '<i class="fas fa-plus"></i>' . "Créer un group ou un projet", ['title' => "Créer un group", 'class' => 'btn btn-sm btn-light-primary']);
+                    echo modal_anchor(url('/project/add/modal-form'), '<i class="fas fa-plus"></i>' . "Créer un groupe ou un projet", ['title' => "Créer un group", 'class' => 'btn btn-sm btn-light-primary']);
                 @endphp
             </div>
         </div>
@@ -52,7 +52,7 @@
                     ],
                     ordering :false,
                     columns:[
-                        {data :"members_name_hidden" , title: '', "class":"text-left w-200px "},
+                        {data :"users_list" , title: ''},
                         {data :"name" , title: 'Nom du groupe ou projet', "class":"text-left w-250px"},
                         {data :"members" , title: 'Membres du groupe ou projet', "class":"text-left "},
                         {data :"validator_dayoff" , title: 'Validateur des congés du groupe ou projet', "class":"text-left "},
