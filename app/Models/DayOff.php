@@ -334,12 +334,12 @@ class DayOff extends Model
     
     public function sendNotificationOnUpdate()
     {
-        $notify_to = [];
+        $ids_to_notify = [];
         if ($this->author_id != $this->applicant_id) {
-            $notify_to[] = $this->applicant_id;
-            $notify_to[] =  $this->author_id;
+            $ids_to_notify[] = $this->applicant_id;
+            $ids_to_notify[] =  $this->author_id;
         } else {
-            $notify_to[] = $this->applicant_id;
+            $ids_to_notify[] = $this->applicant_id;
         }
 
         $this->load(["applicant.userJob"]);
@@ -347,11 +347,16 @@ class DayOff extends Model
         try {
             $department_id =  $this->applicant->userJob->department_id;
             $cp_ids =  UserJobView::where("department_id", $department_id)->where("is_cp", 1)->get()->pluck("users_id")->toArray();
-            $notify_to = array_merge($notify_to ,$cp_ids);
+            $ids_to_notify = array_merge($ids_to_notify ,$cp_ids);
         } catch (\Throwable $th) {
             
         }
-        $users_to_notify = User::findMany($notify_to);
+        /** Inform validateur of dayoff where user in group*/
+        $users_validator_ids = User::getListValidatorUserDayoff($this->applicant_id);
+        if ( $users_validator_ids ) {
+            $ids_to_notify = array_merge($ids_to_notify ,$users_validator_ids);
+        }
+        $users_to_notify = User::findMany(array_unique($ids_to_notify));
         $users_admin = get_cache_rh_admin();
         $users_to_notify = $users_to_notify->merge($users_admin);
         if ($users_to_notify->count()) {
@@ -413,16 +418,28 @@ class DayOff extends Model
             }
         }
         $dayOff->load(["applicant.userJob"]);
+        $ids_to_notify = $cp_ids =  [];
         try {
             $department_id = $dayOff->applicant->userJob->department_id;
-            $cp_ids =  UserJobView::where("department_id", $department_id)->where("is_cp", 1)->get()->pluck("users_id");
+            $cp_ids = UserJobView::where("department_id", $department_id)->where("is_cp", 1)->get()->pluck("users_id");
         } catch (\Throwable $th) {
-            $cp_ids = [];
         }
-        $users_to_notify = get_cache_rh_admin();
+        /** Inform all cp in departement */
         if ($cp_ids) {
-            $users_to_notify = $users_to_notify->merge(User::findMany($cp_ids));
+            $ids_to_notify = array_merge($ids_to_notify ,$cp_ids);
         }
+        /** Inform validateur of dayoff where user in group*/
+        $users_validator_ids = User::getListValidatorUserDayoff($dayOff->applicant_id);
+        if ( $users_validator_ids ) {
+            $ids_to_notify = array_merge($ids_to_notify ,$users_validator_ids);
+        }
+        /** List user to inform */
+        $users_admin = get_cache_rh_admin();
+        $users_to_inform = User::findMany($ids_to_notify);
+
+        /** All user to inform */
+        $users_to_notify = $users_to_inform->merge($users_admin);
+        /** Send the notification */
         dispatch(function ()use($input ,$dayOff,$users_to_notify){
             if ($input['id']) {
                 Notification::send($users_to_notify, new DayOffCreatedNotification($dayOff, $dayOff->applicant, true));
