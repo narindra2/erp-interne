@@ -11,7 +11,7 @@ if (!function_exists('get_menus_list')) {
         if ($auth_user->isAdmin() || $auth_user->isHR()) {
             $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Utilisateurs</span>',];
             $menu_vertical[] = ["title" => __("lang.collaborator"), 'path'  => 'users',  'icon'  => '<i class="fas fa-users fs-3"></i>'];
-            $menu_vertical[] = ["title" => "Projet-membres", 'path'  => '/user/projet-membre',   'icon' => '<i class="fas fa-toolbox"></i>'];
+            $menu_vertical[] = ["title" => "Projet ou groupe", 'path'  => '/user/projet-membre',   'icon' => '<i class="fas fa-toolbox"></i>'];
             $menu_vertical[] = ["title" => __("lang.job"), 'path'  => 'jobs',  'icon'  => '<i class="fas fa-solid fa-briefcase fs-3"></i>'];
             $menu_vertical[] = ["title" => __("lang.sanctions"), 'path'  => '/users/sanctions/index',  'icon'  => ' <i class="fas fa-balance-scale fs-3"></i> '];
             /*

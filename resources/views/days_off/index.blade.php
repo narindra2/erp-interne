@@ -102,6 +102,7 @@
             dataTableInstance.dayOffRequested = $("#dayOffRequested").DataTable({
                 processing: true,
                 order: [[0, "desc"]],
+                pageLength: 100,
                 dom: "Bt<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-4'l><'col-sm-8'p>>",
                 buttons: [
