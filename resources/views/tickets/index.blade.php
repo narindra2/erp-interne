@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div class="me-4 my-2">
-                    <a id="do-search-project" title = "Recharger" class="btn btn-sm btn-outline btn-outline-dashed btn-outline-default">
+                    <a id="do-search-ticket" title = "Recharger" class="btn btn-sm btn-outline btn-outline-dashed btn-outline-default">
                         <i class="fas fa-sync-alt" style="width: 10px;"></i>
                     </a>
                 </div>
@@ -82,7 +82,7 @@
                 $('.ticketsTable').on('change', function() {
                     dataTableInstance.ticketsTable.ajax.reload();
                 });
-                $('#do-search-project').on('click', function(e) {
+                $('#do-search-ticket').on('click', function(e) {
                     dataTableInstance.ticketsTable.ajax.reload();
                 });
                 $(document).on('click',".resolve-ticket-input", function(e) {

@@ -27,6 +27,7 @@ use App\Http\Controllers\HourRecoveryController;
 use App\Http\Controllers\ItemMovementController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PointingTempController;
+use App\Http\Controllers\StatusReportController;
 use App\Http\Controllers\PublicHolidayController;
 use App\Http\Controllers\SlackEndpointController;
 use App\Http\Controllers\ComplementHourController;
@@ -421,6 +422,14 @@ Route::middleware(['auth', 'checkinweb'])->group(function () {
     Route::post("/purchase/save-num-invoice", [PurchaseController::class, 'saveNumInvoiceLine']);
     Route::post("/purchase/delete-num-invoice", [PurchaseController::class, 'deleteNumInvoiceLine']);
     Route::post("/purchases/to-stcok-modal-form", [PurchaseController::class, 'migrationToStockModal']);
+    
+    /** Rapport d'etat  */
+    
+    Route::get("/status-report", [StatusReportController::class, "index"]);
+    Route::post("/status-report/modal-form", [StatusReportController::class, 'modal_form']);
+    Route::post("/save/status-report", [StatusReportController::class, 'save_status_report']);
+    Route::get("/status-report/dataList", [StatusReportController::class, 'data_list']);
+    Route::post("/status-report/delete", [StatusReportController::class, 'delete']);
 
 
 });

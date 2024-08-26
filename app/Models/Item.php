@@ -143,9 +143,7 @@ class Item extends Model
         if (!$this->article) {
             $this->load("article.category");
         }
-        if (!$this->article) {
-            $this->load("article.category");
-        }
+        
         $data[] = $this->codeDetail;
         $data[] = $this->article->name;
         $data[] = Carbon::parse($this->date)->format("d/m/Y");

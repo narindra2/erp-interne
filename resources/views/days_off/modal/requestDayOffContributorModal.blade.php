@@ -265,7 +265,6 @@
             });
         }
         changeValueSelect("{{ $request_type }}"  , '{{ $dayOff->type_id ?? 0 }}' ); 
-        KTApp.initSelect2();
         function init_date(){
             var format = 'DD/MM/YYYY';
             var monthNames = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
