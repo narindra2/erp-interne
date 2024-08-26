@@ -11,7 +11,7 @@ use League\CommonMark\Inline\Element\Strong;
 class StatusReportController extends Controller
 {
     public function index()  {
-        return view("status-report.index" , ["basic_filter"  => []]);
+        return view("status-report.index" , ["basic_filter"  =>StatusReport::createFilter()]);
     }
     public function modal_form(Request $request)  {
         $statusReport = $request->id ? StatusReport::find( $request->id ) : new StatusReport();
@@ -60,5 +60,4 @@ class StatusReportController extends Controller
             return ["success" => true, "message" => trans("lang.success_deleted")];
         }
     }
-
 }

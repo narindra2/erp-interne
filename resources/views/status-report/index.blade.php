@@ -5,11 +5,6 @@
                 <span class="card-label  fs-3 mb-1"> @lang('lang.tickets-lists') </span>
                 <div class="text-muted fs-7 fw-bold"></div>
             </div>
-            <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover" data-bs-original-title="Ajouter un rapport d'etat">
-                @php
-                    echo modal_anchor(url('/status-report/modal-form'), '<i class="fas fa-plus"></i>' . "Ajouter un rapport d'etat", ['title' => "Ajouter un rapport d'etat", 'class' => 'btn btn-sm btn-light-primary',"data-modal-lg" => true]);
-                @endphp
-            </div>
         </div>
     </div>
     <div class="card shadow-sm  ">
@@ -31,6 +26,12 @@
                         <i class="fas fa-sync-alt" style="width: 10px;"></i>
                     </a>
                 </div>
+                <div class="me-4 my-2">
+                    @php
+                        echo modal_anchor(url('/status-report/modal-form'), '<i class="fas fa-plus"></i>' . "Ajouter un rapport d'etat", ['title' => "Ajouter un rapport d'etat", 'class' => 'btn btn-sm btn-light-primary',"data-modal-lg" => true]);
+                    @endphp
+                </div>
+                
             </div>
             <table id="statusReport" class="table table-row-dashed table-row-gray-200 align-middle gs-0 gy-4 table-hover "></table>
         </div>

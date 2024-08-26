@@ -48,10 +48,46 @@ class StatusReport extends Model
 
     public function scopeGetDetail($query, $options = [])
     {
+        $user_id = get_array_value($options, "user_id");
+        if ($user_id) {
+            $query->where("user_id", $user_id);
+        }
         $status = get_array_value($options, "status");
         if ($status) {
             $query->where("status_id", $status);
         }
+        
+        $day_report = get_array_value($options, 'day_report' , now()->format("Y-m-d"));
+        if ($day_report) {
+            $query->whereDate('start_date', '=', convert_date_to_database_date($day_report));
+        }
         return $query->whereDeleted(0)->orderBy('created_at', 'DESC');
+    }
+    public static function createFilter()
+    {
+        $filters = [];
+        $filters[] = [
+            "label" => "Congé de ",
+            "name" => "user_id",
+            "type" => "select",
+            'attributes' => [
+                'width' => 'w-250px',
+                "data-ajax--url" => url("/search/user"),
+                "data-ajax--cache" => true,
+                "data-minimum-input-length" => "3",
+                "data-allow-clear" => "true",
+            ],
+            'options' =>  [],
+        ];
+        
+        $filters[] = [
+            "label" => "Rapport du ...",
+            "name" => "day_report",
+            "type" => "date",
+            'attributes' => [
+                'placeholder' => 'Rapport du ...',
+            ]
+        ];
+        return $filters;
     }
 }
