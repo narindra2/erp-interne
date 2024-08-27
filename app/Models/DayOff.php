@@ -49,6 +49,12 @@ class DayOff extends Model
     public function getApplicantJob()
     {
         try {
+            if ($this->applicant->isAdmin()) {
+                return "Admin";
+            }
+            if ($this->applicant->isHR()) {
+                return "Rh";
+            }
             return $this->applicant->userjob->job->name;
         } catch (Exception $e) {
             return null;

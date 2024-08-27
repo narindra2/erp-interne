@@ -430,6 +430,7 @@ Route::middleware(['auth', 'checkinweb'])->group(function () {
     Route::post("/save/status-report", [StatusReportController::class, 'save_status_report']);
     Route::get("/status-report/dataList", [StatusReportController::class, 'data_list']);
     Route::post("/status-report/delete", [StatusReportController::class, 'delete']);
+    Route::get("/user-report/en-conge", [StatusReportController::class, 'enconge']);
 
 
 });

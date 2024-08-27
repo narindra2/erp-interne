@@ -104,6 +104,21 @@
                     </div>
                 </label>
             </div>
+            
+            <div class="col-md-4">
+                <label class="btn btn-sm btn-outline  btn-active-light-danger d-flex flex-stack text-start">
+                    <div class="d-flex align-items-center me-2">
+                        <div class="form-check form-check-custom form-check-solid form-check-danger me-6">
+                            <input class="form-check-input" @if ($statusReport->status == "unjustified" || !$statusReport->id) checked  @endif type="radio" name="status" value="unjustified"/>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h4 class="d-flex align-items-center fs-4 fw-bold flex-wrap">
+                               Non justifié
+                            </h4>
+                        </div>
+                    </div>
+                </label>
+            </div>
             <div class="col-md-4">
                 <label class="btn btn-sm btn-outline  btn-active-light-success d-flex flex-stack text-start">
                     <!--end::Description-->
@@ -115,20 +130,6 @@
                         <div class="flex-grow-1">
                             <h4 class="d-flex align-items-center fs-4 fw-bold flex-wrap">
                                 Justifié
-                            </h4>
-                        </div>
-                    </div>
-                </label>
-            </div>
-            <div class="col-md-4">
-                <label class="btn btn-sm btn-outline  btn-active-light-danger d-flex flex-stack text-start">
-                    <div class="d-flex align-items-center me-2">
-                        <div class="form-check form-check-custom form-check-solid form-check-danger me-6">
-                            <input class="form-check-input" @if ($statusReport->status == "unjustified") checked @endif type="radio" name="status" value="unjustified"/>
-                        </div>
-                        <div class="flex-grow-1">
-                            <h4 class="d-flex align-items-center fs-4 fw-bold flex-wrap">
-                               Non justifié
                             </h4>
                         </div>
                     </div>

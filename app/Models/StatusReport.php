@@ -14,11 +14,14 @@ class StatusReport extends Model
         'user_id',
         'type_status_report_id',
         'start_date',
+        'time_start',
         'fin_date',
+        'time_fin',
         'status',
         'detail',
         'start_date_is_morning',
         'fin_date_is_morning',
+        "report",
         'deleted',
         
     ];
@@ -29,7 +32,8 @@ class StatusReport extends Model
 
     const TYPE_STATUS_REPORT = [
         ["id" => 1 , "text"  => "Retard"],
-        ["id" => 2 , "text"  => "Abscence"],
+        ["id" => 2 , "text"  => "Abscent(e)"],
+        ["id" => 3 , "text"  => "Congé d'urgence"],
     ];
     public function user()
     {
@@ -38,9 +42,9 @@ class StatusReport extends Model
     public function getStatus()
     {
        if ($this->status == "unjustified") {
-            return '<span class="badge badge-light-danger fw-bolder fs-8 px-2 py-1 ms-2">Non justifié</span>';
+            return '<span class="badge badge-light-danger fw-bolder fs-8 px-2 py-1 ms-2">Non reglé</span>';
        }elseif ($this->status == "validated") {
-            return '<span class="badge badge-light-success fw-bolder fs-8 px-2 py-1 ms-2">Justifié</span>';
+            return '<span class="badge badge-light-success fw-bolder fs-8 px-2 py-1 ms-2">Reglé</span>';
        }else{
             return '<span class="badge badge-light-primary fw-bolder fs-8 px-2 py-1 ms-2">En cours</span>';
        }
@@ -67,11 +71,11 @@ class StatusReport extends Model
     {
         $filters = [];
         $filters[] = [
-            "label" => "Congé de ",
+            "label" => "Employé ",
             "name" => "user_id",
             "type" => "select",
             'attributes' => [
-                'width' => 'w-250px',
+                'width' => 'w-300px',
                 "data-ajax--url" => url("/search/user"),
                 "data-ajax--cache" => true,
                 "data-minimum-input-length" => "3",
@@ -85,6 +89,7 @@ class StatusReport extends Model
             "name" => "day_report",
             "type" => "date",
             'attributes' => [
+                "value" => now()->format("d/m/Y"),
                 'placeholder' => 'Rapport du ...',
             ]
         ];

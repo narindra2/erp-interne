@@ -1,10 +1,7 @@
 <x-base-layout>
     <div class="card shadow-sm  mb-3 ">
-        <div class="card-header border-1 pt-1">
-            <div class="me-2 card-title align-items-start ">
-                <span class="card-label  fs-3 mb-1"> @lang('lang.tickets-lists') </span>
-                <div class="text-muted fs-7 fw-bold"></div>
-            </div>
+        <div class="card-header border-1 ">
+            <h3 class="card-title">Rapport d'etat du : <span id="date-rapport" > {{ " " . now()->format("d/m/Y") }}</span></h3>
         </div>
     </div>
     <div class="card shadow-sm  ">
@@ -16,7 +13,7 @@
                 &nbsp; &nbsp;
                 <div class="me-4 my-2 ml-3">
                     <div class="d-flex align-items-center position-relative my-1">
-                        <input type="text" id="search_tickets" autocomplete="off"
+                        <input type="text" id="search_statusReport" autocomplete="off"
                             class="form-control form-control-solid form-select-sm w-200px ps-9 "
                             placeholder="{{ trans('lang.search') }}">
                     </div>
@@ -47,13 +44,13 @@
             $(document).ready(function() {
                 dataTableInstance.statusReport = $("#statusReport").DataTable({
                     processing: true,
-                    dom : "ltpr",
+                    dom : "tr",
                     ordering :false,
+                    pageLength: 100,
                     columns:[
-                        {data :"user" , title: 'Employé', "class":"text-left"},
-                        {data :"type" , title: 'Type', "class":""},
-                        {data :"start_date" , title: 'Date de rapport', "class":""},
-                        {data :"fin_date" , title: 'Fin de rapport', "class":""},
+                        {data :"user" , title: "Non d'employé", "class":"text-left"},
+                        {data :"date" , title: 'Date', "class":""},
+                        {data :"rapport" , title: 'Rapport', "class":""},
                         {data :"status" , title: 'Etat', "class":"text-left"},
                         {data :"created_at" , title: 'Creer le', "class":""},
                         {data :"actions" , title: '', "class":""},
@@ -74,10 +71,13 @@
                 }).on( 'draw', function () {
                     KTApp.initBootstrapPopovers();
                 });
-                $('#search_tickets').on('keyup', function() {
+                $('#search_statusReport').on('keyup', function() {
                     dataTableInstance.statusReport.search(this.value).draw();
                 });
                 $('.statusReport').on('change', function() {
+                    if($(this).attr("id") == "day_report"){
+                        $("#date-rapport").text(" " + $(this).val())
+                    }
                     dataTableInstance.statusReport.ajax.reload();
                 });
                 $('#do-search-rapport').on('click', function(e) {
