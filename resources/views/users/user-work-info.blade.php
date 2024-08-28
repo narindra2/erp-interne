@@ -87,7 +87,6 @@
         </div>
     </div>
 </div>
-
 <script>
     $(document).ready(function(){
         KTApp.initSelect2();

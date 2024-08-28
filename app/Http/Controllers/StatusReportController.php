@@ -7,10 +7,13 @@ use App\Models\DayOff;
 use App\Models\UserType;
 use App\Models\StatusReport;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use League\CommonMark\Inline\Element\Strong;
 
 class StatusReportController extends Controller
 {
+    private $options = [];
+    
     public function index()  {
         return view("status-report.index" , ["basic_filter"  =>StatusReport::createFilter()]);
     }
@@ -30,9 +33,14 @@ class StatusReportController extends Controller
         return ["success" =>  true, "data" => $this->_make_row($statusReport), "message" => "Rapport bien sauvegardé."];
     }
     public function data_list(Request $request)  {
-        $list = [];
-        $statusReports  = $this->get_detail($request->all());
-        $dayoffs = $this->enconge($request);
+
+        $list = []; $this->options =  $options= $request->all();
+        $from_user_tab_view = get_array_value($options, 'from_user_tab_view');
+        if ($from_user_tab_view) {
+            $options["user_id"] = Auth::id();
+        }
+        $statusReports  = $this->get_detail($options);
+        $dayoffs = $this->enconge($options);
         foreach ($statusReports as $statusReport) {
             $list[] = $this->_make_row($statusReport);
         }
@@ -43,7 +51,8 @@ class StatusReportController extends Controller
     }
     public function _make_row(StatusReport $statusReport)  {
         $row = [];
-        $row["user"] = $statusReport->user->sortname;
+        $job = $statusReport->user->actualJob;
+        $row["user"] = $statusReport->user->sortname ." " . '<span class="badge badge-light-info fw-bolder fs-8 px-2 py-1 ms-2">'. $job.'</span>';
         $type = collect(StatusReport::TYPE_STATUS_REPORT)->where("id",$statusReport->type_status_report_id)->first()["text"];
         $row["rapport"] = '<span class="badge badge-light-dark fw-bolder fs-8 px-2 py-1 ms-2">'. $type.'</span>';
         $row["status"] = $statusReport->getStatus();
@@ -67,6 +76,9 @@ class StatusReportController extends Controller
         $row["created_at"] =  convert_to_real_time_humains($statusReport->created_at) ;
         $row["actions"] = modal_anchor(url("/status-report/modal-form"), '<i class="fas fa-pen"></i>   ', ["title" => "Edition " , "data-post-id" => $statusReport->id,"data-modal-lg" => true]);
         $row["delete"] =  " " . js_anchor('<i class="fas fa-trash me-4 "></i>', [ 'data-action-url' => url("/status-report/delete"), "title" => "Supprimer","data-post-id" => $statusReport->id , "data-action" => "delete"]);
+        if (get_array_value($this->options , "from_user_tab_view")) {
+            $row["actions"] = $row["delete"] = '<i class="my-2 fas fa-lock" title="Contantez le service RH pour plus info."></i>';
+        }
         return $row;
     }
 
@@ -80,8 +92,8 @@ class StatusReportController extends Controller
             return ["success" => true, "message" => trans("lang.success_deleted")];
         }
     }
-    public function enconge(Request $request) {
-        $options = $request->all(); $list = [];
+    public function enconge( $options = []) {
+        $list = [];
         $daysOffs = dayOff::with(['applicant']);
         $user_id = get_array_value($options, 'user_id');
         if ($user_id) {
@@ -99,10 +111,9 @@ class StatusReportController extends Controller
     }
     public function _make_row_enconge(dayOff $dayOff ,  $day_report = null )  {
         $row = [];
-        $row["user"] = $dayOff->applicant->sortname;
-        // $date =  trans("lang.{$dayOff->type->type}") . " :  " ;
+        $job = $dayOff->getApplicantJob();
+        $row["user"] = $dayOff->applicant->sortname." " . '<span class="badge badge-light-info fw-bolder fs-8 px-2 py-1 ms-2">'. $job.'</span>';
         $date =  "" ;
-
         if ($dayOff->start_date_is_morning == 0) {
             $date .= "Après-midi " ;
         }
@@ -132,4 +143,11 @@ class StatusReportController extends Controller
         $row["actions"]  = $row["delete"] = '<i class="my-2 fas fa-lock" title="Contantez le service RH pour plus info."></i>';
         return $row;
     }
+
+    public function info_tab_repport( Request $request)
+    {
+        $filter = StatusReport::createFilter(false);
+        return view("users.repport" , ["basic_filter"  =>  $filter]);
+    }
+    
 }

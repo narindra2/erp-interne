@@ -355,6 +355,12 @@ class User extends Authenticatable
     public function getActualJobAttribute()
     {
         try {
+            if ($this->applicant->isAdmin()) {
+                return "Admin";
+            }
+            if ($this->applicant->isHR()) {
+                return "Rh";
+            }
             return $this->userJob->job->name;
         }
         catch(Exception $e) {

@@ -154,6 +154,7 @@ Route::middleware(['auth', 'checkinweb'])->group(function () {
     Route::post('/cerfa/customer/delete-modal', [CerfaController::class, 'delete_customer_modal']);
     Route::post('/cerfa/customer/delete', [CerfaController::class, 'delete_customer']);
 
+    Route::get('/user/tab/report', [StatusReportController::class, 'info_tab_repport']);
     Route::get('/user/tab/info', [UserController::class, 'info_tab']);
     Route::post('/user/info/update', [UserController::class, 'update_info']);
     Route::get('/user/tab/connexion', [UserController::class, 'setting_account_tab']);

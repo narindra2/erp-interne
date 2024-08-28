@@ -183,6 +183,11 @@
         <div class="d-flex overflow-auto h-55px">
                 <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bolder flex-nowrap">
                     <li class="nav-item">
+                        <a class="nav-link text-active-primary me-6 "  id="info-tab" href="#info" data-toggle="ajax-tab" data-bs-toggle="tab"  data-load-url = "{{ url("/user/tab/report") }}">
+                           Rapport
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link text-active-primary me-6 "  id="info-tab" href="#info" data-toggle="ajax-tab" data-bs-toggle="tab"  data-load-url = "{{ url("/user/tab/info") }}">
                            Mes infos 
                         </a>

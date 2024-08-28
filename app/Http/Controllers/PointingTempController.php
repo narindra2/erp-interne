@@ -35,7 +35,7 @@ class PointingTempController extends Controller
             return ["success" => true , "message" => "Importation faite avec succés."];
         } catch (Exception $e) {
             return ["success" => false , "message" => $e->getMessage()];
-        } 
+        }
     }
     public function store(Request $request) {
         try {

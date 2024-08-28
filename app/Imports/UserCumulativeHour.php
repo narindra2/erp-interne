@@ -16,12 +16,27 @@ class UserCumulativeHour implements ToCollection
     */
     public function collection(Collection $rows)
     {
+        
         foreach ($rows as $row) 
         {
+            $string  =  $row->first();
+            $registration_number = $time = "";
+            if (str_contains($string, ';')) {
+               $exploded = explode(";",$string);
+               $registration_number = $exploded[0];
+               $time = $exploded[1];
+            }elseif (str_contains($string, ',')) {
+                $exploded = explode(",",$string);
+                $registration_number = $exploded[0];
+                $time = $exploded[1];
+            }else{
+                $registration_number = $row[0];
+                $time = $row[1];
+            }
             try {
-                $user = User::where("registration_number", $row[0])->first();
-                if ($user && $row[1]) {
-                    PointingTemp::saveOrUpdatePointingTemp(["user_id" => $user->id ,"minute_worked" => $row[1]]);
+                $user = User::where("registration_number", $registration_number)->first();
+                if ($user && $time) {
+                    PointingTemp::saveOrUpdatePointingTemp(["user_id" => $user->id ,"minute_worked" => $time]);
                 }
             } catch (\Throwable $th) {
                

@@ -67,22 +67,25 @@ class StatusReport extends Model
         }
         return $query->whereDeleted(0)->orderBy('created_at', 'DESC');
     }
-    public static function createFilter()
+    public static function createFilter($show_user_filter = true)
     {
         $filters = [];
-        $filters[] = [
-            "label" => "Employé ",
-            "name" => "user_id",
-            "type" => "select",
-            'attributes' => [
-                'width' => 'w-300px',
-                "data-ajax--url" => url("/search/user"),
-                "data-ajax--cache" => true,
-                "data-minimum-input-length" => "3",
-                "data-allow-clear" => "true",
-            ],
-            'options' =>  [],
-        ];
+        if ($show_user_filter) {
+            $filters[] = [
+                "label" => "Employé ",
+                "name" => "user_id",
+                "type" => "select",
+                'attributes' => [
+                    'width' => 'w-300px',
+                    "data-ajax--url" => url("/search/user"),
+                    "data-ajax--cache" => true,
+                    "data-minimum-input-length" => "3",
+                    "data-allow-clear" => "true",
+                ],
+                'options' =>  [],
+            ];
+        }
+       
         
         $filters[] = [
             "label" => "Rapport du ...",
