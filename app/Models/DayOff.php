@@ -236,9 +236,9 @@ class DayOff extends Model
             $date = explode("-", $created_at);
             $daysOff->whereBetween('created_at', [to_date($date[0]), to_date($date[1])]);
         }
-        // retrieve last record of the day for the last 7 days
+        // retrieve last record of the day for the last 3  days
         if ($is_empty_filter) {
-            $daysOff->where('return_date', '>=', now()->subDays(7));
+            $daysOff->where('return_date', '>=', now()->subDays(3));
         }
         return $daysOff->orderBy("created_at", "DESC")->whereDeleted(0);
     }
