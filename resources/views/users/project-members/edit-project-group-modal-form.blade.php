@@ -84,11 +84,12 @@
         $("#add-new-members-modal-form").appForm({
             onSuccess: function(response) {
                 console.log(response);
-                if (response.deleted) {
-                    dataTableInstance.projectMembersTable.row($("#"+response.row_id)).remove().draw();
-                }else{
-                    dataTableUpdateRow(dataTableInstance.projectMembersTable,response.row_id,response.data)
-                }
+                // if (response.deleted) {
+                //     dataTableInstance.projectMembersTable.row($("#"+response.row_id)).remove().draw();
+                // }else{
+                //     dataTableUpdateRow(dataTableInstance.projectMembersTable,response.row_id,response.data)
+                // }
+                dataTableInstance.projectMembersTable.ajax.reload();
             },
         })
         var optionFormat = function(item) {

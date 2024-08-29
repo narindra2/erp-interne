@@ -12,7 +12,7 @@ class StatusReport extends Model
     protected $table = "statut_report";
     protected $fillable = [
         'user_id',
-        'type_status_report_id',
+        'nature_id',
         'start_date',
         'time_start',
         'fin_date',
@@ -30,14 +30,14 @@ class StatusReport extends Model
         'start_date' => 'date'
     ];
 
-    const TYPE_STATUS_REPORT = [
-        ["id" => 1 , "text"  => "Retard"],
-        ["id" => 2 , "text"  => "Abscent(e)"],
-        ["id" => 3 , "text"  => "Congé d'urgence"],
-    ];
+    
     public function user()
     {
         return $this->belongsTo(User::class, "user_id")->withOut(['userJob']);
+    }
+    public function nature()
+    {
+        return $this->belongsTo(DayoffNatureColor::class, "nature_id");
     }
     public function getStatus()
     {
@@ -49,6 +49,7 @@ class StatusReport extends Model
             return '<span class="badge badge-light-primary fw-bolder fs-8 px-2 py-1 ms-2">En cours</span>';
        }
     }
+    
 
     public function scopeGetDetail($query, $options = [])
     {

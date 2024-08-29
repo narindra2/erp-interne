@@ -7,6 +7,7 @@ use App\Models\DayOff;
 use App\Models\UserType;
 use App\Models\StatusReport;
 use Illuminate\Http\Request;
+use App\Models\DayoffNatureColor;
 use Illuminate\Support\Facades\Auth;
 use League\CommonMark\Inline\Element\Strong;
 
@@ -20,8 +21,8 @@ class StatusReportController extends Controller
     public function modal_form(Request $request)  {
         $statusReport = $request->id ? StatusReport::find( $request->id ) : new StatusReport();
         $users = User::select("id","deleted","name","firstname")->where('user_type_id', "<>", UserType::$_ADMIN)->whereDeleted(0)->get();
-        $type = StatusReport::TYPE_STATUS_REPORT;
-        return view("status-report.modal-form" , ["statusReport"  => $statusReport ,"users" => $users , "type" => $type ]);
+        $natures = DayoffNatureColor::getNaturesByType("status_report");
+        return view("status-report.modal-form" , ["statusReport"  => $statusReport ,"users" => $users , "natures" => $natures ]);
     }
     public function save_status_report(Request $request)  {
         $data = $request->except("_token");
@@ -34,7 +35,7 @@ class StatusReportController extends Controller
     }
     public function data_list(Request $request)  {
 
-        $list = []; $this->options =  $options= $request->all();
+        $reports = []; $this->options =  $options= $request->all();
         $from_user_tab_view = get_array_value($options, 'from_user_tab_view');
         if ($from_user_tab_view) {
             $options["user_id"] = Auth::id();
@@ -42,9 +43,9 @@ class StatusReportController extends Controller
         $statusReports  = $this->get_detail($options);
         $dayoffs = $this->enconge($options);
         foreach ($statusReports as $statusReport) {
-            $list[] = $this->_make_row($statusReport);
+            $reports[] = $this->_make_row($statusReport);
         }
-        return ["data" =>  array_merge($dayoffs,$list)];
+        return ["data" => array_merge($reports,$dayoffs)];
     }
     private function get_detail($options = [])  {
         return StatusReport::getDetail($options)->get();
@@ -53,8 +54,7 @@ class StatusReportController extends Controller
         $row = [];
         $job = $statusReport->user->actualJob;
         $row["user"] = $statusReport->user->sortname ." " . '<span class="badge badge-light-info fw-bolder fs-8 px-2 py-1 ms-2">'. $job.'</span>';
-        $type = collect(StatusReport::TYPE_STATUS_REPORT)->where("id",$statusReport->type_status_report_id)->first()["text"];
-        $row["rapport"] = '<span class="badge badge-light-dark fw-bolder fs-8 px-2 py-1 ms-2">'. $type.'</span>';
+        $row["nature"] =  $statusReport->nature ? '<span class="badge  " style="min-width: 80%;color: white;background-color:'.$statusReport->nature->color.'">'.$statusReport->nature->nature.'</span>'  : ""  ;
         $row["status"] = $statusReport->getStatus();
         $date = $statusReport->start_date->translatedFormat("d-M-Y");
         if ($statusReport->time_start) {
@@ -62,7 +62,9 @@ class StatusReportController extends Controller
         }
         if ($statusReport->start_date == $statusReport->fin_date ) {
             $date = $statusReport->start_date->translatedFormat("d-M-Y") ; 
-            $date .= " à " . $statusReport->time_start;
+            if ($statusReport->time_start) {
+                $date .= " à " . $statusReport->time_start;
+            }
         }else{
             if ($statusReport->fin_date) {
                 $date .=  "<strong>".  $statusReport->start_date->translatedFormat("d-M-Y"). "</strong>"  . " retour au " .   "<strong>". $statusReport->fin_date->translatedFormat("d-M-Y") . "</strong>"  ;
@@ -129,14 +131,9 @@ class StatusReportController extends Controller
         }
         $row["date"] =  $date . ".";
         $row["status"] =  '<span class="badge badge-light-success fw-bolder fs-8 px-2 py-1 ms-2">Validé</span>';
-        $row["rapport"] = '<span class="badge badge-light-info fw-bolder fs-8 px-2 py-1 ms-2">En congé</span>';
+        $row['nature'] = $dayOff->nature ? '<span class="badge  " style="min-width: 80%;color: white;background-color:'.$dayOff->nature->color.'">'.$dayOff->nature->nature.'</span>'  : "" ;
         if ($dayOff->result != "validated") {
             $row["status"] =  '<span class="badge badge-light-danger fw-bolder fs-8 px-2 py-1 ms-2">Pas encore validé</span>';
-            if ($dayOff->start_date->isPast() || $dayOff->start_date->today()) {
-                $row["rapport"] = '<span class="badge badge-light-info fw-bolder fs-8 px-2 py-1 ms-2">En congé</span>';
-            }else{
-                $row["rapport"] = '<span class="badge badge-light-info fw-bolder fs-8 px-2 py-1 ms-2">Sera en congé</span>';
-            }
         }
        
         $row["created_at"] = "-";
@@ -146,8 +143,15 @@ class StatusReportController extends Controller
 
     public function info_tab_repport( Request $request)
     {
-        $filter = StatusReport::createFilter(false);
-        return view("users.repport" , ["basic_filter"  =>  $filter]);
+        $filters[] = [
+            "label" => "Rapport du ...",
+            "name" => "day_report",
+            "type" => "date",
+            'attributes' => [
+                'placeholder' => 'Rapport du ...',
+            ]
+        ];
+        return view("users.repport" , ["basic_filter"  =>  $filters]);
     }
     
 }

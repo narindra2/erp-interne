@@ -41,6 +41,12 @@ class DayOff extends Model
     public static $idDayOffPayd = "1";
     public static $_max_permission_on_year = 10; // days
 
+    const TYPE_OF_ABSENCE = [
+        ["id" => "dayoff" , "text"  => "Congé"],
+        ["id" => "permission" , "text"  => "Permission"],
+        ["id" => "status_report" , "text"  => "Rapport d'etat"],
+    ];
+
     public function getStartDate()
     {
         return Carbon::make($this->start_date);
@@ -152,7 +158,7 @@ class DayOff extends Model
             /** Auth's and users in departement of auth */
             if ($auth->userJob) {
                 if ($auth->userJob->is_cp || $auth->isM2p()) {
-                    $user_in_departement = UserJobView::where("department_id", $auth->userJob->department_id)->get()->pluck("users_id");
+                    $user_in_departement = UserJobView::where("department_id", $auth->userJob->department_id)->get()->pluck("users_id")->toArray();
                     $dayoff_can_see = array_merge( $dayoff_can_see ,$user_in_departement );
                 }
             }
@@ -494,8 +500,8 @@ class DayOff extends Model
     //Create Filter
     public static function filterMyDaysOff()
     {
-        $filters =  $users =  [ ];
-        $auth = Auth()->user(); 
+        $filters =  $users = []; $auth = Auth()->user(); 
+        $users[] = ["value" => $auth->id, "text" => "Le mien"  ];
           $can_validate_dayoff = User::getListOfUsersCanValidateDayOff($auth->id);
           if ($can_validate_dayoff) {
             foreach (User::findMany($can_validate_dayoff) as $u) {
@@ -516,7 +522,7 @@ class DayOff extends Model
             "name" => "user_id",
             "type" => "select",
             'attributes' => [
-                "data-hide-search" => "false",
+                "data-hide-search" => "true",
                 "data-allow-clear" => "true",
             ],
             'options' => $users,

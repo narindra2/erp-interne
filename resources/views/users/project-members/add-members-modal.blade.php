@@ -48,7 +48,8 @@
     $(document).ready(function() {
         $("#add-new-members-modal-form").appForm({
             onSuccess: function(response) {
-              dataTableUpdateRow(dataTableInstance.projectMembersTable,response.row_id,response.data)
+            //   dataTableUpdateRow(dataTableInstance.projectMembersTable,response.row_id,response.data)
+              dataTableInstance.projectMembersTable.ajax.reload();
             },
         })
         var optionFormat = function(item) {

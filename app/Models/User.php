@@ -355,12 +355,12 @@ class User extends Authenticatable
     public function getActualJobAttribute()
     {
         try {
-            if ($this->applicant->isAdmin()) {
-                return "Admin";
-            }
-            if ($this->applicant->isHR()) {
-                return "Rh";
-            }
+            // if ($this->applicant->isAdmin()) {
+            //     return "Admin";
+            // }
+            // if ($this->applicant->isHR()) {
+            //     return "Rh";
+            // }
             return $this->userJob->job->name;
         }
         catch(Exception $e) {
@@ -495,7 +495,8 @@ class User extends Authenticatable
     public static function getListOfUsersCanValidateDayOff($user_id = 0) {
         $groups_can_validate_dayoff = DB::table("project_group-dayoff_validator")->where("user_id",$user_id)->get(["user_id","project_id"])->pluck("project_id")->toArray();
         if ($groups_can_validate_dayoff) {
-            return DB::table("project_group-members")->whereIn("project_id" ,$groups_can_validate_dayoff)->get(["user_id","project_id"])->pluck("user_id")->toArray();
+            $ids_not_deleted =  ProjectGroup::whereDeleted(0)->whereIn("id" ,$groups_can_validate_dayoff )->get()->pluck("id")->toArray();
+            return DB::table("project_group-members")->whereIn("project_id" ,$ids_not_deleted)->get(["user_id","project_id"])->pluck("user_id")->toArray();
         }
         return [];
     }
@@ -503,8 +504,9 @@ class User extends Authenticatable
     public static function getListValidatorUserDayoff($user_id = 0) {
         $all_groups_user = DB::table("project_group-members")->where("user_id",$user_id)->get(["user_id","project_id"])->pluck("project_id")->toArray();
         if ($all_groups_user) {
+            $ids_not_deleted =  ProjectGroup::whereDeleted(0)->whereIn("id" ,$all_groups_user )->get()->pluck("id")->toArray();
             /* return the validator user ids */
-            return DB::table("project_group-dayoff_validator")->whereIn("project_id" ,$all_groups_user)->get(["user_id","project_id"])->pluck("user_id")->toArray();
+            return DB::table("project_group-dayoff_validator")->whereIn("project_id" ,$ids_not_deleted)->get(["user_id","project_id"])->pluck("user_id")->toArray();
         }
         return [];
     }

@@ -5,12 +5,12 @@
            <div class="row">
             <div class="col-md-6">
                 <div class="card-title d-flex flex-column">   
-                    <label class=" text-gray-700 pt-1 fw-semibold fs-6">Type de rapport</label>
+                    <label class=" text-gray-700 pt-1 fw-semibold fs-6">Nature : </label>
                     <div class="d-flex align-items-center">
-                    <select id="type_status_report_id" name="type_status_report_id" class="form-select form-select-sm form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Choisissez type de rapport">
-                        <option value="null"    disabled >Type de rapport</option>
-                        @foreach ($type as $t)
-                            <option value="{{  $t["id"] }}" @if ($t["id"] == $statusReport->type_status_report_id ) selected @endif >{{ $t["text"] }}</option>
+                    <select id="nature_id" name="nature_id" class="form-select form-select-sm form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Choisissez la nature">
+                        <option value="null"    disabled >Nature</option>
+                        @foreach ($natures as $nature)
+                            <option value="{{  $nature->id }}" @if ( $nature->id == $statusReport->nature_id ) selected @endif >{{  $nature->nature }}</option>
                         @endforeach
                     </select>
                     </div>
@@ -82,7 +82,7 @@
            <div class="col-md-12">
                <div class="form-group  mb-4">
                    <label class=" text-gray-700 pt-1 fw-semibold fs-6">Rapport detail</label>
-                   <textarea data-rule-required="false" data-msg-required="@lang('lang.required_input')" name="report" class="form-control form-control form-control-solid" data-kt-autosize="true">{{ $statusReport->detail }}</textarea>
+                   <textarea data-rule-required="false" data-msg-required="@lang('lang.required_input')" name="report" class="form-control form-control form-control-solid" data-kt-autosize="true">{{ $statusReport->report }}</textarea>
                </div>
            </div>
        </div>

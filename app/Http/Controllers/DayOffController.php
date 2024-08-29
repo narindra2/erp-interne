@@ -60,14 +60,14 @@ class DayOffController extends Controller
                 $can_make_request = true;
             }
         }
-        $natures = DayoffNatureColor::whereDeleted(0)->whereStatus(1)->latest()->get();
+        $natures =   DayoffNatureColor::getNaturesByType(["dayoff", "permission"]);
         return view("modal.modal-form", ["can_create_other_request" => $can, "natures"  =>  $natures , "can_make_request" => $can_make_request]);
     }
 
     public function loadModalInfo(DayOff $dayOff)
     {
         $dayOff->load("type");
-        $natures = DayoffNatureColor::whereDeleted(0)->whereStatus(1)->latest()->get();
+        $natures =   DayoffNatureColor::getNaturesByType(["dayoff", "permission"]);
         $types = DaysOffType::whereDeleted(0)->where("type", $dayOff->type->type)->get();
         return view("days_off.modal.more-information", ["dayOff" => $dayOff , "natures" => $natures ,"types" => $types]);
     }
@@ -201,13 +201,15 @@ class DayOffController extends Controller
         $status = $nature->status ? "Activé" : "Desactivé";
         return [
             "nature" => $nature->nature . '<br><span class="badge badge-'.$class.'">'. $status  .'</span> ',
+            "type" => $nature->getTypeText(),
             "color" =>  '<input type="color" class="form-control form-control-solid form-control-lg" disabled readonly="true" value="'.$nature->color.'" >' ,
             "actions" =>  modal_anchor(url("/days-off/daysOffNature/modal_form"), '<i class="fas fa-pen"></i>', ["title" => "editer" ,"data-post-nature_id" =>$nature->id ]),
         ];
     }
     public function addDayoffNature(Request $request)  {
         $nature = DayoffNatureColor::find($request->nature_id) ?? new DayoffNatureColor();
-        return view("days_off.dayoff-nature-color.modal-form", ["nature" => $nature]);
+        $types = Dayoff::TYPE_OF_ABSENCE;
+        return view("days_off.dayoff-nature-color.modal-form", ["nature" => $nature , "types"  => $types ]);
     }
     public function seeMyRequestDaysOff()
     {
@@ -280,7 +282,7 @@ class DayOffController extends Controller
                 $can_make_request = true;
             }
         }
-        $natures = DayoffNatureColor::whereDeleted(0)->whereStatus(1)->latest()->get();
+        $natures = DayoffNatureColor::getNaturesByType(["dayoff", "permission"]);
         if ($auth->isAdmin() ||  $auth->isHR()){
             return view("days_off.modal.requestDayOffModal", ["dayOff" => $dayOff,  "natures" => $natures, "auth"  =>  $auth, "can_create_other_request" =>  $can, "can_make_request" => $can_make_request,  'users' => User::whereDeleted(0)->get()]);
         }else {

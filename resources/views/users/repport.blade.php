@@ -33,7 +33,7 @@
                     columns:[
                         {data :"user" , title: "Non d'employé", "class":"text-left"},
                         {data :"date" , title: 'Date', "class":""},
-                        {data :"rapport" , title: 'Rapport', "class":""},
+                        {data :"nature" , title: 'Rapport', "class": ""},
                         {data :"status" , title: 'Etat', "class":"text-left"},
                         {data :"created_at" , title: 'Creer le', "class":""},
                         {data :"actions" , title: '', "class":""},

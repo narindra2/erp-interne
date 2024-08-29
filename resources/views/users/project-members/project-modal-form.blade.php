@@ -36,7 +36,7 @@
     $(document).ready(function() {
         $("#project-modal-form").appForm({
             onSuccess: function(response) {
-              dataTableaddRowIntheTop(dataTableInstance.projectMembersTable, response.data)
+              dataTableInstance.projectMembersTable.ajax.reload();
             },
         })
     });

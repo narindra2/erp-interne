@@ -25,9 +25,10 @@
                 dataTableInstance.natureDaysOff = $("#natureDaysOff").DataTable({
                     dom: "tp",
                     processing: true,
-                    ordering: false,
+             
                     columns: [ 
                         {data :"nature" , title: 'Nature',"class":"text-left"},
+                        {data :"type" , title: 'Dans le',"class":"text-left"},
                         {data :"color" , title: 'Couleur',"class":"text-left"},
                         {data :"actions" , title: '<i class="fas fa-bars" style="font-size:20px"></i>',"class":"text-left"},
                     ],
