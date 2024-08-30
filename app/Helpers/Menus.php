@@ -22,8 +22,8 @@ if (!function_exists('get_menus_list')) {
             **/
             $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Congé et permission</span>'];
             $menu_vertical[] = ["title" => "Rapport d'état", 'path'  => 'status-report',  'icon'  => '<i class="fas fa-user-clock fs-3"></i>'];
-            $menu_vertical[] = ["title" => "Liste des congés", 'path'  => 'days-off',  'icon'  => '<i class="far fa-list-alt fs-3"></i>'];
-            $menu_vertical[] = ["title" => "Validateur des congés", 'path'  => 'user/projet-membre',   'icon' => '<i class="fas fa-user-secret"></i>'];
+            $menu_vertical[] = ["title" => "Liste des congés", 'path'  => 'days-off',  'icon'  => '<i class="fas fa-hiking fs-1"></i>'];
+            $menu_vertical[] = ["title" => "Validateur des congés", 'path'  => 'user/projet-membre',   'icon' => '<i class="fas fa-user-check fs-3"></i>'];
             $menu_vertical[] = ["title" => __("lang.days_of_types"), 'path'  => 'days-off/type',  "icon" => '<i class="fas fa-users-cog fs-3"></i>'];
             $menu_vertical[] = ["title" => __("lang.upgrade_days_off"), 'path'  => 'days-off/upgrade',  "icon" => '<i class="fas fa-chart-line fs-3"></i>'];
             $menu_vertical[] = ["title" => __("lang.public-holiday"), 'path'  => 'public-holidays',  "icon" => '<i class="fas fa-gift fs-3"></i>'];
@@ -37,9 +37,9 @@ if (!function_exists('get_menus_list')) {
 
             $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Outils</span>'];
             $menu_vertical[] = ["title" => "Ticketing", 'path'   => 'tickets',  'icon'  => ' <i class="fas fa-clipboard-list fs-3"></i> '];
-            $menu_vertical[] = ["title" => "Besoin ticket", 'path'  => 'needToBuy',   'icon' => '<i class="fas fa-clipboard-list fs-3"></i>'];
+            $menu_vertical[] = ["title" => "Besoin ticket", 'path'  => 'needToBuy',   'icon' => '<i class="fas fa-cash-register fs-3"></i>'];
             $menu_vertical[] = ["title" => "Tâches", 'path'  => 'tâche/list',   'icon' => '<i class="far fa-calendar-check fs-3"></i>'];
-            $menu_vertical[] = ["title" => "SDF", 'path'  => 'salle-de-reunion',  'icon'  => '<i class="fas fa-user-clock"></i>'];
+            $menu_vertical[] = ["title" => "SDF", 'path'  => 'salle-de-reunion',  'icon'  => '<i class="fas fa-handshake fs-3"></i>'];
             $menu_vertical[] = ["title" => "Suivis & prod", 'path'  => 'suivi/v2/projet',   'icon' => '<i class="fas fa-tasks fs-3"></i>'];
         
             $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Achat & Stock</span>'];
