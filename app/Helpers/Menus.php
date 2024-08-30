@@ -11,7 +11,6 @@ if (!function_exists('get_menus_list')) {
         if ($auth_user->isAdmin() || $auth_user->isHR()) {
             $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Utilisateurs</span>',];
             $menu_vertical[] = ["title" => __("lang.collaborator"), 'path'  => 'users',  'icon'  => '<i class="fas fa-users fs-3"></i>'];
-            $menu_vertical[] = ["title" => "Projet ou groupe", 'path'  => 'user/projet-membre',   'icon' => '<i class="fas fa-toolbox"></i>'];
             $menu_vertical[] = ["title" => __("lang.job"), 'path'  => 'jobs',  'icon'  => '<i class="fas fa-solid fa-briefcase fs-3"></i>'];
             $menu_vertical[] = ["title" => __("lang.sanctions"), 'path'  => 'users/sanctions/index',  'icon'  => ' <i class="fas fa-balance-scale fs-3"></i> '];
             /*
@@ -24,6 +23,7 @@ if (!function_exists('get_menus_list')) {
             $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Congé et permission</span>'];
             $menu_vertical[] = ["title" => "Rapport d'état", 'path'  => 'status-report',  'icon'  => '<i class="fas fa-user-clock fs-3"></i>'];
             $menu_vertical[] = ["title" => "Liste des congés", 'path'  => 'days-off',  'icon'  => '<i class="far fa-list-alt fs-3"></i>'];
+            $menu_vertical[] = ["title" => "Validateur des congés", 'path'  => 'user/projet-membre',   'icon' => '<i class="fas fa-user-secret"></i>'];
             $menu_vertical[] = ["title" => __("lang.days_of_types"), 'path'  => 'days-off/type',  "icon" => '<i class="fas fa-users-cog fs-3"></i>'];
             $menu_vertical[] = ["title" => __("lang.upgrade_days_off"), 'path'  => 'days-off/upgrade',  "icon" => '<i class="fas fa-chart-line fs-3"></i>'];
             $menu_vertical[] = ["title" => __("lang.public-holiday"), 'path'  => 'public-holidays',  "icon" => '<i class="fas fa-gift fs-3"></i>'];

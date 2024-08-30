@@ -433,7 +433,7 @@ class DayOff extends Model
         $ids_to_notify = $cp_ids =  [];
         try {
             $department_id = $dayOff->applicant->userJob->department_id;
-            $cp_ids = UserJobView::where("department_id", $department_id)->where("is_cp", 1)->get()->pluck("users_id");
+            $cp_ids = UserJobView::where("department_id", $department_id)->where("is_cp", 1)->get()->pluck("users_id")->toArray();
         } catch (\Throwable $th) {
         }
         /** Inform all cp in departement */

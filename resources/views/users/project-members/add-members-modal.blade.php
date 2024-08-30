@@ -20,7 +20,7 @@
                 <div class="form-group">
                     <div class="mb-3 col-md-12">
                         <label for="users"> Collaborateurs :</label>
-                        <select class="form-select" name="users[]" id="users" data-control="select2" data-close-on-select="false" data-placeholder="Selectionner les collaborateurs à ajouter" data-allow-clear="true" multiple="multiple">
+                        <select class="form-select" name="users[]" id="users" data-control="select2" data-placeholder="Selectionner les collaborateurs à ajouter" data-allow-clear="true" multiple="multiple">
                             <option value="0" disabled  >--Collaborateurs--</option>
                                 @foreach ($users as $user)
                                     <option data-avatar= "{{  $user->avatarUrl }}" value="{{ $user->id }}">{{ $user->sortname}} ({{ $user->registration_number }}) </option>
@@ -69,7 +69,10 @@
 
             $('#users').select2({
                 templateSelection: optionFormat,
-                templateResult: optionFormat
+                templateResult: optionFormat,
+                dropdownParent: $('#ajax-modal'),
+                selectOnClose : true,
+                scrollAfterSelect : true,
             });
     });
 </script>

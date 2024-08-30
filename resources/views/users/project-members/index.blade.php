@@ -2,7 +2,7 @@
     <div class="card shadow-sm  mb-3 ">
         <div class="card-header border-1 pt-1">
             <div class="me-2 card-title align-items-start ">
-                <span class="card-label  fs-3 mb-1"> Projets ou Groupes </span>
+                <span class="card-label  fs-3 mb-1"> Validateur des congés </span>
                 <div class="text-muted fs-7 fw-bold"></div>
             </div>
             <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
@@ -54,8 +54,8 @@
                     columns:[
                         {data :"users_list" , title: ''},
                         {data :"name" , title: 'Nom du groupe ou projet', "class":"text-left w-250px"},
-                        {data :"members" , title: 'Membres du groupe ou projet', "class":"text-left "},
-                        {data :"validator_dayoff" , title: 'Validateur des congés du groupe ou projet', "class":"text-left "},
+                        {data :"members" , title: 'Employés à  validés ses congé', "class":"text-left "},
+                        {data :"validator_dayoff" , title: 'Validateurs des congés', "class":"text-left "},
                         {data :"action" , title: '', "class":"text-left "},
                     ],  
                     ajax: {

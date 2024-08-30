@@ -44,7 +44,7 @@
                 <div class="form-group">
                     <div class="mb-3 col-md-12">
                         <label for="exlude_users_validator"> Rétirer un ou des validateur de congés dans {{ $project->name }} :</label>
-                        <select class="form-select" name="exlude_users_validator[]" id="exlude_users_validator" data-control="select2" data-close-on-select="false" data-placeholder="Selectionner les validateurs à rétirer" data-allow-clear="true" multiple="multiple">
+                        <select class="form-select" name="exlude_users_validator[]" id="exlude_users_validator" data-control="select2"  data-placeholder="Selectionner les validateurs à rétirer" data-allow-clear="true" multiple="multiple">
                             <option value="0" disabled  >--Validateur à rétirer--</option>
                                 @foreach ($project->dayoffValidator as $user)
                                     <option data-avatar= "{{  $user->avatarUrl }}" value="{{ $user->id }}">{{ $user->sortname}}</option>
@@ -109,7 +109,10 @@
 
             $('#exlude_users, #exlude_users_validator').select2({
                 templateSelection: optionFormat,
-                templateResult: optionFormat
+                templateResult: optionFormat,
+                selectOnClose : true,
+                scrollAfterSelect : true,
+                dropdownParent: $('#ajax-modal')
             });
     });
 </script>
