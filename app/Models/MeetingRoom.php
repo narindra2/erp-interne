@@ -18,6 +18,6 @@ class MeetingRoom extends Model
     ];
 
     public static function get_available_room(){
-        return MeetingRoom::whereDeleted(0)->get();
+        return MeetingRoom::whereDeleted(0)->latest()->get();
     }
 }

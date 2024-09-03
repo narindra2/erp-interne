@@ -8,7 +8,7 @@
     </div>
     <div class="row">
         @foreach ($rooms as $room)
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="card h-md-100">
                     <div class="card-header border-0 pt-5">
                         <h3 class="card-title align-items-start flex-column">
