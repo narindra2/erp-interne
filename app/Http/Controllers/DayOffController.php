@@ -248,7 +248,7 @@ class DayOffController extends Controller
         $row['nature'] = $dayOff->nature ? '<span class="badge  " style="min-width: 90%;color: white;background-color:'.$dayOff->nature->color.'">'.$dayOff->nature->nature.'</span>'  : "" ;
         $row['reason'] = $dayOff->reason ;
         $row['status_dayoff'] = view("days_off.columns.status", ["status" => $this->row_status_dayoff($dayOff), "is_canceled" => $dayOff->is_canceled])->render();
-        $actions = '<i class="my-2 fas fa-lock" title="Contantez le service RH pour plus info."></i>';
+        $actions = '<i class="my-2 fas fa-lock" title="Contactez le service RH pour plus d\'info."></i>';
         if ($dayOff->result == "in_progress") {
             if (auth()->user()->isCp()) {
                 $actions = modal_anchor(url("/days-off/information/modal/$dayOff->id"), '<i class="fas fa-edit  fs-3"></i>', ["title" => "Plus d'informations", "data-modal-lg" => true,]);

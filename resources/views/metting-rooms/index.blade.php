@@ -15,7 +15,7 @@
                             <span class="card-label fw-bold text-dark">{{ $room->name }}</span>
                         </h3>
                         <div class="card-toolbar">
-                            <button class="btn btn-sm btn-light-primary " id="collapse-{{ $room->id }}" type="button" data-bs-toggle="collapse"
+                            <button class="btn btn-sm btn-light-info " id="collapse-{{ $room->id }}" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#kt_accordion_{{ $room->id }}_body_{{ $room->id }}"
                                 aria-controls="kt_accordion_{{ $room->id }}_body_{{ $room->id }}">
                                 Utiliser la salle &nbsp;
@@ -46,7 +46,7 @@
                                                 'title' => "Calendrier du $room->name",
                                                 'data-modal-lg' => true,
                                                 'data-post-room_id' => $room->id ,
-                                                'class' => 'btn btn-sm btn-light-primary ',
+                                                'class' => 'btn btn-sm btn-light-info ',
                                             ]);
                                         @endphp
                                     </div>
@@ -101,9 +101,9 @@
                                         </div>
                                         <div class="d-flex justify-content-end">
                                             <button type="submit" id="submit-{{ $room->id }}"
-                                                class=" btn btn-sm btn-light-primary mr-2">
+                                                class=" btn btn-sm btn-light-info mr-2">
                                                 @include('partials.general._button-indicator', [
-                                                    'label' => 'Créer ce reunion',
+                                                    'label' => 'Créer cette reunion',
                                                     'message' => trans('lang.sending'),
                                                 ])
                                             </button>

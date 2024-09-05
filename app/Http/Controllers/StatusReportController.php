@@ -79,7 +79,7 @@ class StatusReportController extends Controller
         $row["actions"] = modal_anchor(url("/status-report/modal-form"), '<i class="fas fa-pen"></i>   ', ["title" => "Edition " , "data-post-id" => $statusReport->id,"data-modal-lg" => true]);
         $row["delete"] =  " " . js_anchor('<i class="fas fa-trash me-4 "></i>', [ 'data-action-url' => url("/status-report/delete"), "title" => "Supprimer","data-post-id" => $statusReport->id , "data-action" => "delete"]);
         if (get_array_value($this->options , "from_user_tab_view")) {
-            $row["actions"] = $row["delete"] = '<i class="my-2 fas fa-lock" title="Contantez le service RH pour plus info."></i>';
+            $row["actions"] = $row["delete"] = '<i class="my-2 fas fa-lock" title="Contactez le service RH pour plus info."></i>';
         }
         return $row;
     }
@@ -137,7 +137,7 @@ class StatusReportController extends Controller
         }
        
         $row["created_at"] = "-";
-        $row["actions"]  = $row["delete"] = '<i class="my-2 fas fa-lock" title="Contantez le service RH pour plus info."></i>';
+        $row["actions"]  = $row["delete"] = '<i class="my-2 fas fa-lock" title="Contactez le service RH pour plus d\'info."></i>';
         return $row;
     }
 
