@@ -207,7 +207,9 @@
                             $("#time_start_{{ $room->id }} ,#time_end_{{ $room->id }}, #subject-{{ $room->id }}").val("");
                         },
                     })
-                    function getHorairesData(params = {}) {
+                    
+                @endforeach
+                function getHorairesData(params = {}) {
                         $.ajax({
                             type: 'post',
                             url: url("/meeting-room/load/horaires"),
@@ -223,7 +225,6 @@
                             }
                         });
                     }
-                @endforeach
             })
         </script>
     @endsection
