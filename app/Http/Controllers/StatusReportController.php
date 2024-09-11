@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\DayOff;
 use App\Models\UserType;
+use App\Models\Department;
+use App\Models\PointingTemp;
 use App\Models\StatusReport;
 use Illuminate\Http\Request;
 use App\Models\DayoffNatureColor;
@@ -35,10 +37,18 @@ class StatusReportController extends Controller
     }
     public function data_list(Request $request)  {
 
-        $reports = []; $this->options =  $options= $request->all();
+        $this->options =  $options= $request->all();
+        $reports = [] ;
+        $auth = Auth()->user(); $usrs_same_dprtmt = [];
         $from_user_tab_view = get_array_value($options, 'from_user_tab_view');
         if ($from_user_tab_view) {
-            $options["user_id"] = Auth::id();
+            if ($auth->isCp() /* ||  $auth->isM2p() */) {
+                $usrs_same_dprtmt = Department::getUserByIdDepartement(Auth()->user()->userJob->department_id);
+                $usrs_same_dprtmt =  $usrs_same_dprtmt->pluck("id")->toArray();
+                $options["user_id"] =  $usrs_same_dprtmt;
+            }else{
+                $options["user_id"] = [Auth::id()];
+            }
         }
         $statusReports  = $this->get_detail($options);
         $dayoffs = $this->enconge($options);
@@ -61,7 +71,7 @@ class StatusReportController extends Controller
             $date .= " à " . $statusReport->time_start;
         }
         if ($statusReport->start_date == $statusReport->fin_date ) {
-            $date = $statusReport->start_date->translatedFormat("d-M-Y") ; 
+            $date = $statusReport->start_date->translatedFormat("d-M-Y"); 
             if ($statusReport->time_start) {
                 $date .= " à " . $statusReport->time_start;
             }
@@ -99,13 +109,13 @@ class StatusReportController extends Controller
         $daysOffs = dayOff::with(['applicant']);
         $user_id = get_array_value($options, 'user_id');
         if ($user_id) {
-            $daysOffs->where('applicant_id', $user_id);
+            $daysOffs->whereIn('applicant_id', $user_id);
         }
         $day_report = get_array_value($options, 'day_report' ) ?? now()->format("d/m/Y");
         if ($day_report) {
             $daysOffs->whereDate('start_date', '<=', to_date($day_report))->whereDate('return_date', '>', to_date($day_report) ." 00:00:00" );
         }
-        $daysOffs = $daysOffs->whereDeleted(0)->where("is_canceled", 0)->get();
+        $daysOffs = $daysOffs->whereDeleted(0)->where("is_canceled","=" ,  0)->notRefused()->get();
         foreach ($daysOffs as $daysOff) {
             $list[] = $this->_make_row_enconge($daysOff);
         }
@@ -140,14 +150,38 @@ class StatusReportController extends Controller
         $row["actions"]  = $row["delete"] = '<i class="my-2 fas fa-lock" title="Contactez le service RH pour plus d\'info."></i>';
         return $row;
     }
-
+    public function report_cumulative_hour_for_cp(Request $request)  {
+        $auth = Auth()->user();
+        $data = [] ;$usrs_same_dprtmt = []; 
+        if ($auth->isCp()) {
+            $usrs_same_dprtmt = Department::getUserByIdDepartement(Auth()->user()->userJob->department_id );
+            $usrs_same_dprtmt =  $usrs_same_dprtmt->pluck("id")->toArray();
+        }
+       
+        $lists = PointingTemp::whereIn("user_id" , $usrs_same_dprtmt)->get();
+        foreach ($lists as $hour) {
+            $user = User::select("registration_number","deleted","name","firstname")->whereDeleted(0)->find($hour->user_id);
+            if (!$user) {
+                continue;
+            }
+            $data[] = [
+                "registration_number" =>  $user->registration_number,
+                'name' =>  $user->fullname,
+                'minute_worked' => $hour->minute_worked ?? "non reconnue",
+                'last_update' => convert_to_real_time_humains($hour->updated_at) ,
+            ];
+        }
+        return ["data" =>  $data];
+    }
     public function info_tab_repport( Request $request)
     {
+        $auth = Auth()->user();
         $filters[] = [
             "label" => "Rapport du ...",
             "name" => "day_report",
             "type" => "date",
             'attributes' => [
+                "value" => $auth->isCp() ? now()->format("d/m/Y") : null,
                 'placeholder' => 'Rapport du ...',
             ]
         ];

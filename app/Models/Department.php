@@ -22,6 +22,7 @@ class Department extends Model
                 $query->where("users.deleted", 0);
             }])->whereIn("department_id", $idDepartement)->whereDeleted(0);
         }
+        
         return UserJobView::with(['user'=>  function ($query)
         {
             $query->where("users.deleted", 0);

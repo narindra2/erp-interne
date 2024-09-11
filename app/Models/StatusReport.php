@@ -50,18 +50,17 @@ class StatusReport extends Model
        }
     }
     
-
     public function scopeGetDetail($query, $options = [])
     {
         $user_id = get_array_value($options, "user_id");
         if ($user_id) {
-            $query->where("user_id", $user_id);
+            $whereQuery = is_array($user_id) ?  "whereIn"  : "where" ;
+            $query->$whereQuery("user_id", $user_id);
         }
         $status = get_array_value($options, "status");
         if ($status) {
             $query->where("status_id", $status);
         }
-        
         $day_report = get_array_value($options, 'day_report' , now()->format("Y-m-d"));
         if ($day_report) {
             $query->whereDate('start_date', '=', convert_date_to_database_date($day_report));

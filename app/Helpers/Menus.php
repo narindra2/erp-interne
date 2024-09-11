@@ -55,6 +55,11 @@ if (!function_exists('get_menus_list')) {
             $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Congé & demande</span>',];
             $menu_vertical[] = ["title" => "Demande des jours de congé", 'path'  => 'my-days-off',   'icon' => '<i class="fas fa-walking fs-3"></i>'];
             $menu_vertical[] = ["title" => "Récupération Heure", 'path'  => 'hour-recoveries',   'icon' => '<i class="fas fa-clock fs-3"></i>'];
+            /** Other */
+            if ($auth_user->isCp()) {
+                $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Utilisateurs</span>',];
+                $menu_vertical[] = ["title" => __("lang.sanctions"), 'path'  => 'users/sanctions/index',  'icon'  => ' <i class="fas fa-balance-scale fs-3"></i> '];
+            }
             /** Outils erp */
             $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Outils</span>',];
             $menu_vertical[] = ["title" => "Ticketing", 'path'  => 'tickets',   'icon' => '<i class="fas fa-clipboard-list fs-3"></i>'];

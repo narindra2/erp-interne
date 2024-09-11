@@ -35,10 +35,17 @@ class Sanction extends Model
         if ($year) {
             $query->whereYear('date', '=', $year);
         } 
+        $auth = Auth()->user();
+        if ($auth->isCp() &&  !$auth->isRhOrAdmin() ) {
+            $usrs_same_dprtmt = Department::getUserByIdDepartement(Auth()->user()->userJob->department_id );
+            $usrs_same_dprtmt =  $usrs_same_dprtmt->pluck("id")->toArray();
+            $query->whereIn('user_id',  $usrs_same_dprtmt );
+        }
         $user_id = get_array_value($options, "user_id");
         if ($user_id) {
             $query->where('user_id', '=', $user_id);
-        } 
+        }
+
         $type = get_array_value($options, "type");
         if ($type) {
             $query->where('type', '=', $type);
@@ -127,29 +134,19 @@ class Sanction extends Model
     }
     public static function createFilter($options = [])
     {
-        $filters = $users = [];
-        $usersJob = Department::with(["user" => function($user) {
-            $user->select("user_type_id","firstname","name","id","avatar")->whereDeleted(0);
-        }])->getAllEmployee()->get();
-        foreach ($usersJob as $userJob) {
-            try {
-                if (!$userJob->user->deleted) { // remove all user deleted
-                    $users[] = ["value" => $userJob->user->id, "text" => $userJob->user->sortname];
-                }
-            } catch (Exception $e) {
-            }
+        $filters = []; $auth = Auth()->user();
+        if ($auth->isRhOrAdmin() ) {
+            $filters[] = [
+                "label" => " Employés ",
+                "name" => "user_id",
+                "type" => "select",
+                'attributes' => [
+                    "data-hide-search" => "false",
+                    "data-allow-clear" => "true",
+                ],
+                'options' => to_dropdown( User::whereDeleted(0)->get(),"id" , "sortname"),
+            ];
         }
-        $filters[] = [
-            "label" => " Employés ",
-            "name" => "user_id",
-            "type" => "select",
-            'attributes' => [
-                "data-hide-search" => "false",
-                "data-allow-clear" => "true",
-            ],
-            'options' => $users,
-        ];
-        
         $filters[] = [
             "label" => " Types de saction ", 
             "name" =>"type",

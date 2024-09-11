@@ -222,17 +222,19 @@ class DayOffController extends Controller
 
     public function data_list_my_request_days_off(Request $request)
     {
+        $auth_dayoff_can_valide = User::getListOfUsersCanValidateDayOff(auth()->id());
+        $auth_dayoff_can_valide[] = auth()->id();
         $options = $request->except("_token");
         $options["myDaysOff"] = true;
         $daysOff = DayOff::getDetails($options)->get();
         $data = [];
         foreach ($daysOff as $dayOff) {
-            $data[] = $this->make_row_my_request_days_off($dayOff);
+            $data[] = $this->make_row_my_request_days_off($dayOff ,$auth_dayoff_can_valide);
         }
-        return((["data" => $data]));
+        return["data" => $data];
     }
 
-    public function make_row_my_request_days_off($dayOff)
+    public function make_row_my_request_days_off($dayOff ,$auth_dayoff_can_valide  = [] )
     {
         $row = [];
         $row['DT_RowId'] = row_id("dayoff", $dayOff->id);
@@ -248,14 +250,20 @@ class DayOffController extends Controller
         $row['nature'] = $dayOff->nature ? '<span class="badge  " style="min-width: 90%;color: white;background-color:'.$dayOff->nature->color.'">'.$dayOff->nature->nature.'</span>'  : "" ;
         $row['reason'] = $dayOff->reason ;
         $row['status_dayoff'] = view("days_off.columns.status", ["status" => $this->row_status_dayoff($dayOff), "is_canceled" => $dayOff->is_canceled])->render();
-        $actions = '<i class="my-2 fas fa-lock" title="Contactez le service RH pour plus d\'info."></i>';
+        $actions = "";
         if ($dayOff->result == "in_progress") {
-            if (auth()->user()->isCp()) {
-                $actions = modal_anchor(url("/days-off/information/modal/$dayOff->id"), '<i class="fas fa-edit  fs-3"></i>', ["title" => "Plus d'informations", "data-modal-lg" => true,]);
-            } else {
-                $actions = modal_anchor(url('/request_days_off/modal/' . $dayOff->id), '<i class="fas fa-edit  fs-3"></i>', ['title' => 'Editer la demande', 'data-modal-lg' => true, 'data-post-id' => 1]);
+            if (auth()->user()->isCp() || in_array($dayOff->applicant_id,$auth_dayoff_can_valide)) {
+                $actions .= modal_anchor(url("/days-off/information/modal/$dayOff->id"), '<i class="fas fa-edit  fs-3"></i>', ["title" => "Plus d'informations", "data-modal-lg" => true,]);
+            }else{
+                if(auth()->id() == $dayOff->applicant_id ){
+                    $actions = modal_anchor(url('/request_days_off/modal/' . $dayOff->id), '<i class="fas fa-edit  fs-3"></i>', ['title' => 'Editer la demande', 'data-modal-lg' => true, 'data-post-id' => 1]);
+                }
             }
             $actions .= "&nbsp;&nbsp;&nbsp;" . js_anchor('<i class=" mx-2 fas fa-trash  fs-4"></i>', ['data-action-url' => url("/dayOff/delete/" . $dayOff->id), "title" => "Supprimer", "data-action" => "delete"]);
+            
+            if(!in_array($dayOff->applicant_id,$auth_dayoff_can_valide)){
+                $actions = '<i class="my-2 fas fa-lock" title="Contactez le service RH pour plus d\'info."></i>';
+            }
         }
         $row['actions'] = $actions;
         return $row;

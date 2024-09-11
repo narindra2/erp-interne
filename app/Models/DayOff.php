@@ -103,6 +103,10 @@ class DayOff extends Model
     {
         return $this->belongsTo(DayoffNatureColor::class, "nature_id");
     }
+    public function scopeNotRefused($query)
+    {
+        return $query->where("result","!=" ,"refused");
+    }
 
     public function getDurationAttribute()
     {
@@ -181,7 +185,7 @@ class DayOff extends Model
             $daysOff->where('result', $result);
         }
         $nature_id = get_array_value($options, 'nature_id');
-        if ($result) {
+        if ($nature_id) {
             $is_empty_filter = false;
             $daysOff->where('nature_id', $nature_id);
         }
@@ -203,7 +207,7 @@ class DayOff extends Model
             $is_empty_filter = false;
             $daysOff->whereDate('start_date', '<=', to_date($absence_date))
                     ->whereDate('return_date', '>', to_date($absence_date) ." 00:00:00" )
-                    ->where("is_canceled", 0);
+                    ->notRefused();
         }
         $status_dayoff = get_array_value($options, 'status_dayoff'); //finish,in_progress
         if ($status_dayoff) {
@@ -211,12 +215,12 @@ class DayOff extends Model
             if ($status_dayoff == "finish") {
                 $daysOff->whereDate('return_date', '<=', Carbon::now()->format("Y-m-d") ." 00:00:00" )
                     ->where('result', 'validated')
-                    ->where("is_canceled", 0);
+                    ->notRefused();
             } else if ($status_dayoff == "in_progress") {
                 $daysOff->whereDate('start_date', '<=', Carbon::now()->format("Y-m-d") ." 00:01:00")
                     ->whereDate('return_date', '>', Carbon::now()->format("Y-m-d") ." 00:00:00")
                     ->where('result', 'validated')
-                    ->where("is_canceled", 0);
+                    ->notRefused();
             } else if ($status_dayoff == "is_canceled") {
                 $daysOff->where("is_canceled", 1);
             }
@@ -522,7 +526,7 @@ class DayOff extends Model
             "name" => "user_id",
             "type" => "select",
             'attributes' => [
-                "data-hide-search" => "true",
+                "data-hide-search" => "false",
                 "data-allow-clear" => "true",
             ],
             'options' => $users,

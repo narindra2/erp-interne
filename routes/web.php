@@ -430,6 +430,7 @@ Route::middleware(['auth', 'checkinweb'])->group(function () {
     Route::post("/status-report/modal-form", [StatusReportController::class, 'modal_form']);
     Route::post("/save/status-report", [StatusReportController::class, 'save_status_report']);
     Route::get("/status-report/dataList", [StatusReportController::class, 'data_list']);
+    Route::get("/status-report/cumulativeHour", [StatusReportController::class, 'report_cumulative_hour_for_cp']);
     Route::post("/status-report/delete", [StatusReportController::class, 'delete']);
     Route::get("/user-report/en-conge", [StatusReportController::class, 'enconge']);
 

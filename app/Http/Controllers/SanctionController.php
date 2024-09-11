@@ -24,7 +24,7 @@ class SanctionController extends Controller
         return ["data" => $data];
     }
     public function _make_row(Sanction $sanction) {
-        $job = "";
+        $job = ""; 
         if ( $sanction->user->userJob) {
           $job_name =   $sanction->user->userJob->job->name;
           $job =  $sanction->user->userJob ? "<span class='badge badge-light-info'>$job_name</span>" : "";
