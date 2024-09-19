@@ -57,7 +57,7 @@ if (!function_exists('get_cache_total_permission')) {
                 ->where("applicant_id", $user_id)
                 ->whereIn("type_id", $permissions)
                 ->where("result", "validated")
-                ->notRefused()
+                ->where("is_canceled", 0)
                 ->whereYear('created_at', date('Y'))
                 ->get();
         });

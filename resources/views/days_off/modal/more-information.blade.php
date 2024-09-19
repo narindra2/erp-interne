@@ -95,7 +95,6 @@
                             </div>
                         @endif
                     </div>
-                <div class="separator border-info  mb-3"></div>
                 
                 <div class="row">
                     <div class="form-group col-md-6">

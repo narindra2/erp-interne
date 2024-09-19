@@ -57,7 +57,7 @@
                     dom : "tr",
                     ordering :false,
                     pageLength: 100,
-                    columnDefs: [ { targets: [0],visible: false} , ],
+                    // columnDefs: [ { targets: [0],visible: false} , ],
                     columns:[
                         {data :"user" , title: "Non d'employé", "class":"text-left"},
                         {data :"date" , title: 'Date', "class":""},

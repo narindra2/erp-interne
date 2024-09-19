@@ -223,7 +223,7 @@ class DayOffController extends Controller
     public function data_list_my_request_days_off(Request $request)
     {
         $auth_dayoff_can_valide = User::getListOfUsersCanValidateDayOff(auth()->id());
-        $auth_dayoff_can_valide[] = auth()->id();
+       
         $options = $request->except("_token");
         $options["myDaysOff"] = true;
         $daysOff = DayOff::getDetails($options)->get();
@@ -260,7 +260,7 @@ class DayOffController extends Controller
                 }
             }
             $actions .= "&nbsp;&nbsp;&nbsp;" . js_anchor('<i class=" mx-2 fas fa-trash  fs-4"></i>', ['data-action-url' => url("/dayOff/delete/" . $dayOff->id), "title" => "Supprimer", "data-action" => "delete"]);
-            
+            $auth_dayoff_can_valide[] = auth()->id();
             if(!in_array($dayOff->applicant_id,$auth_dayoff_can_valide)){
                 $actions = '<i class="my-2 fas fa-lock" title="Contactez le service RH pour plus d\'info."></i>';
             }

@@ -50,6 +50,7 @@ class StatusReportController extends Controller
                 $options["user_id"] = [Auth::id()];
             }
         }
+        
         $statusReports  = $this->get_detail($options);
         $dayoffs = $this->enconge($options);
         foreach ($statusReports as $statusReport) {
@@ -62,8 +63,13 @@ class StatusReportController extends Controller
     }
     public function _make_row(StatusReport $statusReport)  {
         $row = [];
-        $job = $statusReport->user->actualJob;
-        $row["user"] = $statusReport->user->sortname ." " . '<span class="badge badge-light-info fw-bolder fs-8 px-2 py-1 ms-2">'. $job.'</span>';
+        if (Auth::id() == $statusReport->user_id) {
+            $name = "Moi";
+        }else{
+            $job = $statusReport->user->actualJob;
+            $name = $statusReport->user->sortname ." " . '<span class="badge badge-light-info fw-bolder fs-8 px-2 py-1 ms-2">'. $job.'</span>';
+        }
+        $row["user"] =  $name;
         $row["nature"] =  $statusReport->nature ? '<span class="badge  " style="min-width: 80%;color: white;background-color:'.$statusReport->nature->color.'">'.$statusReport->nature->nature.'</span>'  : ""  ;
         $row["status"] = $statusReport->getStatus();
         $date = $statusReport->start_date->translatedFormat("d-M-Y");
@@ -123,8 +129,13 @@ class StatusReportController extends Controller
     }
     public function _make_row_enconge(dayOff $dayOff ,  $day_report = null )  {
         $row = [];
-        $job = $dayOff->getApplicantJob();
-        $row["user"] = $dayOff->applicant->sortname." " . '<span class="badge badge-light-info fw-bolder fs-8 px-2 py-1 ms-2">'. $job.'</span>';
+        if (Auth::id() == $dayOff->applicant_id) {
+            $name = "Moi";
+        }else{
+            $job = $dayOff->getApplicantJob();
+            $name = $dayOff->applicant->sortname ." " . '<span class="badge badge-light-info fw-bolder fs-8 px-2 py-1 ms-2">'. $job.'</span>';
+        }
+        $row["user"] = $name;
         $date =  "" ;
         if ($dayOff->start_date_is_morning == 0) {
             $date .= "Après-midi " ;
@@ -181,7 +192,7 @@ class StatusReportController extends Controller
             "name" => "day_report",
             "type" => "date",
             'attributes' => [
-                "value" => $auth->isCp() ? now()->format("d/m/Y") : null,
+                "value" => $auth->isCp() || $auth->isRhOrAdmin() ? now()->format("d/m/Y") : null,
                 'placeholder' => 'Rapport du ...',
             ]
         ];

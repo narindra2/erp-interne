@@ -376,7 +376,11 @@ class DayOff extends Model
         $users_admin = get_cache_rh_admin();
         $users_to_notify = $users_to_notify->merge($users_admin);
         if ($users_to_notify->count()) {
-            Notification::send($users_to_notify, new DayOffUpdateStatusNotification($this, Auth::user()));
+            try {
+                Notification::send($users_to_notify, new DayOffUpdateStatusNotification($this, Auth::user()));
+            } catch (\Throwable $th) {
+                
+            }
         }
     }
 
@@ -457,12 +461,17 @@ class DayOff extends Model
         /** All user to inform */
         $users_to_notify = $users_to_inform->merge($users_admin);
         /** Send the notification */
-        dispatch(function ()use($input ,$dayOff,$users_to_notify){
-            if ($input['id']) {
-                Notification::send($users_to_notify, new DayOffCreatedNotification($dayOff, Auth::user(), true));
-            }
-            Notification::send($users_to_notify, new DayOffCreatedNotification($dayOff, $dayOff->applicant));
-        })->afterResponse();
+        try {
+            dispatch(function ()use($input ,$dayOff,$users_to_notify){
+                if ($input['id']) {
+                    Notification::send($users_to_notify, new DayOffCreatedNotification($dayOff, Auth::user(), true));
+                }
+                Notification::send($users_to_notify, new DayOffCreatedNotification($dayOff, $dayOff->applicant));
+            })->afterResponse();
+        } catch (\Throwable $th) {
+          
+        }
+        
         return $dayOff;
     }
 
