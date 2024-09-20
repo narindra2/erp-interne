@@ -38,9 +38,11 @@ class Suivi extends Model
         if ($this->points->count() == 1) {
             $total_point = $points[0]->point; 
         }else{
+            //Pour un dossier plusieur  type son  point 
             $i = 0;
             $points  = $points->sortBy('niveau');
             foreach ($points as $detail) {
+                // Le premeir point par niveau elevé est la base ,
                if ($i == 0) {
                     // $total_point = $detail->point * 2; 
                     $total_point = $detail->point; 

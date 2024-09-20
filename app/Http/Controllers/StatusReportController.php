@@ -167,8 +167,10 @@ class StatusReportController extends Controller
         if ($auth->isCp()) {
             $usrs_same_dprtmt = Department::getUserByIdDepartement(Auth()->user()->userJob->department_id );
             $usrs_same_dprtmt =  $usrs_same_dprtmt->pluck("id")->toArray();
+        }else{
+            $usrs_same_dprtmt = User::getListOfUsersCanValidateDayOff($auth->id);
         }
-       
+        
         $lists = PointingTemp::whereIn("user_id" , $usrs_same_dprtmt)->get();
         foreach ($lists as $hour) {
             $user = User::select("registration_number","deleted","name","firstname")->whereDeleted(0)->find($hour->user_id);

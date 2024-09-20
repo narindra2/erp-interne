@@ -9,8 +9,8 @@
     <label  class="col-md-3 col-form-label">@lang('lang.marryDob')</label>
     <div class="col-md-3">
         <input class="form-control form-control-solid birthdate"
-        @if(!empty($user->marry_place_of_birth))
-            value="{{ convert_database_date($user->marry_place_of_birth) }}"
+        @if(!empty($user->marry_birthdate))
+            value="{{ convert_database_date($user->marry_birthdate) }}"
         @endif
         autocomplete="off" name="marry_birthdate" id="birthdate"/>
     </div>

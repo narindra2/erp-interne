@@ -838,7 +838,7 @@ class SuiviController extends Controller
                 "version_name" =>  $point_version_montage->version->title,
                 "belongs" => $point_version_montage->version->belongs,
                 "montage" => $point_version_montage->montage ?? "-",
-                "point" => $point_version_montage->point ?  $point_version_montage->point : ($point_version_montage->percentage  . "% de " . $point_version_montage->base_calcul->title ),
+                "point" => $point_version_montage->point != null ?  $point_version_montage->point : ($point_version_montage->percentage  . "% de " . $point_version_montage->base_calcul->title ),
                 // "action" => "editer" ,
             ];
         }
