@@ -4,7 +4,7 @@
             <li class="nav-item">
                 <a class="nav-link active" data-bs-toggle="tab" href="#status-report">Rapport d 'etat</a>
             </li>
-            @if (auth()->user()->isCp() || auth()->user()->isM2p() )
+            @if ($can_see_cumulative_hour )
                 <li class="nav-item">
                     <a class="nav-link" data-bs-toggle="tab" href="#cumulative-hour">Heure cumulé</a>
                 </li>
@@ -83,7 +83,7 @@
                 }).on( 'draw', function () {
                     KTApp.initBootstrapPopovers();
                 });
-                @if (auth()->user()->isCp())
+                @if ($can_see_cumulative_hour)
                 dataTableInstance.cumulativeHour = $("#cumulative-hour-table").DataTable({
                     processing: true,
                     dom : "tr",

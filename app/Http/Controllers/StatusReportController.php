@@ -47,10 +47,11 @@ class StatusReportController extends Controller
                 $usrs_same_dprtmt =  $usrs_same_dprtmt->pluck("id")->toArray();
                 $options["user_id"] =  $usrs_same_dprtmt;
             }else{
-                $options["user_id"] = [Auth::id()];
+                $auth_dayoff_can_valide = User::getListOfUsersCanValidateDayOff($auth->id);
+                $auth_dayoff_can_valide[] = $auth->id;
+                $options["user_id"] = $auth_dayoff_can_valide ;
             }
         }
-        
         $statusReports  = $this->get_detail($options);
         $dayoffs = $this->enconge($options);
         foreach ($statusReports as $statusReport) {
@@ -169,6 +170,7 @@ class StatusReportController extends Controller
             $usrs_same_dprtmt =  $usrs_same_dprtmt->pluck("id")->toArray();
         }else{
             $usrs_same_dprtmt = User::getListOfUsersCanValidateDayOff($auth->id);
+            $usrs_same_dprtmt[] =  $auth->id;
         }
         
         $lists = PointingTemp::whereIn("user_id" , $usrs_same_dprtmt)->get();
@@ -189,16 +191,22 @@ class StatusReportController extends Controller
     public function info_tab_repport( Request $request)
     {
         $auth = Auth()->user();
+        $can_see_cumulative_hour =  false;
+        $usrs_same_dprtmt = User::getListOfUsersCanValidateDayOff($auth->id);
+        if (count($usrs_same_dprtmt)) {
+            $can_see_cumulative_hour =  true;
+        }
+
         $filters[] = [
             "label" => "Rapport du ...",
             "name" => "day_report",
             "type" => "date",
             'attributes' => [
-                "value" => $auth->isCp() || $auth->isRhOrAdmin() ? now()->format("d/m/Y") : null,
+                "value" => ($auth->isCp() || $auth->isRhOrAdmin() || $auth->isM2p()) ? now()->format("d/m/Y") : null,
                 'placeholder' => 'Rapport du ...',
             ]
         ];
-        return view("users.repport" , ["basic_filter"  =>  $filters]);
+        return view("users.repport" , ["basic_filter"  =>  $filters , "can_see_cumulative_hour" =>  $can_see_cumulative_hour]);
     }
     
 }

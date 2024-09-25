@@ -330,7 +330,6 @@ Route::middleware(['auth', 'checkinweb', 'role:2,4'])->group(function () {
 
     Route::get("/days-off/dataList", [DayOffController::class, "data_list"]);
     Route::get("/dayOff/export/pdf/{dayOff}/{ovpreview?}", [DayOffController::class, "export_pdf"]);
-    Route::post('/days-off/giveResult', [DayOffController::class, 'giveResult'])->name('answer-request-daysOff');
     Route::post('/request-days-off/employee', [DayOffController::class, 'requestDaysOffForAnEmployee'])->name('requestDaysOffForAnEmployee');
     Route::get("/days-off/upgrade", [DayOffController::class, "upgradeDayOffEmployees"]);
     Route::get("/days-off/upgrade/dataList", [DayOffController::class, "data_list_upgrade_days_off"]);
@@ -378,6 +377,7 @@ Route::middleware(['auth', 'checkinweb', 'role:2,4'])->group(function () {
 Route::middleware(['auth', 'checkinweb'])->group(function () {
     Route::post("/days-off/information/modal/{dayOff?}", [DayOffController::class, "loadModalInfo"]);
     Route::get("/days-off/dataListGantt", [DayOffController::class, "days_off_gantt"]);
+    Route::post('/days-off/giveResult', [DayOffController::class, 'giveResult'])->name('answer-request-daysOff');
     /** Stock */
     Route::get("/stock/gerer", [StockController::class, "index"]);
     Route::get("/stock", [StockController::class, "index"]);

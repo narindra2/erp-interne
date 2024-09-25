@@ -462,12 +462,10 @@ class DayOff extends Model
         $users_to_notify = $users_to_inform->merge($users_admin);
         /** Send the notification */
         try {
-            dispatch(function ()use($input ,$dayOff,$users_to_notify){
-                if ($input['id']) {
-                    Notification::send($users_to_notify, new DayOffCreatedNotification($dayOff, Auth::user(), true));
-                }
-                Notification::send($users_to_notify, new DayOffCreatedNotification($dayOff, $dayOff->applicant));
-            })->afterResponse();
+            if ($input['id']) {
+                Notification::send($users_to_notify, new DayOffCreatedNotification($dayOff, Auth::user(), true));
+            }
+            Notification::send($users_to_notify, new DayOffCreatedNotification($dayOff, $dayOff->applicant));
         } catch (\Throwable $th) {
           
         }
