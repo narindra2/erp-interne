@@ -161,7 +161,7 @@ class DayOff extends Model
             $dayoff_can_see = [$auth->id];
             /** Auth's and users in departement of auth */
             if ($auth->userJob) {
-                if ($auth->userJob->is_cp || $auth->isM2p()) {
+                if ($auth->userJob->is_cp  /*|| $auth->isM2p() */ ) {
                     $user_in_departement = UserJobView::where("department_id", $auth->userJob->department_id)->get()->pluck("users_id")->toArray();
                     $dayoff_can_see = array_merge( $dayoff_can_see ,$user_in_departement );
                 }
@@ -521,7 +521,7 @@ class DayOff extends Model
                $users[] = ["value" => $u->id, "text" => $u->sortname  ];
             }
           }
-          if ($auth->isCp() ||  $auth->isM2p()) {
+          if ($auth->isCp() /* ||  $auth->isM2p() */) {
             $usrs_same_dprtmt = Department::getUserByIdDepartement( Auth()->user()->userJob->department_id );
             foreach ($usrs_same_dprtmt as $user) {
                 if ($user->deleted == 0 &&  !in_array($user->id,$can_validate_dayoff)) {

@@ -4,7 +4,7 @@
             <li class="nav-item">
                 <a class="nav-link active" data-bs-toggle="tab" href="#status-report">Rapport d 'etat</a>
             </li>
-            @if (auth()->user()->isCp())
+            @if (auth()->user()->isCp() || auth()->user()->isM2p() )
                 <li class="nav-item">
                     <a class="nav-link" data-bs-toggle="tab" href="#cumulative-hour">Heure cumulé</a>
                 </li>
