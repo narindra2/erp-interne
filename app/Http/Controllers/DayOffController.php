@@ -145,7 +145,7 @@ class DayOffController extends Controller
         $auth = Auth::user();
         $query = DayOff::with(['applicant',"nature"])->whereDeleted(0);
         /** User dayoff validate and not yet finish  */
-        $query->whereDate('return_date', '>', Carbon::now()->format("Y-m-d"))->where('is_canceled', 0);
+        $query->whereDate('return_date', '>=', Carbon::now()->format("Y-m-d"))->where('is_canceled', 0);
         if (!$auth->isRhOrAdmin()) {
             $auth->load('userJob');
             $can_validate_ids = User::getListOfUsersCanValidateDayOff($auth->id);
@@ -159,6 +159,11 @@ class DayOffController extends Controller
         /** End  user not yet return work by return_date asc */
         $daysOff =  $query->where('result', 'validated')->oldest("return_date")->get();
         foreach ($daysOff as $dayOff) {
+            /** Retirer le congé retour apres-midi  si il est deja apres midi  */
+            $hours = Carbon::now()->format("H");
+            if ($hours >= 12   && Carbon::parse($dayOff->return_date)->isToday() &&  $dayOff->return_date_is_morning == "0") {
+                continue;
+            }
             $series[] = $this->make_row_gantt($dayOff);
         }
         return [["id" => 1, "name" => "Plannig des absences", "series" => $series] ];

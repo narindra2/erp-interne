@@ -9,6 +9,7 @@ use App\Models\Department;
 use App\Models\PointingTemp;
 use App\Models\StatusReport;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use App\Models\DayoffNatureColor;
 use Illuminate\Support\Facades\Auth;
 use League\CommonMark\Inline\Element\Strong;
@@ -120,10 +121,15 @@ class StatusReportController extends Controller
         }
         $day_report = get_array_value($options, 'day_report' ) ?? now()->format("d/m/Y");
         if ($day_report) {
-            $daysOffs->whereDate('start_date', '<=', to_date($day_report))->whereDate('return_date', '>', to_date($day_report) ." 00:00:00" );
+            $daysOffs->whereDate('start_date', '<=', to_date($day_report))->whereDate('return_date', '>=', to_date($day_report) ." 00:00:00" );
         }
         $daysOffs = $daysOffs->whereDeleted(0)->where("is_canceled","=" ,  0)->notRefused()->get();
         foreach ($daysOffs as $daysOff) {
+            /** Retirer le congé retour apres-midi  si il est deja apres midi  */
+            $hours = Carbon::now()->format("H");
+            if ($hours >= 12  && Carbon::parse($daysOff->return_date)->isToday() &&  $daysOff->return_date_is_morning == "0") {
+                continue;
+            }
             $list[] = $this->_make_row_enconge($daysOff);
         }
         return $list;
