@@ -764,27 +764,50 @@ class SuiviController extends Controller
     // Save point and niveau by type client and type project 
     public function save_point_level(SavePointLevelTypeProject $request)
     {
-        // $point = SuiviPoint::updateOrCreate($request->only("client_type_id","project_type_id","version_id"), $request->except("_token"));
-        $point = SuiviPoint::create($request->except("_token"));
+        $data = $request->except("_token");
+        $data["point"] = str_replace([","," "],["." , ""], $request->point);
+        $data["point_sup"] = str_replace([","," "],["." , ""], $request->point_sup);
+        $point = SuiviPoint::create($data);
         return ["success" => true, "message" => trans("lang.success_record")];
     }
+    /** Old concept  */
+    // public function point_data(Request $request)
+    // {
+    //     $data = [];
+    //     $client_type = SuiviTypeClient::with(["project_types"])->find($request->client_type_id);
+    //     $project_types =  $client_type->project_types ??  [];
+        
+    //     foreach ($project_types as $type) {
+    //         $data[] = [
+    //             "client_types" =>  $client_type->name,
+    //             "project_types" => $type->name,
+    //             "version" =>   $type->pivot->version_id ? SuiviVersion::find($type->pivot->version_id)->title  : "-",
+    //             "niveau" =>  $type->pivot->niveau,
+    //             "point" => $type->pivot->point,
+    //             "point_sup" =>  $type->pivot->point_sup,
+    //             "created_at" =>  Carbon::parse($type->pivot->created_at)->format("d-m-Y"),
+    //             "pole" =>  $type->pivot->pole,
+    //             "action" =>  js_anchor('<i class="fas fa-trash " style="font-size:12px" ></i>', ["data-action-url" => url("/suivi/delete/point"), "data-post-point_id" => $type->pivot->id ,"class" => "btn btn-sm btn-clean ", "title" => "Supprimé", "data-action" => "delete"]),
+    //         ];
+    //     }
+    //     return ["data" =>  $data];
+    // } 
+     /** End of old concept  */
     public function point_data(Request $request)
     {
         $data = [];
-        $client_type = SuiviTypeClient::with(["project_types"])->find($request->client_type_id);
-        $project_types =  $client_type->project_types ??  [];
-
-        foreach ($project_types as $type) {
+        $points =   SuiviPoint::with(["client_type" , "project_type" , "version" , ])->where("client_type_id",$request->client_type_id )->where("suivi_points.deleted" , 0)->get();
+        foreach ($points as $point) {
             $data[] = [
-                "client_types" =>  $client_type->name,
-                "project_types" => $type->name,
-                "version" =>   $type->pivot->version_id ? SuiviVersion::find($type->pivot->version_id)->title  : "-",
-                "niveau" =>  $type->pivot->niveau,
-                "point" => $type->pivot->point,
-                "point_sup" =>  $type->pivot->point_sup,
-                "created_at" =>  Carbon::parse($type->pivot->created_at)->format("d-m-Y"),
-                "pole" =>  $type->pivot->pole,
-                "action" =>  js_anchor('<i class="fas fa-trash " style="font-size:12px" ></i>', ["data-action-url" => url("/suivi/delete/point"), "data-post-point_id" => $type->pivot->id ,"class" => "btn btn-sm btn-clean ", "title" => "Supprimé", "data-action" => "delete"]),
+                "client_types" =>  $point->client_type_id ? $point->client_type->name : "-" ,
+                "project_types" => $point->project_type_id ?   $point->project_type->name :  "-",
+                "version" =>   $point->version_id ? $point->version->title : "-",
+                "niveau" =>  $point->niveau,
+                "point" => $point->point,
+                "point_sup" =>  $point->point_sup,
+                "created_at" =>  Carbon::parse($point->created_at)->format("d-m-Y"),
+                "pole" =>  $point->pole,
+                "action" =>  js_anchor('<i class="fas fa-trash " style="font-size:12px" ></i>', ["data-action-url" => url("/suivi/delete/point"), "data-post-point_id" => $point->id ,"class" => "btn btn-sm btn-clean ", "title" => "Supprimé", "data-action" => "delete"]),
             ];
         }
         return ["data" =>  $data];
@@ -809,7 +832,9 @@ class SuiviController extends Controller
             return ["success" => false, "validation" => true,  "message" => $validator->errors()->all()];
         }
         $data = $request->only("percentage", "version_id_base", "point","version_id_of_calcul","montage",'pole');
-        if ($request->montage  ) {
+        $data["point"] = str_replace([","," "],["." , ""], $request->point);
+        $data["percentage"] = str_replace([","," " , "%"],["." , "", ""], $request->point);
+        if ($request->montage) {
             $data["version_id"] = $request->version_id_of_calcul;
             unset($data["version_id_of_calcul"]);
             SuiviVersionPointMontage::updateOrCreate(["version_id" => $request->version_id_of_calcul ,"version_id_base" =>$request->version_id_base, "montage" =>  $request->montage,"pole" =>$request->pole], $data);

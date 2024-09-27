@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class SuiviTypeClient extends Model
 {
     use HasFactory;
-    protected $table ="suivi_type_client";
+    public $table ="suivi_type_client";
     protected $guarded = [];
 
     public function creator()
@@ -20,14 +20,14 @@ class SuiviTypeClient extends Model
         return $types;
     }
     public  function project_types(){
-        return $this->belongsToMany(
-            SuiviType::class,
-            "suivi_points",
-            "client_type_id",
-            "project_type_id")
+        return $this->belongsToMany(SuiviType::class,"suivi_points","client_type_id","project_type_id")
             ->orderBy('pivot_created_at', 'desc')
             ->wherePivot ('deleted', 0)
             ->orderByPivot("niveau","desc")
             ->withPivot("id","niveau", "point","pole", "point_sup","version_id","created_at");
+    }
+    public function project_type()
+    {
+        return $this->belongsTo(SuiviType::class , "project_type_id");
     }
 }

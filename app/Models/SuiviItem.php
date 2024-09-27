@@ -44,12 +44,13 @@ class SuiviItem extends Model
         'finished_at'  => 'date:d-m-Y',
     ];
     protected $touches = ['suivi'];
-    protected $appends = ['secondes',"realPointItem","pointOtherVersion","typesName"];
+    protected $appends = ['secondes', "realPointItem", "pointOtherVersion", "typesName"];
     protected $with = [
         'noteQuality:id,suivi_item_id,note,deleted',
         "suivi:id,ref,folder_name,deleted",
-        "user:id,name,firstname,deleted,user_type_id" ,
-        "mdp:id,name,firstname,deleted,user_type_id"];
+        "user:id,name,firstname,deleted,user_type_id",
+        "mdp:id,name,firstname,deleted,user_type_id"
+    ];
     public  static $MONTAGE = [
         ["value" => 1, "text" =>  "Montage 1 ", "color" => "#009EF7"],
         ["value" => 2, "text" => "Montage 2", "color" => "#FFC700"],
@@ -58,8 +59,8 @@ class SuiviItem extends Model
     public  static $STATUS = [
         ["value" => 1, "text" =>  "A Faire", "group" =>  "Nouveau", "verbe" =>   "Nouveau", "class" => "info", "color" => "#7239EA"],
         ["value" => 2, "text" =>  "En cours", "group" =>  "En cours", "verbe" =>  "Continuer", "class" => "primary", "color" => "#009EF7"],
-        ["value" => 3, "text" => "Pause","group" =>  "Pauses", "verbe" =>  "Pauser", "class" => "warning", "color" => "#FFC700"],
-        ["value" => 4, "text" =>  "Terminé", "group" =>  "Terminés","verbe" =>  "Terminer", "class" => "success", "color" => "#50CD89"],
+        ["value" => 3, "text" => "Pause", "group" =>  "Pauses", "verbe" =>  "Pauser", "class" => "warning", "color" => "#FFC700"],
+        ["value" => 4, "text" =>  "Terminé", "group" =>  "Terminés", "verbe" =>  "Terminer", "class" => "success", "color" => "#50CD89"],
     ];
     public  static $POLES = [
         ["value" => "dessi", "text" => "Dessinateur", "color" => "#50CD89"],
@@ -87,8 +88,8 @@ class SuiviItem extends Model
         ["value" => "4", "text" => "4"],
         ["value" => "6", "text" => "6"],
     ];
-    
-   
+
+
     public function suivi()
     {
         return $this->belongsTo(Suivi::class, "suivi_id");
@@ -135,7 +136,7 @@ class SuiviItem extends Model
     }
     public static function getClientType()
     {
-        return SuiviTypeClient::select(["id","name","status","deleted"])->whereStatus("on")->whereDeleted(0)->get();
+        return SuiviTypeClient::select(["id", "name", "status", "deleted"])->whereStatus("on")->whereDeleted(0)->get();
     }
     public static function getTimeEstimatif()
     {
@@ -162,15 +163,19 @@ class SuiviItem extends Model
     {
         return (Carbon::make("01-$month-$year")->daysInMonth);
     }
+    public  function isMakeByUrbaOrLogistique()
+    {
+        return in_array($this->poles, ["logistique", "urba"]);
+    }
     public function getSecondesAttribute()
     {
         /*** On create item */
-        if ((!isset($this->id) && !$this->id) || !isset($this->created_at)  ) {
+        if ((!isset($this->id) && !$this->id) || !isset($this->created_at)) {
             return 0;
         }
         $secondes = ($this->duration ?? 0);
-        if ($this->in_progress()  ) {
-            $start  = Carbon::parse(($this->last_check ? $this->last_check :  $this->created_at ));
+        if ($this->in_progress()) {
+            $start  = Carbon::parse(($this->last_check ? $this->last_check :  $this->created_at));
             $end = now();
             $secondes = $secondes + $end->diffInSeconds($start);
         }
@@ -180,37 +185,43 @@ class SuiviItem extends Model
     {
         if ($this->suivi) {
             if ($this->suivi->points) {
-                return $this->suivi->points->pluck("project_type.name")->implode(",") ;
+                return $this->suivi->points->pluck("project_type.name")->implode(",");
             }
         }
         return "";
     }
     public function getPointOtherVersionAttribute()
-    {   
+    {
         $suivi_totalPointBase  = $this->suivi->totalPointBase;
-        /*
-        if ($this->poles == "urba") {
-            $point = 2.00; 
-           return round($point +  Suivi::$POINT_ADDITIONAL_URBA, 3) ;
+        
+        /*** For urba or logistique */
+        if ($this->isMakeByUrbaOrLogistique()) {
+            $point = SuiviPoint::where("client_type_id", $this->client_type_id)->where("version_id", $this->version_id)->where("deleted", 0)->first();
+            if ($point->point) {
+                return  $point->point;
+            } else {
+                return round((($suivi_totalPointBase *  $point->percentage) / 100), 3); ;
+            }
         }
-        */
+        /*** For other pole */
         if (isset($this->version->point)) {
             if ($this->version->point) {
                 return $this->version->point;
             }
             if ($this->version->base_calcul) {
                 $pointForThisVersion =  ($suivi_totalPointBase * $this->version->percentage) / 100;
-                return  round($pointForThisVersion, 3) ;
+                return  round($pointForThisVersion, 3);
             }
         }
-        $point_per_montage = SuiviVersionPointMontage::where("version_id",$this->version_id)->where("montage",$this->montage)->where("pole",$this->poles)->where("deleted",0)->latest()->first();
+        
+        $point_per_montage = SuiviVersionPointMontage::where("version_id", $this->version_id)->where("montage", $this->montage)->where("pole", $this->poles)->where("deleted", 0)->latest()->first();
         if ($point_per_montage) {
             if ($point_per_montage->point) {
                 return  $point_per_montage->point;
-            }else{
-                return ($suivi_totalPointBase *  $point_per_montage->percentage) / 100;
+            } else {
+                return round(($suivi_totalPointBase *  $point_per_montage->percentage) / 100, 3); ;
             }
-        }else{
+        } else {
             return null;
         }
         /*
@@ -265,15 +276,15 @@ class SuiviItem extends Model
     {
         $auth = $auth_user ? $auth_user : Auth::user();
         /** Admin */
-        if($auth->isAdmin()){
+        if ($auth->isAdmin()) {
             return true;
         }
         /** CP */
-        if($auth->isCp() || $auth->isM2p() ){
+        if ($auth->isCp() || $auth->isM2p()) {
             return true;
         }
-         /** Creator of row on not yet finished folder*/
-        if($auth->id == $this->user_id && isset($this->id) && !$this->is_finish() ){
+        /** Creator of row on not yet finished folder*/
+        if ($auth->id == $this->user_id && isset($this->id) && !$this->is_finish()) {
             return true;
         }
         return false;
@@ -284,14 +295,14 @@ class SuiviItem extends Model
             return true;
         }
         $auth = $auth_user ? $auth_user : Auth::user();
-        if($auth->isAdmin()){
+        if ($auth->isAdmin()) {
             return true;
         }
         /** Creator of row */
-        if($auth->isCp() || $auth->isM2p()){
+        if ($auth->isCp() || $auth->isM2p()) {
             return true;
         }
-        if($auth->id == $this->user_id && isset($this->id) && !$this->is_finish()  ){
+        if ($auth->id == $this->user_id && isset($this->id) && !$this->is_finish()) {
             return true;
         }
         return false;
@@ -300,7 +311,7 @@ class SuiviItem extends Model
     public static function getMdp($to_dropdown = true)
     {
         $data = [];
-        $mdp =  UserJobView::with(["user" => function($user){
+        $mdp =  UserJobView::with(["user" => function ($user) {
             $user->withOut(["userJob"])->whereDeleted(0);
         }])->whereDeleted(0)->where("jobs_id", User::$ID_M2P)->get();
         foreach ($mdp as $item) {
@@ -315,13 +326,13 @@ class SuiviItem extends Model
     }
     public static function getUsersListViaJob()
     {
-        return  UserJobView::with(["user" => function($user){
+        return  UserJobView::with(["user" => function ($user) {
             $user->withOut(["userJob"])->whereDeleted(0);
         }])->whereDeleted(0)->get();
     }
     public  function scopeFinished($query)
     {
-        return  $query->where("status_id",Self::$FINISH)->whereNotNull("finished_at");
+        return  $query->where("status_id", Self::$FINISH)->whereNotNull("finished_at");
     }
     public  function scopeGetDetails($query, $options = [])
     {
@@ -329,9 +340,11 @@ class SuiviItem extends Model
         $suivi_item = SuiviItem::whereDeleted(0);
         // $suivi_item->with(["version.levelsPoint","level" ,"suivi.points.project_type" ]);
         // $suivi_item->with(["version" ,"version.base_calcul", "version.montage_2_point", "version.montage_3_point"]);
-        
+
         /*** Basic filters */
-        $suivi_item->with(["version" => function ($q_version) {$q_version->with(["montage_2_point" , "montage_3_point" ,"montage_1_point"]); },"version.base_calcul" ]);
+        $suivi_item->with(["version" => function ($q_version) {
+            $q_version->with(["montage_2_point", "montage_3_point", "montage_1_point"]);
+        }, "version.base_calcul"]);
         $version_id  = get_array_value($options, "version_id");
         if ($version_id) {
             $suivi_item->where("version_id", $version_id);
@@ -341,15 +354,15 @@ class SuiviItem extends Model
             $suivi_item->where("status_id", $status_id);
         }
         $project_id = get_array_value($options, 'project_id');
-        if ($project_id){
-            $members = DB::table("project_group-members")->where("project_id",$project_id)->get()->pluck("user_id")->toArray();
+        if ($project_id) {
+            $members = DB::table("project_group-members")->where("project_id", $project_id)->get()->pluck("user_id")->toArray();
             $suivi_item->whereIn('user_id', $members);
         }
         $user_id  = get_array_value($options, "user_id");
         if ($user_id && !$auth->isADessignator()) {
             $suivi_item->where("user_id", $user_id);
             /** Dessignator folder only */
-        } else if (( !$auth->isM2pOrAdmin() && !$auth->isCp() && !$auth->isAdmin()) ) {
+        } else if ((!$auth->isM2pOrAdmin() && !$auth->isCp() && !$auth->isAdmin())) {
             $suivi_item->where("user_id", $auth->id);
         }
         $montage  = get_array_value($options, "montage");
@@ -405,15 +418,15 @@ class SuiviItem extends Model
         if ($interval) {
             $dates = explode("-", $interval);
             if (count($dates) > 1) {
-                $suivi_item->where(function ($q1) use ($dates ,  $status_id)  {
-                        if ($status_id && $status_id == self::$FINISH) {
-                            $q1->whereBetween("finished_at", [to_date_time($dates[0]), to_date_time($dates[1])]);
-                        }else{
-                            $q1->whereBetween("created_at", [to_date_time($dates[0]), to_date_time($dates[1])]);
-                            $q1->orWhereBetween("finished_at", [to_date_time($dates[0]), to_date_time($dates[1])]);
-                        }
-                    });
-                }
+                $suivi_item->where(function ($q1) use ($dates,  $status_id) {
+                    if ($status_id && $status_id == self::$FINISH) {
+                        $q1->whereBetween("finished_at", [to_date_time($dates[0]), to_date_time($dates[1])]);
+                    } else {
+                        $q1->whereBetween("created_at", [to_date_time($dates[0]), to_date_time($dates[1])]);
+                        $q1->orWhereBetween("finished_at", [to_date_time($dates[0]), to_date_time($dates[1])]);
+                    }
+                });
+            }
         }
         /** Handle custome filter */
         $custom_filter_id = $interval = get_array_value($options, "custom_filter_id");
@@ -445,17 +458,21 @@ class SuiviItem extends Model
             }
         }
         /** Get the last 07 suivi item checked when no filters  */
-        if (!$user_id && !$montage && !$status_id && !$version_id && !$suivi_id && !$interval && !$custom_filter_id && !$folder_name ) {
+        if (!$user_id && !$montage && !$status_id && !$version_id && !$suivi_id && !$interval && !$custom_filter_id && !$folder_name) {
             $suivi_item->where(function ($q) {
-                $q->whereIn("status_id", [self::$NEW , self::$IN_PROGRESS,self::$PAUSE])->orWhere(function($q2){
+                $q->whereIn("status_id", [self::$NEW, self::$IN_PROGRESS, self::$PAUSE])->orWhere(function ($q2) {
                     $q2->whereDate('last_check', '>', now()->subDays(7))->orWhereNull('last_check');
                 });
             });
         }
-        return $suivi_item->with(["user" =>function($q1){ $q1->withOut("userJob"); }])
-                          ->with(["mdp" =>function($q2){ $q2->withOut("userJob"); }])
-                          ->orderBy("status_id","asc")
-                          ->latest()->latest("updated_at")->latest("last_check");
+        return $suivi_item->with(["user" => function ($q1) {
+            $q1->withOut("userJob");
+        }])
+            ->with(["mdp" => function ($q2) {
+                $q2->withOut("userJob");
+            }])
+            ->orderBy("status_id", "asc")
+            ->latest()->latest("updated_at")->latest("last_check");
     }
     public static function  get_table_info()
     {
@@ -469,125 +486,125 @@ class SuiviItem extends Model
         //     "style" =>"cursor:pointer"
         // ];
         $headers[] = [
-            "data" => "detail" ,
+            "data" => "detail",
             "title" => '',
-            "className"=>"text-center w-100"
+            "className" => "text-center w-100"
         ];
         $headers[] = [
-            "data" => "clone" ,
+            "data" => "clone",
             // "title" =>  $auth->isM2pOrAdmin() ? '<i class="fas fa-plus clone-row text-primary fs-3" title="Ajouter un nouvelle ligne" style ="cursor:pointer"></i>'  : "",
-            "title" =>  '<i class="fas fa-plus clone-row text-primary fs-3" title="Ajouter un nouvelle ligne" style ="cursor:pointer"></i>' ,
-            "className"=>" text-center"
+            "title" =>  '<i class="fas fa-plus clone-row text-primary fs-3" title="Ajouter un nouvelle ligne" style ="cursor:pointer"></i>',
+            "className" => " text-center"
         ];
         $headers[] = [
-            "data" => "project_name" ,
-            "title"=> '<span title="Non du dossier">DOSSIER</span>',
-            "className"=>"text-center w-150 text-gray-800"
+            "data" => "project_name",
+            "title" => '<span title="Non du dossier">DOSSIER</span>',
+            "className" => "text-center w-150 text-gray-800"
         ];
-       
-            
+
+
         $headers[] = [
-            "data" => "ref" ,
-            "title"=> '<span title="Référence">Ref</span>',
-            "className"=>"text-center w-150 text-gray-800"
-        ];    
+            "data" => "ref",
+            "title" => '<span title="Référence">Ref</span>',
+            "className" => "text-center w-150 text-gray-800"
+        ];
         $headers[] = [
-            "data" => "types_client" ,
-            "title"=> '<span title="Type de projet">Types client</span>',
-            "className"=>"text-center w-100 text-gray-800"
-        ];    
+            "data" => "types_client",
+            "title" => '<span title="Type de projet">Types client</span>',
+            "className" => "text-center w-100 text-gray-800"
+        ];
         $headers[] = [
-            "data" => "types" ,
-            "title"=> 'types projet',
-            "className"=>"text-center text-gray-800"
-        ];    
+            "data" => "types",
+            "title" => 'types projet',
+            "className" => "text-center text-gray-800"
+        ];
         // if(!$auth->isADessignator()){
-        if($auth->isM2pOrAdmin() || $auth->isCp()){
+        if ($auth->isM2pOrAdmin() || $auth->isCp()) {
             $headers[] = [
-                "data" => "user" ,
+                "data" => "user",
                 "title" => 'Assigné(e)',
-                "className"=>"text-center text-gray-800"
-            ]; 
+                "className" => "text-center text-gray-800"
+            ];
         }
         $headers[] = [
-            "data" => "mdp" ,
-            "title"=> 'M2p',
-            "className"=>"text-center text-gray-800"
-        ];    
-        $headers[] = [
-            "data" => "version" ,
-            "title"=> 'VERSION',
-            "className"=>"text-center text-gray-800"
-        ];    
-        $headers[] = [
-            "data" => "montage" ,
-            "title"=> '<span title="MONTAGE">Montage</span>',
-            "className"=>"text-left text-gray-800"
-        ];    
-        $headers[] = [
-            "data" => "poles" ,
-            "title"=> 'Pôle',
-            "className"=>"text-center text-gray-800"
-        ];    
-        $headers[] = [
-            "data" => "point" ,
-            "title"=> 'Point',
-            "className"=>"text-center text-gray-800"
-        ];    
-        $headers[] = [
-            "data" => "duration" ,
-            "title"=> 'Durée',
-            "className"=>"text-center max-w-100px"
-        ];    
-        $headers[] = [
-            "data" => "status" ,
-            "title"=> 'Statut',
-            "className"=>"text-center text-gray-800"
-        ];    
-        $headers[] = [
-            "data" => "action" ,
-            "title"=> '',
-            "className"=>"text-center text-gray-800 min-w-50px"
+            "data" => "mdp",
+            "title" => 'M2p',
+            "className" => "text-center text-gray-800"
         ];
         $headers[] = [
-            "data" => "extra_action" ,
-            "title"=> '',
-            "className"=>"text-left"
+            "data" => "version",
+            "title" => 'VERSION',
+            "className" => "text-center text-gray-800"
+        ];
+        $headers[] = [
+            "data" => "montage",
+            "title" => '<span title="MONTAGE">Montage</span>',
+            "className" => "text-left text-gray-800"
+        ];
+        $headers[] = [
+            "data" => "poles",
+            "title" => 'Pôle',
+            "className" => "text-center text-gray-800"
+        ];
+        $headers[] = [
+            "data" => "point",
+            "title" => 'Point',
+            "className" => "text-center text-gray-800"
+        ];
+        $headers[] = [
+            "data" => "duration",
+            "title" => 'Durée',
+            "className" => "text-center max-w-100px"
+        ];
+        $headers[] = [
+            "data" => "status",
+            "title" => 'Statut',
+            "className" => "text-center text-gray-800"
+        ];
+        $headers[] = [
+            "data" => "action",
+            "title" => '',
+            "className" => "text-center text-gray-800 min-w-50px"
+        ];
+        $headers[] = [
+            "data" => "extra_action",
+            "title" => '',
+            "className" => "text-left"
         ];
         /**All hidden columns */
         $headers[] = [
-            "data" => "status_hidden" ,
-            "title"=> 'status_',
-            "className"=>"text-left text-gray-800"
+            "data" => "status_hidden",
+            "title" => 'status_',
+            "className" => "text-left text-gray-800"
         ];
         $headers[] = [
-            "data" => "duration_hidden" ,
-            "title"=> 'Durée_',
-            "className"=>"text-left text-gray-800"
+            "data" => "duration_hidden",
+            "title" => 'Durée_',
+            "className" => "text-left text-gray-800"
         ];
         $hidden_headers = [];
         $row_group = null;
         $total_duration = 0;
-        $count_header =count( $headers); 
-        for ($i = 0 ;$i < $count_header; $i++ ) {
-            $string = get_array_value($headers[$i],"data");
-            if(str_contains($string, 'hidden')){
+        $count_header = count($headers);
+        for ($i = 0; $i < $count_header; $i++) {
+            $string = get_array_value($headers[$i], "data");
+            if (str_contains($string, 'hidden')) {
                 $hidden_headers[] = $i;
             }
-            if($string == 'status_hidden'){
+            if ($string == 'status_hidden') {
                 $row_group = $i;
             }
-            if($string == 'duration_hidden'){
+            if ($string == 'duration_hidden') {
                 $total_duration = $i;
             }
-            if($string == 'duration'){
+            if ($string == 'duration') {
                 $duration_footer = $i;
             }
         }
-        return compact("headers","hidden_headers","row_group","count_header","total_duration","duration_footer");
+        return compact("headers", "hidden_headers", "row_group", "count_header", "total_duration", "duration_footer");
     }
 
-    public static  function scopeRecapPoint($query,$options = [])
+    public static  function scopeRecapPoint($query, $options = [])
     {
         $auth = Auth::user();
         $carbon = Carbon::now();
@@ -596,16 +613,20 @@ class SuiviItem extends Model
         return User::select("id", "name", "avatar", "firstname", "registration_number")
             ->has("suiviItems")
             ->orderBy("firstname", "ASC")
-            ->when(!$auth->isM2pOrAdmin() && !$auth->isCp() && !$auth->isAdmin(), function($user) use ($auth) {
-                $user->where("id", "=",$auth->id)->limit(1);
+            ->when(!$auth->isM2pOrAdmin() && !$auth->isCp() && !$auth->isAdmin(), function ($user) use ($auth) {
+                $user->where("id", "=", $auth->id)->limit(1);
             })
             ->whereDeleted(0)
             // ->withSum(['pauseProduction as sum_pause' => function ($pause) use ($year,  $month) {
             //     $pause->whereMonth('created_at', '=', $month)->whereYear('created_at', '=', $year);
             // }], 'secondes')
             ->with([
-                'suiviItems' => function ($suivi_itmes) use ($options, $year,  $month , $auth) {
-                    $suivi_itmes->withOut(["user" =>function($q1){ $q1->withOut("userJob"); } , "mdp" =>function($q2){ $q2->withOut("userJob"); }]);
+                'suiviItems' => function ($suivi_itmes) use ($options, $year,  $month, $auth) {
+                    $suivi_itmes->withOut(["user" => function ($q1) {
+                        $q1->withOut("userJob");
+                    }, "mdp" => function ($q2) {
+                        $q2->withOut("userJob");
+                    }]);
                     $suivi_itmes->whereDeleted(0);
                 },
                 'suiviItems' => function ($suivi_itmes) use ($year,  $month) {
@@ -628,16 +649,20 @@ class SuiviItem extends Model
             ->withSum(['pauseProduction as sum_pause' => function ($pause) use ($year,  $month) {
                 $pause->whereMonth('created_at', '=', $month)->whereYear('created_at', '=', $year);
             }], 'secondes')
-            
-            ->when($auth->isADessignator(), function($user) use ($auth) {
-                $user->where("id", "=",$auth->id);
+
+            ->when($auth->isADessignator(), function ($user) use ($auth) {
+                $user->where("id", "=", $auth->id);
             })
             ->with([
                 "pointingTemp",
                 'suiviItems' => function ($suivi_itmes) use ($options, $year,  $month) {
                     // $suivi_itmes->withSum('noteQuality as sum_note_items ', 'note');
-                    $suivi_itmes->withOut(["user" =>function($q1){ $q1->withOut("userJob"); } , "mdp" =>function($q2){ $q2->withOut("userJob"); }]);
-                    $suivi_itmes->with(["version:id,title,deleted","suivi:id,ref,folder_name,category,deleted"]);
+                    $suivi_itmes->withOut(["user" => function ($q1) {
+                        $q1->withOut("userJob");
+                    }, "mdp" => function ($q2) {
+                        $q2->withOut("userJob");
+                    }]);
+                    $suivi_itmes->with(["version:id,title,deleted", "suivi:id,ref,folder_name,category,deleted"]);
                     $suivi_itmes->whereYear('finished_at', '=', $year);
                     $suivi_itmes->whereMonth('finished_at', '=', $month);
                     if (get_array_value($options, "version_ids")) {
@@ -646,13 +671,13 @@ class SuiviItem extends Model
                     if (get_array_value($options, "montage_ids")) {
                         $suivi_itmes->whereIn("montage", get_array_value($options, "montage_ids"));
                     }
-                     $suivi_itmes->where("status_id", "=" ,self::$FINISH);
+                    $suivi_itmes->where("status_id", "=", self::$FINISH);
                 },
                 'suiviItems' => function ($suivi_itmes) use ($year,  $month) {
-                    $suivi_itmes->withSum("level","point");
+                    $suivi_itmes->withSum("level", "point");
                     $suivi_itmes->whereYear('finished_at', '=', $year);
                     $suivi_itmes->whereMonth('finished_at', '=', $month);
-                     $suivi_itmes->where("status_id", "=" ,self::$FINISH);
+                    $suivi_itmes->where("status_id", "=", self::$FINISH);
                 },
                 'suiviPramsSession' => function ($parms) use ($year,  $month) {
                     $parms->where('month', '=', $month);
@@ -663,8 +688,8 @@ class SuiviItem extends Model
                     $dayoff->whereYear('start_date', '=', $year);
                     $dayoff->where("result", "=", "validated")->whereDeleted(0);
                 },
-                
-                
+
+
             ]);
     }
     public static function boot()
@@ -673,18 +698,18 @@ class SuiviItem extends Model
         static::created(function (Model $suiviItem) {
             try {
                 $to = collect();
-            $creator =  Auth::user();
-            if ($creator->id != $suiviItem->user->id) {
-                $to->push($suiviItem->user);
-            }
-            $to->push($suiviItem->mdp);
+                $creator =  Auth::user();
+                if ($creator->id != $suiviItem->user->id) {
+                    $to->push($suiviItem->user);
+                }
+                $to->push($suiviItem->mdp);
                 \Notification::send($to, new NewSuiviItemNotification($suiviItem, $creator));
             } catch (\Throwable $th) {
-              return 0;
+                return 0;
             }
         });
     }
-    
+
     public static function createFilter()
     {
         $auth = Auth::user();
@@ -695,7 +720,7 @@ class SuiviItem extends Model
             'attributes' => [
                 'title' => 'Filtré par nom  ou réference dossier ...',
             ]
-           
+
         ];
         $filters[] = [
             "label" => "Date",
@@ -735,7 +760,7 @@ class SuiviItem extends Model
             "data-allow-clear" => "true",
             'options' => self::getMdp(),
             'attributes' => [
-                
+
                 'title' => 'Filtré par M2P ...',
             ]
         ];
@@ -761,7 +786,7 @@ class SuiviItem extends Model
                     "data-minimum-input-length" => "3",
                     "data-allow-clear" => "true",
                     'title' => 'Filtré par traiteur ...',
-                    
+
                 ],
                 'options' =>  [
                     ["value" =>  0, "text" => trans("lang.me")]
@@ -782,7 +807,7 @@ class SuiviItem extends Model
         //         ["value" =>  0, "text" => "Dossier"]
         //     ],
         // ];
-         
+
         $filters[] = [
             "label" => "Statut",
             "name" => "status_id",
@@ -795,7 +820,7 @@ class SuiviItem extends Model
             ]
         ];
         $customs_filter = CustomerFilter::whereDeleted(0)->where("creator", "=", $auth->id)->get();
-        
+
         $custom = [];
         $customs_filter->map(function ($item, $key) use (&$custom) {
             $custom[] = ["value" => $item->id, "text" => $item->name_filter];

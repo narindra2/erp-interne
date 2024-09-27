@@ -23,7 +23,7 @@ class SavePointLevelTypeProject extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules=  [
             'client_type_id' => 'required|min:1',
             'project_type_id' => 'required|min:1',
             'version_id' => 'required|min:1',
@@ -32,6 +32,12 @@ class SavePointLevelTypeProject extends FormRequest
             'point' => 'required',
             'point_sup' => 'required',
         ];
+       
+        if (in_array(request("pole"),["logistique" ,"urba"])) {
+            $rules['project_type_id'] = 'nullable';
+        }
+
+        return $rules;
     }
 
     public function messages() 

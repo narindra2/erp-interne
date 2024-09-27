@@ -44,11 +44,10 @@ class Suivi extends Model
             foreach ($points as $detail) {
                 // Le premeir point par niveau elevé est la base ,
                if ($i == 0) {
-                    // $total_point = $detail->point * 2; 
                     $total_point = $detail->point; 
                }else{
-                    // Et les autres sont  ses points suplementaires.
-                   $total_point =  $total_point + ( $detail->point_sup); 
+                    // Et les autres sont  ses points suplementaires en sommant par celui ci.
+                   $total_point =  $total_point + ($detail->point_sup); 
                }
                $i++;
             }
@@ -65,7 +64,8 @@ class Suivi extends Model
     public function members(){
         return $this->hasMany(SuiviItem::class,"suivi_id")->distinct()->get(["user_id","follower"]);
     }
-    // Old concept
+
+    // Old concept code note used or don't remove
     public function types()
     {
         return $this->belongsToMany(SuiviType::class , "suivi_and_types","suivi_id","type_id");
