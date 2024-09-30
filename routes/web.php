@@ -294,6 +294,7 @@ Route::middleware(['auth', 'checkinweb'])->group(function () {
     Route::get("/crm", [ProspectController::class, "index"]);
     Route::post("/prospect/prospect-modal-form", [ProspectController::class, "prospect_info_modal"]);
     Route::post("/prospect/save-prospect-info", [ProspectController::class, "save_prospect_info"]);
+    Route::get("/prospect/data-list", [ProspectController::class, "data_list"]);
     
 });
 

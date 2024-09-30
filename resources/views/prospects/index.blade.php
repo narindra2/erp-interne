@@ -4,12 +4,12 @@
             <div class="card-body py-5">
                 <div class="d-flex justify-content-end mb-5">
                     <div class="filter-datatable">
-                        @include('filters.filters-basic', ["inputs" => $basic_filter ,"filter_for" => "purchasesTable"])
+                        @include('filters.filters-basic', ["inputs" => $basic_filter ,"filter_for" => "prospectTable"])
                     </div>
                     &nbsp; &nbsp;
                     <div class="me-4 my-2 ml-3">
                         <div class="d-flex align-items-center position-relative my-1">
-                            <input type="text" id="search-purchases" autocomplete="off"
+                            <input type="text" id="search-prospect" autocomplete="off"
                                 class="form-control form-control-solid form-select-sm w-200px ps-9 "
                                 placeholder="{{ trans('lang.search') }}">
                         </div>
@@ -25,7 +25,7 @@
                         @endphp
                     </div>
                 </div>
-                <table id="purchasesTable" class="table table-row-dashed table-row-gray-200 align-middle  table-hover "></table>
+                <table id="prospectTable" class="table table-row-dashed table-row-gray-200 align-middle  table-hover "></table>
             </div>
         </div>
     </div>
@@ -33,22 +33,19 @@
     @section('scripts')
     <script>
         $(document).ready(function() {
-            dataTableInstance.purchasesTable = $("#purchasesTable").DataTable({
+            dataTableInstance.prospectTable = $("#prospectTable").DataTable({
                 processing: true,
                 dom : "tpr",
                 columns: [ 
-                    {data :"info" , title: 'Nom de la société '},
-                    {data :"date" , title: 'Telephone'},
-                    {data :"author" , title: 'Email'},
-                    {data :"author" , title: 'Prospect'},
-                    {data :"num" , title: 'Dirigeant'},
-                    {data :"num" , title: 'Site mere'},
+                    {data :"company" , title: 'Nom de la société '},
+                    {data :"prospect" , title: 'Prospect'},
+                    {data :"manager" , title: 'Dirigeant'},
                     {data :"created_at" , title: 'Crée le'},
                     {data: "status", title: "Statut"},
                     {data :"actions"},
                 ],
                 ajax: {
-                    url: url("/purchases/data_list"),
+                    url: url("/prospect/data-list"),
                     data: function(data) {
                         <?php foreach(inputs_filter_datatable($basic_filter) as $input ) { ?>
                             data.{{ $input }} = $("#{{ $input }}").val();
@@ -63,17 +60,17 @@
                 }
             });
             
-            $('#search-purchases').on('keyup', function() {
-                dataTableInstance.purchasesTable.search(this.value).draw();
+            $('#search-prospect').on('keyup', function() {
+                dataTableInstance.prospectTable.search(this.value).draw();
             });
             $('#do-reload').on('click', function(e) {
-                dataTableInstance.purchasesTable.ajax.reload();
+                dataTableInstance.prospectTable.ajax.reload();
                 setTimeout(() => {
                     KTApp.initBootstrapTooltips();
                 }, 1000);
             });
-            $('.purchasesTable').on('change', function() {
-                dataTableInstance.purchasesTable.ajax.reload();
+            $('.prospectTable').on('change', function() {
+                dataTableInstance.prospectTable.ajax.reload();
                 setTimeout(() => {
                     KTApp.initBootstrapTooltips();
                 }, 1000);

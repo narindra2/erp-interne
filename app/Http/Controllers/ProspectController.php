@@ -35,17 +35,22 @@ class ProspectController extends Controller
     }
    public function data_list(Request $request )
     {
-        $data_company = $request->only("name_company","tel_company","email_company","linkedin_company","site_company","size_company");
-        $company =  ProspectCompany::updateOrCreate(["id" => $request->company_id] , $data_company);
+        $data = [];
+        $prospects =  ProspectCompany::with(["managers"])->whereDeleted(0)->get();
 
-        $data_company_manager = $request->only("name_manager","tel_manager","email_manager","site_manager");
-        /** Check if a field of manegr has on value and od save ity if a filed is not empty */
-        foreach ($data_company_manager as $key => $value) {
-            if ($value) {
-                $data_company_manager["company_id"] = $company->id;
-                ProspectCompanyManager::updateOrCreate(["id" => $request->company_manager_id] , $data_company_manager);
-                break;
-            }
+        foreach ($prospects as $prospect) {
+          $data[] = $this->_make_row($prospect);
         }
+        return ["data" =>  $data ];
+    }
+   public function _make_row( ProspectCompany $prospect )
+    {
+        $row["company"] = view("prospects.columns.company-info",compact("prospect"))->render();
+        $row["prospect"] = "";
+        $row["manager"] = view("prospects.columns.company-info",compact("prospect"))->render();
+        $row["created_at"] = "";
+        $row["status"] = "";
+        $row["actions"] = "";
+        return $row;
     }
 }
