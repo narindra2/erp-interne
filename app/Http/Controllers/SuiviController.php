@@ -256,7 +256,7 @@ class SuiviController extends Controller
         $montages = SuiviItem::getMontage();
         $poles = SuiviItem::getPole();
         $status = SuiviItem::getStatus();
-        $versions = SuiviVersion::getVersions(["departement" => "m2p"])->get();
+        $versions = SuiviVersion::getVersions()->get();
         $mdp = SuiviItem::getMdp();
         $cats = SuiviItem::getTypeFolder();
         $types_client = SuiviItem::getClientType();

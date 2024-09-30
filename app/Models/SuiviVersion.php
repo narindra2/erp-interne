@@ -14,15 +14,15 @@ class SuiviVersion extends Model
     protected $guarded = [];
     public static function getVersions($options = [])
     {
-        $departement = get_array_value($options, "departement");
+        $query  = self::whereDeleted(0);
         if (Auth::user()->isAdmin()) {
-            return self::whereDeleted(0);
+            return $query;
         }
-        return self::where('belongs', "all")->orWhere(function ($q2) use ($departement) {
-            if ($departement) {
-                $q2->whereRaw('FIND_IN_SET(?,belongs)', [$departement]);
-            }
-        })->whereDeleted(0);
+        $departement = get_array_value($options, "departement");
+        if ($departement) {
+            $query->whereRaw('FIND_IN_SET(?,belongs)', [$departement]);
+        }
+        return $query;
     }
     public function levelsPoint()
     {

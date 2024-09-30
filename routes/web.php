@@ -15,6 +15,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\DayOffController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\CheckInController;
+use App\Http\Controllers\ProspectController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SanctionController;
 use App\Http\Controllers\SortableController;
@@ -287,6 +288,13 @@ Route::middleware(['auth', 'checkinweb'])->group(function () {
     /**Sortable */
     Route::get("/status/index", [SortableController::class, "index"]);
     Route::post("/update/status/order", [SortableController::class, "update_status_ordering"]);
+    
+    /** CRM call */
+    
+    Route::get("/crm", [ProspectController::class, "index"]);
+    Route::post("/prospect/prospect-modal-form", [ProspectController::class, "prospect_info_modal"]);
+    Route::post("/prospect/save-prospect-info", [ProspectController::class, "save_prospect_info"]);
+    
 });
 
 Route::middleware(['auth', 'checkinweb', 'role:2,4'])->group(function () {
