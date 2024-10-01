@@ -37,7 +37,6 @@ class ProspectController extends Controller
     {
         $data = [];
         $prospects =  ProspectCompany::with(["managers"])->whereDeleted(0)->get();
-
         foreach ($prospects as $prospect) {
           $data[] = $this->_make_row($prospect);
         }
@@ -46,9 +45,14 @@ class ProspectController extends Controller
    public function _make_row( ProspectCompany $prospect )
     {
         $row["company"] = view("prospects.columns.company-info",compact("prospect"))->render();
+        $row["company_contact"] = view("prospects.columns.company-contact",compact("prospect"))->render();
         $row["prospect"] = "";
         $row["manager"] = view("prospects.columns.company-info",compact("prospect"))->render();
-        $row["created_at"] = "";
+        $row["site"] = "";
+        $row["linkedin"] = "";
+        $row["site_mere"] = "";
+        $row["created_at"] = $prospect->created_at->format("d-M-Y");
+        $row["updated_at"] = $prospect->updated_at->format("d-M-Y");
         $row["status"] = "";
         $row["actions"] = "";
         return $row;

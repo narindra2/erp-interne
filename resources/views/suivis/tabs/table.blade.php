@@ -71,7 +71,8 @@
         </div>
         {{-- <div class="table-responsive h-900px"> --}}
         <div class="table-responsive ">
-            <table id="suiviTable" width="100%" class="table align-middle  cell-border table-row-gray-500  gy-1  ">
+            <table id="suiviTable" width="100%" class=" table align-middle  cell-border table-row-gray-500  gy-1  ">
+                <tbody class="child"></tbody>
                 <tfoot>
                     <tr>
                         @for ($i = 0; $i < $count_header; $i++)
@@ -94,6 +95,10 @@
     }
     .columns-visibility{
         cursor: pointer;
+    }
+    
+    .child{
+        cursor: move;
     }
 </style>
 
@@ -226,6 +231,37 @@
                         });
                    
             });
+            /** Move table */ 
+            
+            let mouseDown = false;
+            let startX, scrollLeft;
+            const slider = document.querySelector('.table-responsive');
+
+            const startDragging = (e) => {
+            mouseDown = true;
+            startX = e.pageX - slider.offsetLeft;
+            scrollLeft = slider.scrollLeft;
+            }
+
+            const stopDragging = (e) => {
+            mouseDown = false;
+            }
+
+            const move = (e) => {
+            e.preventDefault();
+            if(!mouseDown) { return; }
+            const x = e.pageX - slider.offsetLeft;
+            const scroll = x - startX;
+            slider.scrollLeft = scrollLeft - scroll;
+            }
+
+            // Add the event listeners
+            slider.addEventListener('mousemove', move, false);
+            slider.addEventListener('mousedown', startDragging, false);
+            slider.addEventListener('mouseup', stopDragging, false);
+            slider.addEventListener('mouseleave', stopDragging, false);
+            slider.addEventListener('mouseclick', stopDragging, false);
+
             $('.suiviTable').on('change , keyup', function() {
                 dataTableInstance.suiviTable.ajax.reload();
             });
