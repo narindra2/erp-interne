@@ -159,8 +159,12 @@ class DayOffController extends Controller
         /** End  user not yet return work by return_date asc */
         $daysOff =  $query->where('result', 'validated')->oldest("return_date")->get();
         foreach ($daysOff as $dayOff) {
+            if (Carbon::parse($dayOff->return_date)->isPast()) {
+                continue;
+            }
             /** Retirer le congé retour apres-midi  si il est deja apres midi  */
             $hours = Carbon::now()->format("H");
+            
             if ($hours >= 12   && Carbon::parse($dayOff->return_date)->isToday() &&  $dayOff->return_date_is_morning == "0") {
                 continue;
             }
