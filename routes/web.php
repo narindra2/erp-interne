@@ -190,6 +190,7 @@ Route::middleware(['auth', 'checkinweb'])->group(function () {
     Route::post("/suivi/delete-row", [SuiviController::class, "delete_row"]);
     Route::get("/search/folder", [SuiviController::class, "search_folder"]);
     Route::post("/suivi/folder/list", [SuiviController::class, "folder_list"]);
+    Route::post("/suivi/folder/delete", [SuiviController::class, "delete_folder"]);
     Route::get("/search/user", [SuiviController::class, "search_user"]);
     Route::post("/suivi/custom-filter-modal", [SuiviController::class, "custom_filter_modal"]);
 

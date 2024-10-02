@@ -151,7 +151,7 @@ class DayOffController extends Controller
             $can_validate_ids = User::getListOfUsersCanValidateDayOff($auth->id);
             $same_deprmtnt_ids = [];
             if ($auth->isCp()) {
-                $same_deprmtnt_ids = UserJobView::where("department_id", $auth->userJob->department_id)->get()->pluck("users_id");
+                $same_deprmtnt_ids = UserJobView::where("department_id", $auth->userJob->department_id)->get()->pluck("users_id")->toArray();
             }
             $query->whereIn("applicant_id", array_unique( array_merge($can_validate_ids ,$same_deprmtnt_ids)));
         }

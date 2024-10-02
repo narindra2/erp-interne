@@ -462,6 +462,7 @@ class SuiviController extends Controller
     {
         return  Suivi::search_folder($request->term);
     }
+   
     public function folder_list(Request $request)
     {
         $per_page = 5;
@@ -469,7 +470,7 @@ class SuiviController extends Controller
         $term = $request->term;
         $hasAnotherData = false;
 
-        $query =  Suivi::withOut(["points"])->whereDeleted(0)->whereDeleted(0)->latest();
+        $query =  Suivi::withOut(["points"])->whereDeleted(0)->latest();
         if ($term) {
             $data = $query->where(function ($query) use ($term) {
                 if (!in_array(strtolower($term), ["tous", "all" ,"toutes","tout","listes","list", "***"])) {
@@ -492,6 +493,11 @@ class SuiviController extends Controller
         
         return ["success" => true, "result" => $data, 'hasAnotherData' => $hasAnotherData, 'currentPage' => $skip];
 
+    }
+    public function delete_folder(Request $request)
+    {
+        Suivi::where("id" ,$request->folder_id )->update(["deleted"=> 1]);
+        return ["success" => true, "message" => trans("lang.success_deleted")];
     }
     public function search_user(Request $request)
     {

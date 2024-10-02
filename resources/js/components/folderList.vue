@@ -25,6 +25,7 @@
 						<th>Reference</th>
 						<th>Dossier</th>
 						<th>Date de création</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -38,6 +39,7 @@
 							</td>
 							<td>{{ folder.folder_name }}</td>
 							<td>{{ folder.addedAt }}</td>
+							<td><i class=" to-link fas fa-trash text-danger" @click="deleteFolder(index , folder.id)"></i></td>
                     	</tr>
 					</template>
 				</tbody>
@@ -76,10 +78,10 @@ export default {
 		this.getFolderList();
     },
     methods: {
-		getFolderList(postData =  {},add = false){
+		async getFolderList(postData =  {},add = false){
 			this.loading = true;
 			this.indicatorLoading = "on";
-            axios.post(this.app.baseUrl + "/suivi/folder/list", postData).then(response => {
+			await  axios.post(this.app.baseUrl + "/suivi/folder/list", postData).then(response => {
                 if (response.data.success) {
 					this.skip = response.data.currentPage;
 					this.hasAnotherData = response.data.hasAnotherData;
@@ -89,9 +91,10 @@ export default {
                     	this.folders = response.data.result;
 					}
                 }
-				this.loading = false;
-				this.indicatorLoading = "off";
+				
             })
+			this.loading = false;
+			this.indicatorLoading = "off";
 		},
 		loadMoreData(){
 			this.getFolderList({"skip" :this.skip},true);
@@ -99,6 +102,21 @@ export default {
 		reloadData(){
 			this.folders = [];
 			this.getFolderList();
+		},
+	 	async deleteFolder(index  , folder_id = 0){
+			console.log(index);
+			if (index > -1) {
+				this.loading = true;
+				this.indicatorLoading = "on";
+			 await axios.post(this.app.baseUrl + "/suivi/folder/delete", {"folder_id" : folder_id}).then(response => {
+					if (response.data.success) {
+						this.folders.splice(index, 1);
+						toastr.success(response.data.message)
+					}
+				})
+				this.loading = false;
+				this.indicatorLoading = "off";
+			}
 		}
     },
 	watch : {
