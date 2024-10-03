@@ -444,8 +444,8 @@ class SuiviController extends Controller
     public function  can_do_other_traitement($user, $message = "")
     {
         $folder_in_progress = SuiviItem::where("user_id", $user->id)->where("status_id", SuiviItem::$IN_PROGRESS)->whereDeleted(0)->count();
-        if ($folder_in_progress) {
-            $message =  $message  ?  $message : 'Vous avez 2 ou plus de dossier « En cours » de statut. <br> Mettez  en « Pause » ou « Terminer » les autres dossiers avant de mettre   « En cours » une autre! ';
+        if ($folder_in_progress > 1) {
+            $message =  $message  ?  $message : 'Vous avez 2 ou plus de dossiers « En cours » de statut. <br> Mettez  en « Pause » ou « Terminer » les autres dossiers avant de mettre   « En cours » une autre! ';
             die(json_encode(["success" => false, "message" =>  $message]));
         }
     }
@@ -636,7 +636,7 @@ class SuiviController extends Controller
         $users = get_array_value($data, "users");
         if ($users) {
             $users = User::findMany($users);
-            $strings .=  " - <u>Utilisateurs</u> : " . $users->implode("sortname", ", ") . "<br>";
+            $strings .=  " - <u>Personnes</u> : " . $users->implode("sortname", ", ") . "<br>";
         }
         /**The folders */
         $suivis = get_array_value($data, "suivis");

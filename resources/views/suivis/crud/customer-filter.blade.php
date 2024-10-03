@@ -3,15 +3,15 @@
         @csrf
         <div class="form-group">
             <div class="mb-5">
-                <label for="proprietor_id" class="form-label">@lang('lang.name_filter') </label>
-                <input type="text" name="name_filter" id="name_filter" autocomplete="off"  class="form-control form-control-solid" placeholder="@lang('lang.name_filter')" />
+                <label for="name_filter" class="form-label">Nom du filtre personnalisé </label>
+                <input type="text" name="name_filter" id="name_filter" autocomplete="off"  class="form-control form-control-solid" placeholder="Nom du filtre personalisé ex: Mon-squad " />
             </div>
         </div>
        {!!    view("suivis.crud.custom-filter-inputs", ["options" => $options , "modal" => $modal] )->render() !!}
     </div>
     <div class="card-footer d-flex justify-content-end">
         <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-light-light btn-sm mr-2 ">
-            @lang('lang.cancel')</button>
+            Quitter</button>
         <button type="submit" id="submit" class=" btn btn-sm btn-light-primary  mr-2">
             @include('partials.general._button-indicator', [
                 'label' => trans('lang.create_this_fiter'),

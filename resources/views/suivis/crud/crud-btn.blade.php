@@ -8,7 +8,7 @@
         <div class="separator my-3"></div>
         <div class="menu-item px-5">
             @php
-                echo  modal_anchor(url("/suivi/custom-filter-modal"), trans('lang.add_filter') , ['title' => trans('lang.add_filter') , "class" => "menu-link px-5", "data-modal-lg" => true]);
+                echo  modal_anchor(url("/suivi/custom-filter-modal"), trans('lang.add_filter') , ['title' => "Créer mon filtre personnalisé" , "class" => "menu-link px-5", "data-modal-lg" => true]);
             @endphp
         </div>
         <div class="menu-item px-5">

@@ -338,6 +338,7 @@
                 }
                 if ($(element).hasClass("form-select")) {
                     $(element).removeClass("form-select-transparent")
+
                     var options = {
                         "templateResult": optionFormat,
                         "dir": document.body.getAttribute('direction'),
@@ -357,7 +358,7 @@
                         selecte2.val($(element).val()).trigger('change')
                     }
                 }
-                $(element).attr("disabled", false);
+                $(element).removeAttr("disabled");
             }
 
             function showLoadingTable(show = true) {

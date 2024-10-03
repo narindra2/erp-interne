@@ -41,7 +41,7 @@ if (!function_exists('get_menus_list')) {
             $menu_vertical[] = ["title" => "Tâches", 'path'  => 'tâche/list',   'icon' => '<i class="far fa-calendar-check fs-3"></i>'];
             $menu_vertical[] = ["title" => "SDF", 'path'  => 'salle-de-reunion',  'icon'  => '<i class="fas fa-handshake fs-3"></i>'];
             $menu_vertical[] = ["title" => "Suivis & prod", 'path'  => 'suivi/v2/projet',   'icon' => '<i class="fas fa-tasks fs-3"></i>'];
-            $menu_vertical[] = ["title" => "CRM", 'path'  => 'crm',  'icon'  => '<i class="fas fa-headset fs-3"></i>'];
+            // $menu_vertical[] = ["title" => "CRM", 'path'  => 'crm',  'icon'  => '<i class="fas fa-headset fs-3"></i>'];
         
             $menu_vertical[] = ["classes" => ['content' => 'pt-8 pb-2'], 'content' => '<span class="menu-section text-muted text-uppercase fs-8 ls-1">Achat & Stock</span>'];
             $menu_vertical[] = ["title" => "Achats", 'path'  => 'purchases',  'icon'  => ' <i class="fas fa-cart-arrow-down fs-3"></i> '];
