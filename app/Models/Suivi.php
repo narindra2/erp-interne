@@ -40,7 +40,8 @@ class Suivi extends Model
         }else{
             //Pour un dossier plusieur  type son  point 
             $i = 0;
-            $points  = $points->sortBy('niveau');
+            // $points  = $points->sortByDesc('niveau'); // old concept
+            $points  = $points->sortByDesc('point');
             foreach ($points as $detail) {
                 // Le premeir point par niveau elevé est la base ,
                if ($i == 0) {
