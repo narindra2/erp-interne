@@ -31,8 +31,7 @@ class SuiviController extends Controller
 {
     public function index(Request $request)
     {
-        // $items  = SuiviItem::getDetails($request->all())->get();
-        //  dd(  $items[0]);
+       
         $tab = $request->get("tab");
         if (!in_array($tab, ["tableau", "statistique", "productivitie", "recapitulatif", "folderlist","userparams"])) {
             return redirect("/suivi/v2/projet?tab=tableau");
@@ -1287,5 +1286,14 @@ class SuiviController extends Controller
             "status" => $type->status == "on" ? "<span class='badge badge-light-success'>Actif</span>" : "<span class='badge badge-light-warning'>Non actif</span> ",
             "action" => '<a data-id="' . $type->id . '" href="javascript:void(0)"  class="btn btn-sm btn-clean edit-type-client" title="edit" ><i class="fas fa-edit " style="font-size:12px"></i></a>' . "" .  js_anchor('<i class="fas fa-trash " style="font-size:12px" ></i>', ["data-action-url" => url("/suivi/delete/type-client/$type->id"), "class" => "btn btn-sm btn-clean ", "title" => "Supprimé", "data-action" => "delete"]),
         ];
+    }
+
+    /** Cron --  Mettre en pause les dossiers en cours à {hour} heure */
+    /** This route is called by cron form  schedule:suivi command */
+    public function make_pause_all_suivi_item()
+    {
+        // SuiviItem::whereDeleted(0)->where("id",79)->where("status_id" , SuiviItem::$IN_PROGRESS)->update(["status_id" => SuiviItem::$PAUSE]);
+        SuiviItem::whereDeleted(0)->where("id",1)->update(["status_id" => SuiviItem::$PAUSE]);
+        return ["success" => true, "message" => "Toutes les dossiers sur la table suivi sont mise en pause date : " .  now()->format("d-M-Y h:m:s")];
     }
 }

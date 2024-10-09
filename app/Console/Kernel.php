@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\UpdateLeaveBalances::class,
-        // Commands\DesktopNotification::class,
+        Commands\MakeSuiviItemFolderPauseOnDayFinish::class,
     ];
 
     /**
@@ -26,9 +26,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('queue:work');
+        // $schedule->command('queue:work');
+        $schedule->command('schedule:suivi')->everyTwoMinutes();
+        // $schedule->command('schedule:make-to-pause-all-suivi-items-inprogress');
         // $schedule->command('updateLeaveBalances:monthly')->monthly();
-        // $schedule->command('DesktopNotification');
+        //  $schedule->command('DesktopNotification');
+
         
     }
 
