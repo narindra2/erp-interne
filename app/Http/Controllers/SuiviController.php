@@ -1288,12 +1288,11 @@ class SuiviController extends Controller
         ];
     }
 
-    /** Cron --  Mettre en pause les dossiers en cours à {hour} heure */
-    /** This route is called by cron form  schedule:suivi command */
+    /** This methode is called by cron form  schedule:suivi command */
+    /** Cron --  Mettre en pause les dossiers en cours à 20 heures lors du fin du travail */
     public function make_pause_all_suivi_item()
     {
-        // SuiviItem::whereDeleted(0)->where("id",79)->where("status_id" , SuiviItem::$IN_PROGRESS)->update(["status_id" => SuiviItem::$PAUSE]);
-        SuiviItem::whereDeleted(0)->where("id",1)->update(["status_id" => SuiviItem::$PAUSE]);
+        SuiviItem::whereDeleted(0)->where("status_id" , SuiviItem::$IN_PROGRESS)->update(["status_id" => SuiviItem::$PAUSE]);
         return ["success" => true, "message" => "Toutes les dossiers sur la table suivi sont mise en pause date : " .  now()->format("d-M-Y h:m:s")];
     }
 }

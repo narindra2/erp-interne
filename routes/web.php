@@ -450,6 +450,7 @@ Route::get("/purchases", [PurchaseController::class, 'index']);
 Route::get("/purchases/data_list", [PurchaseController::class, "getPurchaseList"]);
 Route::post('/purchases/demande-form', [PurchaseController::class, "modal_form"]);
 Route::get('/item/{item_id}', [StockController::class, "detail_after_scanned_qrcode"]);
+/** This methode is called by cron form  schedule:suivi command */
 Route::get("/suivi/make-all-pause", [SuiviController::class, "make_pause_all_suivi_item"])->name("make_pause_all_suivi_item");
 Route::middleware(['auth', 'checkinweb', 'not_contributor'])->group(function () {
     Route::get("/needToBuy", [NeedToBuyController::class, "index"]);
