@@ -854,7 +854,7 @@ class SuiviItem extends Model
             "type" => "select",
             'attributes' => [
                 "data-allow-clear" => "true",
-                "data-hide-search" => "true",
+                "data-hide-search" => "false",
             ],
             'options' =>  $user_list,
         ];
