@@ -2,10 +2,13 @@
 $field = $input;
 $options = get_array_value($input, 'options');
 $attributes = get_array_value($input, 'attributes');
-$attr = '';
+$attr = $defautValue ='';
 
 if ($attributes) {
     foreach ($attributes as $key => $value) {
+        if ($key == "value" && $value) {
+            $defautValue = $value;
+        }
         $attr .= ' ' . $key . '="' . $value . '"';
     }
 }
@@ -26,7 +29,7 @@ if ($attributes) {
                 applyLabel: "{{ trans('lang.apply') }}",
                 cancelLabel: "{{ trans('lang.cancel') }}",
             },
-        }).val('').on('apply.daterangepicker', function(ev, picker) {
+        }).val('{{ $defautValue }}').on('apply.daterangepicker', function(ev, picker) {
             $(this).val(picker.startDate.format('DD/MM/yyyy') + "-" + picker.endDate.format('DD/MM/yyyy'))
             $(this).change()
         }).on('cancel.daterangepicker', function(ev, picker) {

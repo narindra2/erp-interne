@@ -470,7 +470,8 @@ class UserController extends Controller
     {
         $avatar = null; 
         if($request->hasFile("avatar")){
-            $file_info = upload($request->file("avatar"), "avatar", "public", ["folder" => "", "format" => 100]);
+            // $file_info = upload($request->file("avatar"), "avatar", "public", ["folder" => "", "format" => 100]);
+            $file_info = upload($request->file("avatar"), "avatar", "public");
             $avatar = $file_info["name"];
         }
         Auth::user()->update(["avatar" =>  $avatar]);

@@ -728,6 +728,7 @@ class SuiviItem extends Model
             "type" => "date-range",
             "data-allow-clear" => "true",
             'attributes' => [
+                // "value" => now()->subDays(30)->format("d/m/Y").  "-" .   now()->format("d/m/Y"),
                 'placeholder' => 'Date entre ...',
                 'title' => 'Filtré par date interval ...',
             ]
@@ -884,7 +885,6 @@ class SuiviItem extends Model
         $customs_filter = CustomerFilter::whereDeleted(0)->where("creator", "=", $auth->id)->get();
         $custom = [];
         $customs_filter->map(function ($item, $key) use (&$custom) {
-
             $custom[] = ["value" => $item->id, "text" => $item->name_filter];
         });
         $filters[] = [
