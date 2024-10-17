@@ -70,7 +70,7 @@
             </a>
         </div>
         {{-- <div class="table-responsive h-900px"> --}}
-        <div class="table-responsive ">
+        <div class="table-responsive"  id="table-responsive">
             <table id="suiviTable" width="100%" class=" table align-middle  cell-border table-row-gray-500  gy-1  ">
                 <tbody class="child"></tbody>
                 <tfoot>
@@ -100,6 +100,20 @@
     .child{
         cursor: move;
     }
+    .blockui .blockui-overlay {
+        transition: all 0.3s ease;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(0, 0, 0, 0.05);
+        backdrop-filter: blur(1.4px);
+        position: fixed;
+    }
 </style>
 
 @section('dynamic_link')
@@ -125,21 +139,40 @@
             var pausedId = {{ $paused_id }};
             var columnCount = {{ $total_duration  }};
             var hiddenedColoneUser =  @json($hiddened ?? []); 
-            
+            var blockLoader = '<div class="blockui-message"><span class="spinner-border text-primary"></span> Un instant svp ... <span ></span></div>'
+            var blockTableSuivi = document.querySelector("#table-responsive");
+            var blockUITableDiv = new KTBlockUI(blockTableSuivi, { message: blockLoader, });
             function secondsToDhmsItem(seconds) {
                 return secondsToDhms(seconds); // view/includes/helper-js
             }
-            dataTableInstance.suiviTable = $("#suiviTable").DataTable({
+            function showLoadingTable(show = true) {
+                if (show) {
+                   blockUITableDiv.block();
+                    // $("#suiviTable_processing").css("display", "")
+                } else {
+                  blockUITableDiv.release();
+                    // $("#suiviTable_processing").css("display", "none")
+                }
+            }
+            dataTableInstance.suiviTable = $("#suiviTable")
+            .on('preXhr.dt', function (e, settings, json, xhr) {
+                    blockUITableDiv.block();
+            }).on('xhr.dt', function (e, settings, data) {
+                    blockUITableDiv.release();
+            })
+            .DataTable({
                 processing: true,
                 ordering:false,
                 fixedHeader: true,
+                stateSave: true,
                 fixedColumns: {
                     left: 3,
                      right: 2
                 },
                 paging: false,
-                dom: "itr",
                 // dom: "tr",
+                // dom: "itr",
+                dom: "it", // proccecing est remplace par blockUITableDiv
                 columnDefs: [{
                     "targets":hiddenColumns,
                     "visible": false,
@@ -164,9 +197,14 @@
                         data.montages = $("#montage_ids").val();
                         data.status = $("#status_ids").val();
                         data.poles = $("#poles_ids").val();
-                    }
+                    },
+
                 },
-                footerCallback: function(row, data, start, end, display) {
+                preDrawCallback: function () {
+                    $("#suiviTable_processing").css("z-index", "10").addClass("bg-dark")
+                  
+                },
+                footerCallback: async function(row, data, start, end, display) {
                     var api = this.api();
                     var pageTotal = api
                         .column(columnCount, { page: 'current' })
@@ -176,14 +214,13 @@
                         }, 0);
                     // Update footer
                     $("#total_duration").html("<span class ='text-info text-left fs-3'>" + secondsToDhmsItem(pageTotal) + "</span>");
-                        
+                  
                 },
                 drawCallback: function (settings) {
                     var api = this.api();
                     var rows = api.rows().nodes();
                     var last = null;
-                    api
-                        .column(groupColumn)
+                    api.column(groupColumn)
                         .data()
                         .each(function (group, i) {
                             if (last !== group ) {
@@ -193,6 +230,7 @@
                                 last = group;
                             }
                         });
+                    
                 },
                 initComplete: function(settings, json) {
                      @if (!$auth->isM2pOrAdmin() && !$auth->isCp())
@@ -203,9 +241,6 @@
                     if (json.hidden_columns) {
                         table.columns(json.hidden_columns).visible(false);
                     }
-                    $("#suiviTable_processing").css("z-index", "10").addClass("bg-dark")
-
-
                     dataTableShowRowDetails("#suiviTable", dataTableInstance.suiviTable,"details-row"); /** includes/helpers-js*/
             
                     $('a.columns-visibility').on('click', function (e) {
@@ -229,8 +264,11 @@
                                 
                             }
                         });
-                   
-            });
+                })
+                
+                
+               
+            
             /** Move table */ 
             
             let mouseDown = false;
@@ -361,14 +399,7 @@
                 $(element).removeAttr("disabled");
             }
 
-            function showLoadingTable(show = true) {
-                if (show) {
-                    $("#suiviTable_processing").css("display", "")
-                } else {
-                    $("#suiviTable_processing").css("display", "none")
-                }
-            }
-
+          
             $(document).on('click', ".clone-row", function(e) {
                 var itemId = $(this).attr("data-suivi-item-id");
                 $("#suivi_item_id").val(itemId);
