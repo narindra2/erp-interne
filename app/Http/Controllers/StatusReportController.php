@@ -125,9 +125,15 @@ class StatusReportController extends Controller
         }
         $daysOffs = $daysOffs->whereDeleted(0)->where("is_canceled","=" ,  0)->notRefused()->get();
         foreach ($daysOffs as $daysOff) {
-            /** Retirer le congé retour apres-midi  si il est deja apres midi  */
+            
+            $is_return_today = Carbon::parse($daysOff->return_date)->isToday();
+            /** Retirer les congés retour matin dans le rapport d'etat   */
+            if ($is_return_today &&  $daysOff->return_date_is_morning == "1") {
+                continue;
+            }
             $hours = Carbon::now()->format("H");
-            if ($hours >= 12  && Carbon::parse($daysOff->return_date)->isToday() &&  $daysOff->return_date_is_morning == "0") {
+            /** Retirer les congés retour apres-midi  s' il est deja apres midi  */
+            if ($hours >= 12  && $is_return_today &&  $daysOff->return_date_is_morning == "0") {
                 continue;
             }
             $list[] = $this->_make_row_enconge($daysOff);
