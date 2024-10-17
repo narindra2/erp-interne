@@ -125,7 +125,6 @@ class StatusReportController extends Controller
         }
         $daysOffs = $daysOffs->whereDeleted(0)->where("is_canceled","=" ,  0)->notRefused()->get();
         foreach ($daysOffs as $daysOff) {
-            
             $is_return_today = Carbon::parse($daysOff->return_date)->isToday();
             /** Retirer les congés retour matin dans le rapport d'etat   */
             if ($is_return_today &&  $daysOff->return_date_is_morning == "1") {

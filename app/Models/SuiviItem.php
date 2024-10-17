@@ -419,11 +419,14 @@ class SuiviItem extends Model
             $dates = explode("-", $interval);
             if (count($dates) > 1) {
                 $suivi_item->where(function ($q1) use ($dates,  $status_id) {
+                   // The laravel "whereBetween" not include the date parametre in query 
+                    $start_where_between = Carbon::make(to_date($dates[0]))->subDay()->format("Y-m-d");
+                    $end_where_between =  Carbon::make(to_date($dates[1]))->addDay()->format("Y-m-d");
                     if ($status_id && $status_id == self::$FINISH) {
-                        $q1->whereBetween("finished_at", [to_date_time($dates[0]), to_date_time($dates[1])]);
+                        $q1->whereBetween("finished_at", [$start_where_between, $end_where_between]);
                     } else {
-                        $q1->whereBetween("created_at", [to_date_time($dates[0]), to_date_time($dates[1])]);
-                        $q1->orWhereBetween("finished_at", [to_date_time($dates[0]), to_date_time($dates[1])]);
+                        $q1->whereBetween("created_at", [$start_where_between, $end_where_between]);
+                        $q1->orWhereBetween("finished_at", [$start_where_between, $end_where_between]);
                     }
                 });
             }
