@@ -25,7 +25,7 @@
                                     title="Ajouter sur le tableau">
                                     @include('partials.general._button-indicator', [
                                         'label' => '<i class="fas fa-plus"></i>',
-                                        'message' => trans('lang.sending'),
+                                        'message' => "",
                                     ])
                                 </button>
                             </div>
@@ -49,12 +49,12 @@
             <div class="mx-2 mt-5">
                 @php
                     $model = App\Models\SuiviColumnCustomed::class;
-                    $hiddened = App\Models\SuiviColumnCustomed::get_user_hidden_columns_array();
+                    $hiddenedColones = App\Models\SuiviColumnCustomed::get_user_hidden_columns_array();
                 @endphp
                 Colonnes : 
                 @foreach ($model::$TABLE_ALLOWED_COLUMNS as $key => $columns)
                     @if (!in_array($key,$model::$NOT_CUSTOMABLE_COLUMNS))
-                        <a class="columns-visibility {{ in_array($key,$hiddened) ? "text-gray-500" : "" }}" data-column="{{ $key }}">{{ $columns }}</a> @if(!$loop->last)  -  @endif
+                        <a class="columns-visibility {{ in_array($key,$hiddenedColones) ? "text-gray-500" : "" }}" data-column="{{ $key }}">{{ $columns }}</a> @if(!$loop->last)  -  @endif
                     @endif
                 @endforeach
             </div>
@@ -145,15 +145,7 @@
             function secondsToDhmsItem(seconds) {
                 return secondsToDhms(seconds); // view/includes/helper-js
             }
-            function showLoadingTable(show = true) {
-                if (show) {
-                   blockUITableDiv.block();
-                    // $("#suiviTable_processing").css("display", "")
-                } else {
-                  blockUITableDiv.release();
-                    // $("#suiviTable_processing").css("display", "none")
-                }
-            }
+            
             dataTableInstance.suiviTable = $("#suiviTable")
             .on('preXhr.dt', function (e, settings, json, xhr) {
                     blockUITableDiv.block();
@@ -167,7 +159,7 @@
                 stateSave: true,
                 fixedColumns: {
                     left: 3,
-                     right: 2
+                    right: 2
                 },
                 paging: false,
                 // dom: "tr",
@@ -233,9 +225,9 @@
                     
                 },
                 initComplete: function(settings, json) {
-                     @if (!$auth->isM2pOrAdmin() && !$auth->isCp())
-                        $("#search_suivi").before(json.pause_btn);
-                     @endif
+                    @if (!$auth->isM2pOrAdmin() && !$auth->isCp())
+                     $("#search_suivi").before(json.pause_btn);
+                    @endif
 
                     let table = settings.oInstance.api();
                     if (json.hidden_columns) {
@@ -250,458 +242,30 @@
                             column.visible() ?  $(this).addClass("text-gray-500") : $(this).removeClass("text-gray-500");
                             column.visible(!column.visible());
                             $.ajax({
-                            url: url("/suivi/save/custom-visible-column"),
-                            type: 'POST',
-                            dataType: 'json',
-                            data: {"column_rang" : index ,"_token" :_token},
-                            success: function(result) {
-                                if (result.success) {
-                                    return true
+                                url: url("/suivi/save/custom-visible-column"),
+                                type: 'POST',
+                                dataType: 'json',
+                                data: {"column_rang" : index ,"_token" :_token},
+                                success: function(result) {
+                                    if (result.success) {
+                                        return true
+                                    }
+                                    return false
+                                },
+                                error: function(request, status, error) {
+                                    
                                 }
-                                return false
-                            },
-                            error: function(request, status, error) {
-                                
-                            }
-                        });
-                })
-                
-                
-               
-            
-            /** Move table */ 
-            
-            let mouseDown = false;
-            let startX, scrollLeft;
-            const slider = document.querySelector('.table-responsive');
-
-            const startDragging = (e) => {
-            mouseDown = true;
-            startX = e.pageX - slider.offsetLeft;
-            scrollLeft = slider.scrollLeft;
-            }
-
-            const stopDragging = (e) => {
-            mouseDown = false;
-            }
-
-            const move = (e) => {
-            e.preventDefault();
-            if(!mouseDown) { return; }
-            const x = e.pageX - slider.offsetLeft;
-            const scroll = x - startX;
-            slider.scrollLeft = scrollLeft - scroll;
-            }
-
-            // Add the event listeners
-            slider.addEventListener('mousemove', move, false);
-            slider.addEventListener('mousedown', startDragging, false);
-            slider.addEventListener('mouseup', stopDragging, false);
-            slider.addEventListener('mouseleave', stopDragging, false);
-            slider.addEventListener('mouseclick', stopDragging, false);
-
-            $('.suiviTable').on('change , keyup', function() {
-                dataTableInstance.suiviTable.ajax.reload();
-            });
-            $('#do-search-suivi').on('click', function(e) {
-                forceHideColomunsForEdit()
-                reloadTable()
-            });
-            
-            function reloadTable() {
-                if (loopMinutors) {
-                    for (var item in loopMinutors) {
-                        clearInterval(loopMinutors[item])
-                    }
+                            });
+                    })
                 }
-                dataTableInstance.suiviTable.ajax.reload();  
-            }
-            $('#search_suivi').on('keyup', function() {
-                dataTableInstance.suiviTable.search(this.value).draw();
             });
-            /** Edit item */ 
-            $(document).on('click', ".edit-item", function(e) {
-                var itemId = $(this).attr("data-id");
-                edit_row(this, false)
-                // $("#edit-item-" + itemId).css("display", "none")
-                // $("#cancel-item-" + itemId).css("display", "")
-            });
-             /** Cancel edit item */ 
-            $(document).on('click', ".cancel-edit-item", function(e) {
-                var itemId = $(this).attr("data-id");
-                dataTableInstance.suiviTable.draw();
-                $("#edit-item-" + itemId).css("display", "")
-                $("#cancel-item-" + itemId).css("display", "none")
-            });
-            
             @if ($auth->isM2pOrAdmin() || $auth->isCp()) 
                 $(document).on('dblclick', ".edit-item-all", function(e) {
                     edit_row(this, true)
                 }); 
             @endif
-            
-            $(document).on('dblclick', ".edit-item-part", function(e) {
-                if ($(this).attr("data-can-edit") == "true") {
-                    doEditInput(this)
-                }
-                var itemId = $(this).attr("data-id");
-                $("#save-item-" + itemId).css("display", "")
-            });
 
-            function edit_row(_this, forceEdit = false) {
-                forceShowColomunsForEdit();
-                var itemId = $(_this).attr("data-id");
-                $('#suivi_row_' + itemId).find("select, input").each(function(e) {
-                    if ($(this).attr("data-can-edit") == "true" || forceEdit) {
-                        doEditInput(this)
-                    }
-                });
-                $('.row-detail-' + itemId).each(function(e) {
-                    if ($(this).attr("data-can-edit") == "true" || forceEdit) {
-                        doEditInput(this)
-                    }
-                });
-                $("#save-item-" + itemId).css("display", "")
-                $("#suivi_row_" + itemId).addClass(getClassToEditColor(itemId));
-                 
-            }
-            function getClassToEditColor(itemId) {
-                let color =  $("#class-row-color-"+ itemId).data("row-color"); // in this item status_hidden column div
-                // return color ? color : backgroundRowEdit;
-                return  backgroundRowEdit;
-            }
-            function doEditInput(element) {
-                if ($(element).hasClass("form-control")) {
-                    $(element).removeClass("form-control-transparent")
-                }
-                if ($(element).hasClass("form-select")) {
-                    $(element).removeClass("form-select-transparent")
-
-                    var options = {
-                        "templateResult": optionFormat,
-                        "dir": document.body.getAttribute('direction'),
-                        "minimumResultsForSearch": element.getAttribute('data-hide-search') == 'true' ?  Infinity : "",
-                        "multiple": element.getAttribute('multipleSelect') == 'true' ? true : false,
-                    };
-                    var selecte2 = $(element).select2(options);
-                    if (options.multiple) {
-                        if ($(element).attr("seleteds")) {
-                            var seletedsMultiple = $(element).attr("seleteds").split(",");
-                            selecte2.val(seletedsMultiple).trigger('change')
-                        } else {
-                            console.log("noseleteds");
-                            selecte2.val("")
-                        }
-                    }else{
-                        selecte2.val($(element).val()).trigger('change')
-                    }
-                }
-                $(element).removeAttr("disabled");
-            }
-
-          
-            $(document).on('click', ".clone-row", function(e) {
-                var itemId = $(this).attr("data-suivi-item-id");
-                $("#suivi_item_id").val(itemId);
-                $("#submit-clone-row").trigger("click");
-                setTimeout(() => {
-                    $("#suivi_item_id").val(0);
-                }, 1500);
-            });
-
-            $(document).on('click', ".save-item", function(e) {
-                let _saveBtn = $(this);
-                let itemId = $(this).attr("data-id");
-                let clon_of = $(this).attr("data-clone-of");
-                var fields = {
-                    "_token": _token,
-                    "item_id": itemId,
-                    "clon_of": clon_of
-                }
-                $('#suivi_row_' + itemId).find("select, input").each(function() {
-                    let _this2 = $(this);
-                    if (_this2.attr("seleteds") && _this2.attr("data-control") == "select") {
-                        let vals = null
-                        if (_this2.data('select2')) {
-                            vals =_this2.val();
-                        } else {
-                            vals = _this2.attr("seleteds").split(",")
-                        }
-                        fields[_this2.attr("name")] = vals
-                    } else {
-                        let name = _this2.attr("name");
-                        if (name =="types[]") {
-                            console.log("ewa");
-                            fields["types"] = _this2.val()
-                            console.log($(this).val());
-                        }else{
-                            fields[name] = _this2.val()
-                        }
-                    }
-                });
-
-                $('.row-detail-' + itemId).each(function() {
-                    fields[$(this).attr("name")] = $(this).val()
-                });
-                if (fields.status_id ==  finishedId || fields.status_id == pausedId) {
-                    let itemId = fields.item_id;
-                    return  $.confirm({
-                        title: 'Confirmation',
-                        content: `Voulez-vous vraimment continuer  ?`,
-                        buttons: {
-                            "oui , je confirme !": function () {
-                                save_item(fields,_saveBtn);
-                            },
-                            nom: function () {
-                                reHideField(itemId)
-                                $("#save-item-" + itemId).css("display", "none")
-                                $("#suivi_row_"+ itemId).removeClass("bg-secondary");
-                                return true;
-                            },
-                        }
-                    });
-                    return;
-                }
-                save_item(fields,_saveBtn);
-            });
-            function reHideField(itemId) {
-                $('#suivi_row_' + itemId).find("select, input").each(function() {
-                    doHideInput(this)
-                });
-                $('.row-detail-' + itemId).each(function(e) {
-                    doHideInput(this)
-                });
-            }
-
-            function showErrorIncador(itemId) {
-                $('#suivi_row_' + itemId).find("select, input").each(function() {
-                    if ($(this).hasClass("form-select")) {
-                        let div = $(this).parent("div");
-                        if (!div.hasClass("is-invalid")) {
-                            div.addClass("is-invalid");
-                        }
-                    } else {
-                        if (!$(this).hasClass("is-invalid")) {
-                            $(this).addClass("is-invalid");
-                        }
-                    }
-                });
-            }
-
-            function hideErrorIncador(itemId) {
-                $('#suivi_row_' + itemId).find("select, input").each(function() {
-                    if ($(this).hasClass("form-select")) {
-                        let div = $(this).parent("div");
-                        if (div.hasClass("is-invalid")) {
-                            div.removeClass("is-invalid");
-                        }
-                    } else {
-                        if ($(this).hasClass("is-invalid")) {
-                            $(this).removeClass("is-invalid");
-                        }
-                    }
-                });
-            }
-            function doHideInput(el) {
-                if ($(el).hasClass("form-select")) {
-                    if ($(el).attr('data-control') == "select" || $(el).data('select2') ) {
-                        if (typeof $(el).attr("seleteds") !== 'undefined' && $(el).attr("seleteds") !== false) {
-                            let vals = $(el).val();
-                            if (vals  &&  Array.isArray(vals)) {
-                                $(el).attr("seleteds", vals.join(","))
-                                $(el).attr("multiple", false)
-                            }
-                        }
-                        if ($(el).data('select2')) {
-                            $(el).select2('destroy');
-                        }
-                    }
-                    $(el).parent("div").removeClass("in-invalid");
-                    $(el).addClass("form-select-transparent")
-                } else {
-                  
-                    $(el).removeClass("in-invalid");
-                    $(el).addClass("form-control-transparent")
-                }
-                $(el).attr("disabled", true)
-            }
-
-            function save_item(data = {},_saveBtn) {
-                let _loading =  $("#loading-item-" + data.item_id)
-                _loading.css("display", "")
-                _saveBtn.css("display", "none");
-                _saveBtn.attr("disabled", "true");
-                showLoadingTable()
-                $.ajax({
-                    url: url("/suivi/save/row"),
-                    type: 'POST',
-                    dataType: 'json',
-                    data: data,
-                    success: function(result) {
-                        forceShowColomunsForEdit();
-                        _loading.css("display", "none")
-                        _saveBtn.attr("disabled", "false");
-                        if (result.success) {
-                            reHideField(data.item_id)
-                            toastr.success(result.message);
-                            $("#save-item-" + result.row_id).css("display", "none")
-                            reloadTable();
-
-                        } else {
-                            _saveBtn.css("display", "");
-                            toastr.error(result.message);
-                            if (result.invalid_colones) {
-                                let invalid_colones = result.invalid_colones
-                                let validated_colones = result.validated_colones
-                                invalid_colones.forEach(function(input, index) {
-                                    if ($("#input-" + input).hasClass("form-select")) {
-                                        let div = $("#input-" + input).parent("div");
-                                        div.addClass("is-invalid");
-                                    } else {
-                                        $("#input-" + input).addClass("is-invalid");
-                                    }
-                                });
-                                validated_colones.forEach(function(input, index) {
-                                    if ($("#input-" + input).hasClass("form-select")) {
-                                        let div = $("#input-" + input).parent("div");
-                                        div.removeClass("is-invalid");
-                                    } else {
-                                        $("#input-" + input).removeClass("is-invalid");
-                                    }
-                                });
-                            }
-                            $("#save-item-" + result.row_id).css("display", "none")
-                        }
-                        showLoadingTable(false)
-                    },
-                    error: function(request, status, error) {
-                        toastr.options.timeOut = 0;
-                        toastr.error(error);
-                        showLoadingTable(false)
-                        _loading.css("display", "none")
-                        _saveBtn.css("display", "");
-                        _saveBtn.attr("disabled", "false");
-                    }
-                });
-            }
-            /** Show all column to edit or to fill*/
-            function forceShowColomunsForEdit() {
-                let countCol = hiddenedColoneUser.length
-                if (countCol) {
-                    for (let i = 0; i < countCol; i++) {
-                        let column = dataTableInstance.suiviTable.column(hiddenedColoneUser[i]);
-                        column.visible(true);
-                    }
-                }
-                
-            }
-              /** Rehide all column to edit or to fill*/
-            function forceHideColomunsForEdit() {
-                let countCol = hiddenedColoneUser.length
-                if (countCol) {
-                    for (let i = 0; i < countCol; i++) {
-                        let column = dataTableInstance.suiviTable.column(hiddenedColoneUser[i]);
-                        column.visible(false);
-                    }
-                }
-            }
-            $("#new-record-suivi").appForm({
-                beforeAjaxSubmit: function(data, self, options) {
-                    forceShowColomunsForEdit();
-                    showLoadingTable()
-                },
-                onSuccess: function(response) {
-                    dataTableaddRowIntheTop(dataTableInstance.suiviTable, response.item)
-                    showLoadingTable(false)
-                    $('#folder_id').val("0").change();
-                    if (response.is_clone) {
-                        setTimeout(() => {
-                            $("#edit-item-" + response.row_id).trigger("click");
-                        }, 500);
-                        setTimeout(() => {
-                            $("#suivi_row_" + response.row_id).addClass(getClassToEditColor(response.item.id))
-                        }, 500);
-                    }
-                    return;
-                },
-                onError: function(response) {
-                    showLoadingTable(false)
-                    return;
-                },
-                onFail: function(request, status, error) {
-                    showLoadingTable(false)
-                    return;
-                }
-            })
-            $('#folder_id').on("change", function() {
-                let html = $(this).html()
-                if ($(this).val() != "0") {
-                    $("#indicator-label").html('<i class="fas fa-clone"></i>')
-                } else {
-                    $("#indicator-label").html(html)
-                }
-            });
-            // $(document).on('change', '.version-input', function(e) {
-            //     let id = $(this).attr("data-id");
-            //     let version_id = $(this).val();
-            //     console.log(id);
-            //     console.log(version_id);
-            //     let targetDififilcuty = $("#difficulty-" + id);
-            //     if (!targetDififilcuty.hasClass("form-select-transparent")) {
-            //         console.log("version-input-ajax");
-            //         showLoadingTable()
-            //         $.ajax({
-            //             url: url("/suivi/version-level-point/dropdown"),
-            //             type: 'POST',
-            //             dataType: 'json',
-            //             data: {
-            //                 "_token": _token,
-            //                 "version_id": version_id,
-            //                 "item_id": id
-            //             },
-            //             success: function(response) {
-            //                 if (response.success) {
-            //                     targetDififilcuty.html("")
-            //                     targetDififilcuty.html(response.data)
-            //                 }
-            //                 showLoadingTable(false)
-            //             },
-            //             error: function(request, status, error) {
-            //                 showLoadingTable(false)
-            //             }
-            //         });
-            //     }
-            // });
-
-            function optionFormat(item) {
-                if (!item.id) {
-                    return item.text;
-                }
-                var span = document.createElement('span');
-                var template = '';
-                template += '<div class="d-flex align-items-center">';
-                if (item.img) {
-                    template += '<img src="' + item.img + '" class="rounded-circle h-40px me-2" alt="' + item.text +
-                        '"/>';
-                }
-                template += '<div class="d-flex flex-column">'
-                template += '<span class=" fw-bold lh-1 text-info">' + item.text + '</span>';
-                if (item.info) {
-                    template += ' <span class="text-muted">' +  item.info + '</span>';
-                }
-                template += '</div>';
-                template += '</div>';
-                span.innerHTML = template;
-                return $(span);
-            }
-
-                }
-            });
-            
-           // Bug : empêcher la fermeture du dropdown pour chaque select2 dans dropdown menu  filtre avancé
-            $(document).on('select2:unselect', '.select2-dropdown', function(e) {
-                e.params.originalEvent.stopPropagation();
-            });
+            function showLoadingTable(e=!0){e?$("#suiviTable_processing").css("display",""):$("#suiviTable_processing").css("display","none")}let startX,scrollLeft,mouseDown=!1;const slider=document.querySelector(".table-responsive"),startDragging=e=>{mouseDown=!0,startX=e.pageX-slider.offsetLeft,scrollLeft=slider.scrollLeft},stopDragging=e=>{mouseDown=!1},move=e=>{if(e.preventDefault(),!mouseDown)return;const t=e.pageX-slider.offsetLeft-startX;slider.scrollLeft=scrollLeft-t};function reloadTable(){if(loopMinutors)for(var e in loopMinutors)clearInterval(loopMinutors[e]);dataTableInstance.suiviTable.ajax.reload()}function edit_row(e,t=!1){forceShowColomunsForEdit();var i=$(e).attr("data-id");$("#suivi_row_"+i).find("select, input").each((function(e){("true"==$(this).attr("data-can-edit")||t)&&doEditInput(this)})),$(".row-detail-"+i).each((function(e){("true"==$(this).attr("data-can-edit")||t)&&doEditInput(this)})),$("#save-item-"+i).css("display",""),$("#suivi_row_"+i).addClass(getClassToEditColor(i))}function getClassToEditColor(e){$("#class-row-color-"+e).data("row-color");return backgroundRowEdit}function doEditInput(e){if($(e).hasClass("form-control")&&$(e).removeClass("form-control-transparent"),$(e).hasClass("form-select")){$(e).removeClass("form-select-transparent");var t={templateResult:optionFormat,dir:document.body.getAttribute("direction"),minimumResultsForSearch:"true"==e.getAttribute("data-hide-search")?1/0:"",multiple:"true"==e.getAttribute("multipleSelect")},i=$(e).select2(t);if(t.multiple)if($(e).attr("seleteds")){var s=$(e).attr("seleteds").split(",");i.val(s).trigger("change")}else console.log("noseleteds"),i.val("");else i.val($(e).val()).trigger("change")}$(e).removeAttr("disabled")}function reHideField(e){$("#suivi_row_"+e).find("select, input").each((function(){doHideInput(this)})),$(".row-detail-"+e).each((function(e){doHideInput(this)}))}function showErrorIncador(e){$("#suivi_row_"+e).find("select, input").each((function(){if($(this).hasClass("form-select")){let e=$(this).parent("div");e.hasClass("is-invalid")||e.addClass("is-invalid")}else $(this).hasClass("is-invalid")||$(this).addClass("is-invalid")}))}function hideErrorIncador(e){$("#suivi_row_"+e).find("select, input").each((function(){if($(this).hasClass("form-select")){let e=$(this).parent("div");e.hasClass("is-invalid")&&e.removeClass("is-invalid")}else $(this).hasClass("is-invalid")&&$(this).removeClass("is-invalid")}))}function doHideInput(e){if($(e).hasClass("form-select")){if("select"==$(e).attr("data-control")||$(e).data("select2")){if(void 0!==$(e).attr("seleteds")&&!1!==$(e).attr("seleteds")){let t=$(e).val();t&&Array.isArray(t)&&($(e).attr("seleteds",t.join(",")),$(e).attr("multiple",!1))}$(e).data("select2")&&$(e).select2("destroy")}$(e).parent("div").removeClass("in-invalid"),$(e).addClass("form-select-transparent")}else $(e).removeClass("in-invalid"),$(e).addClass("form-control-transparent");$(e).attr("disabled",!0)}function save_item(e={},t){let i=$("#loading-item-"+e.item_id);i.css("display",""),t.css("display","none"),t.attr("disabled","true"),showLoadingTable(),$.ajax({url:url("/suivi/save/row"),type:"POST",dataType:"json",data:e,success:function(s){if(forceShowColomunsForEdit(),i.css("display","none"),t.attr("disabled","false"),s.success)reHideField(e.item_id),toastr.success(s.message),$("#save-item-"+s.row_id).css("display","none"),reloadTable();else{if(t.css("display",""),toastr.error(s.message),s.invalid_colones){let e=s.invalid_colones,t=s.validated_colones;e.forEach((function(e,t){if($("#input-"+e).hasClass("form-select")){$("#input-"+e).parent("div").addClass("is-invalid")}else $("#input-"+e).addClass("is-invalid")})),t.forEach((function(e,t){if($("#input-"+e).hasClass("form-select")){$("#input-"+e).parent("div").removeClass("is-invalid")}else $("#input-"+e).removeClass("is-invalid")}))}$("#save-item-"+s.row_id).css("display","none")}showLoadingTable(!1)},error:function(e,s,a){toastr.options.timeOut=0,toastr.error(a),showLoadingTable(!1),i.css("display","none"),t.css("display",""),t.attr("disabled","false")}})}function forceShowColomunsForEdit(){let e=hiddenedColoneUser.length;if(e)for(let t=0;t<e;t++){dataTableInstance.suiviTable.column(hiddenedColoneUser[t]).visible(!0)}}function forceHideColomunsForEdit(){let e=hiddenedColoneUser.length;if(e)for(let t=0;t<e;t++){dataTableInstance.suiviTable.column(hiddenedColoneUser[t]).visible(!1)}}function optionFormat(e){if(!e.id)return e.text;var t=document.createElement("span"),i="";return i+='<div class="d-flex align-items-center">',e.img&&(i+='<img src="'+e.img+'" class="rounded-circle h-40px me-2" alt="'+e.text+'"/>'),i+='<div class="d-flex flex-column">',i+='<span class=" fw-bold lh-1 text-info">'+e.text+"</span>",e.info&&(i+=' <span class="text-muted">'+e.info+"</span>"),i+="</div>",i+="</div>",t.innerHTML=i,$(t)}slider.addEventListener("mousemove",move,!1),slider.addEventListener("mousedown",startDragging,!1),slider.addEventListener("mouseup",stopDragging,!1),slider.addEventListener("mouseleave",stopDragging,!1),slider.addEventListener("mouseclick",stopDragging,!1),$(".suiviTable").on("change , keyup",(function(){dataTableInstance.suiviTable.ajax.reload()})),$("#do-search-suivi").on("click",(function(e){forceHideColomunsForEdit(),reloadTable()})),$("#search_suivi").on("keyup",(function(){dataTableInstance.suiviTable.search(this.value).draw()})),$(document).on("click",".edit-item",(function(e){$(this).attr("data-id");edit_row(this,!1)})),$(document).on("click",".cancel-edit-item",(function(e){var t=$(this).attr("data-id");dataTableInstance.suiviTable.draw(),$("#edit-item-"+t).css("display",""),$("#cancel-item-"+t).css("display","none")})),$(document).on("dblclick",".edit-item-part",(function(e){"true"==$(this).attr("data-can-edit")&&doEditInput(this);var t=$(this).attr("data-id");$("#save-item-"+t).css("display","")})),$(document).on("click",".clone-row",(function(e){var t=$(this).attr("data-suivi-item-id");$("#suivi_item_id").val(t),$("#submit-clone-row").trigger("click"),setTimeout((()=>{$("#suivi_item_id").val(0)}),1500)})),$(document).on("click",".save-item",(function(e){let t=$(this),i=$(this).attr("data-id"),s=$(this).attr("data-clone-of");var a={_token:_token,item_id:i,clon_of:s};if($("#suivi_row_"+i).find("select, input").each((function(){let e=$(this);if(e.attr("seleteds")&&"select"==e.attr("data-control")){let t=null;t=e.data("select2")?e.val():e.attr("seleteds").split(","),a[e.attr("name")]=t}else{let t=e.attr("name");"types[]"==t?(console.log("ewa"),a.types=e.val(),console.log($(this).val())):a[t]=e.val()}})),$(".row-detail-"+i).each((function(){a[$(this).attr("name")]=$(this).val()})),a.status_id==finishedId||a.status_id==pausedId){let e=a.item_id;return $.confirm({title:"Confirmation",content:"Voulez-vous vraimment continuer  ?",buttons:{"oui , je confirme !":function(){save_item(a,t)},nom:function(){return reHideField(e),$("#save-item-"+e).css("display","none"),$("#suivi_row_"+e).removeClass("bg-secondary"),!0}}})}save_item(a,t)})),$("#new-record-suivi").appForm({submitBtn:"#submit-clone-row",beforeAjaxSubmit:function(e,t,i){forceShowColomunsForEdit(),showLoadingTable()},onSuccess:function(e){dataTableaddRowIntheTop(dataTableInstance.suiviTable,e.item),showLoadingTable(!1),$("#folder_id").val("0").change(),e.is_clone&&(setTimeout((()=>{$("#edit-item-"+e.row_id).trigger("click")}),500),setTimeout((()=>{$("#suivi_row_"+e.row_id).addClass(getClassToEditColor(e.item.id))}),500))},onError:function(e){showLoadingTable(!1)},onFail:function(e,t,i){showLoadingTable(!1)}}),$("#folder_id").on("change",(function(){let e=$(this).html();"0"!=$(this).val()?$("#indicator-label").html('<i class="fas fa-clone"></i>'):$("#indicator-label").html(e)})),$(document).on("select2:unselect",".select2-dropdown",(function(e){e.params.originalEvent.stopPropagation()}));
         })
     </script>
 @endsection

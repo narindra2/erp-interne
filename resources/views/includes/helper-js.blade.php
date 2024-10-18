@@ -23,7 +23,7 @@
             "closeButton": true,
             "newestOnTop": 1,
             "progressBar": true,
-            "positionClass": "toastr-bottom-right",
+            "positionClass": "toastr-top-right",
             "preventDuplicates": false,
             "onclick": null,
             "preventDuplicates": 0,

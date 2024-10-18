@@ -63,7 +63,7 @@ $(document).ready(function () {
                                 }
                             },
                             success: function (result) {
-                                handleSubmitbutton(submitButton, !true)
+                                handleSubmitbutton(submitButton, false)
 
                                 settings.onAjaxSuccess(result);
                                 if (result.success) {

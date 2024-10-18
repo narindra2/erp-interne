@@ -131,11 +131,7 @@
     @include('includes.ticket-notification')
     @include('includes.permanent-notification')
 @endif
-<style>
-    .to-link{
-        cursor: pointer;
-    }
-</style>
+@include('includes.css')
 </body>
 {{-- end::Body --}}
 </html>

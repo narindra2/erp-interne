@@ -15,23 +15,23 @@ class SuiviColumnCustomed extends Model
     public  static $TABLE_ALLOWED_COLUMNS = [
         "0" => "details",
         "1" => "clone",
-        "3" => "DOSSIER",
-        "4" => "Réference",
-        "5" => "Type de client",
-        "6" => "Types",
-        "2" => "Ankizy",
-        "7" => "Pôles",
-        "8" => "Point",
-        "9" => "M2p",
-        "10" => "Version",
-        "11" => "Montage",
-        "12" => "Duration",
-        "13" => "Statut",
-        "14" => "Action",
-        "15" => "duration_hidden",
-        "16" => "extra_action",
+        "2" => "DOSSIER",
+        "3" => "Réference",
+        "4" => "Type de client",
+        "5" => "Types",
+        "6" => "Ankizy",
+        "8" => "Pôles",
+        "9" => "Point",
+        "10" => "M2p",
+        "11" => "Version",
+        "12" => "Montage",
+        "13" => "Duration",
+        "14" => "Statut",
+        "15" => "Action",
+        "16" => "duration_hidden",
+        "17" => "extra_action",
     ];
-    public static $NOT_CUSTOMABLE_COLUMNS = [0,1,8,13,14,15,16];
+    public static $NOT_CUSTOMABLE_COLUMNS = [0,1,8,13,14,15,16,17];
     public static  function get_static_columns(){
         return collect( self::$TABLE_ALLOWED_COLUMNS);
     }
