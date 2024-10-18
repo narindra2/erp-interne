@@ -151,8 +151,7 @@
                     blockUITableDiv.block();
             }).on('xhr.dt', function (e, settings, data) {
                     blockUITableDiv.release();
-            })
-            .DataTable({
+            }).DataTable({
                 processing: true,
                 ordering:false,
                 fixedHeader: true,
