@@ -186,7 +186,7 @@
     </div>
     <div class="card-footer d-flex justify-content-end ">
         <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn  btn-sm btn-secondary">Quitter </button>
-        <button type="submit" class="btn btn-sm btn-light-info mx-4">
+        <button type="submit" id="save-form" class="btn btn-sm btn-light-info mx-4">
             @include('partials.general._button-indicator', ['label' =>"Enregistrer la modification" ,"message" => trans('lang.sending')])
         </button>
     </div>
@@ -241,6 +241,8 @@
         });
         $("#modal-form-inventor").appForm({
             isModal: false,
+            submitBtn: "#save-form",
+            forceBlock: true,
             onSuccess: function(response) {
                 if (response.row_id) {
                     dataTableUpdateRow(dataTableInstance.invetoryListDataTable, response.row_id,response.data) 
