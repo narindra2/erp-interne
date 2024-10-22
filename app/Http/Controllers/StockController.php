@@ -142,9 +142,9 @@ class StockController extends Controller
         $item->update($data);
         
         /** Check if item is moved */
-        $new_assigned = $request->user_id ? $request->user_id :  ["new"];
-        $old_assigned = $item->user_id ? explode("," , $item->user_id)  :  ["old"];
         if ($actualy_place)  {
+            $new_assigned = $request->user_id ? $request->user_id :  ["new"];
+            $old_assigned = $item->user_id ? explode("," , $item->user_id)  :  ["old"];
             if(($actualy_place->location_id != $request->location_id) || $actualy_place->place != $request->place || sort($new_assigned) === sort($old_assigned) ){
                 $this->_set_new_mouvement($request);
             }

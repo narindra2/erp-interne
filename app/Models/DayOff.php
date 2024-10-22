@@ -110,10 +110,15 @@ class DayOff extends Model
 
     public function getDurationAttribute()
     {
-        $start = date_create($this->start_date);
-        $end = date_create($this->return_date);
-        $interval = date_diff($start, $end);
-        $duration = $interval->format("%a");
+        // $start = date_create($this->start_date);
+        // $end = date_create($this->return_date);
+        // $interval = date_diff($start, $end);
+        // $duration = $interval->format("%a");
+        /** Not calcule the hafday  */
+        $start  = new Carbon(str_replace("12:00:00", "" ,$this->start_date));
+        $end    = new Carbon(str_replace("12:00:00", "" ,$this->return_date));
+        $duration = $start->diff($end)->d;
+        /** add   the hafday of diff of date  */
         if ($this->start_date_is_morning != $this->return_date_is_morning) {
             if ($this->start_date_is_morning == "0"){
                 $duration -= 0.5;
@@ -125,10 +130,13 @@ class DayOff extends Model
     }
     public function getNewCalculDuration($start_date, $return_date ,$start_date_is_morning ,$return_date_is_morning )
     {
-        $start = date_create($start_date);
-        $end = date_create($return_date );
-        $interval = date_diff($start, $end);
-        $duration = $interval->format("%a");
+        // $start = date_create($start_date);
+        // $end = date_create($return_date );
+        // $interval = date_diff($start, $end);
+        // $duration = $interval->format("%a");
+        $start  = new Carbon($this->start_date);
+        $end    = new Carbon($this->return_date);
+        $duration = $start->diff($end)->d;
         if ($start_date_is_morning != $return_date_is_morning) {
             if ($start_date_is_morning == "0"){
                 $duration -= 0.5;
