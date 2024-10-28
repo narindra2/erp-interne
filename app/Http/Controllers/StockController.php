@@ -145,7 +145,24 @@ class StockController extends Controller
         if ($actualy_place)  {
             $new_assigned = $request->user_id ? $request->user_id :  ["new"];
             $old_assigned = $item->user_id ? explode("," , $item->user_id)  :  ["old"];
-            if(($actualy_place->location_id != $request->location_id) || $actualy_place->place != $request->place || sort($new_assigned) === sort($old_assigned) ){
+            $is_changed = false;
+            $changed = [];
+            if($actualy_place->location_id != $request->location_id){
+                $is_changed = true;
+                $changed["old_location"]=  $actualy_place->location_id ;
+                $changed["new_location"]=  $request->location_id ;
+            }
+            if( $actualy_place->place != $request->place){
+                $is_changed = true;
+                $changed["old_place"]=  $actualy_place->place ;
+                $changed["new_place"]=  $request->place ;
+            }
+            if( sort($new_assigned) === sort($old_assigned)){
+                $is_changed = true;
+                $changed["old_assigned"] =  $item->user_id;
+                $changed["new_assigned"] =  $request->user_id ;
+            }
+            if($is_changed){
                 $this->_set_new_mouvement($request);
             }
         }

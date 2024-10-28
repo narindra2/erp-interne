@@ -10,6 +10,11 @@
                  <del>{{ $horaire->start }} - {{ $horaire->end }}</del>
              @else
                  {{ $horaire->start }} - {{ $horaire->end }} 
+                 @if ( $horaire->is_in_progress())
+                    <span class="spinner-grow text-success mt-3" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </span>
+                  @endif
              @endif
          </div>
          <div class="text-gray-700 fw-semibold fs-6"> <u>Type</u>: {{ $horaire->type}}</div>
