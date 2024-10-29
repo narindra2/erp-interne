@@ -10,12 +10,14 @@ use App\Models\User;
 use App\Models\ItemType;
 use App\Models\Location;
 use App\Models\Purchase;
+use App\Models\Department;
 use App\Models\ItemCategory;
 use App\Models\ItemMovement;
 use Illuminate\Http\Request;
 use App\Http\Requests\ItemTypeRequest;
 use App\Models\PurchaseNumInvoiceLine;
 use App\Http\Requests\CreateItemCategoryResquet;
+use App\Notifications\ItemMouvementNotification;
 
 class StockController extends Controller
 {
@@ -180,6 +182,16 @@ class StockController extends Controller
             }
             ItemMovement::create($locations);
         }
+    }
+    public function _send_notification_new_mouvement($item , $changed = []){
+        $auth = Auth::user();
+        $user_admin_and_rh = get_cache_rh_admin();
+        $user_compta =  Department::getEmployeeByIdDepartement();
+        $notifiy_to =  collect();
+        $notifiy_to = $notifiy_to->merge($user_compta);
+        $notifiy_to = $notifiy_to->merge($user_admin_and_rh);
+        
+        \Notification::send($notifiy_to, new ItemMouvementNotification($item, $auth,  $changed));
     }
     public function create_article_migration_to_stock(Request $request)
     {
