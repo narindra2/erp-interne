@@ -5,6 +5,7 @@ namespace App\Notifications;
 use stdClass;
 use App\Models\Item;
 use App\Models\User;
+use App\Models\Location;
 use Illuminate\Support\Str;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Carbon;
@@ -33,10 +34,10 @@ class ItemMouvementNotification extends Notification
     public function __construct(Item $item , User $creator, $updated= [])
     {
         $item->load("article");
-       $this->item = $item;
-       $this->creator = $creator;
-       $this->fake_id = Str::uuid();
-       $this->updated = $updated;
+        $this->item = $item;
+        $this->creator = $creator;
+        $this->fake_id = Str::uuid();
+        $this->updated = $updated;
     }
 
     /**
@@ -98,7 +99,7 @@ class ItemMouvementNotification extends Notification
     {
         $notification = new stdClass();
         $notification->data["created_by"] =  $this->creator->id;
-        $notification->data["task_id"] =  $this->item->id;
+        $notification->data["item_id"] =  $this->item->id;
         $notification->data["event"] = $this->event;
         $notification->data["updated"] =$this->updated;
         $notification->created_at =  Carbon::now();
@@ -108,11 +109,36 @@ class ItemMouvementNotification extends Notification
     }
     private function toast_notification()
     {
-        $content = "{$this->creator->sortname} a mis à jour la tâche «"   . str_limite($this->item->title,10). "»" ." dans la section : {$this->task->section->title} ";
-        if ($this->item->deleted) {
-            $content = "{$this->creator->sortname} a suppriné la tâche :  «"   . str_limite($this->item->title,10). "»";
-        }
-        $redirect = url("/tâche/list");
+        
+        $content = self::get_content_sentence($this->creator->sortname ,$this->item , $this->updated );
         return ["content" => $content, "title" => trans("lang.task") , "position" => "right" ,"duration" => "forever" , "redirect" => $redirect] ;
+    }
+    static function get_content_sentence($creator , $item , $updated = [])
+    {
+        $sentence = "{$creator} a effectué(e) un mouvement sur l'article : « {$item->article->name} »" ;
+        $sentence .= "<br>" ."<u>Code</u> : {$item->article->code} ";
+        $old_location = get_array_value($updated ,"old_location");
+        if ($old_location) {
+            $new_location = get_array_value($updated ,"new_location");
+            $places  = Location::findMany([$old_location,$new_location]);
+            $place_old_info = $places->firstWhere("id",$old_location);
+            $place_new_info = $places->firstWhere("id",$new_location);
+            $sentence .= "<br>" ."<u>Lieu d'emplacement</u> : <strike> $place_old_info->name</strike> ->  $place_new_info->name ";
+        }
+        $old_place = get_array_value($updated ,"old_place");
+        if ($old_place) {
+            $new_place = get_array_value($updated ,"new_place");
+            $sentence .= "<br>" ."<u>Place</u> : <strike> $old_place </strike> ->  $new_place ";
+        }
+        $old_assigned = get_array_value($updated ,"old_assigned");
+        if ($old_assigned) {
+            $new_assigned = get_array_value($updated ,"new_assigned" , [0]);
+            $users  = User::findMany(array_merge(explode(",",$old_assigned),explode(",",$new_assigned)));
+            $old_assigned_users = $users->whereIn("id",$old_assigned);
+            $new_assigned_users = $users->whereIn("id",$new_assigned);
+
+            $sentence .= "<br>" ."<u>En usage de</u> : <strike> {$old_assigned_users->implode('sortname',', ')} </strike> -> {$new_assigned_users->implode('sortname',', ')} ";
+        }
+        return $sentence;
     }
 }
