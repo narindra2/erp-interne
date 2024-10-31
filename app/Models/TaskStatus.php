@@ -69,6 +69,6 @@ class TaskStatus extends Model
         if ($archived == "no") {
             $status_task->where("acronym", "<>", "ARCHIVED");
         }
-        return $status_task->whereDeleted(0)->orderBy("order_board", "ASC");
+        return $status_task->whereDeleted(0)->orderBy("order_board", "ASC")->latest("updated_at");
     }
 }
