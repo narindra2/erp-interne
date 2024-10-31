@@ -165,7 +165,11 @@ class StockController extends Controller
                 $changed["new_assigned"] =  $request->user_id ;
             }
             if($is_changed){
-                $this->_set_new_mouvement($request);
+                dispatch(function () use ($request, $item, $changed) {
+                    $this->_send_notification_new_mouvement($item ,$changed);
+                    $this->_set_new_mouvement($request);
+                })->afterResponse();
+                
             }
         }
         $item->refresh()->load(["article.category","purchase","num_invoice"]);
@@ -186,11 +190,10 @@ class StockController extends Controller
     public function _send_notification_new_mouvement($item , $changed = []){
         $auth = Auth::user();
         $user_admin_and_rh = get_cache_rh_admin();
-        $user_compta =  Department::getEmployeeByIdDepartement();
+        $user_compta =  Department::getEmployeeByIdDepartement(Department::$_COMPTA)->get();
         $notifiy_to =  collect();
         $notifiy_to = $notifiy_to->merge($user_compta);
         $notifiy_to = $notifiy_to->merge($user_admin_and_rh);
-        
         \Notification::send($notifiy_to, new ItemMouvementNotification($item, $auth,  $changed));
     }
     public function create_article_migration_to_stock(Request $request)

@@ -22,7 +22,7 @@ class ItemMouvementNotification extends Notification
     public $item;
     public $creator;
     private $classification = "bell";
-    private $event = "item_mouvement";
+    private $event = "new_item_mouvement";
     private $fake_id;
     private $updated;
     
@@ -109,14 +109,13 @@ class ItemMouvementNotification extends Notification
     }
     private function toast_notification()
     {
-        
+        $redirect = url("/stock/gerer");
         $content = self::get_content_sentence($this->creator->sortname ,$this->item , $this->updated );
         return ["content" => $content, "title" => trans("lang.task") , "position" => "right" ,"duration" => "forever" , "redirect" => $redirect] ;
     }
     static function get_content_sentence($creator , $item , $updated = [])
     {
-        $sentence = "{$creator} a effectué(e) un mouvement sur l'article : « {$item->article->name} »" ;
-        $sentence .= "<br>" ."<u>Code</u> : {$item->article->code} ";
+        $sentence = "{$creator} a effectué(e) un mouvement sur l'article : « {$item->article->name} » dont le code article est «{$item->codeDetail} »";
         $old_location = get_array_value($updated ,"old_location");
         if ($old_location) {
             $new_location = get_array_value($updated ,"new_location");
@@ -130,13 +129,13 @@ class ItemMouvementNotification extends Notification
             $new_place = get_array_value($updated ,"new_place");
             $sentence .= "<br>" ."<u>Place</u> : <strike> $old_place </strike> ->  $new_place ";
         }
-        $old_assigned = get_array_value($updated ,"old_assigned");
-        if ($old_assigned) {
-            $new_assigned = get_array_value($updated ,"new_assigned" , [0]);
-            $users  = User::findMany(array_merge(explode(",",$old_assigned),explode(",",$new_assigned)));
-            $old_assigned_users = $users->whereIn("id",$old_assigned);
-            $new_assigned_users = $users->whereIn("id",$new_assigned);
-
+        $old_assigned = get_array_value($updated ,"old_assigned") ?? [];
+        $new_assigned = get_array_value($updated ,"new_assigned" )?? [];
+        
+        if ($old_assigned || $new_assigned) {
+            $users  = User::findMany(array_merge($old_assigned,$new_assigned));
+            $old_assigned_users = $old_assigned ?  $users->whereIn("id",$old_assigned) : collect(["Personne"]);
+            $new_assigned_users = $new_assigned ? $users->whereIn("id",$new_assigned) : collect(["Personne"]);
             $sentence .= "<br>" ."<u>En usage de</u> : <strike> {$old_assigned_users->implode('sortname',', ')} </strike> -> {$new_assigned_users->implode('sortname',', ')} ";
         }
         return $sentence;

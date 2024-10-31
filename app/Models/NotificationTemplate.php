@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Exception;
+use App\Notifications\ItemMouvementNotification;
 
 
 class NotificationTemplate 
@@ -299,6 +300,21 @@ class NotificationTemplate
         $new_status  = get_array_value($updated, "new_status");
 
         $template["sentence"] = "{$subject_name} a mis  « <strike>$old_status</strike> ->{$new_status} » la demande d' achat de «{$purchase->author->sortname}»" ;
+        return  $template;
+    }
+    public static function new_item_mouvement($notification= null, $send_to) {
+        
+        $template = [];
+        $subject_info = self::get_subject_info($notification);
+        $subject_name = $subject_info['name'];
+        $template["title"]= "Stock";
+        $template["action"]= "Mise à jour";
+        $template["profile"] = $subject_info["profile"];
+       
+        $updated = $notification->data["updated"] ?? [];
+        $item = Item::with(["article"])->find($notification->data['item_id']);
+
+        $template["sentence"] = ItemMouvementNotification::get_content_sentence( $subject_name,$item , $updated);
         return  $template;
     }
 }

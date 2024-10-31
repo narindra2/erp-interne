@@ -324,7 +324,7 @@ if (!function_exists('get_array_value')) {
         if (array_key_exists($key, $array)) {
             return $array[$key];
         }else{
-            return $default !== null ? $default  : null;
+            return $default === null ? null  : $default;
         }
     }
 }
