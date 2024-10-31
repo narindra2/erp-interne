@@ -125,8 +125,8 @@ class ItemMouvementNotification extends Notification
             $sentence .= "<br>" ."<u>Lieu d'emplacement</u> : <strike> $place_old_info->name</strike> ->  $place_new_info->name ";
         }
         $old_place = get_array_value($updated ,"old_place");
-        if ($old_place) {
-            $new_place = get_array_value($updated ,"new_place");
+        $new_place = get_array_value($updated ,"new_place");
+        if ($old_place || $new_place) {
             $sentence .= "<br>" ."<u>Place</u> : <strike> $old_place </strike> ->  $new_place ";
         }
         $old_assigned = get_array_value($updated ,"old_assigned") ?? [];

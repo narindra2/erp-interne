@@ -55,14 +55,18 @@
                 <template #item-days_work_nb="{days_work_nb}">
                     <div v-html="days_work_nb" > </div>
                 </template>
-                <template #item-seuil_point="{user_id,seuil_point}">
+                
+                <template v-if="iscaneditparams" #item-seuil_point="{user_id,seuil_point}">
                     <input type="text" class="form-control form-control-solid"  @change=" updateSeuil (user_id ,$event.target.value)" placeholder="ex: 8.00" :value="seuil_point">
                 </template>
-                <template #item-hours_works="{user_id,hours_works}">
+                <template v-if="iscaneditparams" #item-hours_works="{user_id,hours_works}">
                     <input type="text" class="form-control form-control-solid" @change="updateHourWork(user_id, $event.target.value)" placeholder="ex: 3.39" :value="hours_works" >
                 </template>
-                <template #item-days_work_nb_dessi="{user_id,days_work_nb_dessi}">
+                <template v-if="iscaneditparams" #item-days_work_nb_dessi="{user_id,days_work_nb_dessi}">
                     <input type="text" class="form-control form-control-solid"  @change="updateDayworkDessi(user_id ,$event.target.value)" placeholder="1" :value="days_work_nb_dessi" >
+                </template>
+                <template  v-if="iscaneditparams"  #item-sum_note_quality="{user_id,sum_note_quality}">
+                    <input type="text" class="form-control form-control-solid"  @change="updateNoteQualityDessi(user_id ,$event.target.value)" placeholder="1" :value="sum_note_quality" >
                 </template>
             </easy-data-table>
     </div>
@@ -115,7 +119,7 @@ function suggestionItemTemplate(tagData){
 // import Tagify from '@yaireo/tagify'
 // import '@yaireo/tagify/dist/tagify.css'
 export default {
-    props: ["versions", "montages", "months", "years"],
+    props: ["versions", "montages", "months", "years" ,"iscaneditparams"],
     data() {
         return {
             app: app,
@@ -147,6 +151,9 @@ export default {
     },
 
     mounted() {
+        console.log("isCanEditParams");
+        console.log(this.isCanEditParams);
+        
         this.versionInput = new Tagify(document.querySelector('#versions'), {
             whitelist: JSON.parse(this.versions),
             tagTextProp: 'text',
@@ -240,6 +247,13 @@ export default {
         },
         updateDayworkDessi(user_id, days_work) {
             axios.post(this.app.baseUrl + "/suivi/save/hours_days_work", { "user_id": user_id, "month": this.monthFilter, "year": this.yearFilter, "days_work": days_work }).then(response => {
+                if (response.data.success) {
+
+                }
+            })
+        },
+        updateNoteQualityDessi(user_id, noteQuality = 0) {
+            axios.post(this.app.baseUrl + "/suivi/save/hours_days_work", { "user_id": user_id, "month": this.monthFilter, "year": this.yearFilter, "sum_note_quality": noteQuality }).then(response => {
                 if (response.data.success) {
 
                 }

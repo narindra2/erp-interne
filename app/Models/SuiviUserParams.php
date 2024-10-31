@@ -16,6 +16,7 @@ class SuiviUserParams extends Model
         "hours_works",
         "seuil_point",
         "days_work",
+        "sum_note_quality",
         "month",
         "year",
         "deleted",
@@ -24,6 +25,7 @@ class SuiviUserParams extends Model
         'hours_works'  => 'float',
         'seuil_point'  => 'float',
         'days_work'  => 'float',
+        'sum_note_quality'  => 'float',
     ];
     public function suivi()
     {

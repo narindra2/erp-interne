@@ -70,7 +70,6 @@ class SuiviController extends Controller
     }
     public function tab_userparams()
     {
-        
         $useVuejs = true;
         $view = "userparams";
         $months =  monthList(Carbon::now()->month);
@@ -127,14 +126,16 @@ class SuiviController extends Controller
     }
     public function tab_productivitie()
     {
+        $auth = Auth::user();
         // $view = "productivitie";
         $view = "productivitie2";
         // $basic_filter = SuiviItem::createFilterProd();
         $months =  monthList(Carbon::now()->month);
         $years =  yearList();
+        $isCanEditParams = $auth->isM2pOrAdmin() || $auth->isCp() ? true : false;
         $versions =  SuiviVersion::drop([]);
         $montages = SuiviItem::$MONTAGE;
-        return compact("view",  /*"basic_filter" , */ "versions" ,"montages" ,"months" ,"years");
+        return compact("view",  /*"basic_filter" , */ "versions" ,"montages" ,"months" ,"years" ,  "isCanEditParams");
     }
     public function data_list(Request $request)
     {
@@ -1071,9 +1072,10 @@ class SuiviController extends Controller
                     $row["sum_note_quality"] += $suivi_item->noteQuality->sum("note") ;
                 }
             }
-            $row["sum_note_quality"]    = round($row["sum_note_quality"], 2) ; 
             $row["point_prod"]       = round($row["point_prod"], 2) ; 
         }
+        $row["sum_note_quality"]    = (isset( $user->suiviPramsSession->sum_note_quality )  && $user->suiviPramsSession->sum_note_quality) ? $user->suiviPramsSession->sum_note_quality :   0; 
+
         $row["point_per_day"] =   round($row["point_prod"] / $row["days_work_nb_dessi"] ,2) ;
         $row["note_prod"] = round(( $row["point_per_day"]  * 100 ) /  $row["hours_works"] ,2);
         $row["average"] = round(($row["note_prod"] + $row["sum_note_quality"])/2 ,2)  ;
@@ -1202,6 +1204,9 @@ class SuiviController extends Controller
         }
         if($request->days_work){
             $data["days_work"] = str_replace([",",";"],".", $request->days_work);
+        }
+        if($request->sum_note_quality){
+            $data["sum_note_quality"] = str_replace([",",";"],".", $request->sum_note_quality);
         }
         SuiviUserParams::updateOrCreate(["user_id" => $request->user_id, "month" => $request->month, "year" => $request->year ] ,  $data);
         return ["success" => true, "message" =>  trans("lang.success_record")];
